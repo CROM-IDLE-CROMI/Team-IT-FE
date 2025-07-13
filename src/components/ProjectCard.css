@@ -1,0 +1,26 @@
+.project-section {
+  padding: 4rem 0;
+}
+
+.section-title {
+  display: flex;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.project-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.project-card {
+  width: 260px;
+  height: 330px;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #fff;
+}
