@@ -22,5 +22,4 @@ const Sidebar = ({ currentStep }: Sidebarprops) => {
   );
 };
 
-
 export default Sidebar;

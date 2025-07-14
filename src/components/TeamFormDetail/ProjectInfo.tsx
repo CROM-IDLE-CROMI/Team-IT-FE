@@ -1,6 +1,27 @@
 import styles from './ProjectInfo.module.css';
+import Select from 'react-select';
+import  type { MultiValue } from 'react-select'
+import { useState } from 'react';
+
+type OptionType = {
+    value : string;
+    label : string;
+};
+
+const Options: OptionType[] = [
+  { value: '프론트엔드', label: '프론트엔드' },
+  { value: '백엔드', label: '백엔드' },
+  { value: '디자이너', label: '디자이너' },
+  { value: 'UI/UX', label: 'UI/UX' },
+];
 
 const ProjectInfo = () => {
+    const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>([]);
+
+  const handleJobChange = (selectedOptions: any) => {
+    setSelectedJobs(selectedOptions);
+  };
+
   return (
     <div className={styles.formContainer}>
       <div className={styles.formGroup}>
@@ -29,7 +50,17 @@ const ProjectInfo = () => {
         <div className={styles.dateRange}>
           <input type="date" />
         </div>
-      </div>
+        </div>
+         <div className={styles.formGroup}>
+      <label>모집자 직군</label>
+      <Select
+          isMulti
+          options={Options}
+          value={selectedJobs}
+          onChange={handleJobChange}
+          placeholder="직군을 선택하세요"
+        />
+    </div>
 </div>
       );
 };
