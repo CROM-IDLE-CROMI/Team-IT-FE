@@ -5,19 +5,6 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -39,4 +26,203 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/*=====================================================
+======================로그인 페이지======================
+=====================================================*/
+.login-container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 40px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.login-title {
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+
+.input-group {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  font-size: 16px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.link-text {
+  font-size: 12px;
+  margin-top: 10px;
+  color: #666;
+}
+
+.link-text a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.link-text a:hover {
+  text-decoration: underline;
+}
+
+.divider {
+  margin: 30px 0;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+.social-login-label {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.kakao-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background-color: #fee500;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.kakao-button img {
+  width: 24px;
+  height: 24px;
+}
+
+/*=======================================================
+======================회원가입 페이지======================
+=======================================================*/
+
+.signup-container {
+  max-width: 450px;
+  margin: 60px auto;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+}
+
+.signup-title {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.row-group {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.row-group input {
+  flex: 1;
+}
+
+.btn-check {
+  background-color: #4a90e2;
+  color: white;
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.birth-selects {
+  display: flex;
+  gap: 10px;
+}
+
+.birth-selects select {
+  flex: 1;
+}
+
+.agree-group {
+  font-size: 14px;
+}
+
+.agreement {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.agreement a {
+  color: #ff4d4f;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+.btn-agree {
+  background-color: #2ee59d;
+  color: white;
+  padding: 6px 12px;
+  font-size: 13px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-signup {
+  width: 100%;
+  background-color: #c49cfa;
+  color: white;
+  font-size: 16px;
+  padding: 12px 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
 }
