@@ -1,4 +1,3 @@
-import "./ProjectCard.css"
 
 const ProjectCard = () => {
   return (

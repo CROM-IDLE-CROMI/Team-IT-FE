@@ -1,4 +1,3 @@
-import styles from './ProjectInfo.module.css';
 import Select from 'react-select';
 import  type { MultiValue } from 'react-select'
 import { useState } from 'react';
@@ -23,12 +22,12 @@ const ProjectInfo = () => {
   };
 
   return (
-    <div className={styles.formContainer}>
-      <div className={styles.formGroup}>
+    <div className="formContainer">
+      <div className="formGroup">
         <label>팀 이름:</label>
-        <input type="text" placeholder="___" />
+        <input type="text" placeholder="" />
       </div>
-    <div className={styles.formGroup}>
+    <div className="formGroup">
     <label>활동 종류:</label>
     <select>
         <option>선택</option>
@@ -37,21 +36,21 @@ const ProjectInfo = () => {
         <option>직접입력</option>
     </select>
     </div>
-<div className={styles.formGroup}>
+<div className="formGroup">
         <label>진행 예상 기간:</label>
-        <div className={styles.dateRange}>
+        <div className="dateRange">
           <input type="date" />
           <span> ~ </span>
           <input type="date" />
         </div>
       </div>
-      <div className={styles.formGroup}>
+      <div className="formGroup">
         <label>프로젝트 시작 예상일:</label>
-        <div className={styles.dateRange}>
+        <div className="dateRange">
           <input type="date" />
         </div>
         </div>
-         <div className={styles.formGroup}>
+         <div className="formGroup">
       <label>모집자 직군</label>
       <Select
           isMulti

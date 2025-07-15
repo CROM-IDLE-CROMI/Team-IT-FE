@@ -1,14 +1,13 @@
-import styles from "./Situation.module.css";
 
 const Situation = () =>{
     return (
-<div className={styles.formContainer}>
-      <div className={styles.formGroup}>
+<div className="formContainer">
+      <div className="formGroup">
         <label>제목:</label>
-        <input type="text" placeholder="___" />
+        <input type="text" />
       </div>
       
-      <div className={styles.formGroup}>
+      <div className="formGroup">
         <label>프로젝트 진행 상황:</label>
         <select>
             <option>선택</option>
@@ -18,9 +17,9 @@ const Situation = () =>{
         </select>
       </div>
 
-      <div className={styles.formGroup}>
-        <label>본문:</label>
-        <input type='text' placeholder=""/>
+      <div className="formGroup">
+        <label>모집글 본문:</label>
+        <input type='text'/>
       </div>
 
 </div>

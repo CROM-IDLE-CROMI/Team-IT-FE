@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import './Header.css';
 
 const Header = () => {
   return (
@@ -8,7 +7,7 @@ const Header = () => {
         Team-IT
       </div>
       <nav className="nav-links">
-        <a href="/teams" target="_blank">팀원 모집</a>
+        <Link to="/teams">팀원 모집</Link>
         <Link to="/Projects">프로젝트 찾기</Link>
         <a href="/content">게시판</a>
         <a href="/about">상점</a>

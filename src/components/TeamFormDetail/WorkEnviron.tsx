@@ -1,9 +1,8 @@
-import styles from './WorkEnviron.module.css';
 
 const WorkEnviron = () =>{
     return (
-    <div className={styles.formContainer}>
-<div className={styles.formGroup}>
+    <div className="formContainer">
+<div className="formGroup">
 <label>회의 방식:</label>
 <select>
     <option>선택</option>
@@ -13,7 +12,7 @@ const WorkEnviron = () =>{
 </select>
 </div>
 
-<div className={styles.formGroup}>
+<div className="formGroup">
 <label>위치:</label>
 <select>
     <option> 선택</option>

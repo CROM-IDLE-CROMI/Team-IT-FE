@@ -4,36 +4,43 @@ import BasicInfo from '../components/TeamFormDetail/BasicInfo';
 import ProjectInfo from '../components/TeamFormDetail/ProjectInfo';
 import Situation from '../components/TeamFormDetail/Situation';
 import WorkEnviron from '../components/TeamFormDetail/WorkEnviron';
+import Header from '../layouts/Header';
 
-import styles from './TeamPage.module.css';
 
-const TeamPage = () => {
-  const currentStep = 0; // 나중에 IntersectionObserver로 갱신
+ const TeamPage = () => {
+  const currentStep = 0;
 
   return (
-    <div className={styles.container}>
-      <aside className={styles.sidebar}>
-        <Sidebar currentStep={currentStep} />
-      </aside>
+    <>
+      <Header />
+      <div className="container">
+        <aside className="sidebar">
+          <Sidebar currentStep={currentStep} />
+        </aside>
 
-      <main className={styles.scrollArea}>
-        <section className={styles.section}>
-          <BasicInfo />
-        </section>
-        <section className={styles.section}>
-          <ProjectInfo />
-        </section>
-        <section className={styles.section}>
-          <Situation />
-        </section>
-        <section className={styles.section}>
-          <WorkEnviron />
-        </section>
-        <section className={styles.section}>
-          <ApplicantInfo />
-        </section>
-      </main>
-    </div>
+        <main className="scrollArea">
+          <section className="section">
+            <BasicInfo />
+          </section>
+
+          <section className="section">
+            <ProjectInfo />
+          </section>
+
+          <section className="section">
+            <Situation />
+          </section>
+
+          <section className="section">
+            <WorkEnviron />
+          </section>
+
+          <section className="section">
+            <ApplicantInfo />
+          </section>
+        </main>
+      </div>
+    </>
   );
 };
 

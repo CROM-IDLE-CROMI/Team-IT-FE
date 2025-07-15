@@ -1,23 +1,42 @@
-import styles from './BasicInfo.module.css';
+import Select from 'react-select';
+import  type { MultiValue } from 'react-select'
+import { useState } from 'react';
+
+type OptionType = {
+    value : string;
+    label : string;
+};
+
+const Options: OptionType[] = [
+  { value: '프론트엔드', label: '프론트엔드' },
+  { value: '백엔드', label: '백엔드' },
+  { value: '디자이너', label: '디자이너' },
+  { value: 'UI/UX', label: 'UI/UX' },
+];
 
 const BasicForm = () => {
+  const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>([]);
+  
+    const handleJobChange = (selectedOptions: any) => {
+      setSelectedJobs(selectedOptions);
+    };
   return (
-    <div className={styles.formContainer}>
-      <div className={styles.formGroup}>
+    <div className="formContainer">
+      <div className="formGroup">
         <label>모집 인원:</label>
         <input type="text" placeholder="___명" />
       </div>
 
-      <div className={styles.formGroup}>
+      <div className="formGroup">
         <label>모집 기간:</label>
-        <div className={styles.dateRange}>
+        <div className="dateRange">
           <input type="date" />
           <span> ~ </span>
           <input type="date" />
         </div>
       </div>
 
-      <div className={styles.formGroup}>
+      <div className="formGroup">
         <label>플랫폼:</label>
         <select>
           <option>선택</option>
@@ -27,18 +46,18 @@ const BasicForm = () => {
         </select>
       </div>
 
-      <div className={styles.formGroup}>
-        <label>모집 직군:</label>
-        <select>
-          <option>선택</option>
-          <option>프론트엔드</option>
-          <option>백엔드</option>
-          <option>디자이너</option>
-          <option>UI/UX</option>
-        </select>
-      </div>
+      <div className="formGroup">
+      <label>지원자 직군</label>
+      <Select
+          isMulti
+          options={Options}
+          value={selectedJobs}
+          onChange={handleJobChange}
+          placeholder="직군을 선택하세요"
+        />
+    </div>
 
-      <div className={styles.formGroup}>
+      <div className="formGroup">
         <label>기술 스택:</label>
         <select>
           <option>React</option>

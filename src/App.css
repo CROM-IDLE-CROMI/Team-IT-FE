@@ -3,3 +3,591 @@ html, body {
   margin: 0;
   padding: 0;
 }
+
+/*================Page Css 정리==============*/
+
+
+/*===================================================================================
+=====================TeamPage.tsx====================================================
+====================================================================================*/
+.container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  padding-left: 7rem; /* 기존 5rem → 0으로 변경 */
+  justify-content: center; /* 전체 레이아웃 중앙 정렬 */
+}
+
+.sidebar {
+  flex: 0 0 220px; /* 조금 넓게 */
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background-color: white;
+  z-index: 10;
+  padding: 0 2rem;
+  margin-left: 2rem; /* 사이드바를 오른쪽으로 이동 */
+  border-left: none; /* 혹시 border 생겼다면 제거 */
+}
+
+.scrollArea {
+  flex: 1;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  height: 100vh;
+  padding-left: 0; /* 본문 여백 추가 */
+}
+
+.section {
+  height: 100vh;
+  scroll-snap-align: start;
+  padding: 4rem 6rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+
+
+
+/*===================================================================================
+=====================ProjectPage.tsx=================================================
+====================================================================================*/
+
+
+/*===================================================================================
+=====================Main.tsx========================================================
+====================================================================================*/
+/* 대시보드 wrapper */
+.Main-wrapper {
+  padding: 3rem 0;
+}
+
+/* 소개 박스 전체 */
+.intro-box {
+  width: 920px;
+  height: 270px;
+  margin: 1rem auto;
+  padding: 2.6rem 4rem;
+  border-radius: 12px;
+  background: linear-gradient(to right, #ffffff, #e6f5fa);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 좌측 텍스트 영역 */
+.intro-text {
+  max-width: 50%;
+}
+
+.box-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.box-description {
+  font-size: 1rem;
+  margin-top: 1rem;
+  color: #333;
+}
+
+/* 우측 버튼 영역 */
+.box-links {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.box-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #96d4e9;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  color: #000;
+  transition: background-color 0.3s;
+}
+
+.box-links a:hover {
+  background-color: #73c0da;
+}
+
+
+
+/* 게시판 섹션*/
+.Board-section {
+  padding: 3rem 0;
+}
+
+.section-title {
+  display: flex;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.Board-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.Board-card {
+  width: 260px;
+  height: 430px;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+
+/*===================layout Css 정리===============*/
+
+/*===================================================================================
+=====================Header.tsx========================================================
+====================================================================================*/
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: #eee;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-sizing: border-box;
+  height: 90px; /* 고정 높이 추가 */
+}
+
+.logo,
+.nav-links,
+.auth-buttons {
+  display: flex;
+  align-items: center; /* 세로 가운데 정렬 */
+}
+
+.logo{
+    font-size: 1.5rem;
+    font-weight: bolder;
+    cursor: pointer;
+    padding-left: 2rem;
+}
+
+.nav-links {
+  gap: 5rem;
+  margin: 0 2rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.auth-buttons {
+    gap: 1.3rem;
+}
+
+
+.auth-buttons button {
+  font-size: 1rem;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  background-color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  color: black;
+}
+
+.auth-buttons button:hover {
+  background-color: #ddd;
+}
+
+/*===================components Css 정리=====================*/
+
+/*===================================================================================
+=====================Sidebar.tsx=====================================================
+====================================================================================*/
+/* Sidebar.module.css */
+.sidebar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  padding-left: 31px;
+  margin-top: 8rem;
+}
+
+/* 세로 선 */
+.sidebar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 38px; /* 동그라미 중심과 맞추기 */
+  width: 8px;
+  background-color: #d3d3d3;
+  z-index: 0;
+}
+
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 38px;
+  width: 8px;
+  background-color: royalblue;
+  z-index: 1;
+  transition: height 0.3s ease;
+}
+
+/* 각 단계 항목 */
+.step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1; /* 선보다 위에 올라오도록 */
+  color: #999;
+}
+
+/* 동그라미 */
+.circle {
+  width: 22px;
+  height: 22px;
+  background-color: #ccc;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* 활성화된 단계 */
+.active .circle {
+  background-color: royalblue;
+  width: 24px;
+  height: 24px;
+}
+
+.active span {
+  font-weight: bold;
+  color: black;
+}
+
+/*===================================================================================
+=====================ProjectCard.tsx=================================================
+====================================================================================*/
+.project-section {
+  padding: 4rem 0;
+}
+
+.section-title {
+  display: flex;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.project-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.project-card {
+  width: 260px;
+  height: 330px;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+/*===================================================================================
+=====================BoardCard.tsx=================================================
+====================================================================================*/
+.Board-section {
+  padding: 2rem 0;
+}
+
+.section-title {
+  display: flex;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.Board-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.Board-card {
+  width: 260px;
+  height: 330px;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+/*===================================================================================
+=====================WordEnviron.tsx=================================================
+====================================================================================*/
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex: 1;
+  padding-top: 5rem;
+  padding-left: 10rem;
+}
+
+.formGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ddd;
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.formGroup label {
+  flex: 1;
+  font-weight: 600;
+}
+
+.formGroup select {
+  flex: 2;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/*===================================================================================
+=====================Situation.tsx===================================================
+====================================================================================*/
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex: 1;
+  padding-top: 5rem;
+  padding-left: 10rem;
+}
+
+.formGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ddd;
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.formGroup label {
+  flex: 1;
+  font-weight: 600;
+}
+
+.formGroup input,
+.formGroup select {
+  flex: 2;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.dateRange {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex: 2;
+}
+
+/*===================================================================================
+=====================ProjectInfo.tsx=================================================
+====================================================================================*/
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex: 1;
+  padding-top: 5rem;
+  padding-left: 10rem;
+}
+
+.formGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ddd;
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.formGroup label {
+  flex: 1;
+  font-weight: 600;
+}
+
+.formGroup input,
+.formGroup select {
+  flex: 2;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.dateRange {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex: 2;
+}
+
+/*===================================================================================
+=====================Button.tsx======================================================
+====================================================================================*/
+.formContainer {
+  display: flex;
+  justify-content: flex-end; 
+  padding: 1rem;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  position: sticky;
+  bottom: 0;
+  z-index: 0;
+}
+
+.formGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem; 
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 0.6rem 1.4rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/*===================================================================================
+=====================BasicInfo.tsx======================================================
+====================================================================================*/
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex: 1;
+  padding-top: 5rem;
+  padding-left: 10rem;
+}
+
+.formGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ddd;
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.formGroup label {
+  flex: 1;
+  font-weight: 600;
+}
+
+.formGroup input,
+.formGroup select {
+  flex: 2;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.dateRange {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex: 2;
+  cursor: pointer;
+}
+
+/*===================================================================================
+=====================BasicInfo.tsx======================================================
+====================================================================================*/
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex: 1;
+  padding-top: 5rem;
+  padding-left: 10rem;
+}
+
+.formGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ddd;
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.formGroup label {
+  flex: 1;
+  font-weight: 600;
+}
+
+.formGroup input,
+.formGroup select {
+  flex: 2;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+}

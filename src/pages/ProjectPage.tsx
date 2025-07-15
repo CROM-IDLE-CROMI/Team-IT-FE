@@ -1,5 +1,4 @@
 import Header from "../layouts/Header";
-import "./ProjectPage.css"
 
 const ProjectPage = () => {
   return (
