@@ -1,41 +1,53 @@
-import { Link } from 'react-router-dom'
-import '../App.css'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../App.css';
 
-export default function Login() {
+const Login = () => {
+  const navigate = useNavigate();
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // localStorage에서 유저 정보 가져오기
+    const userData = localStorage.getItem(id);
+    if (!userData) {
+      setError('존재하지 않는 아이디입니다.');
+      return;
+    }
+
+    const parsed = JSON.parse(userData);
+    if (parsed.password !== password) {
+      setError('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    // 로그인 성공
+    alert(`${parsed.name}님 환영합니다!`);
+    setError('');
+    navigate('/'); // 홈으로 이동
+  };
+
   return (
     <div className="login-container">
-      <h1 className="login-title">로그인</h1>
-
-      <div className="input-group">
-        <label htmlFor="id">ID</label>
-        <input type="text" id="id" placeholder="아이디 입력" />
-      </div>
-
-      <div className="input-group">
-        <label htmlFor="password">Password</label>
-        <input type="password" id="password" placeholder="비밀번호 입력" />
-      </div>
-
-      <button className="login-button">Sign In</button>
-
-      <div className="link-text">
-        아이디나 비밀번호를 잊었다면, <Link to="/reset">여기를</Link> 눌러주세요.
-      </div>
-      <div className="link-text">
-        회원가입은 <Link to="/signup">여기에서</Link> 할 수 있습니다.
-      </div>
-
-      <hr className="divider" />
-
-      <div className="social-login-label">소셜 로그인하기</div>
-
-      <button className="kakao-button">
-        <img
-          src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
-          alt="kakao icon"
-        />
-        <span>카카오로 로그인 하기</span>
-      </button>
+      <h2>로그인</h2>
+      <form onSubmit={handleLogin}>
+        <div className="input-group">
+          <label>ID</label>
+          <input type="text" value={id} onChange={(e) => setId(e.target.value)} />
+        </div>
+        <div className="input-group">
+          <label>Password</label>
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </div>
+        {error && <p className="error-message">{error}</p>}
+        <button type="submit" className="btn btn-login">Sign In</button>
+      </form>
+      <p>회원가입은 <a href="/signup">여기에서</a> 할 수 있습니다.</p>
     </div>
-  )
-}
+  );
+};
+
+export default Login;
