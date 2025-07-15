@@ -5,51 +5,12 @@
   text-align: center;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-/*=====================================================
-======================로그인 페이지======================
-=====================================================*/
-
-.login-container {
-  max-width: 400px;
-  margin: 80px auto;
-  padding: 40px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  text-align: center;
-  font-family: 'Noto Sans KR', sans-serif;
-}
-
-.login-title {
-  font-size: 32px;
-  margin-bottom: 30px;
-}
-
+/* =====================================================
+   공통 입력 그룹 스타일
+====================================================== */
 .input-group {
-  text-align: left;
   margin-bottom: 20px;
+  text-align: left;
 }
 
 .input-group label {
@@ -66,18 +27,51 @@
   border: 1px solid #ccc;
 }
 
-.login-button {
+/* =====================================================
+   공통 버튼 스타일
+====================================================== */
+.btn {
   width: 100%;
   padding: 12px;
-  margin-top: 10px;
   font-size: 16px;
-  background-color: #333;
-  color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
 }
 
+.btn-check {
+  background-color: #4a90e2;
+  color: white;
+  font-size: 13px;
+  padding: 10px 14px;
+  width: auto;
+}
+
+.btn-agree {
+  background-color: #2ee59d;
+  color: white;
+  padding: 6px 12px;
+  font-size: 13px;
+  width: auto;
+}
+
+.btn-signup {
+  background-color: #c49cfa;
+  color: white;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.btn-login {
+  background-color: #333;
+  color: rgb(255, 255, 255);
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+/* =====================================================
+   공통 링크 스타일
+====================================================== */
 .link-text {
   font-size: 12px;
   margin-top: 10px;
@@ -93,40 +87,40 @@
   text-decoration: underline;
 }
 
+.agreement a {
+  color: #ff4d4f;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+/* 공통 구분선 */
 .divider {
   margin: 30px 0;
   border: none;
   border-top: 1px solid #ccc;
 }
 
-.social-login-label {
-  font-weight: bold;
-  margin-bottom: 10px;
+/* =====================================================
+   로그인 페이지 스타일
+====================================================== */
+.login-container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 40px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
-.kakao-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 12px;
-  background-color: #fee500;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
+.login-title {
+  font-size: 32px;
+  margin-bottom: 30px;
 }
 
-.kakao-button img {
-  width: 24px;
-  height: 24px;
-}
-
-/*=======================================================
-======================회원가입 페이지======================
-=======================================================*/
-
+/* =====================================================
+   회원가입 페이지 스타일
+====================================================== */
 .signup-container {
   max-width: 450px;
   margin: 60px auto;
@@ -142,25 +136,6 @@
   margin-bottom: 30px;
 }
 
-.input-group {
-  margin-bottom: 20px;
-}
-
-.input-group label {
-  font-weight: 600;
-  display: block;
-  margin-bottom: 6px;
-}
-
-.input-group input,
-.input-group select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
 .row-group {
   display: flex;
   gap: 10px;
@@ -171,23 +146,36 @@
   flex: 1;
 }
 
-.btn-check {
-  background-color: #4a90e2;
-  color: white;
-  font-size: 13px;
-  padding: 10px 14px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
+.birthdate-input {
+  margin-bottom: 20px;
+  text-align: left;
 }
 
-.birth-selects {
+.birthdate-input label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.date-group {
   display: flex;
   gap: 10px;
 }
 
-.birth-selects select {
-  flex: 1;
+.date-group input {
+  width: 128px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-align: center;
+  transition: border-color 0.2s ease;
+}
+
+.date-group input:focus {
+  border-color: #a67ef7;
+  background-color: white;
+  outline: none;
 }
 
 .agree-group {
@@ -198,32 +186,4 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.agreement a {
-  color: #ff4d4f;
-  text-decoration: none;
-  margin: 0 10px;
-}
-
-.btn-agree {
-  background-color: #2ee59d;
-  color: white;
-  padding: 6px 12px;
-  font-size: 13px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.btn-signup {
-  width: 100%;
-  background-color: #c49cfa;
-  color: white;
-  font-size: 16px;
-  padding: 12px 0;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 20px;
 }

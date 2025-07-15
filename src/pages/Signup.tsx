@@ -71,26 +71,31 @@ const Signup = () => {
           <label>비밀번호 확인</label>
           <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
         </div>
-        <div className="birthdate-inputs">
+        <div className="birthdate-input">
           <label>생년월일</label>
-          <input
-            type="text"
-            placeholder="YYYY"
-            maxLength={4}
-            value={birth.year}
-            onChange={(e) => setBirth({ ...birth, year: e.target.value })}/>
-          <input
-            type="text"
-            placeholder="MM"
-            maxLength={2}
-            value={birth.month}
-            onChange={(e) => setBirth({ ...birth, month: e.target.value })}/>
-          <input
-            type="text"
-            placeholder="DD"
-            maxLength={2}
-            value={birth.day}
-            onChange={(e) => setBirth({ ...birth, day: e.target.value })}/>
+          <div className="date-group">
+            <input
+              type="text"
+              placeholder="YYYY"
+              maxLength={4}
+              value={birth.year}
+              onChange={(e) => setBirth({ ...birth, year: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="MM"
+              maxLength={2}
+              value={birth.month}
+              onChange={(e) => setBirth({ ...birth, month: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="DD"
+              maxLength={2}
+              value={birth.day}
+              onChange={(e) => setBirth({ ...birth, day: e.target.value })}
+            />
+          </div>
         </div>
         {error && <p className="error-message">{error}</p>}
         <button type="submit" className="btn btn-signup">회원가입</button>
