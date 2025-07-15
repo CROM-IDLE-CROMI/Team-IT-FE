@@ -1,14 +1,16 @@
 import Sidebar from '../components/Sidebar';
 import ApplicantInfo from '../components/TeamFormDetail/ApplicantInfo';
 import BasicInfo from '../components/TeamFormDetail/BasicInfo';
+import Button from '../components/TeamFormDetail/Button';
 import ProjectInfo from '../components/TeamFormDetail/ProjectInfo';
 import Situation from '../components/TeamFormDetail/Situation';
 import WorkEnviron from '../components/TeamFormDetail/WorkEnviron';
 import Header from '../layouts/Header';
 
-
  const TeamPage = () => {
   const currentStep = 0;
+  const someData = {}; 
+  const step = currentStep;
 
   return (
     <>
