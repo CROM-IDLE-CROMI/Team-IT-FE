@@ -14,20 +14,20 @@ html, body {
   display: flex;
   height: 100vh;
   overflow: hidden;
-  padding-left: 7rem; /* 기존 5rem → 0으로 변경 */
-  justify-content: center; /* 전체 레이아웃 중앙 정렬 */
+  padding-left: 7rem; 
+  justify-content: center;
 }
 
 .sidebar {
-  flex: 0 0 220px; /* 조금 넓게 */
+  flex: 0 0 220px;
   position: sticky;
   top: 0;
   height: 100vh;
   background-color: white;
   z-index: 10;
   padding: 0 2rem;
-  margin-left: 2rem; /* 사이드바를 오른쪽으로 이동 */
-  border-left: none; /* 혹시 border 생겼다면 제거 */
+  margin-left: 2rem; 
+  border-left: none; 
 }
 
 .scrollArea {
@@ -35,7 +35,7 @@ html, body {
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   height: 100vh;
-  padding-left: 0; /* 본문 여백 추가 */
+  padding-left: 0; 
 }
 
 .section {
@@ -59,12 +59,11 @@ html, body {
 /*===================================================================================
 =====================Main.tsx========================================================
 ====================================================================================*/
-/* 대시보드 wrapper */
+
 .Main-wrapper {
   padding: 3rem 0;
 }
 
-/* 소개 박스 전체 */
 .intro-box {
   width: 920px;
   height: 270px;
@@ -78,7 +77,6 @@ html, body {
   justify-content: space-between;
 }
 
-/* 좌측 텍스트 영역 */
 .intro-text {
   max-width: 50%;
 }
@@ -94,7 +92,6 @@ html, body {
   color: #333;
 }
 
-/* 우측 버튼 영역 */
 .box-links {
   display: flex;
   flex-direction: column;
@@ -120,7 +117,6 @@ html, body {
 
 
 
-/* 게시판 섹션*/
 .Board-section {
   padding: 3rem 0;
 }
@@ -166,14 +162,14 @@ html, body {
   width: 100%;
   z-index: 1000;
   box-sizing: border-box;
-  height: 90px; /* 고정 높이 추가 */
+  height: 90px;
 }
 
 .logo,
 .nav-links,
 .auth-buttons {
   display: flex;
-  align-items: center; /* 세로 가운데 정렬 */
+  align-items: center; 
 }
 
 .logo{
@@ -220,7 +216,7 @@ html, body {
 /*===================================================================================
 =====================Sidebar.tsx=====================================================
 ====================================================================================*/
-/* Sidebar.module.css */
+
 .sidebar {
   position: relative;
   display: flex;
@@ -230,13 +226,12 @@ html, body {
   margin-top: 8rem;
 }
 
-/* 세로 선 */
 .sidebar::before {
   content: '';
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 38px; /* 동그라미 중심과 맞추기 */
+  left: 38px; 
   width: 8px;
   background-color: #d3d3d3;
   z-index: 0;
@@ -252,17 +247,15 @@ html, body {
   transition: height 0.3s ease;
 }
 
-/* 각 단계 항목 */
 .step {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   position: relative;
-  z-index: 1; /* 선보다 위에 올라오도록 */
+  z-index: 1; 
   color: #999;
 }
 
-/* 동그라미 */
 .circle {
   width: 22px;
   height: 22px;
@@ -271,7 +264,6 @@ html, body {
   z-index: 1;
 }
 
-/* 활성화된 단계 */
 .active .circle {
   background-color: royalblue;
   width: 24px;
