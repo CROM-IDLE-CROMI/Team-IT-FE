@@ -14,6 +14,7 @@ const Situation = () =>{
             <option>아이디어 구상 단계</option>
             <option>아이디어 기획 단계</option>
             <option>계발 진행 중</option>
+            <option>기타</option>
         </select>
       </div>
 

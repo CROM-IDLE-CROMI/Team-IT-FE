@@ -6,6 +6,11 @@ import TeamPage from './pages/TeamPage';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Header from './layouts/Header';
+import Boarder from './pages/Boarder';
+import Stor from './pages/Stor';
+import MyProject from './pages/MyProject';
+import MYProjectDetail from "./pages/MyProjectDetail";
+
 
 function App() {
   return (
@@ -16,6 +21,10 @@ function App() {
         <Route path="/Teams" element={<TeamPage/>} />
         <Route path="/Signup"element={<Signup/>}/>
         <Route path="/Login"element={<Login/>}/>
+        <Route path="/Boarder"element={<Boarder/>}/>
+        <Route path='/Stor'element={<Stor/>}/>
+        <Route path='/MyProject'element={<MyProject/>}/>
+        <Route path="/projects/:id" element={<MYProjectDetail />} />
       </Routes>
     </BrowserRouter>
   );

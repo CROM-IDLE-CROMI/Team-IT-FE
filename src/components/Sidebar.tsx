@@ -1,18 +1,20 @@
-interface Sidebarprops {
+interface SidebarProps {
   currentStep: number;
+  onClickStep: (index: number) => void;
 }
 
-const steps = ['기본정보', '프로젝트 정보', '프로젝트 상황', '근무 환경', '지원자 정보'];
+const Sidebar = ({ currentStep, onClickStep }: SidebarProps) => {
+  const steps = ['기본정보', '프로젝트 정보', '프로젝트 상황', '근무 환경', '지원자 정보'];
 
-const Sidebar = ({ currentStep }: Sidebarprops) => {
   return (
     <div className="sidebar">
       {steps.map((step, index) => (
         <div
           key={index}
           className={`step ${index === currentStep ? 'active' : ''}`}
+          onClick={() => onClickStep(index)}
         >
-          <div className="circle"></div>
+          <div className="circle" />
           <span>{step}</span>
         </div>
       ))}

@@ -11,8 +11,8 @@ const Button = ({formData}: ButtonProps) => {
     const navigate = useNavigate();
 
     return (
-        <div className="formContainer">
-            <div className="formGroup">
+        <div className="formContainer_B">
+            <div className="formGroup_B">
                 <button onClick={() => navigate('/Storge')}>임시등록</button>
                 <button onClick={() => navigate('/Regist')}>등록하기</button>
             </div>
