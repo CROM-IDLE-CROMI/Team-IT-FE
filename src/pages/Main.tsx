@@ -3,6 +3,7 @@ import ProjectCard from '../components/ProjectCard';
 import BoardCard from '../components/BoardCard';
 import Header from '../layouts/Header';
 import "../App.css"
+import Introduction from '../components/Introduction';
 
 const Dashboard = () => {
   return (
@@ -26,6 +27,7 @@ const Dashboard = () => {
 
       <ProjectCard />
       <BoardCard />
+      <Introduction />
     </div>
   );
 };

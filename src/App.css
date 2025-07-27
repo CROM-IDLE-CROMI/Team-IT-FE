@@ -1040,7 +1040,7 @@ html, body {
 
 .section-title {
   display: flex;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
 }
@@ -1309,3 +1309,157 @@ button:active {
   border-radius: 4px;
   font-size: 1rem;
 }
+
+/*===================================================================================
+=====================Introduction.tsx======================================================
+====================================================================================*/
+.preview-section {
+  max-width: 1000px;
+  margin: auto;
+  padding: 7rem;
+  background: #ffffff;
+  border-color: #000;
+}
+
+.Introduction-title {
+  font-size: 2.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.subtitle {
+  color: #444;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  font-size: 1.2rem;
+  margin-left: 7rem;
+  margin-top: 2rem;
+}
+
+.tab-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+  margin-left: 7rem;
+}
+
+.tab {
+  padding: 6px 16px;
+  border: 1px solid #000;
+  background: #fff;
+  border-radius: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+  color: #000;
+}
+
+.tab:hover {
+  background-color: #eee;
+}
+
+.tab.active {
+  background: #B5EAFF;
+  color: #000;
+  border-color: #000;
+}
+
+.nickname {
+  flex: 1;
+  height: 32px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+}
+
+/* 추가 효과별 스타일 */
+.nickname.with-bg {
+  background-image: url('https://via.placeholder.com/140x40?text=Background');
+  background-size: cover;
+  background-position: center;
+}
+
+.nickname.with-border {
+  border: 3px solid #4A90E2;
+  background-color: #fff;
+}
+
+.nickname.with-effect {
+  background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px #ff9a9e;
+  }
+  to {
+    box-shadow: 0 0 20px #fad0c4;
+  }
+}
+
+
+.preview-box {
+  background-color: #fef9d6;
+  padding: 2rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 13rem;
+  justify-content: center;
+  max-width: 880px;
+  min-height: 300px;
+  margin-left: 7rem;
+  margin-top: 2rem;
+}
+
+.preview-text {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #222;
+  line-height: 1.8;
+}
+
+.preview-images {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-box {
+  width: 200px;
+  height: 60px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+}
+
+.profile-box.gray {
+  background-color: #ccc;
+}
+
+.profile-box.colored .nickname {
+  background-image: url('https://via.placeholder.com/140x40?text=Background');
+  background-size: cover;
+  background-position: center;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #999;
+}
+
+.nickname {
+  flex: 1;
+  height: 32px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+}
+
+.arrow {
+  font-size: 2rem;
+}
+
