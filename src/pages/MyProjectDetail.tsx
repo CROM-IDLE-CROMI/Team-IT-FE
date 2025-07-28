@@ -24,7 +24,7 @@ const ProjectDetail = () => {
 
         {/* 오른쪽 콘텐츠 */}
         <main className="main-content">
-          <div className="intro-box">사이드프로젝트 매칭 웹 사이트 인 Team-IT 입니다!</div>
+          <div className="intro-box-1">사이드프로젝트 매칭 웹 사이트 인 Team-IT 입니다!</div>
 
           <div className="info-grid">
             <div className="member-box">멤버</div>

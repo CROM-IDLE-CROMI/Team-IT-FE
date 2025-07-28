@@ -37,24 +37,6 @@ const Introduction = () => {
               `상점에서 이펙트 아이템을 구매하면\n프로필에 멋진 효과가 추가됩니다!`}
           </p>
         </div>
-
-        <div className="preview-images">
-          <div className="profile-box gray">
-            <div className="avatar" />
-            <div className="nickname" />
-          </div>
-
-          <div className="arrow">↓</div>
-
-          <div className="profile-box colored">
-            <div className="avatar" />
-            <div
-              className={`nickname ${
-                activeTab === "배경" ? "with-bg" : activeTab === "테두리" ? "with-border" : "with-effect"
-              }`}
-            />
-          </div>
-        </div>
       </div>
     </section>
   );

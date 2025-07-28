@@ -17,7 +17,7 @@ const Header = () => {
   return (
     <header className="header">
       <div className="logo" onClick={() => window.location.href = '/'}>
-        Team-IT
+        <img src="/Team-IT.png" alt="Team-IT로고" className='logo'/>
       </div>
 
       <nav className="nav-links">

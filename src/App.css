@@ -428,7 +428,7 @@ html, body {
   box-sizing: border-box;
 }
 
-.intro-box {
+.intro-box-1 {
   height: 100px;
   border: 2px solid #888;
   margin-bottom: 20px;
@@ -749,58 +749,6 @@ html, body {
   padding: 7rem 0;
 }
 
-.intro-box {
-  width: 920px;
-  height: 270px;
-  margin: 1rem auto;
-  padding: 2.6rem 4rem;
-  border-radius: 12px;
-  background: linear-gradient(to right, #ffffff, #e6f5fa);
-  box-shadow: 1px 5px 12px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.intro-text {
-  max-width: 50%;
-}
-
-.box-title {
-  font-size: 2.3rem;
-  font-weight: 700;
-}
-
-.box-description {
-  font-size: 1.1rem;
-  margin-top: 1rem;
-  color: #333;
-}
-
-.box-links {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-}
-
-.box-links a {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: #96d4e9;
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  color: #000;
-  transition: background-color 0.3s;
-}
-
-.box-links a:hover {
-  background-color: #73c0da;
-}
-
-
 
 .Board-section {
   padding: 3rem 0;
@@ -841,7 +789,7 @@ html, body {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
-  background-color: #eee;
+  background-color: #ffffff;
   position: fixed;
   top: 0;
   left: 0;
@@ -849,6 +797,7 @@ html, body {
   z-index: 1000;
   box-sizing: border-box;
   height: 90px;
+  border-radius: 18px;
 }
 
 .logo,
@@ -859,8 +808,8 @@ html, body {
 }
 
 .logo{
-    font-size: 1.5rem;
-    font-weight: bolder;
+    width: 80px;
+    height: auto;
     cursor: pointer;
     padding-left: 2rem;
 }
@@ -927,6 +876,109 @@ html, body {
 }
 
 /*===================components Css 정리=====================*/
+
+/*===================================================================================
+=====================DashBoard.tsx=====================================================
+====================================================================================*/
+.intro-slider {
+  width: 100%;
+  max-width: 1100px;
+  margin: auto;
+  overflow: hidden;
+  position: relative;
+  padding-top: 1rem;
+}
+
+.intro-track {
+  display: flex;
+  transition: transform 0.6s ease-in-out;
+}
+
+.intro-box {
+  min-width: 100%;
+  box-sizing: border-box;
+  padding: 6rem;
+  background-color: #86DDFF;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  position: relative;
+  height: 330px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.intro-text{
+  font-size: 50px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #444;
+}
+.box-title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color:#000;
+ }
+
+.box-description {
+  font-size: 16px;
+  color: #444;
+}
+
+.box-links {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-direction: column;
+}
+
+.box-links a {
+  text-decoration: none;
+  background-color: #f2fdff;
+  color: #000;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.box-links a:hover {
+  background-color: #bdc3c7;
+}
+
+.intro-dots {
+  position: absolute;  /* 박스 안쪽에 고정 */
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  display: flex;
+  justify-content: center;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background-color: #bbb;
+  border-radius: 50%;
+  margin: 0 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dot.active {
+  background-color: #4f46e5;
+}
+
 
 /*===================================================================================
 =====================Sidebar.tsx=====================================================
@@ -1019,12 +1071,12 @@ html, body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2rem;
+  gap: 3rem;
 }
 
 .project-card {
-  width: 260px;
-  height: 330px;
+  width: 250px;
+  height: 300px;
   border: 2px solid #ccc;
   border-radius: 20px;
   overflow: hidden;
@@ -1049,12 +1101,12 @@ html, body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2rem;
+  gap: 3rem;
 }
 
 .Board-card {
-  width: 260px;
-  height: 330px;
+  width: 250px;
+  height: 300px;
   border: 2px solid #ccc;
   border-radius: 20px;
   overflow: hidden;
@@ -1316,14 +1368,14 @@ button:active {
 .preview-section {
   max-width: 1000px;
   margin: auto;
-  padding: 7rem;
+  padding: 5rem;
   background: #ffffff;
   border-color: #000;
 }
 
 .Introduction-title {
-  font-size: 2.5rem;
-  margin-bottom: 0.8rem;
+  font-size: 2.2rem;
+  margin-bottom: 0.3rem;
 }
 
 .subtitle {
@@ -1331,15 +1383,15 @@ button:active {
   margin-bottom: 1rem;
   line-height: 1.4;
   font-size: 1.2rem;
-  margin-left: 7rem;
-  margin-top: 2rem;
+  margin-left: 2rem;
+  margin-top: 0.3rem;
 }
 
 .tab-buttons {
   display: flex;
   gap: 8px;
   margin-bottom: 1.5rem;
-  margin-left: 7rem;
+  margin-left: 2rem;
 }
 
 .tab {
@@ -1363,39 +1415,6 @@ button:active {
   border-color: #000;
 }
 
-.nickname {
-  flex: 1;
-  height: 32px;
-  background-color: #e0e0e0;
-  border-radius: 4px;
-}
-
-/* 추가 효과별 스타일 */
-.nickname.with-bg {
-  background-image: url('https://via.placeholder.com/140x40?text=Background');
-  background-size: cover;
-  background-position: center;
-}
-
-.nickname.with-border {
-  border: 3px solid #4A90E2;
-  background-color: #fff;
-}
-
-.nickname.with-effect {
-  background: linear-gradient(45deg, #ff9a9e, #fad0c4);
-  animation: glow 2s infinite alternate;
-}
-
-@keyframes glow {
-  from {
-    box-shadow: 0 0 5px #ff9a9e;
-  }
-  to {
-    box-shadow: 0 0 20px #fad0c4;
-  }
-}
-
 
 .preview-box {
   background-color: #fef9d6;
@@ -1405,9 +1424,9 @@ button:active {
   align-items: center;
   gap: 13rem;
   justify-content: center;
-  max-width: 880px;
+  max-width: 900px;
   min-height: 300px;
-  margin-left: 7rem;
+  margin-left: 1rem;
   margin-top: 2rem;
 }
 
