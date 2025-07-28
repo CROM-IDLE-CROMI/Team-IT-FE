@@ -39,7 +39,7 @@ const Introduction = () => {
         </div>
       </div>
     </section>
-  );
+    );
 };
 
 export default Introduction;

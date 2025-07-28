@@ -17,7 +17,7 @@ const Header = () => {
   return (
     <header className="header">
       <div className="logo" onClick={() => window.location.href = '/'}>
-        <img src="/Team-IT.png" alt="Team-IT로고" className='logo'/>
+        <img src="./Team-IT-2.png" alt="Team-IT로고" className='logo'/>
       </div>
 
       <nav className="nav-links">
@@ -25,6 +25,7 @@ const Header = () => {
         <Link to="/Projects">프로젝트 찾기</Link>
         <a href="/Boarder">게시판</a>
         <a href="/Stor">상점</a>
+        <a href="/">소개</a>
         {isLoggedIn && <Link to="/MyProject">마이 프로젝트</Link>}
       </nav>
 

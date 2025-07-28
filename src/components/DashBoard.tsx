@@ -23,7 +23,7 @@ const DashBoard = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4000); // 4초마다 슬라이드 전환
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
 
