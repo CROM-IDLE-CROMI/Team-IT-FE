@@ -187,3 +187,32 @@
   justify-content: space-between;
   align-items: center;
 }
+
+/* =====================================================
+   마이프로젝트 페이지 스타일
+====================================================== */
+
+.myproject-container {
+  padding: 2rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+th, td {
+  border-bottom: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.project-link {
+  background: none;
+  border: none;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
