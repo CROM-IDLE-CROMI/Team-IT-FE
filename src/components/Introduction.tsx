@@ -1,5 +1,6 @@
-import { useState } from "react";
 import "../App.css";
+import Sidebar from "./Sidebar";
+import React, { useRef, useEffect, useState } from 'react';
 
 const Introduction = () => {
   const [activeTab, setActiveTab] = useState("배경");
@@ -38,6 +39,17 @@ const Introduction = () => {
           </p>
         </div>
       </div>
+
+      <div className="produce">
+        <h1 className="Introduction-title">TEAM-IT 팀원모집 미리보기!</h1>
+      <p className="subtitle">
+        프로젝트 모집을 보다 쉽게 하기 위한<br />
+        Team-IT의 기본 템플릿!
+      </p>
+      <div className="preview-box">
+        </div>
+
+        </div>
     </section>
     );
 };
