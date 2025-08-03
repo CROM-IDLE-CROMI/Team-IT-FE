@@ -1174,6 +1174,36 @@ html, body {
   max-width: 600px;
 }
 
+.formGroup_1 {
+  display: block;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ddd;
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 200px;
+  height: 100%;
+}
+
+.formGroup_1{
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.recruitTextarea {
+  min-width: 405px;            /* 부모(formGroup) 너비에 맞춤 */
+  min-height: 200px;       /* 최소 높이 설정 (원하는 크기로 조절 가능) */
+  padding: 10px;           /* 텍스트와 테두리 사이 여백 */
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: none;        /* 세로 방향으로 크기 조절 허용 */
+  box-sizing: border-box;  /* padding 포함한 크기 계산 */
+}
+
 .formGroup label {
   flex: 1;
   font-weight: 600;
@@ -1217,6 +1247,7 @@ html, body {
   border-radius: 6px;
   width: 100%;
   max-width: 600px;
+  z-index: 900;
 }
 
 .formGroup label {
@@ -1250,7 +1281,7 @@ html, body {
   border-top: 1px solid #ddd;
   position: fixed;
   bottom: 0;
-  z-index: 100;
+  z-index: 1000;
   padding-left: 41rem;
   padding-bottom: 2rem;
 }

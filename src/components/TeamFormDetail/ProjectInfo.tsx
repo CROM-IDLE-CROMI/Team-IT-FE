@@ -30,11 +30,11 @@ const ProjectInfo = () => {
     <div className="formGroup">
     <label>활동 종류:</label>
     <select>
-        <option>선택</option>
         <option>공모전</option>
         <option>사이드 프로젝트</option>
         <option>대회</option>
         <option>토이 프로젝트</option>
+        <option>기타</option>
     </select>
     </div>
 <div className="formGroup">

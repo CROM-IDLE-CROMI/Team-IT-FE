@@ -2,7 +2,7 @@
 const ApplicantInfo = () =>{
     return (
 <div className="formContainer">
-  <div className="formGroup">
+  <div className="formGroup formGroup_1">
 <label>지원자 최소 요건:</label>
 <input type='text'/>
 </div>

@@ -18,9 +18,13 @@ const Situation = () =>{
         </select>
       </div>
 
-      <div className="formGroup">
+      <div className="formGroup formGroup_1">
         <label>모집글 본문:</label>
-        <input type='text'/>
+        <textarea
+          className="recruitTextarea"
+          rows={5}
+          placeholder=""
+          />
       </div>
 
 </div>

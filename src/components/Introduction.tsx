@@ -67,9 +67,15 @@ const Introduction = () => {
         <div className="preview-box">
           <div className="preview-text">
             <p>
-              {produceTab === "기본" &&
+              {produceTab === "기본정보" &&
                 `기본 양식을 통해 빠르게 팀원 모집을 시작할 수 있어요!`}
-              {produceTab === "커스터마이징" &&
+              {produceTab === "프로젝트 정보" &&
+                `템플릿을 자유롭게 수정해서 내 프로젝트에 맞는 양식을 만들 수 있어요!`}
+              {produceTab === "프로젝트 상황" &&
+                `템플릿을 자유롭게 수정해서 내 프로젝트에 맞는 양식을 만들 수 있어요!`}
+              {produceTab === "근무 환경" &&
+                `템플릿을 자유롭게 수정해서 내 프로젝트에 맞는 양식을 만들 수 있어요!`}
+              {produceTab === "지원자 정보" &&
                 `템플릿을 자유롭게 수정해서 내 프로젝트에 맞는 양식을 만들 수 있어요!`}
             </p>
           </div>
@@ -99,11 +105,11 @@ const Introduction = () => {
         <div className="preview-box">
           <div className="preview-text">
             <p>
-              {boardTab === "공지" &&
+              {boardTab === "시사,정보" &&
                 `공지사항에서 주요 업데이트 및 일정 등을 확인할 수 있어요!`}
-              {boardTab === "자유" &&
+              {boardTab === "질문" &&
                 `자유게시판에서 사용자들과 자유롭게 소통해보세요.`}
-              {boardTab === "QnA" &&
+              {boardTab === "홍보" &&
                 `QnA 게시판을 통해 궁금한 점을 질문하고 답변을 받아보세요.`}
             </p>
           </div>
