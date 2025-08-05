@@ -1,4 +1,5 @@
 import { useSignup } from './useSignup';
+import '../../App.css';
 
 const SignupForm = () => {
   const {
