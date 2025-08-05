@@ -9,6 +9,7 @@ interface Project_table {
   platform: Platform; // ENUM type, components/PlatformEnum에서 정의함
   role: string;
   start_date: string;
+  end_date: string;
   status: 'ongoing' | 'completed';
   type?: string;
   stack?: string;
@@ -29,6 +30,7 @@ export default function MyProjectMain() {
         platform: Platform.WEB,
         role: 'Frontend',
         start_date: '2025-06-01',
+        end_date: '',
         status: 'ongoing',
       },
       {
@@ -38,6 +40,7 @@ export default function MyProjectMain() {
         platform: Platform.WEB,
         role: 'Backend',
         start_date: '2025-03-15',
+        end_date: '2025-06-25',
         status: 'completed',
         type: '앱 개발',
         stack: 'Node.js, MongoDB',

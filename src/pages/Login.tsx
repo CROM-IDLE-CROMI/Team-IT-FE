@@ -13,12 +13,12 @@ const Login = () => {
 
     // localStorage에서 유저 정보 가져오기
     const userData = localStorage.getItem(id);
-    if (id == '') {
+    if (id === '') {
       setError('아이디를 입력해주세요.');
       return;
     }
 
-    if (password == '') {
+    if (password === '') {
       setError('비밀번호를 입력해주세요.');
       return;
     }
