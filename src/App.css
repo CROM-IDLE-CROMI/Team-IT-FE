@@ -3,6 +3,18 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  
+  /*색상 변수*/
+  -black: #141414;
+  -dark: #383c49;
+  -grey: #bdc3c7;
+  -white: #f2fdff;
+  -red: #ffb1b2;
+  -yellow: #fffc93;
+  -green: #c6ffba;
+  -turquois: #8fe5ce;
+  -blue: #b5eaff;
+  -purple: #d1c8ff;
 }
 
 /* =====================================================
