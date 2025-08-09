@@ -1,11 +1,15 @@
 import Select from 'react-select';
 import type { MultiValue, ActionMeta } from 'react-select';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type OptionType = {
   value: string;
   label: string;
 };
+
+interface ProjectInfoProps {
+  onCompleteChange: (isComplete: boolean) => void;
+}
 
 const Options: OptionType[] = [
   { value: '프론트엔드', label: '프론트엔드' },
@@ -23,7 +27,8 @@ const playTypeOptions: OptionType[] = [
   { value: '기타', label: '기타' },
 ];
 
-const ProjectInfo = () => {
+const ProjectInfo = ({ onCompleteChange }: ProjectInfoProps) => {
+  const [teamName, setTeamName] = useState('');
   const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>([]);
   const [customJob, setCustomJob] = useState('');
 
@@ -74,11 +79,29 @@ const ProjectInfo = () => {
     }
   };
 
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [projectStartDate, setProjectStartDate] = useState('');
+
+  useEffect(() => {
+    const isJobsFilled =
+      selectedJobs.length > 0 &&
+      !selectedJobs.some((opt) => opt.value === '기타' && customJob.trim() === '');
+
+    const isPlayTypeFilled = playType.trim() !== '';
+    const isDateFilled = startDate !== '' && endDate !== '' && projectStartDate !== '';
+
+    const isComplete =
+      teamName.trim() !== '' && isPlayTypeFilled && isDateFilled && isJobsFilled;
+
+    onCompleteChange(isComplete);
+  }, [teamName, playType, startDate, endDate, projectStartDate, selectedJobs, customJob, onCompleteChange]);
+
   return (
     <div className="formContainer">
       <div className="formGroup">
         <label>팀 이름</label>
-        <input type="text" placeholder="" />
+        <input type="text" value={teamName} onChange={(e) => setTeamName(e.target.value)} />
       </div>
 
       <div className="formGroup">
@@ -120,16 +143,20 @@ const ProjectInfo = () => {
       <div className="formGroup">
         <label>진행 예상 기간</label>
         <div className="dateRange">
-          <input type="date" />
+          <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
           <span> ~ </span>
-          <input type="date" />
+          <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
         </div>
       </div>
 
       <div className="formGroup">
         <label>프로젝트 시작 예상일</label>
         <div className="dateRange">
-          <input type="date" />
+          <input
+            type="date"
+            value={projectStartDate}
+            onChange={(e) => setProjectStartDate(e.target.value)}
+          />
         </div>
       </div>
 

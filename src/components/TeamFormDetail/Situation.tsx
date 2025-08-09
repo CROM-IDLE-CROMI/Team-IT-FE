@@ -1,10 +1,14 @@
 import Select from 'react-select';
 import type { MultiValue, ActionMeta } from 'react-select';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type OptionType = {
   value: string;
   label: string;
+};
+
+type SituationProps = {
+  onCompleteChange: (isComplete: boolean) => void;
 };
 
 const progressOptions: OptionType[] = [
@@ -14,13 +18,12 @@ const progressOptions: OptionType[] = [
   { value: '기타', label: '기타' },
 ];
 
-
-
-const Situation = () =>{
-
-  const [Progress, setProgress] = useState('');
+const Situation = ({ onCompleteChange }: SituationProps) => {
+  const [title, setTitle] = useState('');
+  const [progress, setProgress] = useState('');
   const [showCustomProgressInput, setShowCustomProgressInput] = useState(false);
   const [customProgress, setCustomProgress] = useState('');
+  const [content, setContent] = useState('');
 
   const handleProgressChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -45,21 +48,33 @@ const Situation = () =>{
     }
   };
 
-    return (
-<div className="formContainer">
+  useEffect(() => {
+    const isComplete =
+      title.trim() !== '' &&
+      progress.trim() !== '' &&
+      content.trim() !== '';
+    onCompleteChange(isComplete);
+  }, [title, progress, content, onCompleteChange]);
+
+  return (
+    <div className="formContainer">
       <div className="formGroup">
         <label>제목</label>
-        <input type="text" />
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
       </div>
-      
+
       <div className="formGroup">
         <label>프로젝트 진행 상황</label>
         <select
           value={
-            progressOptions.some((opt) => opt.value === Progress)
-              ? Progress
-              : Progress
-              ? Progress
+            progressOptions.some((opt) => opt.value === progress)
+              ? progress
+              : progress
+              ? progress
               : ''
           }
           onChange={handleProgressChange}
@@ -70,9 +85,9 @@ const Situation = () =>{
               {opt.label}
             </option>
           ))}
-          {Progress &&
-            !progressOptions.some((opt) => opt.value === Progress) && (
-              <option value={Progress}>{Progress}</option>
+          {progress &&
+            !progressOptions.some((opt) => opt.value === progress) && (
+              <option value={progress}>{progress}</option>
             )}
         </select>
 
@@ -94,12 +109,12 @@ const Situation = () =>{
           className="recruitTextarea"
           rows={5}
           placeholder=""
-          />
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
       </div>
-
-</div>
-    );
-
+    </div>
+  );
 };
 
 export default Situation;

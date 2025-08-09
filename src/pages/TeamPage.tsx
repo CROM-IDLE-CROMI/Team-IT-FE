@@ -11,7 +11,12 @@ import Header from '../layouts/Header';
 const TeamPage = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
-  // 각 섹션에 대한 ref 배열 생성
+  const [basicInfoComplete, setBasicInfoComplete] = useState(false);
+  const [projectInfoComplete, setProjectInfoComplete] = useState(false);
+  const [situationComplete, setSituationComplete] = useState(false);
+  const [workEnvironComplete, setWorkEnvironComplete] = useState(false);
+  const [applicantInfoComplete, setApplicantInfoComplete] = useState(false);
+
   const sectionRefs = [
     useRef<HTMLDivElement | null>(null),
     useRef<HTMLDivElement | null>(null),
@@ -51,6 +56,13 @@ const TeamPage = () => {
     sectionRefs[index].current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const allComplete =
+    basicInfoComplete &&
+    projectInfoComplete &&
+    situationComplete &&
+    workEnvironComplete &&
+    applicantInfoComplete;
+
   return (
     <>
       <Header />
@@ -61,22 +73,22 @@ const TeamPage = () => {
 
         <main className="scrollArea">
           <section ref={sectionRefs[0]} className="section">
-            <BasicInfo />
+            <BasicInfo onCompleteChange={setBasicInfoComplete} />
           </section>
           <section ref={sectionRefs[1]} className="section">
-            <ProjectInfo />
+            <ProjectInfo onCompleteChange={setProjectInfoComplete} />
           </section>
           <section ref={sectionRefs[2]} className="section">
-            <Situation />
+            <Situation onCompleteChange={setSituationComplete} />
           </section>
           <section ref={sectionRefs[3]} className="section">
-            <WorkEnviron />
+            <WorkEnviron onCompleteChange={setWorkEnvironComplete} />
           </section>
           <section ref={sectionRefs[4]} className="section">
-            <ApplicantInfo />
+            <ApplicantInfo onCompleteChange={setApplicantInfoComplete} />
           </section>
           <div>
-            <Button formData={{}} currentStep={currentStep} />
+            <Button formData={{}} currentStep={currentStep} disabled={!allComplete} />
           </div>
         </main>
       </div>

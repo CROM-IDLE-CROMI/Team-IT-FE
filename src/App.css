@@ -1311,6 +1311,7 @@ html, body {
   padding-left: 41rem;
   padding-bottom: 2rem;
 }
+
 .formGroup_B {
   display: flex;
   justify-content: flex-end;
@@ -1336,6 +1337,14 @@ button:hover {
 button:active {
   transform: scale(0.98);
 }
+
+button.disabled,
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 
 /*===================================================================================
 =====================BasicInfo.tsx======================================================

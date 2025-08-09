@@ -1,8 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import type { MultiValue, ActionMeta } from 'react-select';
 
 type OptionType = { value: string; label: string };
+
+type BasicInfoProps = {
+  onCompleteChange: (complete: boolean) => void; // 부모로 완료 여부 전달
+};
 
 const jobOptionsInit: OptionType[] = [
   { value: '프론트엔드', label: '프론트엔드' },
@@ -65,7 +69,7 @@ const DateRangePicker = ({
   );
 };
 
-const BasicForm = () => {
+const BasicForm = ({ onCompleteChange }: BasicInfoProps) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
@@ -75,6 +79,8 @@ const BasicForm = () => {
 
   const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>([]);
   const [customJob, setCustomJob] = useState('');
+
+  const [peopleCount, setPeopleCount] = useState('');
 
   const handlePlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -96,6 +102,7 @@ const BasicForm = () => {
       setCustomPlatform('');
     }
   };
+
   const handleJobChange = (
     selected: MultiValue<OptionType>,
     _: ActionMeta<OptionType>
@@ -116,11 +123,28 @@ const BasicForm = () => {
     }
   };
 
+  useEffect(() => {
+    const isComplete =
+      peopleCount.trim() !== '' &&
+      startDate !== '' &&
+      endDate !== '' &&
+      platform.trim() !== '' &&
+      selectedJobs.length > 0 &&
+      !selectedJobs.some(opt => opt.value === '기타' && customJob.trim() === '');
+
+    onCompleteChange(isComplete);
+  }, [peopleCount, startDate, endDate, platform, selectedJobs, customJob, onCompleteChange]);
+
   return (
     <div className="formContainer">
       <div className="formGroup">
         <label>모집 인원</label>
-        <input type="text" placeholder="___명" />
+        <input
+          type="text"
+          placeholder="___명"
+          value={peopleCount}
+          onChange={(e) => setPeopleCount(e.target.value)}
+        />
       </div>
 
       <DateRangePicker
@@ -132,7 +156,16 @@ const BasicForm = () => {
 
       <div className="formGroup">
         <label>플랫폼</label>
-        <select value={platformOptionsInit.some(opt => opt.value === platform) ? platform : (platform ? platform : '')} onChange={handlePlatformChange}>
+        <select
+          value={
+            platformOptionsInit.some(opt => opt.value === platform)
+              ? platform
+              : platform
+              ? platform
+              : ''
+          }
+          onChange={handlePlatformChange}
+        >
           <option value="">선택</option>
           {platformOptionsInit.map((opt) => (
             <option key={opt.value} value={opt.value}>
