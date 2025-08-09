@@ -3,40 +3,236 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  
+  /*색상 변수*/
+  -black: #141414;
+  -dark: #383c49;
+  -grey: #bdc3c7;
+  -white: #f2fdff;
+  -red: #ffb1b2;
+  -yellow: #fffc93;
+  -green: #c6ffba;
+  -turquois: #8fe5ce;
+  -blue: #b5eaff;
+  -purple: #d1c8ff;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* =====================================================
+   공통 입력 그룹 스타일
+====================================================== */
+.input-group {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto 20px;
+  text-align: left;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.input-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
-.card {
-  padding: 2em;
+/* =====================================================
+   공통 버튼 스타일
+====================================================== */
+.btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-.read-the-docs {
-  color: #888;
+.btn-check {
+  background-color: #4a90e2;
+  color: white;
+  font-size: 13px;
+  padding: 10px 14px;
+  width: auto;
 }
+
+.btn-agree {
+  background-color: #2ee59d;
+  color: white;
+  padding: 6px 12px;
+  font-size: 13px;
+  width: auto;
+}
+
+.btn-signup {
+  background-color: #c49cfa;
+  color: white;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.btn-login {
+  background-color: #333;
+  color: rgb(255, 255, 255);
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+/* =====================================================
+   공통 링크 스타일
+====================================================== */
+.link-text {
+  font-size: 12px;
+  margin-top: 10px;
+  color: #666;
+}
+
+.link-text a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.link-text a:hover {
+  text-decoration: underline;
+}
+
+.agreement a {
+  color: #ff4d4f;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+/* 공통 구분선 */
+.divider {
+  margin: 30px 0;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+/* =====================================================
+   로그인 페이지 스타일
+====================================================== */
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+  margin: 80px auto;
+  padding: 40px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.login-title {
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+
+/* =====================================================
+   회원가입 페이지 스타일
+====================================================== */
+.signup-container {
+  max-width: 450px;
+  margin: 60px auto;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+}
+
+.signup-title {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.row-group {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.row-group input {
+  flex: 1;
+}
+
+.birthdate-input {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.birthdate-input label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.date-group {
+  display: flex;
+  gap: 8px;
+}
+
+.date-group input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-align: center;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.date-group input:focus {
+  border-color: #a67ef7;
+  background-color: white;
+  outline: none;
+}
+
+.agree-group {
+  font-size: 14px;
+}
+
+.agreement {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* =====================================================
+   마이프로젝트 페이지 스타일
+====================================================== */
+
+.myproject-container {
+  padding: 2rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+th, td {
+  border-bottom: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.project-link {
+  background: none;
+  border: none;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
