@@ -1,15 +1,10 @@
 import { useState } from 'react';
 import Select from 'react-select';
-import type  { MultiValue } from 'react-select';
+import type { MultiValue, ActionMeta } from 'react-select';
 
-// 타입 정의
-type OptionType = {
-  value: string;
-  label: string;
-};
+type OptionType = { value: string; label: string };
 
-// 직군 옵션
-const jobOptions: OptionType[] = [
+const jobOptionsInit: OptionType[] = [
   { value: '프론트엔드', label: '프론트엔드' },
   { value: '백엔드', label: '백엔드' },
   { value: '디자이너', label: '디자이너' },
@@ -18,7 +13,13 @@ const jobOptions: OptionType[] = [
   { value: '기타', label: '기타' },
 ];
 
-// 날짜 선택 컴포넌트
+const platformOptionsInit: OptionType[] = [
+  { value: '웹', label: '웹' },
+  { value: '앱', label: '앱' },
+  { value: '게임', label: '게임' },
+  { value: '기타', label: '기타' },
+];
+
 const DateRangePicker = ({
   startDate,
   endDate,
@@ -30,11 +31,7 @@ const DateRangePicker = ({
   setStartDate: React.Dispatch<React.SetStateAction<string>>;
   setEndDate: React.Dispatch<React.SetStateAction<string>>;
 }) => {
-  const getToday = () => {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
-  };
-
+  const today = new Date().toISOString().split('T')[0];
   const getMaxEndDate = (start: string) => {
     const date = new Date(start);
     date.setMonth(date.getMonth() + 2);
@@ -43,11 +40,11 @@ const DateRangePicker = ({
 
   return (
     <div className="formGroup">
-      <label>모집 기간:</label>
+      <label>모집 기간</label>
       <div className="dateRange">
         <input
           type="date"
-          min={getToday()}
+          min={today}
           value={startDate}
           onChange={(e) => {
             setStartDate(e.target.value);
@@ -57,7 +54,7 @@ const DateRangePicker = ({
         <span> ~ </span>
         <input
           type="date"
-          min={startDate || getToday()}
+          min={startDate || today}
           max={startDate ? getMaxEndDate(startDate) : undefined}
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
@@ -69,19 +66,60 @@ const DateRangePicker = ({
 };
 
 const BasicForm = () => {
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
-  const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>([]);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
-  const handleJobChange = (selectedOptions: MultiValue<OptionType>) => {
-    setSelectedJobs(selectedOptions);
+  const [platform, setPlatform] = useState('');
+  const [showCustomPlatformInput, setShowCustomPlatformInput] = useState(false);
+  const [customPlatform, setCustomPlatform] = useState('');
+
+  const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>([]);
+  const [customJob, setCustomJob] = useState('');
+
+  const handlePlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    if (value === '기타') {
+      setShowCustomPlatformInput(true);
+      setCustomPlatform('');
+      setPlatform('');
+    } else {
+      setPlatform(value);
+      setShowCustomPlatformInput(false);
+      setCustomPlatform('');
+    }
+  };
+
+  const handleCustomPlatformSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && customPlatform.trim() !== '') {
+      setPlatform(customPlatform.trim());
+      setShowCustomPlatformInput(false);
+      setCustomPlatform('');
+    }
+  };
+  const handleJobChange = (
+    selected: MultiValue<OptionType>,
+    _: ActionMeta<OptionType>
+  ) => {
+    setSelectedJobs(selected);
+    if (!selected.some((opt) => opt.value === '기타')) {
+      setCustomJob('');
+    }
+  };
+
+  const handleEnterSubmit = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    onSubmit: () => void
+  ) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      onSubmit();
+    }
   };
 
   return (
     <div className="formContainer">
-
       <div className="formGroup">
-        <label>모집 인원:</label>
+        <label>모집 인원</label>
         <input type="text" placeholder="___명" />
       </div>
 
@@ -93,36 +131,73 @@ const BasicForm = () => {
       />
 
       <div className="formGroup">
-        <label>플랫폼:</label>
-        <select>
-          <option>선택</option>
-          <option>웹</option>
-          <option>앱</option>
-          <option>게임</option>
-          <option>기타</option>
+        <label>플랫폼</label>
+        <select value={platformOptionsInit.some(opt => opt.value === platform) ? platform : (platform ? platform : '')} onChange={handlePlatformChange}>
+          <option value="">선택</option>
+          {platformOptionsInit.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+          {platform && !platformOptionsInit.some((opt) => opt.value === platform) && (
+            <option value={platform}>{platform}</option>
+          )}
         </select>
+
+        {showCustomPlatformInput && (
+          <input
+            type="text"
+            placeholder="기타 플랫폼 입력 후 Enter"
+            value={customPlatform}
+            onChange={(e) => setCustomPlatform(e.target.value)}
+            onKeyDown={handleCustomPlatformSubmit}
+            autoFocus
+          />
+        )}
       </div>
 
       <div className="formGroup">
-        <label>지원자 직군:</label>
+        <label>지원자 직군</label>
         <Select
           isMulti
-          options={jobOptions}
+          options={jobOptionsInit}
           value={selectedJobs}
           onChange={handleJobChange}
           placeholder="직군을 선택하세요"
+          classNamePrefix="select"
+          className="customSelect"
         />
+        {selectedJobs.some((opt) => opt.value === '기타') && (
+          <input
+            type="text"
+            placeholder="기타 직군 입력 후 Enter"
+            value={customJob}
+            onChange={(e) => setCustomJob(e.target.value)}
+            onKeyDown={(e) =>
+              handleEnterSubmit(e, () => {
+                setSelectedJobs((prev) =>
+                  prev.map((opt) =>
+                    opt.value === '기타'
+                      ? { value: customJob, label: customJob }
+                      : opt
+                  )
+                );
+                setCustomJob('');
+              })
+            }
+            autoFocus
+          />
+        )}
       </div>
 
       <div className="formGroup">
-        <label>기술 스택:</label>
+        <label>기술 스택</label>
         <select>
           <option>React</option>
           <option>Spring</option>
           <option>Node.js</option>
         </select>
       </div>
-
     </div>
   );
 };

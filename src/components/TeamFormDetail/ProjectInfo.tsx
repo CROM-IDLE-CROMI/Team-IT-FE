@@ -1,10 +1,10 @@
 import Select from 'react-select';
-import  type { MultiValue } from 'react-select'
+import type { MultiValue, ActionMeta } from 'react-select';
 import { useState } from 'react';
 
 type OptionType = {
-    value : string;
-    label : string;
+  value: string;
+  label: string;
 };
 
 const Options: OptionType[] = [
@@ -12,57 +12,161 @@ const Options: OptionType[] = [
   { value: '백엔드', label: '백엔드' },
   { value: '디자이너', label: '디자이너' },
   { value: 'UI/UX', label: 'UI/UX' },
+  { value: '기타', label: '기타' },
+];
+
+const playTypeOptions: OptionType[] = [
+  { value: '공모전', label: '공모전' },
+  { value: '사이드 프로젝트', label: '사이드 프로젝트' },
+  { value: '대회', label: '대회' },
+  { value: '토이 프로젝트', label: '토이 프로젝트' },
+  { value: '기타', label: '기타' },
 ];
 
 const ProjectInfo = () => {
-    const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>([]);
+  const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>([]);
+  const [customJob, setCustomJob] = useState('');
 
-  const handleJobChange = (selectedOptions: any) => {
-    setSelectedJobs(selectedOptions);
+  const handleJobChange = (
+    selected: MultiValue<OptionType>,
+    _: ActionMeta<OptionType>
+  ) => {
+    setSelectedJobs(selected);
+    if (!selected.some((opt) => opt.value === '기타')) {
+      setCustomJob('');
+    }
+  };
+
+  const handleEnterSubmit = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    onSubmit: () => void
+  ) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      onSubmit();
+    }
+  };
+
+  const [playType, setPlayType] = useState('');
+  const [showCustomPlayTypeInput, setShowCustomPlayTypeInput] = useState(false);
+  const [customPlayType, setCustomPlayType] = useState('');
+
+  const handlePlayTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    if (value === '기타') {
+      setShowCustomPlayTypeInput(true);
+      setCustomPlayType('');
+      setPlayType('');
+    } else {
+      setPlayType(value);
+      setShowCustomPlayTypeInput(false);
+      setCustomPlayType('');
+    }
+  };
+
+  const handleCustomPlayTypeSubmit = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === 'Enter' && customPlayType.trim() !== '') {
+      setPlayType(customPlayType.trim());
+      setShowCustomPlayTypeInput(false);
+      setCustomPlayType('');
+    }
   };
 
   return (
     <div className="formContainer">
       <div className="formGroup">
-        <label>팀 이름:</label>
+        <label>팀 이름</label>
         <input type="text" placeholder="" />
       </div>
-    <div className="formGroup">
-    <label>활동 종류:</label>
-    <select>
-        <option>공모전</option>
-        <option>사이드 프로젝트</option>
-        <option>대회</option>
-        <option>토이 프로젝트</option>
-        <option>기타</option>
-    </select>
-    </div>
-<div className="formGroup">
-        <label>진행 예상 기간:</label>
+
+      <div className="formGroup">
+        <label>활동 종류</label>
+        <select
+          value={
+            playTypeOptions.some((opt) => opt.value === playType)
+              ? playType
+              : playType
+              ? playType
+              : ''
+          }
+          onChange={handlePlayTypeChange}
+        >
+          <option value="">선택</option>
+          {playTypeOptions.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+          {playType &&
+            !playTypeOptions.some((opt) => opt.value === playType) && (
+              <option value={playType}>{playType}</option>
+            )}
+        </select>
+
+        {showCustomPlayTypeInput && (
+          <input
+            type="text"
+            placeholder="기타 활동 종류 입력 후 Enter"
+            value={customPlayType}
+            onChange={(e) => setCustomPlayType(e.target.value)}
+            onKeyDown={handleCustomPlayTypeSubmit}
+            autoFocus
+          />
+        )}
+      </div>
+
+      <div className="formGroup">
+        <label>진행 예상 기간</label>
         <div className="dateRange">
           <input type="date" />
           <span> ~ </span>
           <input type="date" />
         </div>
       </div>
+
       <div className="formGroup">
-        <label>프로젝트 시작 예상일:</label>
+        <label>프로젝트 시작 예상일</label>
         <div className="dateRange">
           <input type="date" />
         </div>
-        </div>
-         <div className="formGroup">
-      <label>모집자 직군</label>
-      <Select
+      </div>
+
+      <div className="formGroup">
+        <label>모집자 직군</label>
+        <Select
           isMulti
           options={Options}
           value={selectedJobs}
           onChange={handleJobChange}
           placeholder="직군을 선택하세요"
+          menuPlacement="top"
         />
+        {selectedJobs.some((opt) => opt.value === '기타') && (
+          <input
+            type="text"
+            placeholder="기타 직군 입력 후 Enter"
+            value={customJob}
+            onChange={(e) => setCustomJob(e.target.value)}
+            onKeyDown={(e) =>
+              handleEnterSubmit(e, () => {
+                setSelectedJobs((prev) =>
+                  prev.map((opt) =>
+                    opt.value === '기타'
+                      ? { value: customJob, label: customJob }
+                      : opt
+                  )
+                );
+                setCustomJob('');
+              })
+            }
+            autoFocus
+          />
+        )}
+      </div>
     </div>
-</div>
-      );
+  );
 };
 
 export default ProjectInfo;

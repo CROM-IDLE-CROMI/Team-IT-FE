@@ -4,8 +4,8 @@ import React, { useRef, useEffect, useState } from 'react';
 
 const Introduction = () => {
   const [activeTab, setActiveTab] = useState("배경");
-  const [produceTab, setProduceTab] = useState("기본");
-  const [boardTab, setBoardTab] = useState("공지");
+  const [produceTab, setProduceTab] = useState("기본정보");
+  const [boardTab, setBoardTab] = useState("시사,정보");
 
   const tabs = ["배경", "테두리", "이펙트"];
   const produceTabs = ["기본정보", "프로젝트 정보","프로젝트 상황","근무 환경","지원자 정보"];
@@ -43,8 +43,6 @@ const Introduction = () => {
           </p>
         </div>
       </div>
-
-      {/* 2️⃣ 팀원 모집 탭 */}
       <div className="produce">
         <h1 className="Introduction-title">TEAM-IT 팀원모집 미리보기!</h1>
         <p className="subtitle">
@@ -82,7 +80,6 @@ const Introduction = () => {
         </div>
       </div>
 
-      {/* 3️⃣ 게시판 탭 */}
       <div className="DashboardIntroduce">
         <h1 className="Introduction-title">TEAM-IT 게시판 미리보기!</h1>
         <p className="subtitle">
