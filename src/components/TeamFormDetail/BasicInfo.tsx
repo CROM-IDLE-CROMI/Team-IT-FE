@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import type { MultiValue, ActionMeta } from 'react-select';
+import type { TechStackType } from '../../styles/TechStack';
+import { techStacksInit } from '../../styles/TechStack';
+import '../../App.css';
+
 
 type OptionType = { value: string; label: string };
 
 type BasicInfoProps = {
-  onCompleteChange: (complete: boolean) => void; // 부모로 완료 여부 전달
+  onCompleteChange: (complete: boolean) => void;
 };
 
 const jobOptionsInit: OptionType[] = [
@@ -23,6 +27,7 @@ const platformOptionsInit: OptionType[] = [
   { value: '게임', label: '게임' },
   { value: '기타', label: '기타' },
 ];
+
 
 const DateRangePicker = ({
   startDate,
@@ -82,6 +87,20 @@ const BasicForm = ({ onCompleteChange }: BasicInfoProps) => {
 
   const [peopleCount, setPeopleCount] = useState('');
 
+  const [selectedTechStacks, setSelectedTechStacks] = useState<TechStackType[]>([]);
+
+  const [isStackOpen, setIsStackOpen] = useState(false);
+
+  const [recruitNumber, setRecruitNumber] = useState('');
+
+   const handleRecruitNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {
+      setRecruitNumber(value);
+    }
+  };
+
+
   const handlePlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     if (value === '기타') {
@@ -123,6 +142,15 @@ const BasicForm = ({ onCompleteChange }: BasicInfoProps) => {
     }
   };
 
+  const toggleTechStack = (stack: TechStackType) => {
+    setSelectedTechStacks((prev) => {
+      if (prev.some((item) => item.value === stack.value)) {
+        return prev.filter((item) => item.value !== stack.value);
+      }
+      return [...prev, stack];
+    });
+  };
+
   useEffect(() => {
     const isComplete =
       peopleCount.trim() !== '' &&
@@ -130,22 +158,28 @@ const BasicForm = ({ onCompleteChange }: BasicInfoProps) => {
       endDate !== '' &&
       platform.trim() !== '' &&
       selectedJobs.length > 0 &&
-      !selectedJobs.some(opt => opt.value === '기타' && customJob.trim() === '');
+      !selectedJobs.some(opt => opt.value === '기타' && customJob.trim() === '') &&
+      selectedTechStacks.length > 0;
 
     onCompleteChange(isComplete);
-  }, [peopleCount, startDate, endDate, platform, selectedJobs, customJob, onCompleteChange]);
+  }, [peopleCount, startDate, endDate, platform, selectedJobs, customJob, selectedTechStacks, onCompleteChange]);
 
   return (
     <div className="formContainer">
-      <div className="formGroup">
-        <label>모집 인원</label>
-        <input
-          type="text"
-          placeholder="___명"
-          value={peopleCount}
-          onChange={(e) => setPeopleCount(e.target.value)}
-        />
-      </div>
+  <div className="formGroup">
+    <label>모집 인원</label>
+    <input
+      type="text"
+      placeholder="___명"
+      value={peopleCount}
+      onChange={(e) => {
+        const value = e.target.value;
+        if (/^\d*$/.test(value)) {
+          setPeopleCount(value);
+        }
+      }}
+    />
+  </div>
 
       <DateRangePicker
         startDate={startDate}
@@ -224,13 +258,50 @@ const BasicForm = ({ onCompleteChange }: BasicInfoProps) => {
       </div>
 
       <div className="formGroup">
-        <label>기술 스택</label>
-        <select>
-          <option>React</option>
-          <option>Spring</option>
-          <option>Node.js</option>
-        </select>
+  <label>기술 스택</label>
+  <div className="selectedTechStackWrapper">
+    {selectedTechStacks.map((stack) => (
+      <div key={stack.value} className="selectedTechStackTag">
+        <img src={stack.icon} alt={stack.label} />
+        <span>{stack.label}</span>
+        <button onClick={() => toggleTechStack(stack)}></button>
       </div>
+    ))}
+    <button
+      type="button"
+      className="selectStackBtn"
+      onClick={() => setIsStackOpen(true)}
+    >
+      [선택]
+    </button>
+  </div>
+
+  {isStackOpen && (
+    <div className="techStackPanel">
+      <div className="techStackPanelHeader">
+        <span>기술 스택 선택</span>
+        <button onClick={() => setIsStackOpen(false)}>닫기</button>
+      </div>
+      <div className="techStackList">
+        {techStacksInit.map((stack) => {
+          const isSelected = selectedTechStacks.some(
+            (item) => item.value === stack.value
+          );
+          return (
+            <div
+              key={stack.value}
+              onClick={() => toggleTechStack(stack)}
+              className={`techStackItem ${isSelected ? "selected" : ""}`}
+            >
+              <img src={stack.icon} alt={stack.label} />
+              <span>{stack.label}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  )}
+</div>
     </div>
   );
 };

@@ -31,6 +31,16 @@ const ProjectInfo = ({ onCompleteChange }: ProjectInfoProps) => {
   const [teamName, setTeamName] = useState('');
   const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>([]);
   const [customJob, setCustomJob] = useState('');
+  const [otherText, setOtherText] = useState('');
+
+
+  const handleOtherTextChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length <= 500) {
+      setOtherText(value);
+    }
+  };
+
 
   const handleJobChange = (
     selected: MultiValue<OptionType>,
@@ -99,10 +109,19 @@ const ProjectInfo = ({ onCompleteChange }: ProjectInfoProps) => {
 
   return (
     <div className="formContainer">
-      <div className="formGroup">
-        <label>팀 이름</label>
-        <input type="text" value={teamName} onChange={(e) => setTeamName(e.target.value)} />
-      </div>
+  <div className="formGroup">
+    <label>팀 이름</label>
+    <input
+      type="text"
+      value={teamName}
+      onChange={(e) => {
+        const value = e.target.value;
+        if (value.length <= 500) {
+          setTeamName(value);
+        }
+      }}
+    />
+  </div>
 
       <div className="formGroup">
         <label>활동 종류</label>

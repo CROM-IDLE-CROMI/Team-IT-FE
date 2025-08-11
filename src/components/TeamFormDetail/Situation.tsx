@@ -24,6 +24,15 @@ const Situation = ({ onCompleteChange }: SituationProps) => {
   const [showCustomProgressInput, setShowCustomProgressInput] = useState(false);
   const [customProgress, setCustomProgress] = useState('');
   const [content, setContent] = useState('');
+  const [otherText, setOtherText] = useState('');
+
+
+  const handleOtherTextChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length <= 500) {
+      setOtherText(value);
+    }
+  };
 
   const handleProgressChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -104,15 +113,20 @@ const Situation = ({ onCompleteChange }: SituationProps) => {
       </div>
 
       <div className="formGroup formGroup_1">
-        <label>모집글 본문</label>
-        <textarea
-          className="recruitTextarea"
-          rows={5}
-          placeholder=""
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-      </div>
+  <label>모집글 본문</label>
+  <textarea
+    className="recruitTextarea"
+    rows={5}
+    placeholder=""
+    value={content}
+    onChange={(e) => {
+      const value = e.target.value;
+      if (value.length <= 500) {
+        setContent(value);
+      }
+    }}
+  />
+</div>
     </div>
   );
 };

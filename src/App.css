@@ -1303,18 +1303,19 @@ html, body {
 .formContainer_B {
   display: flex;
   justify-content: flex-end;
+  width: 95%;
   background-color: #fff;
   border-top: 1px solid #ddd;
   position: fixed;
   bottom: 0;
   z-index: 1000;
-  padding-left: 41rem;
   padding-bottom: 2rem;
+  border-top : none;
+  left: 0;
 }
 
 .formGroup_B {
   display: flex;
-  justify-content: flex-end;
   gap: 2rem; 
 }
 
@@ -1385,9 +1386,125 @@ button:disabled {
   font-size: 14px;
 }
 
-.select__menu-list{
+.select__menu-list {
   max-height: 150px;
 }
+
+.selectStackBtn {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.selectStackBtn:hover {
+  background: #f5f5f5;
+}
+
+.techStackContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-height: 120px;
+  overflow-y: auto;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.techStackItem {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background: #fff;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.techStackItem.selected {
+  border: 2px solid #007bff;
+  background: #e6f0ff;
+}
+
+.techStackItem img {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+}
+
+.selectedTechStackWrapper {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.selectedTechStackTag {
+  display: flex;
+  align-items: center;
+  background: #f0f0f0;
+  border-radius: 20px;
+  padding: 4px 8px;
+  font-size: 13px;
+  margin: 2px 0;
+}
+
+.selectedTechStackTag img {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
+.selectedTechStackTag button {
+  margin-left: 6px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: red;
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* ====== 새로 추가한 부분 ====== */
+.techStackPanel {
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 400px;
+}
+
+.techStackPanelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #ddd;
+  background: #f9f9f9;
+}
+
+.techStackPanelHeader button {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: #555;
+}
+
+.techStackPanelHeader button:hover {
+  color: #000;
+}
+
+
+
 
 /*===================================================================================
 =====================ApplicatInfo.tsx======================================================
@@ -1457,6 +1574,7 @@ button:disabled {
   flex-direction: column;
   gap: 0.5rem;
   margin-top: 0.5rem;
+  padding-bottom: 10rem;
 }
 
 .questionItem {

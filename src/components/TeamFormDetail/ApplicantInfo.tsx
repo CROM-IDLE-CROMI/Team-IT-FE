@@ -8,6 +8,7 @@ const ApplicantInfo = ({ onCompleteChange }: ApplicantInfoProps) => {
   const [questions, setQuestions] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [minRequirement, setMinRequirement] = useState("");
+  
 
   useEffect(() => {
     const isComplete = minRequirement.trim() !== "" && questions.length > 0;
@@ -25,16 +26,22 @@ const ApplicantInfo = ({ onCompleteChange }: ApplicantInfoProps) => {
   };
 
   return (
-    <div className="formContainer">
-      <div className="formGroup formGroup_1">
-        <label>지원자 최소 요건:</label>
-        <textarea
-          className="recruitTextarea"
-          rows={5}
-          value={minRequirement}
-          onChange={(e) => setMinRequirement(e.target.value)}
-        />
-      </div>
+   <div className="formContainer">
+  <div className="formGroup formGroup_1">
+    <label>지원자 최소 요건:</label>
+    <textarea
+      className="recruitTextarea"
+      rows={5}
+      value={minRequirement}
+      onChange={(e) => {
+        const value = e.target.value;
+        if (value.length <= 500) {
+          setMinRequirement(value);
+        }
+      }}
+    />
+  </div>
+
 
       <div className="formGroup">
         <label className="questionLabel">지원자에게 질문할 내용:</label>
