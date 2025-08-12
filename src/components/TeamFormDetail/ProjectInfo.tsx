@@ -1,6 +1,7 @@
 import Select from 'react-select';
 import type { MultiValue, ActionMeta } from 'react-select';
 import { useState, useEffect } from 'react';
+import '../../App.css';
 
 type OptionType = {
   value: string;

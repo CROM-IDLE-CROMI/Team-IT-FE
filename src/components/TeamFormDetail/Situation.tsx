@@ -1,6 +1,7 @@
 import Select from 'react-select';
 import type { MultiValue, ActionMeta } from 'react-select';
 import { useState, useEffect } from 'react';
+import '../../App.css';
 
 type OptionType = {
   value: string;
@@ -112,19 +113,18 @@ const Situation = ({ onCompleteChange }: SituationProps) => {
         )}
       </div>
 
-      <div className="formGroup formGroup_1">
+  <div className="formGroup formGroup_1">
   <label>모집글 본문</label>
   <textarea
     className="recruitTextarea"
     rows={5}
-    placeholder=""
+    placeholder="최대 500자"
     value={content}
-    onChange={(e) => {
-      const value = e.target.value;
-      if (value.length <= 500) {
-        setContent(value);
-      }
-    }}
+  onChange={(e) => {
+  if (e.target.value.length <= 100) {
+    setContent(e.target.value);
+  }
+}}
   />
 </div>
     </div>

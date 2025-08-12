@@ -27,12 +27,13 @@ const ApplicantInfo = ({ onCompleteChange }: ApplicantInfoProps) => {
 
   return (
    <div className="formContainer">
-  <div className="formGroup formGroup_1">
-    <label>지원자 최소 요건:</label>
+  <div className="formGroup formGroup_2">
+    <label>지원자 최소 요건</label>
     <textarea
-      className="recruitTextarea"
+      className="recruitTextarea_1"
       rows={5}
       value={minRequirement}
+      placeholder="(최대 500자)"
       onChange={(e) => {
         const value = e.target.value;
         if (value.length <= 500) {
@@ -44,7 +45,7 @@ const ApplicantInfo = ({ onCompleteChange }: ApplicantInfoProps) => {
 
 
       <div className="formGroup">
-        <label className="questionLabel">지원자에게 질문할 내용:</label>
+        <label className="questionLabel">지원자에게 질문할 내용</label>
         <div className="questionInputContainer">
           <input
             type="text"

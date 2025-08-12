@@ -4,6 +4,7 @@ import type { MultiValue, ActionMeta } from 'react-select';
 import type { TechStackType } from '../../styles/TechStack';
 import { techStacksInit } from '../../styles/TechStack';
 import '../../App.css';
+import TechStackList from '../TechStackList';
 
 
 type OptionType = { value: string; label: string };
@@ -170,12 +171,12 @@ const BasicForm = ({ onCompleteChange }: BasicInfoProps) => {
     <label>모집 인원</label>
     <input
       type="text"
-      placeholder="___명"
+      placeholder="(최대 20명)"
       value={peopleCount}
       onChange={(e) => {
         const value = e.target.value;
-        if (/^\d*$/.test(value)) {
-          setPeopleCount(value);
+        if (/^\d*$/.test(value) && (value === '' || Number(value) <= 20 && Number(value) > 0)) {
+        setPeopleCount(value);
         }
       }}
     />
@@ -256,53 +257,25 @@ const BasicForm = ({ onCompleteChange }: BasicInfoProps) => {
           />
         )}
       </div>
-
-      <div className="formGroup">
+<div className="formGroup">
   <label>기술 스택</label>
-  <div className="selectedTechStackWrapper">
-    {selectedTechStacks.map((stack) => (
-      <div key={stack.value} className="selectedTechStackTag">
-        <img src={stack.icon} alt={stack.label} />
-        <span>{stack.label}</span>
-        <button onClick={() => toggleTechStack(stack)}></button>
-      </div>
-    ))}
-    <button
-      type="button"
-      className="selectStackBtn"
-      onClick={() => setIsStackOpen(true)}
-    >
-      [선택]
-    </button>
+  <button
+  type="button"
+  className="selectStackBtn"
+  onClick={() => setIsStackOpen(prev => !prev)}>
+  {isStackOpen ? "닫기" : "보기"}
+</button>
+{isStackOpen && (
+  <TechStackList
+    techStacksInit={techStacksInit}
+    selectedTechStacks={selectedTechStacks}
+    toggleTechStack={toggleTechStack}
+  />
+)}
   </div>
-
-  {isStackOpen && (
-    <div className="techStackPanel">
-      <div className="techStackPanelHeader">
-        <span>기술 스택 선택</span>
-        <button onClick={() => setIsStackOpen(false)}>닫기</button>
-      </div>
-      <div className="techStackList">
-        {techStacksInit.map((stack) => {
-          const isSelected = selectedTechStacks.some(
-            (item) => item.value === stack.value
-          );
-          return (
-            <div
-              key={stack.value}
-              onClick={() => toggleTechStack(stack)}
-              className={`techStackItem ${isSelected ? "selected" : ""}`}
-            >
-              <img src={stack.icon} alt={stack.label} />
-              <span>{stack.label}</span>
-            </div>
-          );
-        })}
-      </div>
+  
     </div>
-  )}
-</div>
-    </div>
+    
   );
 };
 

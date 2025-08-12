@@ -1,12 +1,11 @@
 import Header from "../layouts/Header";
-import '../App.css'; // CSS 파일 꼭 연결!
+import '../App.css';
 
 const ProjectPage = () => {
   return (
     <div style={{ padding: "4rem 0" }}>
       <Header />
 
-      {/* 가로로 나란한 프로젝트 + 게시물 섹션 */}
       <div className="horizontal-section">
         <section className="half-section">
           <h2><span className="emoji">✨</span>요즘 인기있는 프로젝트</h2>
@@ -37,8 +36,8 @@ const ProjectPage = () => {
         </section>
       </div>
 
-      {/* 검색/필터 & 프로젝트 카드 목록 */}
       <div className="section">
+        <div className="Option"><img src ="/Option.png"/></div>
         <div className="search-bar">
           <input type="text" placeholder="제목, 내용을 검색하세요..." />
         </div>
