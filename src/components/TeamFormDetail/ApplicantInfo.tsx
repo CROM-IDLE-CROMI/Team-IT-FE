@@ -8,7 +8,6 @@ const ApplicantInfo = ({ onCompleteChange }: ApplicantInfoProps) => {
   const [questions, setQuestions] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [minRequirement, setMinRequirement] = useState("");
-  
 
   useEffect(() => {
     const isComplete = minRequirement.trim() !== "" && questions.length > 0;
@@ -16,7 +15,14 @@ const ApplicantInfo = ({ onCompleteChange }: ApplicantInfoProps) => {
   }, [minRequirement, questions, onCompleteChange]);
 
   const addQuestion = () => {
-    if (!inputValue.trim()) return;
+    if (questions.length >= 5) {
+      return;
+    }
+
+    if (inputValue.trim() === "") {
+      return;
+    }
+
     setQuestions([...questions, inputValue.trim()]);
     setInputValue("");
   };
@@ -26,23 +32,23 @@ const ApplicantInfo = ({ onCompleteChange }: ApplicantInfoProps) => {
   };
 
   return (
-   <div className="formContainer">
-  <div className="formGroup formGroup_2">
-    <label>지원자 최소 요건</label>
-    <textarea
-      className="recruitTextarea_1"
-      rows={5}
-      value={minRequirement}
-      placeholder="(최대 500자)"
-      onChange={(e) => {
-        const value = e.target.value;
-        if (value.length <= 500) {
-          setMinRequirement(value);
-        }
-      }}
-    />
-  </div>
+    <div className="formContainer">
 
+      <div className="formGroup formGroup_2">
+        <label>지원자 최소 요건</label>
+        <textarea
+          className="recruitTextarea_1"
+          rows={5}
+          value={minRequirement}
+          placeholder="(최대 500자)"
+          onChange={(e) => {
+            const value = e.target.value;
+            if (value.length <= 500) {
+              setMinRequirement(value);
+            }
+          }}
+        />
+      </div>
 
       <div className="formGroup">
         <label className="questionLabel">지원자에게 질문할 내용</label>
@@ -50,10 +56,16 @@ const ApplicantInfo = ({ onCompleteChange }: ApplicantInfoProps) => {
           <input
             type="text"
             value={inputValue}
+            placeholder="질문을 입력하세요 (최대 5개)"
             onChange={(e) => setInputValue(e.target.value)}
             className="questionInput"
           />
-          <button type="button" className="addButton" onClick={addQuestion}>
+          <button
+            type="button"
+            className="addButton"
+            onClick={addQuestion}
+            disabled={questions.length >= 5}
+          >
             +
           </button>
         </div>
@@ -62,7 +74,9 @@ const ApplicantInfo = ({ onCompleteChange }: ApplicantInfoProps) => {
       <div className="questionList">
         {questions.map((question, index) => (
           <div key={index} className="questionItem">
-            <span>{index + 1}. {question}</span>
+            <span>
+              {index + 1}. {question}
+            </span>
             <button
               type="button"
               className="removeButton"

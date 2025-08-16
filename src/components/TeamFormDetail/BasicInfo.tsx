@@ -171,7 +171,7 @@ const BasicForm = ({ onCompleteChange }: BasicInfoProps) => {
     <label>모집 인원</label>
     <input
       type="text"
-      placeholder="(최대 20명)"
+      placeholder="최대 20명"
       value={peopleCount}
       onChange={(e) => {
         const value = e.target.value;

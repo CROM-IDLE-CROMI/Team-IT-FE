@@ -32,7 +32,7 @@ const WorkEnviron: React.FC<WorkEnvironProps> = ({ onCompleteChange }) => {
 
       <div className="formGroup locationWrapper">
         <label>위치</label>
-        <button onClick={() => setShowSelector((prev) => !prev)}>
+        <button className="button_1"onClick={() => setShowSelector((prev) => !prev)}>
           {showSelector ? "숨기기" : "선택하기"}
         </button>
 
