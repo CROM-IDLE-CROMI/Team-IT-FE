@@ -1,28 +1,33 @@
 import React, { useState, useEffect } from "react";
+import type { StepData } from "../../types/Draft";
 
 interface ApplicantInfoProps {
+  data: StepData;
+  setData: (data: StepData) => void;
   onCompleteChange: (isComplete: boolean) => void;
 }
 
-const ApplicantInfo = ({ onCompleteChange }: ApplicantInfoProps) => {
-  const [questions, setQuestions] = useState<string[]>([]);
+const ApplicantInfo: React.FC<ApplicantInfoProps> = ({ data, setData, onCompleteChange }) => {
+  const [questions, setQuestions] = useState<string[]>(data.questions || []);
   const [inputValue, setInputValue] = useState("");
-  const [minRequirement, setMinRequirement] = useState("");
+  const [minRequirement, setMinRequirement] = useState(data.minRequirement || "");
 
+  // 상태가 바뀔 때 formData 동기화
+  useEffect(() => {
+    setData({
+      questions,
+      minRequirement,
+    });
+  }, [questions, minRequirement]);
+
+  // 완료 체크
   useEffect(() => {
     const isComplete = minRequirement.trim() !== "" && questions.length > 0;
     onCompleteChange(isComplete);
   }, [minRequirement, questions, onCompleteChange]);
 
   const addQuestion = () => {
-    if (questions.length >= 5) {
-      return;
-    }
-
-    if (inputValue.trim() === "") {
-      return;
-    }
-
+    if (questions.length >= 5 || inputValue.trim() === "") return;
     setQuestions([...questions, inputValue.trim()]);
     setInputValue("");
   };
@@ -33,7 +38,6 @@ const ApplicantInfo = ({ onCompleteChange }: ApplicantInfoProps) => {
 
   return (
     <div className="formContainer">
-
       <div className="formGroup formGroup_2">
         <label>지원자 최소 요건</label>
         <textarea
@@ -43,9 +47,7 @@ const ApplicantInfo = ({ onCompleteChange }: ApplicantInfoProps) => {
           placeholder="(최대 500자)"
           onChange={(e) => {
             const value = e.target.value;
-            if (value.length <= 500) {
-              setMinRequirement(value);
-            }
+            if (value.length <= 500) setMinRequirement(value);
           }}
         />
       </div>

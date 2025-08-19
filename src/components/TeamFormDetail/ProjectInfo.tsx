@@ -2,6 +2,7 @@ import Select from 'react-select';
 import type { MultiValue, ActionMeta } from 'react-select';
 import { useState, useEffect } from 'react';
 import '../../App.css';
+import type { StepData } from "../../types/Draft";
 
 type OptionType = {
   value: string;
@@ -9,6 +10,8 @@ type OptionType = {
 };
 
 interface ProjectInfoProps {
+  data: StepData;                // 추가
+  setData: (data: StepData) => void; // 추가
   onCompleteChange: (isComplete: boolean) => void;
 }
 
@@ -28,29 +31,55 @@ const playTypeOptions: OptionType[] = [
   { value: '기타', label: '기타' },
 ];
 
-const ProjectInfo = ({ onCompleteChange }: ProjectInfoProps) => {
-  const [teamName, setTeamName] = useState('');
-  const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>([]);
-  const [customJob, setCustomJob] = useState('');
-  const [otherText, setOtherText] = useState('');
+const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
+  const [teamName, setTeamName] = useState(data.teamName || '');
+  const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>(data.selectedJobs || []);
+  const [customJob, setCustomJob] = useState(data.customJob || '');
+  const [otherText, setOtherText] = useState(data.otherText || '');
 
+  const [playType, setPlayType] = useState(data.playType || '');
+  const [showCustomPlayTypeInput, setShowCustomPlayTypeInput] = useState(false);
+  const [customPlayType, setCustomPlayType] = useState('');
 
-  const handleOtherTextChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    const value = e.target.value;
-    if (value.length <= 500) {
-      setOtherText(value);
-    }
-  };
+  const [startDate, setStartDate] = useState(data.startDate || '');
+  const [endDate, setEndDate] = useState(data.endDate || '');
+  const [projectStartDate, setProjectStartDate] = useState(data.projectStartDate || '');
 
+  // formData 동기화
+  useEffect(() => {
+    setData({
+      teamName,
+      selectedJobs,
+      customJob,
+      otherText,
+      playType,
+      startDate,
+      endDate,
+      projectStartDate,
+    });
+  }, [teamName, selectedJobs, customJob, otherText, playType, startDate, endDate, projectStartDate]);
+
+  // 완료 체크
+  useEffect(() => {
+    const isJobsFilled =
+      selectedJobs.length > 0 &&
+      !selectedJobs.some((opt) => opt.value === '기타' && customJob.trim() === '');
+
+    const isPlayTypeFilled = playType.trim() !== '';
+    const isDateFilled = startDate !== '' && endDate !== '' && projectStartDate !== '';
+
+    const isComplete =
+      teamName.trim() !== '' && isPlayTypeFilled && isDateFilled && isJobsFilled;
+
+    onCompleteChange(isComplete);
+  }, [teamName, playType, startDate, endDate, projectStartDate, selectedJobs, customJob, onCompleteChange]);
 
   const handleJobChange = (
     selected: MultiValue<OptionType>,
     _: ActionMeta<OptionType>
   ) => {
     setSelectedJobs(selected);
-    if (!selected.some((opt) => opt.value === '기타')) {
-      setCustomJob('');
-    }
+    if (!selected.some((opt) => opt.value === '기타')) setCustomJob('');
   };
 
   const handleEnterSubmit = (
@@ -62,10 +91,6 @@ const ProjectInfo = ({ onCompleteChange }: ProjectInfoProps) => {
       onSubmit();
     }
   };
-
-  const [playType, setPlayType] = useState('');
-  const [showCustomPlayTypeInput, setShowCustomPlayTypeInput] = useState(false);
-  const [customPlayType, setCustomPlayType] = useState('');
 
   const handlePlayTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -90,39 +115,19 @@ const ProjectInfo = ({ onCompleteChange }: ProjectInfoProps) => {
     }
   };
 
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [projectStartDate, setProjectStartDate] = useState('');
-
-  useEffect(() => {
-    const isJobsFilled =
-      selectedJobs.length > 0 &&
-      !selectedJobs.some((opt) => opt.value === '기타' && customJob.trim() === '');
-
-    const isPlayTypeFilled = playType.trim() !== '';
-    const isDateFilled = startDate !== '' && endDate !== '' && projectStartDate !== '';
-
-    const isComplete =
-      teamName.trim() !== '' && isPlayTypeFilled && isDateFilled && isJobsFilled;
-
-    onCompleteChange(isComplete);
-  }, [teamName, playType, startDate, endDate, projectStartDate, selectedJobs, customJob, onCompleteChange]);
-
   return (
     <div className="formContainer">
-  <div className="formGroup">
-    <label>팀 이름</label>
-    <input
-      type="text"
-      value={teamName}
-      onChange={(e) => {
-        const value = e.target.value;
-        if (value.length <= 500) {
-          setTeamName(value);
-        }
-      }}
-    />
-  </div>
+      <div className="formGroup">
+        <label>팀 이름</label>
+        <input
+          type="text"
+          value={teamName}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (value.length <= 500) setTeamName(value);
+          }}
+        />
+      </div>
 
       <div className="formGroup">
         <label>활동 종류</label>
@@ -171,13 +176,11 @@ const ProjectInfo = ({ onCompleteChange }: ProjectInfoProps) => {
 
       <div className="formGroup">
         <label>프로젝트 시작 예상일</label>
-        <div className="dateRange">
-          <input
-            type="date"
-            value={projectStartDate}
-            onChange={(e) => setProjectStartDate(e.target.value)}
-          />
-        </div>
+        <input
+          type="date"
+          value={projectStartDate}
+          onChange={(e) => setProjectStartDate(e.target.value)}
+        />
       </div>
 
       <div className="formGroup">

@@ -5,11 +5,14 @@ import type { TechStackType } from '../../styles/TechStack';
 import { techStacksInit } from '../../styles/TechStack';
 import '../../App.css';
 import TechStackList from '../TechStackList';
-
+import type { StepData } from "../../types/Draft";
+import type { Dispatch, SetStateAction } from "react";
 
 type OptionType = { value: string; label: string };
 
-type BasicInfoProps = {
+type BasicFormProps = {
+  data: StepData; // 추가
+  setData: (data: StepData) => void; // 추가
   onCompleteChange: (complete: boolean) => void;
 };
 
@@ -29,7 +32,7 @@ const platformOptionsInit: OptionType[] = [
   { value: '기타', label: '기타' },
 ];
 
-
+// DateRangePicker는 그대로 사용
 const DateRangePicker = ({
   startDate,
   endDate,
@@ -38,8 +41,8 @@ const DateRangePicker = ({
 }: {
   startDate: string;
   endDate: string;
-  setStartDate: React.Dispatch<React.SetStateAction<string>>;
-  setEndDate: React.Dispatch<React.SetStateAction<string>>;
+  setStartDate: Dispatch<SetStateAction<string>>;
+  setEndDate: Dispatch<SetStateAction<string>>;
 }) => {
   const today = new Date().toISOString().split('T')[0];
   const getMaxEndDate = (start: string) => {
@@ -75,82 +78,33 @@ const DateRangePicker = ({
   );
 };
 
-const BasicForm = ({ onCompleteChange }: BasicInfoProps) => {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-
-  const [platform, setPlatform] = useState('');
-  const [showCustomPlatformInput, setShowCustomPlatformInput] = useState(false);
+const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
+  // 기존 useState 대신 data에 연결
+  const [startDate, setStartDate] = useState(data.startDate || '');
+  const [endDate, setEndDate] = useState(data.endDate || '');
+  const [platform, setPlatform] = useState(data.platform || '');
   const [customPlatform, setCustomPlatform] = useState('');
-
-  const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>([]);
+  const [showCustomPlatformInput, setShowCustomPlatformInput] = useState(false);
+  const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>(data.selectedJobs || []);
   const [customJob, setCustomJob] = useState('');
-
-  const [peopleCount, setPeopleCount] = useState('');
-
-  const [selectedTechStacks, setSelectedTechStacks] = useState<TechStackType[]>([]);
-
+  const [peopleCount, setPeopleCount] = useState(data.peopleCount || '');
+  const [selectedTechStacks, setSelectedTechStacks] = useState<TechStackType[]>(data.selectedTechStacks || []);
   const [isStackOpen, setIsStackOpen] = useState(false);
+  const [recruitNumber, setRecruitNumber] = useState(data.recruitNumber || '');
 
-  const [recruitNumber, setRecruitNumber] = useState('');
-
-   const handleRecruitNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (/^\d*$/.test(value)) {
-      setRecruitNumber(value);
-    }
-  };
-
-
-  const handlePlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    if (value === '기타') {
-      setShowCustomPlatformInput(true);
-      setCustomPlatform('');
-      setPlatform('');
-    } else {
-      setPlatform(value);
-      setShowCustomPlatformInput(false);
-      setCustomPlatform('');
-    }
-  };
-
-  const handleCustomPlatformSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && customPlatform.trim() !== '') {
-      setPlatform(customPlatform.trim());
-      setShowCustomPlatformInput(false);
-      setCustomPlatform('');
-    }
-  };
-
-  const handleJobChange = (
-    selected: MultiValue<OptionType>,
-    _: ActionMeta<OptionType>
-  ) => {
-    setSelectedJobs(selected);
-    if (!selected.some((opt) => opt.value === '기타')) {
-      setCustomJob('');
-    }
-  };
-
-  const handleEnterSubmit = (
-    e: React.KeyboardEvent<HTMLInputElement>,
-    onSubmit: () => void
-  ) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      onSubmit();
-    }
-  };
-
-  const toggleTechStack = (stack: TechStackType) => {
-    setSelectedTechStacks((prev) => {
-      if (prev.some((item) => item.value === stack.value)) {
-        return prev.filter((item) => item.value !== stack.value);
-      }
-      return [...prev, stack];
+  // formData 동기화
+  useEffect(() => {
+    setData({
+      startDate,
+      endDate,
+      platform,
+      selectedJobs,
+      customJob,
+      peopleCount,
+      selectedTechStacks,
+      recruitNumber,
     });
-  };
+  }, [startDate, endDate, platform, selectedJobs, customJob, peopleCount, selectedTechStacks, recruitNumber]);
 
   useEffect(() => {
     const isComplete =
@@ -163,24 +117,25 @@ const BasicForm = ({ onCompleteChange }: BasicInfoProps) => {
       selectedTechStacks.length > 0;
 
     onCompleteChange(isComplete);
-  }, [peopleCount, startDate, endDate, platform, selectedJobs, customJob, selectedTechStacks, onCompleteChange]);
+  }, [peopleCount, startDate, endDate, platform, selectedJobs, customJob, selectedTechStacks]);
 
+  // 기존 JSX 그대로 + formData 연결
   return (
     <div className="formContainer">
-  <div className="formGroup">
-    <label>모집 인원</label>
-    <input
-      type="text"
-      placeholder="최대 20명"
-      value={peopleCount}
-      onChange={(e) => {
-        const value = e.target.value;
-        if (/^\d*$/.test(value) && (value === '' || Number(value) <= 20 && Number(value) > 0)) {
-        setPeopleCount(value);
-        }
-      }}
-    />
-  </div>
+      <div className="formGroup">
+        <label>모집 인원</label>
+        <input
+          type="text"
+          placeholder="최대 20명"
+          value={peopleCount}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (/^\d*$/.test(value) && (value === '' || Number(value) <= 20 && Number(value) > 0)) {
+              setPeopleCount(value);
+            }
+          }}
+        />
+      </div>
 
       <DateRangePicker
         startDate={startDate}
@@ -199,7 +154,18 @@ const BasicForm = ({ onCompleteChange }: BasicInfoProps) => {
               ? platform
               : ''
           }
-          onChange={handlePlatformChange}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (value === '기타') {
+              setShowCustomPlatformInput(true);
+              setCustomPlatform('');
+              setPlatform('');
+            } else {
+              setPlatform(value);
+              setShowCustomPlatformInput(false);
+              setCustomPlatform('');
+            }
+          }}
         >
           <option value="">선택</option>
           {platformOptionsInit.map((opt) => (
@@ -218,7 +184,13 @@ const BasicForm = ({ onCompleteChange }: BasicInfoProps) => {
             placeholder="기타 플랫폼 입력 후 Enter"
             value={customPlatform}
             onChange={(e) => setCustomPlatform(e.target.value)}
-            onKeyDown={handleCustomPlatformSubmit}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && customPlatform.trim() !== '') {
+                setPlatform(customPlatform.trim());
+                setShowCustomPlatformInput(false);
+                setCustomPlatform('');
+              }
+            }}
             autoFocus
           />
         )}
@@ -230,7 +202,10 @@ const BasicForm = ({ onCompleteChange }: BasicInfoProps) => {
           isMulti
           options={jobOptionsInit}
           value={selectedJobs}
-          onChange={handleJobChange}
+          onChange={(selected) => {
+            setSelectedJobs(selected);
+            if (!selected.some((opt) => opt.value === '기타')) setCustomJob('');
+          }}
           placeholder="직군을 선택하세요"
           classNamePrefix="select"
           className="customSelect"
@@ -241,8 +216,8 @@ const BasicForm = ({ onCompleteChange }: BasicInfoProps) => {
             placeholder="기타 직군 입력 후 Enter"
             value={customJob}
             onChange={(e) => setCustomJob(e.target.value)}
-            onKeyDown={(e) =>
-              handleEnterSubmit(e, () => {
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
                 setSelectedJobs((prev) =>
                   prev.map((opt) =>
                     opt.value === '기타'
@@ -251,31 +226,38 @@ const BasicForm = ({ onCompleteChange }: BasicInfoProps) => {
                   )
                 );
                 setCustomJob('');
-              })
-            }
+              }
+            }}
             autoFocus
           />
         )}
       </div>
-<div className="formGroup">
-  <label>기술 스택</label>
-  <button
-  type="button"
-  className="selectStackBtn"
-  onClick={() => setIsStackOpen(prev => !prev)}>
-  {isStackOpen ? "닫기" : "보기"}
-</button>
-{isStackOpen && (
-  <TechStackList
-    techStacksInit={techStacksInit}
-    selectedTechStacks={selectedTechStacks}
-    toggleTechStack={toggleTechStack}
-  />
-)}
-  </div>
-  
+
+      <div className="formGroup">
+        <label>기술 스택</label>
+        <button
+          type="button"
+          className="selectStackBtn"
+          onClick={() => setIsStackOpen(prev => !prev)}
+        >
+          {isStackOpen ? "닫기" : "보기"}
+        </button>
+        {isStackOpen && (
+          <TechStackList
+            techStacksInit={techStacksInit}
+            selectedTechStacks={selectedTechStacks}
+            toggleTechStack={(stack) => {
+              setSelectedTechStacks((prev) => {
+                if (prev.some((item) => item.value === stack.value)) {
+                  return prev.filter((item) => item.value !== stack.value);
+                }
+                return [...prev, stack];
+              });
+            }}
+          />
+        )}
+      </div>
     </div>
-    
   );
 };
 

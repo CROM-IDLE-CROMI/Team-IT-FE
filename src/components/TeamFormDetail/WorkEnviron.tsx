@@ -1,16 +1,28 @@
 import LocationSelector from "../LocationSelector";
 import React, { useState, useEffect } from "react";
 import "../../App.css";
+import type { StepData } from "../../types/Draft";
 
 interface WorkEnvironProps {
+  data: StepData;
+  setData: (data: StepData) => void;
   onCompleteChange: (complete: boolean) => void;
 }
 
-const WorkEnviron: React.FC<WorkEnvironProps> = ({ onCompleteChange }) => {
-  const [meetingType, setMeetingType] = useState("");
+const WorkEnviron: React.FC<WorkEnvironProps> = ({ data, setData, onCompleteChange }) => {
+  const [meetingType, setMeetingType] = useState(data.meetingType || "");
   const [showSelector, setShowSelector] = useState(false);
-  const [locationComplete, setLocationComplete] = useState(false);
+  const [locationComplete, setLocationComplete] = useState(!!data.locationComplete);
 
+  // 상태가 바뀔 때 formData 동기화
+  useEffect(() => {
+    setData({
+      meetingType,
+      locationComplete,
+    });
+  }, [meetingType, locationComplete]);
+
+  // 완료 체크
   useEffect(() => {
     onCompleteChange(meetingType !== "" && locationComplete);
   }, [meetingType, locationComplete, onCompleteChange]);
@@ -32,7 +44,10 @@ const WorkEnviron: React.FC<WorkEnvironProps> = ({ onCompleteChange }) => {
 
       <div className="formGroup locationWrapper">
         <label>위치</label>
-        <button className="button_1"onClick={() => setShowSelector((prev) => !prev)}>
+        <button
+          className="button_1"
+          onClick={() => setShowSelector((prev) => !prev)}
+        >
           {showSelector ? "숨기기" : "선택하기"}
         </button>
 

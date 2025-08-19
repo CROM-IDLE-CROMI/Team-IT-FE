@@ -1,0 +1,86 @@
+/* Draft 목록 전체 컨테이너 */
+.draftListContainer {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 제목 */
+.draftListContainer h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* 각 Draft 아이템 */
+.draft-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #eee;
+  transition: background 0.2s;
+}
+
+.draft-item:hover {
+  background: #f9f9f9;
+  cursor: pointer;
+}
+
+/* Draft 제목 */
+.draft-item h4 {
+  font-weight: 500;
+  flex: 1;
+  margin: 0;
+}
+
+/* 날짜 */
+.draft-item p {
+  font-size: 0.9rem;
+  color: #888;
+  margin: 0 1rem 0 0;
+  white-space: nowrap;
+}
+
+/* 불러오기 버튼 */
+.draft-item button {
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.draft-item button:hover {
+  background: #4338ca;
+}
+
+/* 기존 화면 위에 나타나는 팝업 */
+.draftPopupOverlay {
+  position: fixed; /* 화면 전체 덮기 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.3); /* 반투명 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.draftPopupContent {
+  background-color: white;
+  padding: 16px;
+  border-radius: 8px;
+  width: 350px;
+  max-height: 70%;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}

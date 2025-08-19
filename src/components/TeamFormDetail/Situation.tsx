@@ -2,31 +2,33 @@ import Select from 'react-select';
 import type { MultiValue, ActionMeta } from 'react-select';
 import { useState, useEffect } from 'react';
 import '../../App.css';
+import type { StepData } from "../../types/Draft";
 
 type OptionType = {
   value: string;
   label: string;
 };
 
-type SituationProps = {
+interface SituationProps {
+  data: StepData;                 // 추가
+  setData: (data: StepData) => void; // 추가
   onCompleteChange: (isComplete: boolean) => void;
-};
+}
 
 const progressOptions: OptionType[] = [
   { value: '아이디어 구상 단계', label: '아이디어 구상 단계' },
   { value: '아이디어 기획 단계', label: '아이디어 기획 단계' },
-  { value: '계발 진행 중', label: '계발 진행 중' },
+  { value: '개발 진행 중', label: '개발 진행 중' },
   { value: '기타', label: '기타' },
 ];
 
-const Situation = ({ onCompleteChange }: SituationProps) => {
-  const [title, setTitle] = useState('');
-  const [progress, setProgress] = useState('');
+const Situation = ({ data, setData, onCompleteChange }: SituationProps) => {
+  const [title, setTitle] = useState(data.title || '');
+  const [progress, setProgress] = useState(data.progress || '');
   const [showCustomProgressInput, setShowCustomProgressInput] = useState(false);
   const [customProgress, setCustomProgress] = useState('');
-  const [content, setContent] = useState('');
-  const [otherText, setOtherText] = useState('');
-
+  const [content, setContent] = useState(data.content || '');
+  const [otherText, setOtherText] = useState(data.otherText || '');
 
   const handleOtherTextChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const value = e.target.value;
@@ -58,6 +60,17 @@ const Situation = ({ onCompleteChange }: SituationProps) => {
     }
   };
 
+  // formData 동기화
+  useEffect(() => {
+    setData({
+      title,
+      progress,
+      content,
+      otherText,
+    });
+  }, [title, progress, content, otherText]);
+
+  // 완료 체크
   useEffect(() => {
     const isComplete =
       title.trim() !== '' &&
@@ -104,7 +117,7 @@ const Situation = ({ onCompleteChange }: SituationProps) => {
         {showCustomProgressInput && (
           <input
             type="text"
-            placeholder="기타 활동 종류 입력 후 Enter"
+            placeholder="기타 진행 상황 입력 후 Enter"
             value={customProgress}
             onChange={(e) => setCustomProgress(e.target.value)}
             onKeyDown={handleCustomProgressSubmit}
@@ -113,20 +126,20 @@ const Situation = ({ onCompleteChange }: SituationProps) => {
         )}
       </div>
 
-  <div className="formGroup formGroup_1">
-  <label>모집글 본문</label>
-  <textarea
-    className="recruitTextarea"
-    rows={5}
-    placeholder="최대 500자"
-    value={content}
-  onChange={(e) => {
-  if (e.target.value.length <= 100) {
-    setContent(e.target.value);
-  }
-}}
-  />
-</div>
+      <div className="formGroup formGroup_1">
+        <label>모집글 본문</label>
+        <textarea
+          className="recruitTextarea"
+          rows={5}
+          placeholder="최대 500자"
+          value={content}
+          onChange={(e) => {
+            if (e.target.value.length <= 500) {
+              setContent(e.target.value);
+            }
+          }}
+        />
+      </div>
     </div>
   );
 };
