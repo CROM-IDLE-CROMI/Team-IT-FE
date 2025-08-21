@@ -1,6 +1,5 @@
 import "../App.css";
-import Sidebar from "./Sidebar";
-import React, { useRef, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const Introduction = () => {
   const [activeTab, setActiveTab] = useState("배경");

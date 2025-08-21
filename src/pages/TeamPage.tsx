@@ -1,5 +1,4 @@
-// pages/TeamPage.tsx
-import React, { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import ApplicantInfo from '../components/TeamFormDetail/ApplicantInfo';
 import BasicInfo from '../components/TeamFormDetail/BasicInfo';

@@ -27,13 +27,13 @@ const SavePopup: React.FC<SavePopupProps> = ({ isOpen, onClose, onConfirm }) => 
         <h3>임시 저장</h3>
         <input
           type="text"
-          placeholder="저장 제목을 입력하세요"
+          placeholder="제목을 입력하세요"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <div className="modal-actions">
-          <button onClick={handleConfirm}>확인</button>
-          <button onClick={onClose}>취소</button>
+          <button className="SaveButton" onClick={handleConfirm}>확인</button>
+          <button className="SaveButton" onClick={onClose}>취소</button>
         </div>
       </div>
     </div>

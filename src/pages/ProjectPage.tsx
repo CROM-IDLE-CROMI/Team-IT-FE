@@ -1,7 +1,10 @@
 import Header from "../layouts/Header";
 import '../App.css';
+import { useState } from "react";
+import SideBox from "../components/ProjectPageDetail/SideBox";
 
 const ProjectPage = () => {
+  const [isOptionOpen, setIsOptionOpen] = useState(false);
   return (
     <div style={{ padding: "4rem 0" }}>
       <Header />
@@ -37,7 +40,7 @@ const ProjectPage = () => {
       </div>
 
       <div className="section">
-        <div className="Option"><img src ="/Option.png"/></div>
+        <div className="Option" onClick={() => setIsOptionOpen(true)}><img src ="/Option.png"/></div>
         <div className="search-bar">
           <input type="text" placeholder="제목, 내용을 검색하세요..." />
         </div>
@@ -76,6 +79,7 @@ const ProjectPage = () => {
             <div className="info">...</div>
           </div>
         </div>
+        <SideBox isOpen={isOptionOpen} onClose={() => setIsOptionOpen(false)} />
       </div>
     </div>
   );

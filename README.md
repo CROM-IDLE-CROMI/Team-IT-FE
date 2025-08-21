@@ -1,54 +1,33 @@
-# React + TypeScript + Vite
+## Team-IT-FE
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Team-IT**는 IT 프로젝트, 공모전 등 다양한 IT 관련 팀 활동을 위해 팀원을 모집하고 지원할 수 있는 협업 플랫폼의 프론트엔드 서버입니다.  
+사용자는 프로젝트를 등록하여 팀원을 모집하거나, 관심 있는 프로젝트에 지원하여 팀에 합류할 수 있습니다.  
+또한, React + TypeScript 기반 UI/UX를 통해 직관적이고 편리한 사용 환경을 제공합니다.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 2. 주요 기능
 
-## Expanding the ESLint configuration
+ **팀원 모집**  
+  5개의 섹션으로 구성된 템플릿을 제공하며, 각 섹션에는 2~5개의 선택형·입력형 박스가 있어 사용자가 프로젝트를 등록할 때 편리하게 정보를 입력할 수 있습니다.  
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+ **프로젝트 찾기**  
+  다양한 옵션 선택지와 댓글 기능을 활용해 지원자가 원하는 프로젝트를 쉽게 탐색하고 소통할 수 있습니다.  
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+ **상점**  
+  프로필 이미지, 배경 등 꾸미기용 아이템을 구매하여 나만의 개성을 표현할 수 있습니다.  
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+ **게시판**  
+  자유, 정보, 홍보 게시판으로 나누어져 있어 사용자 간 정보 공유가 더욱 편리합니다.  
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+ **마이 프로젝트**  
+  자신이 속한 프로젝트의 진행률과 마일스톤 등을 확인할 수 있어 체계적인 프로젝트 관리가 가능합니다.  
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+---
+
+## 3. 기술 스택
+  React (컴포넌트 기반 UI)
+
+  TypeScript (정적 타입 지원)
+
+  HTML / CSS (UI 스타일링)

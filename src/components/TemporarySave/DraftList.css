@@ -1,4 +1,4 @@
-/* Draft 목록 전체 컨테이너 */
+
 .draftListContainer {
   max-width: 600px;
   margin: 2rem auto;
@@ -8,7 +8,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* 제목 */
 .draftListContainer h2 {
   font-size: 1.5rem;
   font-weight: 600;
@@ -16,7 +15,6 @@
   text-align: center;
 }
 
-/* 각 Draft 아이템 */
 .draft-item {
   display: flex;
   justify-content: space-between;
