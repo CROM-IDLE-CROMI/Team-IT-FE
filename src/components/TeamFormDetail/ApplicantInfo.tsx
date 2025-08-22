@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import type { StepData } from "../../types/Draft";
 
 interface ApplicantInfoProps {
@@ -12,13 +12,28 @@ const ApplicantInfo: React.FC<ApplicantInfoProps> = ({ data, setData, onComplete
   const [inputValue, setInputValue] = useState("");
   const [minRequirement, setMinRequirement] = useState(data.minRequirement || "");
 
-  // 상태가 바뀔 때 formData 동기화
+  // data prop이 변경될 때 state 업데이트 (실제 값이 변경되었을 때만)
   useEffect(() => {
-    setData({
-      questions,
-      minRequirement,
-    });
-  }, [questions, minRequirement]);
+    if (data.questions !== undefined) setQuestions(data.questions || []);
+    if (data.minRequirement !== undefined) setMinRequirement(data.minRequirement || "");
+  }, [data.questions, data.minRequirement]);
+
+  // setData 함수를 메모이제이션
+  const memoizedSetData = useCallback((newData: StepData) => {
+    setData(newData);
+  }, [setData]);
+
+  // 상태가 바뀔 때 formData 동기화 (디바운싱 적용)
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      memoizedSetData({
+        questions,
+        minRequirement,
+      });
+    }, 300); // 300ms 디바운싱
+
+    return () => clearTimeout(timeoutId);
+  }, [questions, minRequirement, memoizedSetData]);
 
   // 완료 체크
   useEffect(() => {

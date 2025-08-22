@@ -1,6 +1,6 @@
 import Select from 'react-select';
 import type { MultiValue, ActionMeta } from 'react-select';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import '../../App.css';
 import type { StepData } from "../../types/Draft";
 
@@ -26,9 +26,18 @@ const Situation = ({ data, setData, onCompleteChange }: SituationProps) => {
   const [title, setTitle] = useState(data.title || '');
   const [progress, setProgress] = useState(data.progress || '');
   const [showCustomProgressInput, setShowCustomProgressInput] = useState(false);
-  const [customProgress, setCustomProgress] = useState('');
+  const [customProgress, setCustomProgress] = useState(data.customProgress || '');
   const [content, setContent] = useState(data.content || '');
   const [otherText, setOtherText] = useState(data.otherText || '');
+
+  // data prop이 변경될 때 state 업데이트 (실제 값이 변경되었을 때만)
+  useEffect(() => {
+    if (data.title !== undefined) setTitle(data.title || '');
+    if (data.progress !== undefined) setProgress(data.progress || '');
+    if (data.customProgress !== undefined) setCustomProgress(data.customProgress || '');
+    if (data.content !== undefined) setContent(data.content || '');
+    if (data.otherText !== undefined) setOtherText(data.otherText || '');
+  }, [data.title, data.progress, data.customProgress, data.content, data.otherText]);
 
   const handleOtherTextChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const value = e.target.value;
@@ -60,15 +69,25 @@ const Situation = ({ data, setData, onCompleteChange }: SituationProps) => {
     }
   };
 
-  // formData 동기화
+  // setData 함수를 메모이제이션
+  const memoizedSetData = useCallback((newData: StepData) => {
+    setData(newData);
+  }, [setData]);
+
+  // formData 동기화 (디바운싱 적용)
   useEffect(() => {
-    setData({
-      title,
-      progress,
-      content,
-      otherText,
-    });
-  }, [title, progress, content, otherText]);
+    const timeoutId = setTimeout(() => {
+      memoizedSetData({
+        title,
+        progress,
+        customProgress,
+        content,
+        otherText,
+      });
+    }, 300); // 300ms 디바운싱
+
+    return () => clearTimeout(timeoutId);
+  }, [title, progress, customProgress, content, otherText, memoizedSetData]);
 
   // 완료 체크
   useEffect(() => {

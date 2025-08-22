@@ -50,7 +50,55 @@ const TeamPage = () => {
 
   const allComplete = basicInfoComplete && projectInfoComplete && situationComplete && workEnvironComplete && applicantInfoComplete;
 
-  const handleLoadDraft = (data: TeamFormData) => setFormData(data);
+  const handleLoadDraft = (data: TeamFormData) => {
+    setFormData(data);
+    
+    // 각 단계의 완료 상태를 데이터 내용에 따라 업데이트
+    const basicInfo = data.basicInfo || {};
+    const projectInfo = data.projectInfo || {};
+    const situation = data.situation || {};
+    const workEnviron = data.workEnviron || {};
+    const applicantInfo = data.applicantInfo || {};
+    
+    // BasicInfo 완료 조건: 필수 필드들이 모두 채워져 있는지 확인
+    setBasicInfoComplete(
+      basicInfo.peopleCount?.trim() !== '' &&
+      basicInfo.startDate !== '' &&
+      basicInfo.endDate !== '' &&
+      basicInfo.platform?.trim() !== '' &&
+      basicInfo.selectedJobs?.length > 0 &&
+      basicInfo.selectedTechStacks?.length > 0
+    );
+    
+    // ProjectInfo 완료 조건
+    setProjectInfoComplete(
+      projectInfo.teamName?.trim() !== '' &&
+      projectInfo.playType?.trim() !== '' &&
+      projectInfo.startDate !== '' &&
+      projectInfo.endDate !== '' &&
+      projectInfo.projectStartDate !== '' &&
+      projectInfo.selectedJobs?.length > 0
+    );
+    
+    // Situation 완료 조건
+    setSituationComplete(
+      situation.title?.trim() !== '' &&
+      situation.progress?.trim() !== '' &&
+      situation.content?.trim() !== ''
+    );
+    
+    // WorkEnviron 완료 조건
+    setWorkEnvironComplete(
+      workEnviron.meetingType?.trim() !== '' &&
+      workEnviron.locationComplete === true
+    );
+    
+    // ApplicantInfo 완료 조건
+    setApplicantInfoComplete(
+      applicantInfo.minRequirement?.trim() !== '' &&
+      applicantInfo.questions?.length > 0
+    );
+  };
 
   return (
     <>
@@ -96,15 +144,7 @@ const TeamPage = () => {
               onCompleteChange={setApplicantInfoComplete}
             />
           </section>
-
-          <Button
-            formData={formData}
-            setFormData={setFormData}
-            currentStep={currentStep}
-            disabled={!allComplete}
-          />
-
-          <button onClick={() => setIsListModalOpen(true)}>임시저장 목록 보기</button>
+<button onClick={() => setIsListModalOpen(true)}>임시저장 목록 보기</button>
 
           {isListModalOpen && (
             <DraftList
@@ -112,6 +152,14 @@ const TeamPage = () => {
               onLoadDraft={handleLoadDraft}
             />
           )}
+          <Button
+            formData={formData}
+            setFormData={setFormData}
+            currentStep={currentStep}
+            disabled={!allComplete}
+          />
+
+          
         </main>
       </div>
     </>

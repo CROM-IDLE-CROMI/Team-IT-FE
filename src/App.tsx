@@ -9,12 +9,8 @@ import Boarder from './pages/Boarder';
 import Stor from './pages/Stor';
 import MyProject from './pages/MyProject';
 import MYProjectDetail from "./pages/MyProjectDetail";
-import React, { useState } from 'react';
-import DraftList from "./components/TemporarySave/DraftList";
-
 
 function App() {
-   const [isListModalOpen, setIsListModalOpen] = useState(true);
   return (
     <BrowserRouter>
       <Routes>
@@ -28,13 +24,6 @@ function App() {
         <Route path='/MyProject'element={<MyProject/>}/>
         <Route path="/projects/:id" element={<MYProjectDetail />} />
       </Routes>
-      {isListModalOpen && (
-  <DraftList
-    onClose={() => setIsListModalOpen(false)}
-    onLoadDraft={(draftId) => {
-    }}
-  />
-)}
     </BrowserRouter>
   );
 }

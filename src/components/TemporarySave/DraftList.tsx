@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getDrafts } from "../../utils/localStorageUtils";
+import { getDrafts, deleteDraft } from "../../utils/localStorageUtils";
 import "./DraftList.css";
 
 export interface Draft {
@@ -22,9 +22,8 @@ const DraftList = ({ onClose, onLoadDraft }: DraftProps) => {
   }, []);
 
   const handleDelete = (id: string) => {
-    const filtered = drafts.filter(d => d.id !== id);
-    setDrafts(filtered);
-    localStorage.setItem("TeamPage:drafts", JSON.stringify(filtered));
+    const updatedDrafts = deleteDraft(id);
+    setDrafts(updatedDrafts);
   };
 
   const handleLoad = (data: any) => {

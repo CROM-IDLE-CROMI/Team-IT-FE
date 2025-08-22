@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Select from 'react-select';
 import type { MultiValue, ActionMeta } from 'react-select';
 import type { TechStackType } from '../../styles/TechStack';
@@ -83,28 +83,51 @@ const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
   const [startDate, setStartDate] = useState(data.startDate || '');
   const [endDate, setEndDate] = useState(data.endDate || '');
   const [platform, setPlatform] = useState(data.platform || '');
-  const [customPlatform, setCustomPlatform] = useState('');
+  const [customPlatform, setCustomPlatform] = useState(data.customPlatform || '');
   const [showCustomPlatformInput, setShowCustomPlatformInput] = useState(false);
   const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>(data.selectedJobs || []);
-  const [customJob, setCustomJob] = useState('');
+  const [customJob, setCustomJob] = useState(data.customJob || '');
   const [peopleCount, setPeopleCount] = useState(data.peopleCount || '');
   const [selectedTechStacks, setSelectedTechStacks] = useState<TechStackType[]>(data.selectedTechStacks || []);
   const [isStackOpen, setIsStackOpen] = useState(false);
   const [recruitNumber, setRecruitNumber] = useState(data.recruitNumber || '');
 
-  // formData 동기화
+  // data prop이 변경될 때 state 업데이트 (실제 값이 변경되었을 때만)
   useEffect(() => {
-    setData({
-      startDate,
-      endDate,
-      platform,
-      selectedJobs,
-      customJob,
-      peopleCount,
-      selectedTechStacks,
-      recruitNumber,
-    });
-  }, [startDate, endDate, platform, selectedJobs, customJob, peopleCount, selectedTechStacks, recruitNumber]);
+    if (data.startDate !== undefined) setStartDate(data.startDate || '');
+    if (data.endDate !== undefined) setEndDate(data.endDate || '');
+    if (data.platform !== undefined) setPlatform(data.platform || '');
+    if (data.customPlatform !== undefined) setCustomPlatform(data.customPlatform || '');
+    if (data.selectedJobs !== undefined) setSelectedJobs(data.selectedJobs || []);
+    if (data.customJob !== undefined) setCustomJob(data.customJob || '');
+    if (data.peopleCount !== undefined) setPeopleCount(data.peopleCount || '');
+    if (data.selectedTechStacks !== undefined) setSelectedTechStacks(data.selectedTechStacks || []);
+    if (data.recruitNumber !== undefined) setRecruitNumber(data.recruitNumber || '');
+  }, [data.startDate, data.endDate, data.platform, data.customPlatform, data.selectedJobs, data.customJob, data.peopleCount, data.selectedTechStacks, data.recruitNumber]);
+
+  // setData 함수를 메모이제이션
+  const memoizedSetData = useCallback((newData: StepData) => {
+    setData(newData);
+  }, [setData]);
+
+  // formData 동기화 (디바운싱 적용)
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      memoizedSetData({
+        startDate,
+        endDate,
+        platform,
+        customPlatform,
+        selectedJobs,
+        customJob,
+        peopleCount,
+        selectedTechStacks,
+        recruitNumber,
+      });
+    }, 300); // 300ms 디바운싱
+
+    return () => clearTimeout(timeoutId);
+  }, [startDate, endDate, platform, customPlatform, selectedJobs, customJob, peopleCount, selectedTechStacks, recruitNumber, memoizedSetData]);
 
   useEffect(() => {
     const isComplete =

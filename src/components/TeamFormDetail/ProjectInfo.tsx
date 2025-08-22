@@ -1,6 +1,6 @@
 import Select from 'react-select';
 import type { MultiValue, ActionMeta } from 'react-select';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import '../../App.css';
 import type { StepData } from "../../types/Draft";
 
@@ -39,25 +39,48 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
 
   const [playType, setPlayType] = useState(data.playType || '');
   const [showCustomPlayTypeInput, setShowCustomPlayTypeInput] = useState(false);
-  const [customPlayType, setCustomPlayType] = useState('');
+  const [customPlayType, setCustomPlayType] = useState(data.customPlayType || '');
 
   const [startDate, setStartDate] = useState(data.startDate || '');
   const [endDate, setEndDate] = useState(data.endDate || '');
   const [projectStartDate, setProjectStartDate] = useState(data.projectStartDate || '');
 
-  // formData 동기화
+  // data prop이 변경될 때 state 업데이트 (실제 값이 변경되었을 때만)
   useEffect(() => {
-    setData({
-      teamName,
-      selectedJobs,
-      customJob,
-      otherText,
-      playType,
-      startDate,
-      endDate,
-      projectStartDate,
-    });
-  }, [teamName, selectedJobs, customJob, otherText, playType, startDate, endDate, projectStartDate]);
+    if (data.teamName !== undefined) setTeamName(data.teamName || '');
+    if (data.selectedJobs !== undefined) setSelectedJobs(data.selectedJobs || []);
+    if (data.customJob !== undefined) setCustomJob(data.customJob || '');
+    if (data.otherText !== undefined) setOtherText(data.otherText || '');
+    if (data.playType !== undefined) setPlayType(data.playType || '');
+    if (data.customPlayType !== undefined) setCustomPlayType(data.customPlayType || '');
+    if (data.startDate !== undefined) setStartDate(data.startDate || '');
+    if (data.endDate !== undefined) setEndDate(data.endDate || '');
+    if (data.projectStartDate !== undefined) setProjectStartDate(data.projectStartDate || '');
+  }, [data.teamName, data.selectedJobs, data.customJob, data.otherText, data.playType, data.customPlayType, data.startDate, data.endDate, data.projectStartDate]);
+
+  // setData 함수를 메모이제이션
+  const memoizedSetData = useCallback((newData: StepData) => {
+    setData(newData);
+  }, [setData]);
+
+  // formData 동기화 (디바운싱 적용)
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      memoizedSetData({
+        teamName,
+        selectedJobs,
+        customJob,
+        otherText,
+        playType,
+        customPlayType,
+        startDate,
+        endDate,
+        projectStartDate,
+      });
+    }, 300); // 300ms 디바운싱
+
+    return () => clearTimeout(timeoutId);
+  }, [teamName, selectedJobs, customJob, otherText, playType, customPlayType, startDate, endDate, projectStartDate, memoizedSetData]);
 
   // 완료 체크
   useEffect(() => {
