@@ -5,16 +5,16 @@
   text-align: center;
   
   /*색상 변수*/
-  -black: #141414;
-  -dark: #383c49;
-  -grey: #bdc3c7;
-  -white: #f2fdff;
-  -red: #ffb1b2;
-  -yellow: #fffc93;
-  -green: #c6ffba;
-  -turquois: #8fe5ce;
-  -blue: #b5eaff;
-  -purple: #d1c8ff;
+  --black: #141414;
+  --dark: #383c49;
+  --grey: #bdc3c7;
+  --white: #f2fdff;
+  --red: #ffb1b2;
+  --yellow: #fffc93;
+  --green: #c6ffba;
+  --turquois: #8fe5ce;
+  --blue: #b5eaff;
+  --purple: #d1c8ff;
 }
 
 /* =====================================================
@@ -236,3 +236,95 @@ th, td {
   cursor: pointer;
 }
 
+/* 마이프로젝트 상세페이지 */
+
+.project-detail-layout {
+  display: flex;
+  max-width: 1200px;
+  margin: 2rem auto;
+  gap: 2rem;
+}
+
+.project-sidebar {
+  flex: 0 0 220px;
+}
+
+.team-logo {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.sidebar-nav h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.sidebar-nav li {
+  padding: 0.75rem;
+  cursor: pointer;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  color: var(--dark);
+}
+
+.status-ongoing {
+  background-color: var(--blue);
+}
+
+.status-recruiting {
+  background-color: var(--green);
+}
+
+.status-completed {
+  background-color: var(--grey);
+}
+
+.project-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.card-header h3 {
+  margin: 0;
+}
+
+.edit-button {
+  background: none;
+  border: 1px solid #ccc;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 1.5rem;
+}
