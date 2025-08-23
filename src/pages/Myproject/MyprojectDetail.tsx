@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../../App.css';
+import ProgressBar from '../../components/ProgressBar';
 
 // --- ERD 및 UI 기반 타입 정의 ---
 // ERD의 ENUM 타입들을 문자열 리터럴 타입으로 정의
@@ -116,6 +117,7 @@ export default function ProjectDetail() {
   const [project, setProject] = useState<ProjectData | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // 페이지 로드 관련 함수
   useEffect(() => {
     if (!id) return;
     setLoading(true);
@@ -126,7 +128,6 @@ export default function ProjectDetail() {
   }, [id]);
 
   // --- 상태별 UI 렌더링 함수 ---
-
   // 사이드바 메뉴를 상태에 따라 다르게 렌더링
   const renderSidebarNav = () => {
     if (!project) return null;
@@ -167,17 +168,25 @@ export default function ProjectDetail() {
       case 'ONGOING':
         return (
           <>
+            <div className="button-wrapper">
+              <button className="edit-button">수정하기</button>
+            </div>
             <div className="card">
               <div className="card-header">
                 <h3>프로젝트 소개 (진행중)</h3>
-                <button className="edit-button">수정하기</button>
               </div>
               <p>{project.description}</p>
             </div>
             <div className="content-grid">
               <div className="card"><h4>멤버</h4>{/* 멤버 목록 */}</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                <div className="card"><h4>진행률: {project.progress}%</h4>{/* 진행률 바 */}</div>
+                <div className="card">
+                  <div className="card-header">
+                    <h4>진행률</h4>
+                    <span>{project.progress ?? 0}%</span>
+                  </div>
+                  <ProgressBar progress={project.progress ?? 0} />
+                </div>
                 <div className="card"><h4>마일스톤</h4>{/* 마일스톤 목록 */}</div>
               </div>
             </div>
@@ -185,17 +194,22 @@ export default function ProjectDetail() {
         );
       case 'RECRUITING':
         return (
-          <div className="card">
-            <div className="card-header">
-              <h3>프로젝트 소개 (모집중)</h3>
-               <button className="edit-button">수정하기</button>
+          <>
+            <div className="button-wrapper">
+              <button className="edit-button">수정하기</button>
             </div>
-            <p>{project.description}</p>
-            <h4>모집 분야</h4>
-            <ul>{project.recruit_positions?.map(p => <li key={p.position}>{p.position}: {p.count}명</li>)}</ul>
-            <h4>기술 스택</h4>
-            <div>{project.required_stacks?.join(', ')}</div>
-          </div>
+            <div className="card">
+              <div className="card-header">
+                <h3>프로젝트 소개 (모집중)</h3>
+                <button className="edit-button">수정하기</button>
+              </div>
+              <p>{project.description}</p>
+              <h4>모집 분야</h4>
+              <ul>{project.recruit_positions?.map(p => <li key={p.position}>{p.position}: {p.count}명</li>)}</ul>
+              <h4>기술 스택</h4>
+              <div>{project.required_stacks?.join(', ')}</div>
+            </div>
+          </>
         );
       case 'COMPLETED':
         return (
