@@ -2,6 +2,7 @@ import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Main from './pages/Main';
 import ProjectPage from "./pages/ProjectPage";
+import ProjectDetail from "./pages/ProjectDetail";
 import TeamPage from './pages/TeamPage';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/projects" element={<ProjectPage />} />
+        <Route path="/project/:id" element={<ProjectDetail />} />
         <Route path="/Teams" element={<TeamPage/>} />
         <Route path="/Signup"element={<Signup/>}/>
         <Route path="/Login"element={<Login/>}/>

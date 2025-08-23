@@ -12,7 +12,7 @@ const SideBox: React.FC<SideBoxProps> = ({ isOpen, onClose }) => {
       <button className="close-btn" onClick={onClose}>✕</button>
 
       <h3>플랫폼</h3>
-      <div className="buttons">
+      <div className="buttons_1">
         <button>앱</button>
         <button>웹</button>
         <button>게임</button>
@@ -20,7 +20,7 @@ const SideBox: React.FC<SideBoxProps> = ({ isOpen, onClose }) => {
       </div>
 
       <h3>모집 직군</h3>
-      <div className="buttons">
+      <div className="buttons_1">
         <button>프론트</button>
         <button>백</button>
         <button>UI/UX</button>

@@ -11,8 +11,8 @@ import type { Dispatch, SetStateAction } from "react";
 type OptionType = { value: string; label: string };
 
 type BasicFormProps = {
-  data: StepData; // 추가
-  setData: (data: StepData) => void; // 추가
+  data: StepData; 
+  setData: (data: StepData) => void;
   onCompleteChange: (complete: boolean) => void;
 };
 
@@ -32,7 +32,6 @@ const platformOptionsInit: OptionType[] = [
   { value: '기타', label: '기타' },
 ];
 
-// DateRangePicker는 그대로 사용
 const DateRangePicker = ({
   startDate,
   endDate,
