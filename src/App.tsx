@@ -2,7 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
-import MyProjectMain from './pages/MyprojectMain';
+import MyprojectMain from './pages/Myproject/MyprojectMain';
+import MyProjectDetail from './pages/Myproject/MyprojectDetail';
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/myprojectmain" element={<MyProjectMain />} />
+        <Route path="/myprojectmain" element={<MyprojectMain />} />
+        <Route path="/project/:id" element={<MyProjectDetail />} />
       </Routes>
     </Router>
   );
