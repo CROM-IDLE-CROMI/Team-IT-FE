@@ -1,0 +1,132 @@
+/*===================================================================================
+=====================BasicInfo.tsx===================================================
+====================================================================================*/
+
+.formGroup label {
+  flex: 1;
+  font-weight: 600;
+}
+
+.formGroup input,
+.formGroup select {
+  flex: 2;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.dateRange {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex: 2;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.select__menu {
+  width: 300px;
+  max-height: 150px;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.select__option {
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.select__menu-list {
+  max-height: 150px;
+}
+
+.selectStackBtn {
+  position: absolute;
+  left: 80%;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  width: 80px;
+  color: #000;
+}
+
+.selectStackBtn:hover {
+  background: #f5f5f5;
+}
+
+.techStackBox {
+  position: relative;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 1000;
+  width: 400px;
+  max-height: 150px;
+  overflow-y: auto;
+  bottom: 120px;
+  left: 4%;
+}
+
+.techStackTabs {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.techStackTabs .tabItem {
+  padding: 8px 12px;
+  border-bottom: 3px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.techStackTabs .tabItem.active {
+  border-bottom-color: #007bff;
+  color: #007bff;
+}
+
+.techStackListWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.techStackItem {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background: #fff;
+  transition: all 0.2s ease;
+  user-select: none;
+  font-size: 14px;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.techStackItem:hover {
+  background: #f5f5f5;
+}
+
+.techStackItem.selected {
+  border: 2px solid #007bff;
+  background: #e6f0ff;
+  color: #007bff;
+  font-weight: 600;
+}
+
+.techStackItem img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}

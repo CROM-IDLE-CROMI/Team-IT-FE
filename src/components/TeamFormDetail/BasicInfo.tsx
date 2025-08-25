@@ -3,7 +3,7 @@ import Select from 'react-select';
 import type { MultiValue, ActionMeta } from 'react-select';
 import type { TechStackType } from '../../styles/TechStack';
 import { techStacksInit } from '../../styles/TechStack';
-import '../../App.css';
+import './BasicInfo.css'
 import TechStackList from '../TechStackList';
 import type { StepData } from "../../types/Draft";
 import type { Dispatch, SetStateAction } from "react";
