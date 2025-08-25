@@ -10,6 +10,7 @@ import Boarder from './pages/Boarder';
 import Stor from './pages/Stor';
 import MyProject from './pages/MyProject';
 import MYProjectDetail from "./pages/MyProjectDetail";
+import ProjectApply from './components/ProjectPageDetail/ProjectApply';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/projects" element={<ProjectPage />} />
         <Route path="/project/:id" element={<ProjectDetail />} />
+        <Route path="/apply" element={<ProjectApply />} />
         <Route path="/Teams" element={<TeamPage/>} />
         <Route path="/Signup"element={<Signup/>}/>
         <Route path="/Login"element={<Login/>}/>

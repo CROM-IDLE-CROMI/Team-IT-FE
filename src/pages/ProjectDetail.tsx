@@ -3,6 +3,7 @@ import "../App.css";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ProjectComment from "../components/ProjectPageDetail/ProjectComment";
+import "../styles/TechStack";
 
 // 더미 프로젝트 데이터 (ProjectPage.tsx와 동일)
 const dummyProjects = [
@@ -151,9 +152,9 @@ const ProjectDetail = () => {
   }, [id, navigate]);
 
   const handleApply = () => {
-    alert("지원이 완료되었습니다!");
-    // 실제로는 지원 로직 구현
+    navigate("/apply");
   };
+
 
   if (!project) {
     return <div>로딩 중...</div>;
@@ -240,6 +241,7 @@ const ProjectDetail = () => {
           >
             지원하기
           </button>
+        
         </div>
       </div>
     </div>

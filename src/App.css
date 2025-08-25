@@ -99,7 +99,7 @@ html, body {
 }
 
 /* =====================================================
-   프로젝트 상세 페이지 스타일
+   마이프로젝트 상세 페이지 스타일
 ====================================================== */
 .project-detail-page {
   min-height: 100vh;
@@ -321,7 +321,7 @@ html, body {
   border: 1px solid #e9ecef;
   flex: 1;
   margin-right: 1rem;
-  min-height: 30px;
+  max-height: 20px;
 }
 
 /* 작성일시 섹션 */
@@ -356,6 +356,7 @@ html, body {
   font-size: 1rem;
   font-weight: bold;
   color: #333;
+  margin-bottom:10px;
 }
 
 .post-date {
@@ -455,7 +456,7 @@ html, body {
   padding: 1rem;
   border: 1px solid #ddd;
   border-radius: 8px;
-  resize: vertical;
+  resize: none;
   font-family: inherit;
   font-size: 0.9rem;
   margin-bottom: 1rem;
@@ -1296,6 +1297,13 @@ html, body {
 /* 각 섹션 반반 */
 .half-section {
   flex: 1;
+}
+
+.tech-icon-img {
+  width: 24px;
+  height: 24px;
+  margin-right: 6px;
+  vertical-align: middle;
 }
 
 /*===================================================================================

@@ -3,6 +3,7 @@ import '../App.css';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SideBox from "../components/ProjectPageDetail/SideBox";
+import { techStacksInit } from "../styles/TechStack";
 
 // 더미 프로젝트 데이터
 const dummyProjects = [
@@ -12,7 +13,7 @@ const dummyProjects = [
     author: "김한성",
     date: "2025.01.15",
     location: "서울",
-    techStack: ["React", "Node.js", "MongoDB"],
+    techStack: ["React", "Nodejs",],
     positions: ["프론트엔드", "백엔드"],
     likes: 12,
     views: 45,
@@ -24,7 +25,7 @@ const dummyProjects = [
     author: "이지은",
     date: "2025.01.14",
     location: "부산",
-    techStack: ["Flutter", "Firebase"],
+    techStack: ["Flutter", "Flutter"],
     positions: ["모바일 개발자"],
     likes: 8,
     views: 32,
@@ -36,7 +37,7 @@ const dummyProjects = [
     author: "박민수",
     date: "2025.01.13",
     location: "대구",
-    techStack: ["Python", "TensorFlow", "FastAPI"],
+    techStack: ["Python", "FastAPI"],
     positions: ["AI 엔지니어", "백엔드"],
     likes: 15,
     views: 67,
@@ -60,24 +61,12 @@ const dummyProjects = [
     author: "정현우",
     date: "2025.01.11",
     location: "광주",
-    techStack: ["Solidity", "Web3.js", "React"],
+    techStack: ["Solidity", "React"],
     positions: ["블록체인 개발자", "프론트엔드"],
     likes: 6,
     views: 28,
     description: "이더리움 기반의 DApp을 개발하는 프로젝트입니다. 블록체인 기술에 관심 있는 개발자를 찾습니다."
   },
-  {
-    id: 6,
-    title: "데이터 분석 프로젝트",
-    author: "한소영",
-    date: "2025.01.10",
-    location: "대전",
-    techStack: ["Python", "Pandas", "Tableau"],
-    positions: ["데이터 분석가", "시각화 전문가"],
-    likes: 9,
-    views: 41,
-    description: "대용량 데이터를 분석하고 시각화하는 프로젝트입니다. 통계학적 지식과 데이터 분석 경험이 있는 분을 찾습니다."
-  }
 ];
 
 const ProjectPage = () => {
@@ -119,7 +108,20 @@ const ProjectPage = () => {
                   {project.author}<br />
                   {project.date}<br />
                   <span className="tech-icons">
-                    {project.techStack.slice(0, 3).map(tech => `🔧 ${tech}`).join(' ')}
+                    {project.techStack.slice(0, 3).map(tech => {
+    const stack = techStacksInit.find(item => item.value === tech);
+    return stack ? (
+      <img 
+        key={tech} 
+        src={stack.icon} 
+        alt={stack.label} 
+        title={stack.label} 
+        className="tech-icon-img"
+      />
+    ) : (
+      <span key={tech}>🔧 {tech}</span> // 매칭 실패 시 fallback
+    );
+  })}
                   </span>
                 </div>
               </div>
@@ -174,7 +176,20 @@ const ProjectPage = () => {
                 {project.date}<br />
                 📍 {project.location}<br />
                 <span className="tech-icons">
-                  {project.techStack.map(tech => `🔧 ${tech}`).join(' ')}
+                  {project.techStack.map(tech => {
+    const stack = techStacksInit.find(item => item.value === tech);
+    return stack ? (
+      <img 
+        key={tech} 
+        src={stack.icon} 
+        alt={stack.label} 
+        title={stack.label} 
+        className="tech-icon-img"
+      />
+    ) : (
+      <span key={tech}>🔧 {tech}</span> // 매칭 실패 시 fallback
+    );
+  })}
                 </span><br />
                 👥 {project.positions.join(', ')}
               </div>
