@@ -10,20 +10,30 @@
   justify-content: center;
   z-index: 1000;
 }
+.titleInput{
+  width: 385px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
 
 .modal-box {
   background: white;
   padding: 20px;
   border-radius: 8px;
   width: 400px;
-  height: 500px;
+  height: 200px;
 }
+
 .modal-actions{
   display: flex;
   align-items: bottom;
   justify-content: center;
   gap:70px;
-  margin-top: 85%;
+  margin-top: 15%;
 }
 
 .SaveButton{

@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import "./ProjectApply.css";
 
 const ProjectApply = () => {
-  const [name, setName] = useState("");
+  const [title, setTitle] = useState("");
   const [intro, setIntro] = useState("");
   const [position, setPosition] = useState("frontend");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name.trim() || !intro.trim()) {
+    if (!title.trim() || !intro.trim()) {
       alert("모든 항목을 입력해주세요!");
       return;
     }
@@ -27,9 +27,9 @@ const ProjectApply = () => {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="이름"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            placeholder="제목"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
 
           <textarea

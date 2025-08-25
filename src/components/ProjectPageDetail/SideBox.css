@@ -2,7 +2,7 @@
   position: fixed;
   top: 0;
   left: -500px;
-  width: 350px;
+  width: 400px;
   height: 100%;
   background-color: #f0f8ff;
   padding: 2rem;
@@ -19,10 +19,10 @@
 .close-btn {
   position: absolute;
   top: 1rem;
-  left: 1rem;
+  left: 80%;
   background: #000;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1rem;
   cursor: pointer;
   align-items: end;
   justify-content: end;

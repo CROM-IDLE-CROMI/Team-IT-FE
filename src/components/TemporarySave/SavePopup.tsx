@@ -25,7 +25,7 @@ const SavePopup: React.FC<SavePopupProps> = ({ isOpen, onClose, onConfirm }) => 
     <div className="modal-overlay">
       <div className="modal-box">
         <h3>임시 저장</h3>
-        <input
+        <input className='titleInput'
           type="text"
           placeholder="제목을 입력하세요"
           value={title}
