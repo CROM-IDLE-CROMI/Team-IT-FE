@@ -13,8 +13,9 @@
   --yellow: #fffc93;
   --green: #c6ffba;
   --turquois: #8fe5ce;
-  --blue: #b5eaff;
+  --lightblue: #b5eaff;
   --purple: #d1c8ff;
+  --blue: #1E63EC;
 }
 
 /* =====================================================
@@ -126,7 +127,7 @@
 }
 
 .progress-bar {
-  background-color: #007bff;
+  background-color: var(--blue);
   height: 20px;
   border-radius: 10px;
   transition: width 0.5s ease-in-out;
@@ -233,27 +234,63 @@
    마이프로젝트 메인페이지 스타일
 ====================================================== */
 .myproject-container {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   padding: 2rem;
+  max-width: 1000px;
+  margin: 2rem auto;
 }
 
-table {
+/* h2 제목 스타일 */
+.myproject-container h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* 테이블 기본 스타일 */
+.myproject-container table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
-th, td {
-  border-bottom: 1px solid #ddd;
-  padding: 0.5rem;
-  text-align: left;
+/* 테이블 헤더(th) 및 데이터 셀(td) 공통 스타일 */
+.myproject-container th,
+.myproject-container td {
+  padding: 16px 10px;
+  text-align: center; 
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
 }
 
-.project-link {
+/* 테이블 헤더(thead) 특별 스타일 */
+.myproject-container thead th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: var(--black);
+}
+
+/* 테이블 본문(tbody) 행 호버 효과 */
+.myproject-container tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+/* 프로젝트 이름 링크(버튼) 스타일 */
+.myproject-container .project-link {
   background: none;
   border: none;
-  color: #007bff;
-  text-decoration: underline;
+  padding: 0;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--blue);
   cursor: pointer;
+  text-decoration: none;
+}
+
+.myproject-container .project-link:hover {
+  text-decoration: underline;
 }
 
 /* =====================================================
@@ -301,7 +338,7 @@ th, td {
 }
 
 .status-ongoing {
-  background-color: var(--blue);
+  background-color: var(--lightblue);
 }
 
 .status-recruiting {

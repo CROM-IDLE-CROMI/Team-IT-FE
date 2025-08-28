@@ -40,77 +40,6 @@ interface ProjectData {
   logoUrl?: string;
 }
 
-
-// --- API Mock 함수 ---
-// 실제 앱에서는 API 호출로 대체됩니다.
-const fetchProjectById = (id: string): Promise<ProjectData> => {
-  // id 값에 따라 다른 상태의 목업 데이터를 반환합니다.
-  const mockDatabase: { [key: string]: ProjectData } = {
-    "1": { // 진행중인 프로젝트
-      id: 1n,
-      title: '북으로 가자',
-      status: 'ONGOING',
-      description: '팀원들과 함께 성장하며 즐겁게 진행하는 사이드 프로젝트입니다. (진행중)',
-      progress: 75,
-      recruit_positions: null,
-      required_stacks: null,
-      members: [
-        { id: 'm1', name: '홍길동', role: '팀장 / 백엔드' },
-        { id: 'm2', name: '김철수', role: '프론트엔드' },
-        { id: 'm3', name: '이영희', role: '디자이너' },
-      ],
-      milestones: [
-        { id: 'ms1', title: '1차 프로토타입 개발', status: '완료' },
-        { id: 'ms2', title: '알파 테스트', status: '진행중' },
-      ],
-      logoUrl: 'https://via.placeholder.com/150/007BFF/FFFFFF?text=Ongoing',
-    },
-    "2": { // 모집중인 프로젝트
-      id: 2n,
-      title: 'TEAM-IT 신규 서비스',
-      status: 'RECRUITING',
-      description: '새로운 소셜 네트워킹 서비스를 기획하고 있습니다. 함께 성장할 열정적인 팀원을 모집합니다. React, Node.js 경험자 우대합니다. (모집중)',
-      progress: null,
-      recruit_positions: [
-        { position: 'FRONTEND', count: 2 },
-        { position: 'BACKEND', count: 1 },
-        { position: 'DESIGNER', count: 1 },
-      ],
-      required_stacks: ['React', 'TypeScript', 'Node.js', 'Express'],
-      members: [{ id: 'm1', name: '박팀장', role: '기획 / 팀장' }],
-      milestones: null,
-      logoUrl: 'https://via.placeholder.com/150/28A745/FFFFFF?text=Recruiting',
-    },
-    "3": { // 완료된 프로젝트
-      id: 3n,
-      title: '지난 날의 우리',
-      status: 'COMPLETED',
-      description: '2024년 하반기를 뜨겁게 달군 커뮤니티 서비스입니다. 성공적으로 런칭을 마쳤으며, 사용자들에게 좋은 반응을 얻었습니다. (완료)',
-      progress: 100,
-      recruit_positions: null,
-      required_stacks: null,
-      members: [
-        { id: 'm1', name: '최선장', role: 'PM' },
-        { id: 'm2', name: '이항해', role: '개발' },
-        { id: 'm3', name: '김디쟌', role: '디자인' },
-      ],
-      milestones: null,
-      logoUrl: 'https://via.placeholder.com/150/6C757D/FFFFFF?text=Completed',
-    }
-  };
-
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (mockDatabase[id]) {
-        resolve(mockDatabase[id]);
-      } else {
-        reject(new Error('Project not found'));
-      }
-    }, 500);
-  });
-};
-
-
 // --- 메인 컴포넌트 ---
 export default function ProjectDetail() {
   const { id } = useParams<{ id: string }>();
@@ -121,10 +50,24 @@ export default function ProjectDetail() {
   useEffect(() => {
     if (!id) return;
     setLoading(true);
-    fetchProjectById(id)
-      .then(data => setProject(data))
-      .catch(error => console.error(error))
-      .finally(() => setLoading(false));
+    
+    // fetch를 사용해 public 폴더의 json 파일을 불러옴
+    fetch(`/mocks/project-${id}.json`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('네트워크 응답이 올바르지 않습니다.');
+        }
+        return response.json(); // 응답을 JSON으로 파싱
+      })
+      .then(data => {
+        setProject(data); // 파싱된 데이터를 state에 저장
+      })
+      .catch(error => {
+        console.error('데이터를 불러오는 데 실패했습니다:', error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [id]);
 
   // --- 상태별 UI 렌더링 함수 ---

@@ -1,0 +1,16 @@
+{
+  "id": 1,
+  "title": "북으로 가자 (JSON)",
+  "status": "ONGOING",
+  "description": "JSON 파일에서 불러온 더미 데이터입니다. 실제 API 응답과 거의 동일한 방식으로 작동합니다.",
+  "progress": 75,
+  "members": [
+    { "id": "m1", "name": "홍길동", "role": "팀장 / 백엔드" },
+    { "id": "m2", "name": "김철수", "role": "프론트엔드" }
+  ],
+  "milestones": [
+    { "id": "ms1", "title": "1차 프로토타입 개발", "status": "완료" },
+    { "id": "ms2", "title": "알파 테스트", "status": "진행중" }
+  ],
+  "logoUrl": "https://via.placeholder.com/150/007BFF/FFFFFF?text=JSON+Data"
+}
