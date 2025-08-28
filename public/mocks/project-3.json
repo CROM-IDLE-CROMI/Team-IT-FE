@@ -1,0 +1,16 @@
+{
+  "id": 3,
+  "title": "지난 날의 우리",
+  "status": "COMPLETED",
+  "description": "2024년 하반기를 뜨겁게 달군 커뮤니티 서비스입니다. 성공적으로 런칭을 마쳤으며, 사용자들에게 좋은 반응을 얻었습니다. (완료)",
+  "progress": 100,
+  "recruit_positions": null,
+  "required_stacks": null,
+  "members": [
+    { "id": "m1", "name": "최선장", "role": "PM" },
+    { "id": "m2", "name": "이항해", "role": "개발" },
+    { "id": "m3", "name": "김디쟌", "role": "디자인" }
+  ],
+  "milestones": null,
+  "logoUrl": "https://via.placeholder.com/150/6C757D/FFFFFF?text=Completed"
+}

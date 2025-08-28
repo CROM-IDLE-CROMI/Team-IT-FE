@@ -1,0 +1,18 @@
+{
+  "id": 2,
+  "title": "TEAM-IT 신규 서비스",
+  "status": "RECRUITING",
+  "description": "새로운 소셜 네트워킹 서비스를 기획하고 있습니다. 함께 성장할 열정적인 팀원을 모집합니다. React, Node.js 경험자 우대합니다. (모집중)",
+  "progress": null,
+  "recruit_positions": [
+    { "position": "FRONTEND", "count": 2 },
+    { "position": "BACKEND", "count": 1 },
+    { "position": "DESIGNER", "count": 1 }
+  ],
+  "required_stacks": ["React", "TypeScript", "Node.js", "Express"],
+  "members": [
+    { "id": "m1", "name": "박팀장", "role": "기획 / 팀장" }
+  ],
+  "milestones": null,
+  "logoUrl": "https://via.placeholder.com/150/28A745/FFFFFF?text=Recruiting"
+}
