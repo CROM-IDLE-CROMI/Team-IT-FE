@@ -25,7 +25,7 @@ const dummyProjects = [
     recruitPositions: ["프론트엔드", "백엔드"],
     recruitPeriod: "3개월",
     startDate: "2025.02.01",
-    activityType: "웹 개발"
+    activityType: "공모전"
   },
   {
     id: 2,
@@ -34,7 +34,7 @@ const dummyProjects = [
     date: "2025.01.14",
     location: "부산",
     techStack: ["Flutter", "Firebase"],
-    positions: ["모바일 개발자"],
+    positions: ["프론트엔드"],
     likes: 8,
     views: 32,
     description: "Flutter를 사용한 크로스 플랫폼 모바일 앱을 개발합니다. UI/UX에 관심 있는 개발자를 찾습니다.",
@@ -42,10 +42,10 @@ const dummyProjects = [
     teamSize: "2-3명",
     duration: "2-4개월",
     recruitCount: "1명",
-    recruitPositions: ["모바일 개발자"],
+    recruitPositions: ["프론트엔드"],
     recruitPeriod: "2개월",
     startDate: "2025.01.20",
-    activityType: "모바일 앱 개발"
+    activityType: "사이드 프로젝트"
   },
   {
     id: 3,
@@ -85,7 +85,7 @@ const dummyProjects = [
     recruitPositions: ["게임 개발자", "3D 모델러", "UI/UX 디자이너"],
     recruitPeriod: "8개월",
     startDate: "2025.03.01",
-    activityType: "게임 개발"
+    activityType: "공모전"
   },
   {
     id: 5,
@@ -106,7 +106,7 @@ const dummyProjects = [
     recruitPositions: ["블록체인 개발자", "프론트엔드"],
     recruitPeriod: "4개월",
     startDate: "2025.01.25",
-    activityType: "블록체인"
+    activityType: "토이프로젝트"
   },
   {
     id: 6,
@@ -127,7 +127,7 @@ const dummyProjects = [
     recruitPositions: ["데이터 분석가", "시각화 전문가"],
     recruitPeriod: "3개월",
     startDate: "2025.01.30",
-    activityType: "데이터 분석"
+    activityType: "사이드 프로젝트"
   }
 ];
 

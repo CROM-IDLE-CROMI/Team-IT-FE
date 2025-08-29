@@ -11,6 +11,7 @@ import Stor from './pages/Stor';
 import MyProject from './pages/MyProject';
 import MYProjectDetail from "./pages/MyProjectDetail";
 import ProjectApply from './components/ProjectPageDetail/ProjectApply';
+import Mypage from './pages/MyPage/Mypage';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path='/Stor'element={<Stor/>}/>
         <Route path='/MyProject'element={<MyProject/>}/>
         <Route path="/projects/:id" element={<MYProjectDetail />} />
+        <Route path="/Mypage" element={<Mypage/>} />
       </Routes>
     </BrowserRouter>
   );

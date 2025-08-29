@@ -15,7 +15,7 @@ const ProjectApply = () => {
     }
 
     // 서버로 데이터 전송하거나 로컬스토리지 저장 등 가능
-    console.log("지원서 제출:", { name, intro, position });
+    console.log("지원서 제출:", { title, intro, position });
 
     alert("지원이 완료되었습니다!");
   };

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import "./Header.css";
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -32,8 +33,8 @@ const Header = () => {
       <div className="auth-buttons">
         {isLoggedIn ? (
           <>
-            <button className="notification">알람</button>
-            <div className="profile">프로필</div>
+            <Link to="/Mypage"><button className="profile"><img src ="./Profile.png" className='Profile'/></button></Link>
+            <Link to="/Notific"><button className="notification"><img src ="./Notific.png" className='notic'/> </button></Link>
             <button onClick={handleLogout}>로그아웃</button>
           </>
         ) : (

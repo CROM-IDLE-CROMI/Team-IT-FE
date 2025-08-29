@@ -1,0 +1,84 @@
+/*===================================================================================
+=====================Header.tsx========================================================
+====================================================================================*/
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-sizing: border-box;
+  height: 88px;
+  border-bottom: 2px solid #000;
+}
+
+.logo,
+.nav-links,
+.auth-buttons {
+  display: flex;
+  align-items: center; 
+}
+
+.logo{
+    width: 180px;
+    height: auto;
+    cursor: pointer;
+    padding-left: 1rem;
+}
+
+.nav-links {
+  gap: 5rem;
+  margin: 0 2rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.auth-buttons {
+    gap: 1.3rem;
+}
+
+
+.auth-buttons button {
+  font-size: 1rem;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  background-color: white;
+  border-radius: 8px;
+  color: black;
+}
+
+.profile {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.Profile{
+    margin-top: 3px;
+    width: 45px;
+    height: 45px;
+}
+
+.notification {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.notic{
+  margin-top : 5px;
+  width: 31px;
+  height: 31px;
+}
