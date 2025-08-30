@@ -4,6 +4,7 @@ import type { MultiValue, ActionMeta } from 'react-select';
 import type { TechStackType } from '../../styles/TechStack';
 import { techStacksInit } from '../../styles/TechStack';
 import './BasicInfo.css'
+import '../../App.css';
 import TechStackList from '../../components/TechStackList';
 import type { StepData } from "../../types/Draft";
 import type { Dispatch, SetStateAction } from "react";

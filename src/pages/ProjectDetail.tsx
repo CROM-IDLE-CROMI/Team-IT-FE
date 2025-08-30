@@ -1,5 +1,5 @@
 import Header from "../layouts/Header";
-import "../App.css";
+import "../pages/ProjectDetail.css";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ProjectComment from "../components/ProjectPageDetail/ProjectComment";
