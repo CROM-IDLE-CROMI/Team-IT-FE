@@ -96,7 +96,7 @@ const ProjectPage = () => {
   return (
     <div style={{ padding: "4rem 0" }}>
       <Header />
-
+      <div className="ProjectWrapper">
       <div className="horizontal-section">
         <section className="half-section">
           <h2><span className="emoji">✨</span>요즘 인기있는 프로젝트</h2>
@@ -147,6 +147,7 @@ const ProjectPage = () => {
       </div>
 
       <div className="section">
+        <div className="Minisection">
         <div className="Option" onClick={() => setIsOptionOpen(true)}>
           <img src="/Option.png" alt="옵션" />
         </div>
@@ -157,6 +158,7 @@ const ProjectPage = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+        </div>
         </div>
 
         <div className="card-container">
@@ -195,6 +197,7 @@ const ProjectPage = () => {
               </div>
             </div>
           ))}
+        </div>
         </div>
         <SideBox isOpen={isOptionOpen} onClose={() => setIsOptionOpen(false)} />
       </div>

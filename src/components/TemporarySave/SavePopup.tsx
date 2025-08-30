@@ -10,7 +10,7 @@ interface SavePopupProps {
 const SavePopup: React.FC<SavePopupProps> = ({ isOpen, onClose, onConfirm }) => {
   const [title, setTitle] = React.useState("");
 
-  if (!isOpen) return null; // 닫혀있으면 렌더링 안함
+  if (!isOpen) return null;
 
   const handleConfirm = () => {
     if (!title.trim()) {

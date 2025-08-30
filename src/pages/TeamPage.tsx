@@ -1,11 +1,11 @@
 import { useRef, useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
-import ApplicantInfo from '../components/TeamFormDetail/ApplicantInfo';
-import BasicInfo from '../components/TeamFormDetail/BasicInfo';
-import Button from '../components/TeamFormDetail/Button';
-import ProjectInfo from '../components/TeamFormDetail/ProjectInfo';
-import Situation from '../components/TeamFormDetail/Situation';
-import WorkEnviron from '../components/TeamFormDetail/WorkEnviron';
+import ApplicantInfo from './TeamFormDetail/ApplicantInfo';
+import BasicInfo from './TeamFormDetail/BasicInfo';
+import Button from './TeamFormDetail/Button';
+import ProjectInfo from './TeamFormDetail/ProjectInfo';
+import Situation from './TeamFormDetail/Situation';
+import WorkEnviron from './TeamFormDetail/WorkEnviron';
 import DraftList from "../components/TemporarySave/DraftList";
 import Header from '../layouts/Header';
 import type { TeamFormData, StepData } from '../types/Draft';
@@ -144,7 +144,7 @@ const TeamPage = () => {
               onCompleteChange={setApplicantInfoComplete}
             />
           </section>
-<button onClick={() => setIsListModalOpen(true)}>임시저장 목록 보기</button>
+            <button onClick={() => setIsListModalOpen(true)}>임시저장 목록 보기</button>
 
           {isListModalOpen && (
             <DraftList

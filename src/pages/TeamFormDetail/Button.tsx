@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../App.css";
-import SavePopup from "../TemporarySave/SavePopup";
-import DraftList from "../TemporarySave/DraftList";
+import SavePopup from "../../components/TemporarySave/SavePopup";
+import DraftList from "../../components/TemporarySave/DraftList";
 import { v4 as uuidv4 } from "uuid";
 import { saveDraft, hasDrafts } from "../../utils/localStorageUtils";
 import type { Draft } from "../../types/Draft";
@@ -48,7 +48,7 @@ const Button = ({ formData, currentStep, disabled, setFormData }: ButtonProps) =
     alert("임시저장 완료!");
     setIsListModalOpen(false);
     setIsModalOpen(false);
-    navigate("/");
+    navigate("/Teams");
   };
 
   return (

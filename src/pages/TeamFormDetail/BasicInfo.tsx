@@ -4,9 +4,14 @@ import type { MultiValue, ActionMeta } from 'react-select';
 import type { TechStackType } from '../../styles/TechStack';
 import { techStacksInit } from '../../styles/TechStack';
 import './BasicInfo.css'
-import TechStackList from '../TechStackList';
+import TechStackList from '../../components/TechStackList';
 import type { StepData } from "../../types/Draft";
 import type { Dispatch, SetStateAction } from "react";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { Box } from "@mui/material";
+
 
 type OptionType = { value: string; label: string };
 
@@ -32,48 +37,52 @@ const platformOptionsInit: OptionType[] = [
   { value: '기타', label: '기타' },
 ];
 
-const DateRangePicker = ({
-  startDate,
-  endDate,
-  setStartDate,
-  setEndDate,
-}: {
-  startDate: string;
-  endDate: string;
-  setStartDate: Dispatch<SetStateAction<string>>;
-  setEndDate: Dispatch<SetStateAction<string>>;
-}) => {
-  const today = new Date().toISOString().split('T')[0];
-  const getMaxEndDate = (start: string) => {
+type Props = {
+  startDate: Date | null;
+  endDate: Date | null;
+  setStartDate: Dispatch<SetStateAction<Date | null>>;
+  setEndDate: Dispatch<SetStateAction<Date | null>>;
+};
+
+const DateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }: Props) => {
+  const today = new Date();
+
+  const getMaxEndDate = (start: Date) => {
     const date = new Date(start);
     date.setMonth(date.getMonth() + 2);
-    return date.toISOString().split('T')[0];
+    return date;
   };
 
   return (
-    <div className="formGroup">
-      <label>모집 기간</label>
-      <div className="dateRange">
-        <input
-          type="date"
-          min={today}
-          value={startDate}
-          onChange={(e) => {
-            setStartDate(e.target.value);
-            setEndDate('');
-          }}
-        />
-        <span> ~ </span>
-        <input
-          type="date"
-          min={startDate || today}
-          max={startDate ? getMaxEndDate(startDate) : undefined}
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          disabled={!startDate}
-        />
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <div className="formGroup">
+        <label>모집 기간</label>
+        <Box className="dateRange" sx={{ display: "flex", alignItems: "center", gap: 1, width: '380px', height: '40px', color: '#000' }}>
+          {/* 시작일 */}
+          <DatePicker
+            label="시작일"
+            value={startDate}
+            minDate={today}
+            onChange={(newValue) => {
+              setStartDate(newValue);
+              setEndDate(null);
+            }}
+          />
+
+          <span> ~ </span>
+
+          {/* 종료일 */}
+          <DatePicker
+            label="종료일"
+            value={endDate}
+            minDate={startDate ?? today}
+            maxDate={startDate ? getMaxEndDate(startDate) : undefined}
+            onChange={(newValue) => setEndDate(newValue)}
+            disabled={!startDate}
+          />
+        </Box>
       </div>
-    </div>
+    </LocalizationProvider>
   );
 };
 

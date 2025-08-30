@@ -1,4 +1,4 @@
-import LocationSelector from "../LocationSelector";
+import LocationSelector from "../../components/LocationSelector";
 import React, { useState, useEffect, useCallback } from "react";
 import "../../App.css";
 import type { StepData } from "../../types/Draft";

@@ -1,8 +1,12 @@
 import Select from 'react-select';
 import type { MultiValue, ActionMeta } from 'react-select';
 import { useState, useEffect, useCallback } from 'react';
-import '../../App.css';
+import "./ProjectInfo.css";
 import type { StepData } from "../../types/Draft";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { Box, TextField } from "@mui/material";
 
 type OptionType = {
   value: string;
@@ -31,6 +35,8 @@ const playTypeOptions: OptionType[] = [
   { value: '기타', label: '기타' },
 ];
 
+
+
 const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
   const [teamName, setTeamName] = useState(data.teamName || '');
   const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>(data.selectedJobs || []);
@@ -41,9 +47,12 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
   const [showCustomPlayTypeInput, setShowCustomPlayTypeInput] = useState(false);
   const [customPlayType, setCustomPlayType] = useState(data.customPlayType || '');
 
-  const [startDate, setStartDate] = useState(data.startDate || '');
-  const [endDate, setEndDate] = useState(data.endDate || '');
-  const [projectStartDate, setProjectStartDate] = useState(data.projectStartDate || '');
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [projectStartDate, setProjectStartDate] = useState<Date | null>(null);
+
+
+  
 
   // data prop이 변경될 때 state 업데이트 (실제 값이 변경되었을 때만)
   useEffect(() => {
@@ -89,7 +98,7 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
       !selectedJobs.some((opt) => opt.value === '기타' && customJob.trim() === '');
 
     const isPlayTypeFilled = playType.trim() !== '';
-    const isDateFilled = startDate !== '' && endDate !== '' && projectStartDate !== '';
+    const isDateFilled = startDate !== null && endDate !== null && projectStartDate !== null;
 
     const isComplete =
       teamName.trim() !== '' && isPlayTypeFilled && isDateFilled && isJobsFilled;
@@ -188,23 +197,44 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
         )}
       </div>
 
+     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <div className="formGroup">
         <label>진행 예상 기간</label>
-        <div className="dateRange">
-          <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+        <Box className="dateRange" sx={{ display: "flex", alignItems: "center", gap: 1, width: '380px', color: '#000'   }}>
+          <DatePicker
+            label="시작일"
+            value={startDate}
+            onChange={(newValue) => {
+              setStartDate(newValue);
+              if (endDate && newValue && endDate < newValue) {
+                setEndDate(null); // 시작일 이후로 종료일 자동 리셋
+              }
+            }}
+            slotProps={{textField: {variant: "outlined", fullWidth: true}}}
+          />
           <span> ~ </span>
-          <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-        </div>
+          <DatePicker
+            label="종료일"
+            value={endDate}
+            minDate={startDate ?? undefined}
+            onChange={(newValue) => setEndDate(newValue)}
+            slotProps={{textField: {variant: "outlined", fullWidth: true}}}
+          />
+        </Box>
       </div>
 
       <div className="formGroup">
         <label>프로젝트 시작 예상일</label>
-        <input
-          type="date"
+        <Box className="dateRange" sx={{ display: "flex", alignItems: "center", width: '330px', color: '#000'}}>
+        <DatePicker
+          label="예상 시작일"
           value={projectStartDate}
-          onChange={(e) => setProjectStartDate(e.target.value)}
+          onChange={(newValue) => setProjectStartDate(newValue)}
+          slotProps={{textField: {variant: "outlined", fullWidth: true}}}
         />
+        </Box>
       </div>
+    </LocalizationProvider>
 
       <div className="formGroup">
         <label>모집자 직군</label>
