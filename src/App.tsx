@@ -6,12 +6,13 @@ import ProjectDetail from "./pages/ProjectDetail";
 import TeamPage from './pages/TeamPage';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import Boarder from './pages/Boarder';
+import Boarder from './pages/BoardPage/Boarder';
 import Stor from './pages/Stor';
 import MyProject from './pages/MyProject';
 import MYProjectDetail from "./pages/MyProjectDetail";
 import ProjectApply from './components/ProjectPageDetail/ProjectApply';
 import Mypage from './pages/MyPage/Mypage';
+import BoardWrite from './pages/BoardPage/BoardWrite';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/Signup"element={<Signup/>}/>
         <Route path="/Login"element={<Login/>}/>
         <Route path="/Boarder"element={<Boarder/>}/>
+        <Route path="/BoardWrite"element={<BoardWrite/>}/>
         <Route path='/Stor'element={<Stor/>}/>
         <Route path='/MyProject'element={<MyProject/>}/>
         <Route path="/projects/:id" element={<MYProjectDetail />} />

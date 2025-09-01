@@ -1,0 +1,137 @@
+/* 전체 래퍼 */
+.board-write-wrapper {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: 'Nanum Gothic', sans-serif;
+}
+
+/* 카테고리 */
+.board-category {
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 200px;
+}
+
+/* 제목 */
+.board-title {
+  padding: 10px 14px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 770px;
+}
+
+/* Editor 영역 */
+.editor-container {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  min-height: 250px;
+  font-size: 16px;
+  line-height: 1.6;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.editor-container:focus-within {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
+}
+
+/* Editor 내부 블록 스타일 */
+.editor-container p {
+  margin-bottom: 12px;
+}
+
+.editor-container h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.editor-container h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 14px;
+}
+
+.editor-container h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.editor-container blockquote {
+  border-left: 4px solid #007bff;
+  padding-left: 12px;
+  margin-left: 0;
+  color: #555;
+  font-style: italic;
+  background-color: #f8f9fa;
+  margin-bottom: 12px;
+}
+
+.editor-container ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+.editor-container ol {
+  list-style-type: decimal;
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+.editor-container pre {
+  background-color: #2d2d2d;
+  color: #f8f8f2;
+  padding: 12px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+/* 버튼 영역 */
+.board-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancel-btn,
+.submit-btn {
+  padding: 10px 18px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.submit-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.submit-btn:hover {
+  background-color: #0062cc;
+}
