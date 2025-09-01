@@ -1,24 +1,96 @@
 .board-tabs{
     cursor: pointer;
-    margin-top: 120px;
     gap: 2rem;
     display: flex;
     justify-content: start;
     padding-left: 15%;
 }
 
-.board-content{
+.board-actions{
+    padding-left:20%;
+
+}
+
+.board-section{
     display: flex;
     align-items: center;
     justify-content: center;
     margin-left: 13%;
     border: 1px solid #000;
-    margin-top: 10px;
+    margin-top: 150px;
     width:75%;
     height: 480px;
 }
 
-.board-actions{
-    padding-left:20%;
-
+.board-button{
+    display: flex;
+    align-items: start;
+    justify-self: start;
+    width: 1000px;
+    margin-top: 100px;
+    margin-bottom: -120px;
+    padding-left: 10%;
 }
+.board-list ul {
+  padding: 0;
+  margin: 0;
+}
+
+.board-list li {
+  display: flex;
+  justify-content: space-between; /* 좌우 배치 */
+  align-items: center;
+  list-style: none;
+  padding: 16px 20px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  background-color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  width: 900px;
+}
+
+.board-list li:hover {
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* 왼쪽: 제목 */
+.post-title {
+  font-weight: 600;
+  font-size: 18px;
+  color: #222;
+  flex: 1; /* 남는 공간 차지 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 오른쪽: 작성자 + 날짜 */
+.post-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 16px;
+  color: #555;
+  white-space: nowrap;
+}
+
+/* 모바일 대응: 화면이 600px 이하일 때 세로 정렬 */
+@media (max-width: 600px) {
+  .board-list li {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 16px;
+  }
+  .post-title {
+    white-space: normal; /* 제목 줄바꿈 허용 */
+    margin-bottom: 6px;
+  }
+  .post-meta {
+    margin-top: 4px;
+  }
+}
+

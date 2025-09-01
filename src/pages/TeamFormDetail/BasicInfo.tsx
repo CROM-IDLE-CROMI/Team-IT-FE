@@ -58,7 +58,7 @@ const DateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }: Props
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <div className="formGroup">
         <label>모집 기간</label>
-        <Box className="dateRange" sx={{ display: "flex", alignItems: "center", gap: 1, width: '380px', height: '40px', color: '#000' }}>
+        <Box className="dateRange" sx={{ display: "flex", alignItems: "center", gap: 1, width: '380px', height: '40px', color: '#000000' }}>
           {/* 시작일 */}
           <DatePicker
             label="시작일"
