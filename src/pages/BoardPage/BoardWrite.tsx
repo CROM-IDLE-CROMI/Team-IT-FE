@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { useNavigate } from "react-router-dom";
+import type { Post, Category } from "./DummyPosts"; // 타입 import
 import "./BoardWrite.css";
 
-const BoardWrite: React.FC = () => {
-  const [category, setCategory] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
+type BoardWriteProps = {
+  onAddPost: (category: Category, newPost: Post) => void;
+};
+
+const BoardWrite: React.FC<BoardWriteProps> = ({ onAddPost }) => {
+  const navigate = useNavigate();
+  const [category, setCategory] = useState<Category>("" as Category);
+  const [title, setTitle] = useState("");
 
   // Tiptap Editor 초기화
   const editor = useEditor({
@@ -14,9 +21,23 @@ const BoardWrite: React.FC = () => {
   });
 
   const handleSubmit = () => {
-    const content = editor?.getHTML(); // 작성된 내용 가져오기
-    console.log("제출 데이터:", { category, title, content });
-    alert("글이 저장되었습니다!");
+    if (!category || !title) {
+      alert("카테고리와 제목을 입력해주세요.");
+      return;
+    }
+
+    const content = editor?.getHTML() || "";
+    const newPost: Post = {
+      id: Date.now(), // 임시 ID
+      title,
+      author: "테스트유저", // 필요하면 로그인 유저 이름 사용
+    };
+
+    // ✅ App 상태에 글 추가
+    onAddPost(category, newPost);
+
+    // 작성 완료 후 게시판으로 이동
+    navigate("/Boarder");
   };
 
   return (
@@ -25,7 +46,7 @@ const BoardWrite: React.FC = () => {
       <select
         className="board-category"
         value={category}
-        onChange={(e) => setCategory(e.target.value)}
+        onChange={(e) => setCategory(e.target.value as Category)}
       >
         <option value="">카테고리 선택</option>
         <option value="시사&정보">시사&정보</option>
@@ -49,7 +70,9 @@ const BoardWrite: React.FC = () => {
 
       {/* 버튼 */}
       <div className="board-actions">
-        <button className="cancel-btn">취소</button>
+        <button className="cancel-btn" onClick={() => navigate("/Boarder")}>
+          취소
+        </button>
         <button className="submit-btn" onClick={handleSubmit}>
           작성 완료
         </button>
