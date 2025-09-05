@@ -9,8 +9,8 @@
     { "id": "m2", "name": "김철수", "role": "프론트엔드" }
   ],
   "milestones": [
-    { "id": "ms1", "title": "1차 프로토타입 개발", "status": "완료" },
-    { "id": "ms2", "title": "알파 테스트", "status": "진행중" }
+    { "id": "ms1", "title": "1차 프로토타입 개발", "progress": 70 },
+    { "id": "ms2", "title": "알파 테스트", "progress": 100 }
   ],
   "logoUrl": "https://via.placeholder.com/150/007BFF/FFFFFF?text=JSON+Data"
 }

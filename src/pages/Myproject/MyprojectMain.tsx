@@ -66,7 +66,7 @@ export default function MyProjectMain() {
   }, []);
 
   const handleProjectClick = (id: bigint) => {
-    navigate(`/project/${id.toString()}`);
+    navigate(`/myproject/${id}`);
   };
 
   const ongoing = useMemo(

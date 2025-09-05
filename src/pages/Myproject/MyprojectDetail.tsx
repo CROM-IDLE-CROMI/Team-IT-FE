@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../../App.css';
 import ProgressBar from '../../components/ProgressBar';
 
@@ -23,7 +23,7 @@ interface Member {
 interface Milestone {
   id: string;
   title: string;
-  status: '완료' | '진행중';
+  progress: number;
 }
 
 // project_table을 기반으로 한 메인 데이터 타입
@@ -45,6 +45,7 @@ export default function ProjectDetail() {
   const { id } = useParams<{ id: string }>();
   const [project, setProject] = useState<ProjectData | null>(null);
   const [loading, setLoading] = useState(true);
+  const nav = useNavigate();
 
   // 페이지 로드 관련 함수
   useEffect(() => {
@@ -69,6 +70,16 @@ export default function ProjectDetail() {
         setLoading(false);
       });
   }, [id]);
+
+  // 수정버튼 클릭시
+  const handleEditClick = () => {
+    nav('/myproject/edit/${id}');
+  };
+
+  // 프로젝트 소개 버튼 클릭시
+  const handleProjectExplain = () => {
+    nav('/myproject/explain/${id}');
+  }
 
   // --- 상태별 UI 렌더링 함수 ---
   // 사이드바 메뉴를 상태에 따라 다르게 렌더링
@@ -111,8 +122,8 @@ export default function ProjectDetail() {
       case 'ONGOING':
         return (
           <>
-            <div className="button-wrapper">
-              <button className="edit-button">수정하기</button>
+            <div className="edit-button-wrapper">
+              <button className="edit-button" onClick={handleEditClick}>수정하기</button>
             </div>
             <div className="card">
               <div className="card-header">
@@ -138,13 +149,12 @@ export default function ProjectDetail() {
       case 'RECRUITING':
         return (
           <>
-            <div className="button-wrapper">
-              <button className="edit-button">수정하기</button>
+            <div className="edit-button-wrapper">
+              <button className="edit-button" onClick={handleEditClick}>수정하기</button>
             </div>
             <div className="card">
               <div className="card-header">
                 <h3>프로젝트 소개 (모집중)</h3>
-                <button className="edit-button">수정하기</button>
               </div>
               <p>{project.description}</p>
               <h4>모집 분야</h4>
