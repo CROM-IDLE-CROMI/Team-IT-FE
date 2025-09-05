@@ -386,7 +386,7 @@
 }
 
 
-.button-wrapper {
+.edit-button-wrapper {
   display: flex;
   justify-content: flex-end;
   margin-bottom: -1rem;
@@ -406,8 +406,114 @@
   gap: 1.5rem;
 }
 
+
 /* =====================================================
    마이프로젝트 상세 소개페이지 스타일
+====================================================== */
+.edit-container {
+  width: 100%;
+  max-width: 800px; /* 최대 너비 설정 */
+  margin: 40px auto; /* 중앙 정렬 */
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+.completion-button-wrapper {
+  display: flex;
+  justify-content: flex-end; /* 버튼을 오른쪽으로 정렬 */
+  margin-bottom: 20px;
+}
+
+.complete-btn {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.edit-form {
+  border: 1px solid #e0e0e0;
+  padding: 30px;
+  background-color: #fff;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  width: 120px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"] {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.file-input-wrapper, .progress-input-wrapper {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+}
+
+.file-input-wrapper input {
+  border-right: none;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.find-btn {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  background-color: #e9e9e9;
+  cursor: pointer;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  flex-shrink: 0;
+}
+
+.progress-input-wrapper span {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center; /* 버튼 중앙 정렬 */
+  gap: 15px; /* 버튼 사이 간격 */
+  margin-top: 40px;
+}
+
+.save-btn, .cancel-btn {
+  padding: 10px 30px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.save-btn {
+  background-color: #333;
+  color: white;
+  border-color: #333;
+}
+
+.cancel-btn {
+  background-color: #fff;
+  color: #333;
+}
+
+
+
+/* =====================================================
+   마이프로젝트 소개페이지 스타일
 ====================================================== */
 
 
