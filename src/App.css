@@ -515,7 +515,104 @@
 /* =====================================================
    마이프로젝트 소개페이지 스타일
 ====================================================== */
+.explain-page-layout {
+  display: flex;
+  gap: 32px; /* 사이드바와 메인 컨텐츠 사이의 간격 */
+  padding: 32px;
+  max-width: 1400px;
+  margin: 0 auto; /* 페이지 중앙 정렬 */
+  font-family: 'Pretendard', sans-serif; /* Pretendard 폰트 적용 */
+  background-color: #ffffff;
+  height: calc(100vh - 64px); /* 화면 높이에 맞춰 조정 (헤더 높이 제외) */
+}
 
+/* 왼쪽 사이드바 */
+.project-sidebar {
+  flex: 0 0 220px; /* 사이드바 너비 고정 */
+  display: flex;
+  flex-direction: column;
+}
+
+.team-logo-placeholder {
+  width: 180px;
+  height: 180px;
+  border: 1px dashed #d0d0d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a0a0a0;
+  font-size: 1rem;
+  margin-bottom: 24px;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li a {
+  display: block;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.sidebar-nav li a:hover {
+  background-color: #f0f0f0;
+}
+
+/* 활성화된 네비게이션 아이템 스타일 */
+.sidebar-nav li a.active {
+  font-weight: 600;
+  color: #000000;
+}
+
+/* 오른쪽 메인 컨텐츠 */
+.project-main-content {
+  flex: 1; /* 남은 공간을 모두 차지 */
+  display: flex;
+  flex-direction: column;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.back-button, .edit-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.back-button:hover, .edit-button:hover {
+    color: #000;
+}
+
+.introduction-card {
+  flex-grow: 1; /* 컨텐츠 영역이 남은 세로 공간을 모두 채우도록 설정 */
+  border: 1px solid #e0e0e0;
+  background-color: #fdfdfd;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.introduction-card h2 {
+  font-size: 2.5rem;
+  color: #b0b0b0; /* 와이어프레임 느낌을 위해 연한 색상 사용 */
+  font-weight: 500;
+}
 
 
 /* =====================================================
