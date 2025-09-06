@@ -13,6 +13,7 @@ import BoardDetail from './pages/BoardPage/BoardDetail';
 import type { Post, Category } from './pages/BoardPage/DummyPosts';
 import { dummyPosts } from './pages/BoardPage/DummyPosts';
 import Mypage from './pages/MyPage/Mypage';
+import ProjectApply from './components/ProjectPageDetail/ProjectApply';
 
 function App() {
   const [postsByCategory, setPostsByCategory] = useState<Record<Category, Post[]>>(dummyPosts);
@@ -30,7 +31,8 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/projects" element={<ProjectPage />} />
         <Route path="/project/:id" element={<ProjectDetail />} />
-        <Route path="/Teams" element={<TeamPage />} />
+        <Route path='/apply' element={<ProjectApply />}/>
+        <Route path="/teams" element={<TeamPage />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Login" element={<Login />} />
         <Route

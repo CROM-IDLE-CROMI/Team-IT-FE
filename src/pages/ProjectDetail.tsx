@@ -3,6 +3,7 @@ import "../pages/ProjectDetail.css";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ProjectComment from "../components/ProjectPageDetail/ProjectComment";
+import { requireAuth } from "../utils/authUtils";
 import "../styles/TechStack";
 
 // 더미 프로젝트 데이터 (ProjectPage.tsx와 동일)
@@ -148,7 +149,9 @@ const ProjectDetail = () => {
   }, [id, navigate]);
 
   const handleApply = () => {
-    navigate("/apply");
+    requireAuth(() => {
+      navigate("/apply");
+    });
   };
 
 
@@ -225,21 +228,12 @@ const ProjectDetail = () => {
         </main>
       </div>
 
-                   {/* 댓글 섹션 */}
-      <ProjectComment comments={comments} setComments={setComments} />
-      
-      {/* 지원하기 버튼 */}
-      <div className="project-commentbox-container">
-        <div className="project-commentbox">
-          <button 
-            className="apply-btn"
-            onClick={handleApply}
-          >
-            지원하기
-          </button>
-        
-        </div>
-      </div>
+      {/* 댓글 섹션 + 지원하기 버튼 */}
+      <ProjectComment 
+        comments={comments} 
+        setComments={setComments} 
+        onApply={handleApply}
+      />
     </div>
   );
 };

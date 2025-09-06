@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Post, Category } from "./DummyPosts";
+import AuthGuard from "../../components/AuthGuard";
 import "./BoardWrite.css";
 
 type BoardWriteProps = {
@@ -29,43 +30,45 @@ const BoardWrite: React.FC<BoardWriteProps> = ({ onAddPost }) => {
   };
 
   return (
-    <div className="board-write-wrapper">
-      <h2 className="board-write-title">글 작성하기</h2>
+    <AuthGuard>
+      <div className="board-write-wrapper">
+        <h2 className="board-write-title">글 작성하기</h2>
 
-      {/* 카테고리 선택 */}
-      <select
-        className="board-write-category"
-        value={category}
-        onChange={e => setCategory(e.target.value as Category)}
-      >
-        <option value="시사&정보">시사&정보</option>
-        <option value="질문">질문</option>
-        <option value="홍보">홍보</option>
-      </select>
+        {/* 카테고리 선택 */}
+        <select
+          className="board-write-category"
+          value={category}
+          onChange={e => setCategory(e.target.value as Category)}
+        >
+          <option value="시사&정보">시사&정보</option>
+          <option value="질문">질문</option>
+          <option value="홍보">홍보</option>
+        </select>
 
-      {/* 제목 입력 */}
-      <input
-        type="text"
-        className="board-write-input"
-        placeholder="제목"
-        value={title}
-        onChange={e => setTitle(e.target.value)}
-      />
+        {/* 제목 입력 */}
+        <input
+          type="text"
+          className="board-write-input"
+          placeholder="제목"
+          value={title}
+          onChange={e => setTitle(e.target.value)}
+        />
 
-      {/* 본문 입력 */}
-      <textarea
-        className="board-write-textarea"
-        placeholder="본문을 입력하세요"
-        value={content}
-        onChange={e => setContent(e.target.value)}
-        rows={8}
-      />
+        {/* 본문 입력 */}
+        <textarea
+          className="board-write-textarea"
+          placeholder="본문을 입력하세요"
+          value={content}
+          onChange={e => setContent(e.target.value)}
+          rows={8}
+        />
 
-      {/* 작성 완료 버튼 */}
-      <button className="board-write-submit-btn" onClick={handleSubmit}>
-        작성 완료
-      </button>
-    </div>
+        {/* 작성 완료 버튼 */}
+        <button className="board-write-submit-btn" onClick={handleSubmit}>
+          작성 완료
+        </button>
+      </div>
+    </AuthGuard>
   );
 };
 

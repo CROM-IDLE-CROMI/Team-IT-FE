@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Post, Category } from "./DummyPosts";
+import { requireAuth } from "../../utils/authUtils";
 import "./Boarder.css";
 import Header from "../../layouts/Header";
 
@@ -49,7 +50,7 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
       </div>
       {/* 글 작성 버튼 */}
       <div className="board-actions">
-        <button onClick={() => navigate("/BoardWrite")}>✍️ 글 작성하기</button>
+        <button onClick={() => requireAuth(() => navigate("/BoardWrite"))}>✍️ 글 작성하기</button>
       </div>
           </div>
       {/* 게시글 리스트 */}

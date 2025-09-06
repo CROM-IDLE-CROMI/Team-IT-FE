@@ -8,6 +8,7 @@ import Situation from './TeamFormDetail/Situation';
 import WorkEnviron from './TeamFormDetail/WorkEnviron';
 import DraftList from "../components/TemporarySave/DraftList";
 import Header from '../layouts/Header';
+import AuthGuard from '../components/AuthGuard';
 import type { TeamFormData, StepData } from '../types/Draft';
 
 const TeamPage = () => {
@@ -101,7 +102,7 @@ const TeamPage = () => {
   };
 
   return (
-    <>
+    <AuthGuard>
       <Header />
       <div className="container">
         <aside className="sidebar_inner">
@@ -162,7 +163,7 @@ const TeamPage = () => {
           
         </main>
       </div>
-    </>
+    </AuthGuard>
   );
 };
 

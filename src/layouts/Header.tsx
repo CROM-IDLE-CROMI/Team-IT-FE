@@ -6,8 +6,20 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem('isLoggedIn');
-    setIsLoggedIn(stored === 'true');
+    const checkLoginStatus = () => {
+      const stored = localStorage.getItem('isLoggedIn');
+      setIsLoggedIn(stored === 'true');
+    };
+
+    checkLoginStatus();
+
+    // 로그인 상태 변경 감지
+    const handleStorageChange = () => {
+      checkLoginStatus();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   const handleLogout = () => {
@@ -40,7 +52,6 @@ const Header = () => {
         ) : (
           <>
             <button onClick={() => {
-              localStorage.setItem('isLoggedIn', 'true'); 
               window.location.href = '/Login';
             }}>로그인</button>
             <button onClick={() => window.location.href = '/Signup'}>회원가입</button>

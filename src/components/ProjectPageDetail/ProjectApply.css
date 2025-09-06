@@ -1,70 +1,276 @@
+/* =====================================================
+   프로젝트 지원 페이지 스타일
+====================================================== */
 
-/* 지원서 페이지 전체 */
-.apply-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f7f8fa;
+.project-apply-container {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding-top: 88px; /* 헤더 높이만큼 패딩 */
 }
 
-/* 지원서 폼 */
-.apply-form {
-  background: #fff;
-  padding: 24px;
+.apply-layout {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  gap: 2rem;
+  min-height: calc(100vh - 88px);
+  perspective: 1000px;
+}
+
+/* 왼쪽 패널 - 지원서 폼 */
+.apply-form-panel {
+  flex: 1;
+  background: white;
   border-radius: 12px;
-  width: 500px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  height: fit-content;
+}
+
+.apply-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 1.5rem;
 }
 
-.apply-form h2 {
-  margin-bottom: 12px;
-  font-size: 20px;
-  text-align: center;
+/* 폼 섹션 */
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.form-label {
+  font-size: 1rem;
+  font-weight: 600;
   color: #333;
+  margin-bottom: 0.5rem;
 }
 
-/* 입력 요소 */
-.apply-form input,
-.apply-form textarea,
-.apply-form select {
+/* 입력 필드 */
+.form-input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 0.8rem 1rem;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: white;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
   outline: none;
-  transition: border-color 0.2s;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
-.apply-form input:focus,
-.apply-form textarea:focus,
-.apply-form select:focus {
-  border-color: #007bff;
+.form-input::placeholder {
+  color: #999;
 }
 
-/* textarea 크기 조정 */
-.apply-form textarea {
+/* 텍스트 영역 */
+.form-textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: white;
   resize: none;
-  min-height: 100px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  font-family: inherit;
 }
 
+.form-textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.form-textarea::placeholder {
+  color: #999;
+}
+
+/* 지원 직군 버튼 */
+.position-buttons {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.position-btn {
+  padding: 0.8rem 1.5rem;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  background: white;
+  color: #666;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.position-btn:hover {
+  border-color: #4a90e2;
+  color: #4a90e2;
+}
+
+.position-btn.selected {
+  background: #4a90e2;
+  border-color: #4a90e2;
+  color: white;
+}
+
+/* 라디오 버튼 그룹 */
+.radio-group {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.radio-label input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #4a90e2;
+}
+
+/* 질문 그룹 */
+.question-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.question-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+/* 체크박스 */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #4a90e2;
+}
 
 /* 제출 버튼 */
 .submit-btn {
-  padding: 10px 16px;
-  background-color: #28a745;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: #4a90e2;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 15px;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
 }
 
 .submit-btn:hover {
-  background-color: #1e7e34;
+  background: #357abd;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+/* 오른쪽 패널 - 본문 내용 */
+.content-panel {
+  flex: 1;
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+  will-change: transform;
+}
+
+.content-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.content-display {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.5rem;
+  min-height: 400px;
+  background: #f8f9fa;
+}
+
+.content-display p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 스크롤 애니메이션 효과 */
+.content-panel {
+  transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+}
+
+.content-panel:hover {
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* 본문 내용 내부 애니메이션 */
+.content-display {
+  transition: all 0.3s ease;
+}
+
+.content-display:hover {
+  background: #f0f8ff;
+  border-color: #4a90e2;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .apply-layout {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  
+  .apply-form-panel,
+  .content-panel {
+    padding: 1.5rem;
+  }
+  
+  .position-buttons {
+    flex-direction: column;
+  }
+  
+  .radio-group {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
 }

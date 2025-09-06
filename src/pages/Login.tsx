@@ -35,10 +35,17 @@ const Login = () => {
     }
 
     // 로그인 성공
-    localStorage.setItem('IsLoggedIn','true');
+    localStorage.setItem('isLoggedIn','true');
     alert(`${parsed.name}님 환영합니다!`);
     setError('');
-    window.location.href = '/';
+    
+    // 로그인 상태 변경 이벤트 발생
+    window.dispatchEvent(new Event('storage'));
+    
+    // AuthGuard의 alert 플래그 리셋을 위해 잠시 대기
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 100);
   };
 
   return (
