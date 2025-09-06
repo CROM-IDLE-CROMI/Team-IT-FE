@@ -47,7 +47,7 @@ function App() {
           path="/Board/:id"
           element={<BoardDetail postsByCategory={postsByCategory} />}
         />
-        <Route path="MyPage" element={<Mypage/>}/>
+        <Route path="/Mypage" element={<Mypage/>}/>
       </Routes>
     </BrowserRouter>
   );
