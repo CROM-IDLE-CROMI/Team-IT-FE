@@ -246,6 +246,11 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
           onChange={handleJobChange}
           placeholder="직군을 선택하세요"
           menuPlacement="top"
+          menuPortalTarget={document.body}
+      menuPosition="fixed"
+      styles={{
+        menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+      }}
         />
         {selectedJobs.some((opt) => opt.value === '기타') && (
           <input

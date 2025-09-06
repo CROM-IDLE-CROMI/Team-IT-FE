@@ -12,6 +12,7 @@ import BoardWrite from './pages/BoardPage/BoardWrite';
 import BoardDetail from './pages/BoardPage/BoardDetail';
 import type { Post, Category } from './pages/BoardPage/DummyPosts';
 import { dummyPosts } from './pages/BoardPage/DummyPosts';
+import Mypage from './pages/MyPage/Mypage';
 
 function App() {
   const [postsByCategory, setPostsByCategory] = useState<Record<Category, Post[]>>(dummyPosts);
@@ -32,24 +33,19 @@ function App() {
         <Route path="/Teams" element={<TeamPage />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Login" element={<Login />} />
-
-        {/* 게시판 목록 */}
         <Route
           path="/Boarder"
           element={<BoardPage postsByCategory={postsByCategory} />}
         />
-
-        {/* 글 작성 */}
         <Route
           path="/BoardWrite"
           element={<BoardWrite onAddPost={handleAddPost} />}
         />
-
-        {/* 글 상세 */}
         <Route
           path="/Board/:id"
           element={<BoardDetail postsByCategory={postsByCategory} />}
         />
+        <Route path="MyPage" element={<Mypage/>}/>
       </Routes>
     </BrowserRouter>
   );

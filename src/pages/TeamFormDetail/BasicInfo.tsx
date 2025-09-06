@@ -68,6 +68,15 @@ const DateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }: Props
               setStartDate(newValue);
               setEndDate(null);
             }}
+            slotProps={{
+    textField: {
+      size: "small", // compact
+      sx: {
+        width: 140,  // 가로폭 줄이기
+        "& .MuiInputBase-input": {
+          padding: "6px 8px", // 내부 여백 줄이기
+          fontSize: "0.8rem", // 글자 크기 줄이기
+        }}}}}
           />
 
           <span> ~ </span>
@@ -80,6 +89,15 @@ const DateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }: Props
             maxDate={startDate ? getMaxEndDate(startDate) : undefined}
             onChange={(newValue) => setEndDate(newValue)}
             disabled={!startDate}
+            slotProps={{
+    textField: {
+      size: "small", // compact
+      sx: {
+        width: 140,  // 가로폭 줄이기
+        "& .MuiInputBase-input": {
+          padding: "6px 8px", // 내부 여백 줄이기
+          fontSize: "0.8rem", // 글자 크기 줄이기
+        }}}}}
           />
         </Box>
       </div>
@@ -241,6 +259,11 @@ const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
           placeholder="직군을 선택하세요"
           classNamePrefix="select"
           className="customSelect"
+          menuPortalTarget={document.body}        // 메뉴를 body로 이동
+      menuPosition="fixed"                   // fixed로 위치 정확히 잡기
+      styles={{
+        menuPortal: (base) => ({ ...base, zIndex: 9999 }), // 항상 최상단
+      }}
         />
         {selectedJobs.some((opt) => opt.value === '기타') && (
           <input

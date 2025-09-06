@@ -1,25 +1,37 @@
-/*===================================================================================
-=====================BasicInfo.tsx===================================================
-====================================================================================*/
 
 .formGroup label {
   flex: 1;
   font-weight: 600;
+  color: #2c3e50;
+  font-size: 1rem;
+  margin-right: 1rem;
 }
 
 .formGroup input,
 .formGroup select {
   flex: 2;
-  padding: 0.5rem;
-  border: none;
-  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
   font-size: 1rem;
+  background: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  transform: translateY(-1px);
 }
 
 .select__menu {
+  position: absolute;
   width: 300px;
   max-height: 150px;
-  z-index: 100;
+  z-index: 9999;
   overflow-y: auto;
 }
 
@@ -37,31 +49,48 @@
   left: 80%;
   padding: 8px 14px;
   border-radius: 20px;
-  border: 1px solid #ccc;
-  background: #fff;
+  border: 2px solid #3498db;
+  background: linear-gradient(135deg, #3498db, #2980b9);
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 600;
   width: 80px;
-  color: #000;
+  color: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3);
 }
 
 .selectStackBtn:hover {
-  background: #f5f5f5;
+  background: linear-gradient(135deg, #2980b9, #1f4e79);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
 }
 
 .techStackBox {
   position: relative;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  z-index: 1000;
-  width: 400px;
-  max-height: 150px;
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  border: 2px solid #e1e8ed;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  width: 420px;
+  max-height: 200px;
   overflow-y: auto;
   bottom: 120px;
   left: 4%;
+  backdrop-filter: blur(10px);
+  animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .techStackTabs {
@@ -73,14 +102,24 @@
 }
 
 .techStackTabs .tabItem {
-  padding: 8px 12px;
+  padding: 10px 16px;
   border-bottom: 3px solid transparent;
-  transition: border-color 0.2s ease;
+  transition: all 0.3s ease;
+  border-radius: 8px 8px 0 0;
+  font-weight: 500;
+  color: #6c757d;
+}
+
+.techStackTabs .tabItem:hover {
+  background: rgba(52, 152, 219, 0.1);
+  color: #3498db;
 }
 
 .techStackTabs .tabItem.active {
-  border-bottom-color: #007bff;
-  color: #007bff;
+  border-bottom-color: #3498db;
+  color: #3498db;
+  background: rgba(52, 152, 219, 0.1);
+  font-weight: 600;
 }
 
 .techStackListWrapper {
@@ -93,27 +132,34 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 12px;
-  border-radius: 20px;
+  padding: 10px 16px;
+  border-radius: 25px;
   cursor: pointer;
-  border: 1px solid #ccc;
-  background: #fff;
-  transition: all 0.2s ease;
+  border: 2px solid #e1e8ed;
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  transition: all 0.3s ease;
   user-select: none;
   font-size: 14px;
+  font-weight: 500;
   gap: 8px;
   white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .techStackItem:hover {
-  background: #f5f5f5;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-color: #3498db;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
 }
 
 .techStackItem.selected {
-  border: 2px solid #007bff;
-  background: #e6f0ff;
-  color: #007bff;
+  border: 2px solid #3498db;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  color: #1976d2;
   font-weight: 600;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.3);
 }
 
 .techStackItem img {
@@ -124,40 +170,51 @@
 
 /* 달력 날짜 기본 */
 .MuiPickersDay-root {
-  font-weight: 1000;
-  color: #000;
+  font-weight: 600;
+  color: #2c3e50;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
 /* hover 효과 */
 .MuiPickersDay-root:hover {
-  background-color: #e6f0ff;
-  transform: scale(1.05);
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
 }
 
 /* 선택된 날짜 */
 .MuiPickersDay-root.Mui-selected {
-  background-color: #007bff !important;
+  background: linear-gradient(135deg, #3498db, #2980b9) !important;
   color: white !important;
   border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+  font-weight: 700;
 }
 
 /* 오늘 날짜 강조 */
 .MuiPickersDay-today {
-  border: 1px solid #007bff !important;
+  border: 2px solid #3498db !important;
+  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+  font-weight: 700;
 }
 
 /* 달력 헤더 (월/년 표시되는 부분) */
 .MuiPickersCalendarHeader-root {
-  background-color: #f5f5f5;
-  padding: 8px;
-  border-radius: 8px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 8px;
 }
 
 /* 화살표 버튼 */
 .MuiPickersArrowSwitcher-root button {
-  color: #007bff;
+  color: #3498db;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
 .MuiPickersArrowSwitcher-root button:hover {
-  background-color: #e6f0ff;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  transform: scale(1.1);
 }
