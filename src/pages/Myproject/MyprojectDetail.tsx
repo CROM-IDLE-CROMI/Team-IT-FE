@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import '../../App.css';
 import ProgressBar from '../../components/ProgressBar';
 
@@ -76,17 +76,20 @@ export default function ProjectDetail() {
     nav('/myproject/edit/${id}');
   };
 
-  // 프로젝트 소개 버튼 클릭시
-  const handleProjectExplain = () => {
-    nav('/myproject/explain/${id}');
-  }
-
   // --- 상태별 UI 렌더링 함수 ---
   // 사이드바 메뉴를 상태에 따라 다르게 렌더링
   const renderSidebarNav = () => {
     if (!project) return null;
     let statusText = '';
     let navItems: string[] = [];
+
+    // URL 경로를 쉽게 관리하기 위한 맵
+    const pathMap: { [key: string]: string } = {
+      '프로젝트 소개': `/myproject/${id}/explain`,
+      '멤버': `/myproject/${id}/members`,
+      '마일스톤 기능': `/myproject/${id}/milestones`,
+      '지원서 보기': `/myproject/${id}/applications`,
+    };
 
     switch (project.status) {
       case 'ONGOING':
@@ -108,7 +111,11 @@ export default function ProjectDetail() {
         <h2>{project.title}</h2>
         <span className={`status-badge status-${project.status.toLowerCase()}`}>{statusText}</span>
         <ul>
-          {navItems.map(item => <li key={item}>{item}</li>)}
+          {navItems.map(item => (
+            <li key={item}>
+              <Link to={pathMap[item] || '#'}>{item}</Link>
+            </li>
+          ))}
         </ul>
       </nav>
     );
