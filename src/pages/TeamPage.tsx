@@ -1,3 +1,6 @@
+/*===================================================================================
+=====================TeamPage.tsx====================================================
+====================================================================================*/
 import { useRef, useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import ApplicantInfo from './TeamFormDetail/ApplicantInfo';
@@ -10,6 +13,7 @@ import DraftList from "../components/TemporarySave/DraftList";
 import Header from '../layouts/Header';
 import AuthGuard from '../components/AuthGuard';
 import type { TeamFormData, StepData } from '../types/Draft';
+import "./TeamPage.css";
 
 const TeamPage = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -29,39 +33,63 @@ const TeamPage = () => {
     applicantInfo: {} as StepData,
   });
 
-  const sectionRefs = Array.from({ length: 5 }, () => useRef<HTMLDivElement | null>(null));
+  // ✅ Hook 최상위에서 ref 배열 선언
+  const sectionRefs: React.RefObject<HTMLDivElement | null>[] = [
+  useRef<HTMLDivElement>(null),
+  useRef<HTMLDivElement>(null),
+  useRef<HTMLDivElement>(null),
+  useRef<HTMLDivElement>(null),
+  useRef<HTMLDivElement>(null),
+];
 
+  // IntersectionObserver로 현재 스크롤 섹션 감지
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntry = entries.find((entry) => entry.isIntersecting);
-        if (visibleEntry) {
-          const index = sectionRefs.findIndex(ref => ref.current === visibleEntry.target);
-          if (index !== -1) setCurrentStep(index);
+      (entries: IntersectionObserverEntry[]) => {
+        let mostVisibleIndex = currentStep;
+        let maxRatio = 0;
+
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+            const index = sectionRefs.findIndex(ref => ref.current === entry.target);
+            if (index !== -1) {
+              maxRatio = entry.intersectionRatio;
+              mostVisibleIndex = index;
+            }
+          }
+        });
+
+        if (mostVisibleIndex !== currentStep) {
+          setCurrentStep(mostVisibleIndex);
         }
       },
-      { threshold: 0.5 }
+      { threshold: [0.25, 0.5, 0.75] }
     );
 
     sectionRefs.forEach(ref => ref.current && observer.observe(ref.current));
-    return () => sectionRefs.forEach(ref => ref.current && observer.unobserve(ref.current));
-  }, []);
+    return () => observer.disconnect();
+  }, [sectionRefs, currentStep]);
 
-  const handleStepClick = (index: number) => sectionRefs[index].current?.scrollIntoView({ behavior: 'smooth' });
+  const handleStepClick = (index: number) => {
+    sectionRefs[index].current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
-  const allComplete = basicInfoComplete && projectInfoComplete && situationComplete && workEnvironComplete && applicantInfoComplete;
+  const allComplete =
+    basicInfoComplete &&
+    projectInfoComplete &&
+    situationComplete &&
+    workEnvironComplete &&
+    applicantInfoComplete;
 
   const handleLoadDraft = (data: TeamFormData) => {
     setFormData(data);
-    
-    // 각 단계의 완료 상태를 데이터 내용에 따라 업데이트
+
     const basicInfo = data.basicInfo || {};
     const projectInfo = data.projectInfo || {};
     const situation = data.situation || {};
     const workEnviron = data.workEnviron || {};
     const applicantInfo = data.applicantInfo || {};
-    
-    // BasicInfo 완료 조건: 필수 필드들이 모두 채워져 있는지 확인
+
     setBasicInfoComplete(
       basicInfo.peopleCount?.trim() !== '' &&
       basicInfo.startDate !== '' &&
@@ -70,8 +98,7 @@ const TeamPage = () => {
       basicInfo.selectedJobs?.length > 0 &&
       basicInfo.selectedTechStacks?.length > 0
     );
-    
-    // ProjectInfo 완료 조건
+
     setProjectInfoComplete(
       projectInfo.teamName?.trim() !== '' &&
       projectInfo.playType?.trim() !== '' &&
@@ -80,21 +107,18 @@ const TeamPage = () => {
       projectInfo.projectStartDate !== '' &&
       projectInfo.selectedJobs?.length > 0
     );
-    
-    // Situation 완료 조건
+
     setSituationComplete(
       situation.title?.trim() !== '' &&
       situation.progress?.trim() !== '' &&
       situation.content?.trim() !== ''
     );
-    
-    // WorkEnviron 완료 조건
+
     setWorkEnvironComplete(
       workEnviron.meetingType?.trim() !== '' &&
       workEnviron.locationComplete === true
     );
-    
-    // ApplicantInfo 완료 조건
+
     setApplicantInfoComplete(
       applicantInfo.minRequirement?.trim() !== '' &&
       applicantInfo.questions?.length > 0
@@ -105,10 +129,12 @@ const TeamPage = () => {
     <AuthGuard>
       <Header />
       <div className="container">
+        {/* 사이드바 */}
         <aside className="sidebar_inner">
           <Sidebar currentStep={currentStep} onClickStep={handleStepClick} />
         </aside>
 
+        {/* 메인 섹션 */}
         <main className="scrollArea">
           <section ref={sectionRefs[0]} className="section">
             <BasicInfo
@@ -117,6 +143,7 @@ const TeamPage = () => {
               onCompleteChange={setBasicInfoComplete}
             />
           </section>
+
           <section ref={sectionRefs[1]} className="section">
             <ProjectInfo
               data={formData.projectInfo}
@@ -124,6 +151,7 @@ const TeamPage = () => {
               onCompleteChange={setProjectInfoComplete}
             />
           </section>
+
           <section ref={sectionRefs[2]} className="section">
             <Situation
               data={formData.situation}
@@ -131,6 +159,7 @@ const TeamPage = () => {
               onCompleteChange={setSituationComplete}
             />
           </section>
+
           <section ref={sectionRefs[3]} className="section">
             <WorkEnviron
               data={formData.workEnviron}
@@ -138,6 +167,7 @@ const TeamPage = () => {
               onCompleteChange={setWorkEnvironComplete}
             />
           </section>
+
           <section ref={sectionRefs[4]} className="section">
             <ApplicantInfo
               data={formData.applicantInfo}
@@ -145,7 +175,8 @@ const TeamPage = () => {
               onCompleteChange={setApplicantInfoComplete}
             />
           </section>
-            <button onClick={() => setIsListModalOpen(true)}>임시저장 목록 보기</button>
+
+          <button onClick={() => setIsListModalOpen(true)}>임시저장 목록 보기</button>
 
           {isListModalOpen && (
             <DraftList
@@ -153,14 +184,13 @@ const TeamPage = () => {
               onLoadDraft={handleLoadDraft}
             />
           )}
+
           <Button
             formData={formData}
             setFormData={setFormData}
             currentStep={currentStep}
             disabled={!allComplete}
           />
-
-          
         </main>
       </div>
     </AuthGuard>

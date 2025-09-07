@@ -1,3 +1,6 @@
+import React from 'react';
+import "./Sidebar.css";
+
 interface SidebarProps {
   currentStep: number;
   onClickStep: (index: number) => void;
@@ -11,10 +14,12 @@ const Sidebar = ({ currentStep, onClickStep }: SidebarProps) => {
       {steps.map((step, index) => (
         <div
           key={index}
-          className={`step ${index === currentStep ? 'active' : ''}`}
+          className={`sidebar-item ${index === currentStep ? 'active' : ''}`}
           onClick={() => onClickStep(index)}
         >
+          {/* 원형 아이콘 */}
           <div className="circle" />
+          {/* 단계명 */}
           <span>{step}</span>
         </div>
       ))}
