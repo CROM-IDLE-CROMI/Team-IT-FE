@@ -175,9 +175,6 @@ const TeamPage = () => {
               onCompleteChange={setApplicantInfoComplete}
             />
           </section>
-
-          <button onClick={() => setIsListModalOpen(true)}>임시저장 목록 보기</button>
-
           {isListModalOpen && (
             <DraftList
               onClose={() => setIsListModalOpen(false)}

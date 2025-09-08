@@ -58,7 +58,7 @@ const DateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }: Props
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <div className="formGroup">
         <label>모집 기간</label>
-        <Box className="dateRange" sx={{ display: "flex", alignItems: "center", gap: 1, width: '380px', height: '40px', color: '#000000' }}>
+        <Box className="dateRange" sx={{ display: "flex", alignItems: "center", gap: 1, width: '400px', height: '40px', color: '#000' }}>
           {/* 시작일 */}
           <DatePicker
             label="시작일"
@@ -72,11 +72,27 @@ const DateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }: Props
     textField: {
       size: "small", // compact
       sx: {
-        width: 140,  // 가로폭 줄이기
-        "& .MuiInputBase-input": {
-          padding: "6px 8px", // 내부 여백 줄이기
-          fontSize: "0.8rem", // 글자 크기 줄이기
-        }}}}}
+  width: 140, // 가로폭 줄이기
+  "& .MuiInputBase-input": {
+    padding: "6px 8px", // 내부 여백 줄이기
+    fontSize: "0.8rem", // 글자 크기 줄이기
+    color: "#000", // 글자색 검정
+  },
+  "& .MuiInputLabel-root": {
+    color: "#000", // placeholder/label 색상
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#000", // 기본 테두리 검정
+    },
+    "&:hover fieldset": {
+      borderColor: "#000", // hover 시 검정
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#000", // focus 시 검정
+    },
+  },
+}}}}
           />
 
           <span> ~ </span>
@@ -93,11 +109,27 @@ const DateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }: Props
     textField: {
       size: "small", // compact
       sx: {
-        width: 140,  // 가로폭 줄이기
-        "& .MuiInputBase-input": {
-          padding: "6px 8px", // 내부 여백 줄이기
-          fontSize: "0.8rem", // 글자 크기 줄이기
-        }}}}}
+  width: 140, // 가로폭 줄이기
+  "& .MuiInputBase-input": {
+    padding: "6px 8px", // 내부 여백 줄이기
+    fontSize: "0.8rem", // 글자 크기 줄이기
+    color: "#000", // 글자색 검정
+  },
+  "& .MuiInputLabel-root": {
+    color: "#000", // placeholder/label 색상
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#000", // 기본 테두리 검정
+    },
+    "&:hover fieldset": {
+      borderColor: "#000", // hover 시 검정
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#000", // focus 시 검정
+    },
+  },
+}}}}
           />
         </Box>
       </div>

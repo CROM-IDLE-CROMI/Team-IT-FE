@@ -12,6 +12,7 @@ type BoardPageProps = {
 const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
   const navigate = useNavigate();
   const [category, setCategory] = useState<Category>("시사&정보");
+  const [searchTerm, setSearchTerm] = useState("");
   const [pageByCategory, setPageByCategory] = useState<Record<Category, number>>({
     "시사&정보": 1,
     "질문": 1,
@@ -20,14 +21,34 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
 
   const postsPerPage = 5;
   const currentPage = pageByCategory[category];
-  const posts = postsByCategory[category];
-  const totalPages = Math.ceil(posts.length / postsPerPage);
+  
+  // 검색 기능을 포함한 게시글 필터링
+  const allPosts = postsByCategory[category];
+  const filteredPosts = allPosts.filter(post => 
+    post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post.author.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
   const startIndex = (currentPage - 1) * postsPerPage;
-  const currentPosts = posts.slice(startIndex, startIndex + postsPerPage);
+  const currentPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
 
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
     setPageByCategory(prev => ({ ...prev, [category]: newPage }));
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    // 검색 시 첫 페이지로 이동
+    setPageByCategory(prev => ({ ...prev, [category]: 1 }));
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    // 검색어 변경 시 첫 페이지로 이동
+    setPageByCategory(prev => ({ ...prev, [category]: 1 }));
   };
 
   return (
@@ -35,7 +56,7 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
       <Header/>
       <h2>{category} 게시판</h2>
 
-      {/* 카테고리 탭 */}
+      {/* 카테고리 탭과 검색 */}
         <div className="board-button">
       <div className="board-tabs">
         {(["시사&정보","질문","홍보"] as Category[]).map(cat => (
@@ -48,11 +69,38 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
           </button>
         ))}
       </div>
+      
+      {/* 검색 기능 */}
+      <div className="board-search">
+        <form onSubmit={handleSearch} className="search-form">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="제목, 내용, 작성자로 검색..."
+            className="search-input"
+          />
+          <button type="submit" className="search-btn">
+            🔍
+          </button>
+        </form>
+      </div>
+      
       {/* 글 작성 버튼 */}
       <div className="board-actions">
         <button onClick={() => requireAuth(() => navigate("/BoardWrite"))}>✍️ 글 작성하기</button>
       </div>
           </div>
+      {/* 검색 결과 정보 */}
+      {searchTerm && (
+        <div className="search-results">
+          <p>
+            "{searchTerm}" 검색 결과: {filteredPosts.length}개 게시글
+            {filteredPosts.length === 0 && " (검색 결과가 없습니다)"}
+          </p>
+        </div>
+      )}
+
       {/* 게시글 리스트 */}
       <div className="board-section">
       <div className="board-list">

@@ -8,6 +8,7 @@
   overflow: hidden;
   justify-content: center;
   padding-left: 7vw;
+  background: linear-gradient(135deg, #b5eaff 0%,  #f2fdff 100%);
 }
 
 .sidebar_inner {
