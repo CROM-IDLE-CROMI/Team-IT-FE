@@ -14,6 +14,7 @@ import type { Post, Category } from './pages/BoardPage/DummyPosts';
 import { dummyPosts } from './pages/BoardPage/DummyPosts';
 import Mypage from './pages/MyPage/Mypage';
 import ProjectApply from './components/ProjectPageDetail/ProjectApply';
+import MyProject from './pages/MyProject';
 
 function App() {
   const [postsByCategory, setPostsByCategory] = useState<Record<Category, Post[]>>(dummyPosts);
@@ -48,6 +49,7 @@ function App() {
           element={<BoardDetail postsByCategory={postsByCategory} />}
         />
         <Route path="/Mypage" element={<Mypage/>}/>
+        <Route path="/Myproject" element={<MyProject/>}/>
       </Routes>
     </BrowserRouter>
   );

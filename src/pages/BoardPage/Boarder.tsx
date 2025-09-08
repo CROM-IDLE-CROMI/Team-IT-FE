@@ -91,15 +91,6 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
         <button onClick={() => requireAuth(() => navigate("/BoardWrite"))}>✍️ 글 작성하기</button>
       </div>
           </div>
-      {/* 검색 결과 정보 */}
-      {searchTerm && (
-        <div className="search-results">
-          <p>
-            "{searchTerm}" 검색 결과: {filteredPosts.length}개 게시글
-            {filteredPosts.length === 0 && " (검색 결과가 없습니다)"}
-          </p>
-        </div>
-      )}
 
       {/* 게시글 리스트 */}
       <div className="board-section">
