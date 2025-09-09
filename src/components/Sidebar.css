@@ -14,11 +14,11 @@
   bottom: 0;
   left: 28px;
   width: 4px;
-  background: linear-gradient(135deg, #e1e8ed, #bdc3c7);
+  background: #fff; 
+  box-shadow: none; 
   border-radius: 2px;
   z-index: 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  animation: lineGlow 3s ease-in-out infinite;
+  animation: lineGlow 3s ease-in-out infinite
 }
 .sidebar-item {
   display: flex;
@@ -28,7 +28,6 @@
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.3s ease;
-  color: #000;
 }
 
 .sidebar-item:hover {
@@ -45,12 +44,12 @@
 }
 
 .circle {
-  width: 20px;
-  height: 20px;
-  background: linear-gradient(135deg, #bdc3c7, #95a5a6);
+  width: 23px;
+  height: 23px;
+  background: #fff;   /* 회색 그라데이션 → 흰색 */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   border-radius: 50%;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   position: relative;
 }
 
@@ -71,7 +70,6 @@
   transform: translate(-50%, -50%);
   width: 8px;
   height: 8px;
-  background: white;
   border-radius: 50%;
   animation: innerPulse 1.5s ease-in-out infinite;
 }
