@@ -230,61 +230,6 @@ html, body {
   align-items: center;
 }
 
-/*===================================================================================
-=====================MyProject.tsx=================================================
-====================================================================================*/
-.my-project-container {
-  padding: 2rem;
-  font-family: sans-serif;
-}
-
-.project-section {
-  margin-top: 2rem;
-}
-
-.project-section h2 {
-  font-size: 24px;
-  margin-bottom: 1rem;
-}
-
-.project-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.project-table th,
-.project-table td {
-  padding: 12px;
-  border: 1px solid #ccc;
-  text-align: center;
-}
-
-.status {
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-weight: bold;
-}
-
-.status.ongoing {
-  background-color: #d4f4dd;
-  color: #2d7a46;
-}
-
-.status.recruiting {
-  background-color: #e6e6e6;
-  color: #666;
-}
-
-.project-link {
-  color: #2c5ce5;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.project-link:hover {
-  text-decoration: underline;
-}
-
 
 /*===================================================================================
 =====================ProjectPage.tsx=================================================
