@@ -8,6 +8,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Box } from "@mui/material";
 import "../../App.css";
+import "../../TeamPageDetail.css";
 
 type OptionType = {
   value: string;
@@ -213,7 +214,16 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
      <LocalizationProvider dateAdapter={AdapterDateFns}>
       <div className="formGroup">
         <label>진행 예상 기간</label>
-        <Box className="dateRange" sx={{ display: "flex", alignItems: "center", gap: 1, width: '380px', color: '#000'   }}>
+        <Box className="dateRange" sx={{ 
+          display: "flex", 
+          alignItems: "center", 
+          gap: 2, 
+          width: '100%', 
+          maxWidth: '400px',
+          padding: '0.5rem',
+          borderRadius: '12px',
+          transition: 'all 0.3s ease'
+        }}>
           <DatePicker
             label="시작일"
             value={startDate}
@@ -223,100 +233,147 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
                 setEndDate(null); // 시작일 이후로 종료일 자동 리셋
               }
             }}
+            format="yyyy/MM/dd"
             slotProps={{
-                textField: {
-      size: "small", // compact
-      sx: {
-  width: 140, // 가로폭 줄이기
-  "& .MuiInputBase-input": {
-    padding: "6px 8px", // 내부 여백 줄이기
-    fontSize: "0.8rem", // 글자 크기 줄이기
-    color: "#000", // 글자색 검정
-  },
-  "& .MuiInputLabel-root": {
-    color: "#000", // placeholder/label 색상
-  },
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "#000", // 기본 테두리 검정
-    },
-    "&:hover fieldset": {
-      borderColor: "#000", // hover 시 검정
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "#000", // focus 시 검정
-    },
-  },
-}}}}
+              textField: {
+                size: "small",
+                sx: {
+                  width: 160,
+                  "& .MuiInputBase-input": {
+                    padding: "8px 12px",
+                    fontSize: "0.9rem",
+                    color: "#333",
+                    background: 'transparent'
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#666",
+                    fontSize: "0.85rem",
+                    "&.Mui-focused": {
+                      color: "#ff9800"
+                    }
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#ddd",
+                      borderWidth: "1px"
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#ff9800"
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#ff9800"
+                    }
+                  }
+                }
+              }
+            }}
           />
-          <span> ~ </span>
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            width: '35px',
+            height: '35px',
+            borderRadius: '50%',
+            color: 'black',
+            fontWeight: 'bold',
+            fontSize: '1.5rem',
+          }}>
+            ~
+          </Box>
           <DatePicker
             label="종료일"
             value={endDate}
             minDate={startDate ?? undefined}
             onChange={(newValue) => setEndDate(newValue)}
+            format="yyyy/MM/dd"
             slotProps={{
-               textField: {
-      size: "small", // compact
-      sx: {
-  width: 140, // 가로폭 줄이기
-  "& .MuiInputBase-input": {
-    padding: "6px 8px", // 내부 여백 줄이기
-    fontSize: "0.8rem", // 글자 크기 줄이기
-    color: "#000", // 글자색 검정
-  },
-  "& .MuiInputLabel-root": {
-    color: "#000", // placeholder/label 색상
-  },
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "#000", // 기본 테두리 검정
-    },
-    "&:hover fieldset": {
-      borderColor: "#000", // hover 시 검정
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "#000", // focus 시 검정
-    },
-  },
-}}}}
+              textField: {
+                size: "small",
+                sx: {
+                  width: 160,
+                  "& .MuiInputBase-input": {
+                    padding: "8px 12px",
+                    fontSize: "0.9rem",
+                    color: "#333",
+                    background: 'transparent'
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#666",
+                    fontSize: "0.85rem",
+                    "&.Mui-focused": {
+                      color: "#ff9800"
+                    }
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#ddd",
+                      borderWidth: "1px"
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#ff9800"
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#ff9800"
+                    }
+                  }
+                }
+              }
+            }}
           />
         </Box>
       </div>
 
       <div className="formGroup">
         <label>프로젝트 시작 예상일</label>
-        <Box className="dateRange" sx={{ display: "flex", alignItems: "center", width: '330px', color: '#000'}}>
-        <DatePicker
-          label="예상 시작일"
-          value={projectStartDate}
-          onChange={(newValue) => setProjectStartDate(newValue)}
-          slotProps={{
-             textField: {
-      size: "small", // compact
-      sx: {
-  width: 140, // 가로폭 줄이기
-  "& .MuiInputBase-input": {
-    padding: "6px 8px", // 내부 여백 줄이기
-    fontSize: "0.8rem", // 글자 크기 줄이기
-    color: "#000", // 글자색 검정
-  },
-  "& .MuiInputLabel-root": {
-    color: "#000", // placeholder/label 색상
-  },
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "#000", // 기본 테두리 검정
-    },
-    "&:hover fieldset": {
-      borderColor: "#000", // hover 시 검정
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "#000", // focus 시 검정
-    },
-  },
-}}}}
-        />
+        <Box className="dateRange" sx={{ 
+          display: "flex", 
+          alignItems: "center", 
+          width: '100%', 
+          maxWidth: '400px',
+          padding: '0.5rem',
+          borderRadius: '12px',
+          transition: 'all 0.3s ease'
+        }}>
+          <DatePicker
+            label="예상 시작일"
+            value={projectStartDate}
+            onChange={(newValue) => setProjectStartDate(newValue)}
+            format="yyyy/MM/dd"
+            slotProps={{
+              textField: {
+                size: "small",
+                sx: {
+                  width: 200,
+                  "& .MuiInputBase-input": {
+                    padding: "8px 12px",
+                    fontSize: "0.9rem",
+                    color: "#333",
+                    background: 'transparent'
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#666",
+                    fontSize: "0.85rem",
+                    "&.Mui-focused": {
+                      color: "#4caf50"
+                    }
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#ddd",
+                      borderWidth: "1px"
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#4caf50"
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#4caf50"
+                    }
+                  }
+                }
+              }
+            }}
+          />
         </Box>
       </div>
     </LocalizationProvider>

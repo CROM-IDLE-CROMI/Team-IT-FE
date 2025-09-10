@@ -5,6 +5,7 @@ import type { TechStackType } from '../../styles/TechStack';
 import { techStacksInit } from '../../styles/TechStack';
 import './BasicInfo.css'
 import '../../App.css';
+import '../../TeamPageDetail.css';
 import TechStackList from '../../components/TechStackList';
 import type { StepData } from "../../types/Draft";
 import type { Dispatch, SetStateAction } from "react";
@@ -58,7 +59,16 @@ const DateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }: Props
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <div className="formGroup">
         <label>모집 기간</label>
-        <Box className="dateRange" sx={{ display: "flex", alignItems: "center", gap: 1, width: '400px', height: '40px', color: '#000' }}>
+        <Box className="dateRange" sx={{ 
+          display: "flex", 
+          alignItems: "center", 
+          gap: 2, 
+          width: '100%', 
+          maxWidth: '400px',
+          padding: '0.5rem',
+          borderRadius: '12px',
+          transition: 'all 0.3s ease'
+        }}>
           {/* 시작일 */}
           <DatePicker
             label="시작일"
@@ -68,34 +78,55 @@ const DateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }: Props
               setStartDate(newValue);
               setEndDate(null);
             }}
+            format="yyyy/MM/dd"
             slotProps={{
     textField: {
-      size: "small", // compact
+                size: "small",
       sx: {
-  width: 140, // 가로폭 줄이기
-  "& .MuiInputBase-input": {
-    padding: "6px 8px", // 내부 여백 줄이기
-    fontSize: "0.8rem", // 글자 크기 줄이기
-    color: "#000", // 글자색 검정
-  },
-  "& .MuiInputLabel-root": {
-    color: "#000", // placeholder/label 색상
-  },
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "#000", // 기본 테두리 검정
-    },
-    "&:hover fieldset": {
-      borderColor: "#000", // hover 시 검정
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "#000", // focus 시 검정
-    },
-  },
-}}}}
+                  width: 180,
+        "& .MuiInputBase-input": {
+                    padding: "8px 12px",
+                    fontSize: "0.9rem",
+                    color: "#333",
+                    background: 'transparent'
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#666",
+                    fontSize: "0.85rem",
+                    "&.Mui-focused": {
+                      color: "#1E63EC"
+                    }
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#ddd",
+                      borderWidth: "1px"
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#1E63EC"
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#1E63EC"
+                    }
+                  }
+                }
+              }
+            }}
           />
 
-          <span> ~ </span>
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            width: '35px',
+            height: '35px',
+            borderRadius: '50%',
+            color: 'black',
+            fontWeight: 'bold',
+            fontSize: '1.5rem',
+          }}>
+            ~
+          </Box>
 
           {/* 종료일 */}
           <DatePicker
@@ -107,29 +138,41 @@ const DateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }: Props
             disabled={!startDate}
             slotProps={{
     textField: {
-      size: "small", // compact
+                size: "small",
       sx: {
-  width: 140, // 가로폭 줄이기
-  "& .MuiInputBase-input": {
-    padding: "6px 8px", // 내부 여백 줄이기
-    fontSize: "0.8rem", // 글자 크기 줄이기
-    color: "#000", // 글자색 검정
-  },
-  "& .MuiInputLabel-root": {
-    color: "#000", // placeholder/label 색상
-  },
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "#000", // 기본 테두리 검정
-    },
-    "&:hover fieldset": {
-      borderColor: "#000", // hover 시 검정
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "#000", // focus 시 검정
-    },
-  },
-}}}}
+                  width: 180,
+                  "& .MuiInputBase-input": {
+                    padding: "8px 12px",
+                    fontSize: "0.9rem",
+                    color: "#333",
+                    background: 'transparent',
+                    "&:disabled": {
+                      background: 'transparent',
+                      color: '#999'
+                    }
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#666",
+                    fontSize: "0.85rem",
+                    "&.Mui-focused": {
+                      color: "#1E63EC"
+                    }
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#ddd",
+                      borderWidth: "1px"
+                    },
+                    "&:hover fieldset": {
+                      borderColor: startDate ? "#1E63EC" : "#ddd"
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#1E63EC"
+                    }
+                  }
+                }
+              }
+            }}
           />
         </Box>
       </div>
@@ -328,7 +371,7 @@ const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
         )}
       </div>
 
-      <div className="formGroup">
+      <div className="formGroup_3">
         <label>기술 스택</label>
         <button
           type="button"

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 type LocationSelectorProps = {
   onCompleteChange: React.Dispatch<React.SetStateAction<boolean>>;
+  onLocationSelect?: (locations: string[]) => void;
 };
 
 const regionData: { [key: string]: string[] } = {
@@ -24,7 +25,7 @@ const regionData: { [key: string]: string[] } = {
   제주특별자치도: ['제주시', '서귀포시'],
 };
 
-const LocationSelector = ({ onCompleteChange }: LocationSelectorProps) => {
+const LocationSelector = ({ onCompleteChange, onLocationSelect }: LocationSelectorProps) => {
   const [selectedRegion, setSelectedRegion] = useState('서울특별시');
   const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
   const allSelected = selectedDistricts.length === regionData[selectedRegion].length;
@@ -50,7 +51,13 @@ const LocationSelector = ({ onCompleteChange }: LocationSelectorProps) => {
 
   useEffect(() => {
     onCompleteChange(selectedDistricts.length > 0);
-  }, [selectedDistricts, onCompleteChange]);
+    if (onLocationSelect) {
+      const locations = allSelected 
+        ? [`${selectedRegion} 전체`]
+        : selectedDistricts.map(district => `${selectedRegion} ${district}`);
+      onLocationSelect(locations);
+    }
+  }, [selectedDistricts, selectedRegion, allSelected, onCompleteChange, onLocationSelect]);
 
   return (
     <div className="locationSelector">

@@ -1,36 +1,35 @@
 
-.formGroup label {
+/* 공통 스타일은 TeamPage.css에서 import */
+
+.formGroup_3{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border: 1px solid #e1e8ed;
+  border-radius: 4px;
+  padding: 0.6rem 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 600px;
+  min-height: 40px;
+  height: 40px;
+}
+
+.formGroup_3 label {
   flex: 1;
   font-weight: 600;
   color: #2c3e50;
-  font-size: 1rem;
-  margin-right: 1rem;
-}
-
-.formGroup input,
-.formGroup select {
-  flex: 2;
-  padding: 0.75rem 1rem;
-  border: 2px solid #e1e8ed;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: #fff;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.formGroup input:focus,
-.formGroup select:focus {
-  outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-  transform: translateY(-1px);
+  font-size: 0.9rem;
+  margin-right: 0.8rem;
 }
 
 .select__menu {
   position: absolute;
   width: 300px;
-  max-height: 150px;
+  max-height: 100px;
   z-index: 9999;
   overflow-y: auto;
 }
@@ -73,8 +72,8 @@
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-  width: 420px;
-  max-height: 200px;
+  width: 400px;
+  max-height: 150px;
   overflow-y: auto;
   bottom: 120px;
   left: 4%;
@@ -82,16 +81,7 @@
   animation: slideInUp 0.3s ease-out;
 }
 
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* 애니메이션은 TeamPage.css에서 import */
 
 .techStackTabs {
   display: flex;
@@ -171,7 +161,7 @@
 /* 달력 날짜 기본 */
 .MuiPickersDay-root {
   font-weight: 600;
-  color: #2c3e50;
+  color: #000000;
   border-radius: 8px;
   transition: all 0.2s ease;
 }
@@ -217,4 +207,21 @@
 .MuiPickersArrowSwitcher-root button:hover {
   background: linear-gradient(135deg, #e3f2fd, #bbdefb);
   transform: scale(1.1);
+}
+
+.MuiSvgIcon-root {
+  font-size: 14px;
+}
+
+/* 중앙 정렬 */
+.datepicker-wrapper {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+}
+
+.dateRange{
+  display: flex;
+  align-items: end;
+  justify-content: end;
 }

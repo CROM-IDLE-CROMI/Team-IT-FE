@@ -121,9 +121,3 @@ export function deleteDraft(id: string): Draft[] {
 export function clearDrafts() {
   removeItemSafe(KEY);
 }
-
-/**
- * 다른 탭에서 변경되었을 때 감지하려면 window의 "storage" 이벤트를 사용하세요.
- *   window.addEventListener("storage", (e) => { if (e.key === KEY) { ... } });
- * 이 유틸은 순수 데이터 계층만 담당합니다.
- */

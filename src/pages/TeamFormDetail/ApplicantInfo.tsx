@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import type { StepData } from "../../types/Draft";
 import "./ApplicantInfo.css";
+import "../../TeamPageDetail.css";
 
 interface ApplicantInfoProps {
   data: StepData;

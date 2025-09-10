@@ -1,9 +1,10 @@
-import Select from 'react-select';
-import type { MultiValue, ActionMeta } from 'react-select';
+// import Select from 'react-select';
+// import type { MultiValue, ActionMeta } from 'react-select';
 import { useState, useEffect, useCallback } from 'react';
 import '../../App.css';
 import type { StepData } from "../../types/Draft";
-import "./Situation.css"
+import "./Situation.css";
+import "../../TeamPageDetail.css";
 
 type OptionType = {
   value: string;
@@ -40,12 +41,12 @@ const Situation = ({ data, setData, onCompleteChange }: SituationProps) => {
     if (data.otherText !== undefined) setOtherText(data.otherText || '');
   }, [data.title, data.progress, data.customProgress, data.content, data.otherText]);
 
-  const handleOtherTextChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    const value = e.target.value;
-    if (value.length <= 500) {
-      setOtherText(value);
-    }
-  };
+  // const handleOtherTextChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  //   const value = e.target.value;
+  //   if (value.length <= 500) {
+  //     setOtherText(value);
+  //   }
+  // };
 
   const handleProgressChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;

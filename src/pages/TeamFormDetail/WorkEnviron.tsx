@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import "../../App.css";
 import type { StepData } from "../../types/Draft";
 import "./WorkEnviron.css";
+import "../../TeamPageDetail.css";
 
 interface WorkEnvironProps {
   data: StepData;
@@ -14,6 +15,7 @@ const WorkEnviron: React.FC<WorkEnvironProps> = ({ data, setData, onCompleteChan
   const [meetingType, setMeetingType] = useState(data.meetingType || "");
   const [showSelector, setShowSelector] = useState(false);
   const [locationComplete, setLocationComplete] = useState(!!data.locationComplete);
+  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
 
   // data prop이 변경될 때 state 업데이트 (실제 값이 변경되었을 때만)
   useEffect(() => {
@@ -25,6 +27,11 @@ const WorkEnviron: React.FC<WorkEnvironProps> = ({ data, setData, onCompleteChan
   const memoizedSetData = useCallback((newData: StepData) => {
     setData(newData);
   }, [setData]);
+
+  // 위치 선택 핸들러
+  const handleLocationSelect = (locations: string[]) => {
+    setSelectedLocations(locations);
+  };
 
   // 상태가 바뀔 때 formData 동기화 (디바운싱 적용)
   useEffect(() => {
@@ -69,7 +76,23 @@ const WorkEnviron: React.FC<WorkEnvironProps> = ({ data, setData, onCompleteChan
 
         {showSelector && (
           <div className="locationPopup">
-            <LocationSelector onCompleteChange={setLocationComplete} />
+            <LocationSelector 
+              onCompleteChange={setLocationComplete} 
+              onLocationSelect={handleLocationSelect}
+            />
+          </div>
+        )}
+
+        {/* 선택된 위치 정보 표시 */}
+        {selectedLocations.length > 0 && (
+          <div className="selectedLocations">
+            <div className="locationDisplay">
+              {selectedLocations.map((location, index) => (
+                <span key={index} className="locationTag">
+                  {location}
+                </span>
+              ))}
+            </div>
           </div>
         )}
       </div>
