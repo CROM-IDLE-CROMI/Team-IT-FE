@@ -30,9 +30,10 @@ type ButtonProps = {
   >;
   currentStep: number;
   disabled: boolean;
+  onLoadDraft: (data: any) => void;
 };
 
-const Button = ({ formData, currentStep, disabled, setFormData }: ButtonProps) => {
+const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: ButtonProps) => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isListModalOpen, setIsListModalOpen] = useState(false);
@@ -86,7 +87,7 @@ const Button = ({ formData, currentStep, disabled, setFormData }: ButtonProps) =
         <DraftList
           onClose={() => setIsListModalOpen(false)}
           onLoadDraft={(data) => {
-            setFormData(data); // 선택한 Draft 데이터를 폼에 적용
+            onLoadDraft(data); // TeamPage의 handleLoadDraft 함수 사용
             setIsListModalOpen(false); // 불러온 후 팝업 닫기
           }}
         />

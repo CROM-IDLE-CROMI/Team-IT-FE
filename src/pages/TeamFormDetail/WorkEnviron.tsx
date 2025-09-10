@@ -1,63 +1,85 @@
 import LocationSelector from "../../components/LocationSelector";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import "../../App.css";
-import type { StepData } from "../../types/Draft";
 import "./WorkEnviron.css";
 import "../../TeamPageDetail.css";
 
 interface WorkEnvironProps {
-  data: StepData;
-  setData: (data: StepData) => void;
+  data: any;
+  setData: (data: any) => void;
   onCompleteChange: (complete: boolean) => void;
 }
 
 const WorkEnviron: React.FC<WorkEnvironProps> = ({ data, setData, onCompleteChange }) => {
-  const [meetingType, setMeetingType] = useState(data.meetingType || "");
-  const [showSelector, setShowSelector] = useState(false);
-  const [locationComplete, setLocationComplete] = useState(!!data.locationComplete);
+  const [meetingType, setMeetingType] = useState("");
+  const [locationComplete, setLocationComplete] = useState(false);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const [selectedRegion, setSelectedRegion] = useState("서울특별시");
+  const [showSelector, setShowSelector] = useState(false);
+  
+  const prevDataRef = useRef(data);
 
-  // data prop이 변경될 때 state 업데이트 (실제 값이 변경되었을 때만)
+  // ✅ data 변경 시 상태 동기화 (실제로 데이터가 변경되었을 때만)
   useEffect(() => {
-    if (data.meetingType !== undefined) setMeetingType(data.meetingType || "");
-    if (data.locationComplete !== undefined) setLocationComplete(!!data.locationComplete);
-  }, [data.meetingType, data.locationComplete]);
+    const prevData = prevDataRef.current;
+    const hasDataChanged = 
+      prevData.meetingType !== data.meetingType ||
+      prevData.locationComplete !== data.locationComplete ||
+      JSON.stringify(prevData.selectedLocations) !== JSON.stringify(data.selectedLocations) ||
+      prevData.selectedRegion !== data.selectedRegion;
 
-  // setData 함수를 메모이제이션
-  const memoizedSetData = useCallback((newData: StepData) => {
-    setData(newData);
-  }, [setData]);
+    if (hasDataChanged) {
+      setMeetingType(data.meetingType || "");
+      setLocationComplete(!!data.locationComplete);
+      setSelectedLocations(data.selectedLocations || []);
+      setSelectedRegion(data.selectedRegion || "서울특별시");
+      prevDataRef.current = data;
+    }
+  }, [data]);
 
-  // 위치 선택 핸들러
-  const handleLocationSelect = (locations: string[]) => {
-    setSelectedLocations(locations);
+  const memoizedSetData = useCallback(
+    (newData: any) => setData(newData),
+    [setData]
+  );
+
+  const handleMeetingTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setMeetingType(e.target.value);
   };
 
-  // 상태가 바뀔 때 formData 동기화 (디바운싱 적용)
+  const handleLocationSelect = useCallback((locations: string[]) => {
+    setSelectedLocations(locations);
+  }, []);
+
+  const handleRegionSelect = useCallback((region: string) => {
+    setSelectedRegion(region);
+  }, []);
+
+  // 상태 변경 시 상위 데이터 업데이트 (디바운싱 적용)
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       memoizedSetData({
         meetingType,
         locationComplete,
+        selectedLocations,
+        selectedRegion,
       });
-    }, 300); // 300ms 디바운싱
+    }, 100); // 100ms 디바운싱
 
     return () => clearTimeout(timeoutId);
-  }, [meetingType, locationComplete, memoizedSetData]);
+  }, [meetingType, locationComplete, selectedLocations, selectedRegion, memoizedSetData]);
 
-  // 완료 체크
+  // 완료 여부 체크
   useEffect(() => {
     onCompleteChange(meetingType !== "" && locationComplete);
   }, [meetingType, locationComplete, onCompleteChange]);
+
+  const toggleSelector = () => setShowSelector((prev) => !prev);
 
   return (
     <div className="formContainer">
       <div className="formGroup">
         <label>회의 방식</label>
-        <select
-          value={meetingType}
-          onChange={(e) => setMeetingType(e.target.value)}
-        >
+        <select value={meetingType} onChange={handleMeetingTypeChange}>
           <option value="">선택</option>
           <option value="온라인">온라인</option>
           <option value="오프라인">오프라인</option>
@@ -67,34 +89,34 @@ const WorkEnviron: React.FC<WorkEnvironProps> = ({ data, setData, onCompleteChan
 
       <div className="formGroup locationWrapper">
         <label>위치</label>
-        <button
-          className="button_1"
-          onClick={() => setShowSelector((prev) => !prev)}
-        >
+        <button className="button_1" onClick={toggleSelector}>
           {showSelector ? "숨기기" : "선택하기"}
         </button>
 
         {showSelector && (
           <div className="locationPopup">
-            <LocationSelector 
-              onCompleteChange={setLocationComplete} 
+            <LocationSelector
+              selectedRegion={selectedRegion}
+              selectedLocations={selectedLocations}
+              onRegionSelect={handleRegionSelect}
               onLocationSelect={handleLocationSelect}
+              onCompleteChange={setLocationComplete}
             />
           </div>
         )}
 
-        {/* 선택된 위치 정보 표시 */}
-        {selectedLocations.length > 0 && (
-          <div className="selectedLocations">
-            <div className="locationDisplay">
-              {selectedLocations.map((location, index) => (
-                <span key={index} className="locationTag">
-                  {location}
-                </span>
-              ))}
-            </div>
+        {/* 선택된 위치 박스 */}
+        <div className="selectedLocations">
+          <div className="locationDisplay">
+            {selectedLocations.length > 0 ? (
+              selectedLocations.map((location, index) => (
+                <span key={index} className="locationTag">{location}</span>
+              ))
+            ) : (
+              <span className="locationPlaceholder">선택된 위치가 없습니다.</span>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

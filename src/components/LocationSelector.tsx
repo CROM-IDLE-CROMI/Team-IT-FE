@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 type LocationSelectorProps = {
   onCompleteChange: React.Dispatch<React.SetStateAction<boolean>>;
   onLocationSelect?: (locations: string[]) => void;
+  onRegionSelect?: (region: string) => void;
+  selectedRegion?: string;
+  selectedLocations?: string[];
 };
 
 const regionData: { [key: string]: string[] } = {
@@ -25,9 +28,9 @@ const regionData: { [key: string]: string[] } = {
   제주특별자치도: ['제주시', '서귀포시'],
 };
 
-const LocationSelector = ({ onCompleteChange, onLocationSelect }: LocationSelectorProps) => {
-  const [selectedRegion, setSelectedRegion] = useState('서울특별시');
-  const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
+const LocationSelector = ({ onCompleteChange, onLocationSelect, onRegionSelect, selectedRegion: initialRegion, selectedLocations: initialLocations }: LocationSelectorProps) => {
+  const [selectedRegion, setSelectedRegion] = useState(initialRegion || '서울특별시');
+  const [selectedDistricts, setSelectedDistricts] = useState<string[]>(initialLocations || []);
   const allSelected = selectedDistricts.length === regionData[selectedRegion].length;
 
   const handleAllToggle = () => {
@@ -49,6 +52,7 @@ const LocationSelector = ({ onCompleteChange, onLocationSelect }: LocationSelect
     }
   };
 
+
   useEffect(() => {
     onCompleteChange(selectedDistricts.length > 0);
     if (onLocationSelect) {
@@ -69,6 +73,9 @@ const LocationSelector = ({ onCompleteChange, onLocationSelect }: LocationSelect
             onClick={() => {
               setSelectedRegion(region);
               setSelectedDistricts([]);
+              if (onRegionSelect) {
+                onRegionSelect(region);
+              }
             }}
           >
             {region}

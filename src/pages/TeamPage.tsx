@@ -116,7 +116,8 @@ const TeamPage = () => {
 
     setWorkEnvironComplete(
       workEnviron.meetingType?.trim() !== '' &&
-      workEnviron.locationComplete === true
+      workEnviron.locationComplete === true &&
+      workEnviron.selectedLocations?.length > 0
     );
 
     setApplicantInfoComplete(
@@ -187,6 +188,7 @@ const TeamPage = () => {
             setFormData={setFormData}
             currentStep={currentStep}
             disabled={!allComplete}
+            onLoadDraft={handleLoadDraft}
           />
         </main>
       </div>
