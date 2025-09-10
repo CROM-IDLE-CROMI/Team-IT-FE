@@ -1,6 +1,6 @@
 
 .draftListContainer {
-  max-width: 600px;
+  max-width: 1000px;
   margin: 2rem auto;
   padding: 1.5rem;
   background: #fff;
@@ -8,11 +8,22 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.draftListContainer h2 {
+.draftListContainer h3 {
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1rem;
   text-align: center;
+  color: #333;
+}
+
+.draftListContainer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.draftListContainer li {
+  list-style: none;
 }
 
 .draft-item {
@@ -29,34 +40,63 @@
   cursor: pointer;
 }
 
-/* Draft 제목 */
-.draft-item h4 {
-  font-weight: 500;
+/* Draft 정보 영역 */
+.draft-info {
   flex: 1;
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-/* 날짜 */
-.draft-item p {
+.draft-info strong {
+  font-weight: 500;
+  font-size: 1rem;
+  color: #333;
+}
+
+.draft-date {
   font-size: 0.9rem;
   color: #888;
-  margin: 0 1rem 0 0;
-  white-space: nowrap;
+}
+
+/* 버튼 그룹 */
+.buttonGroup {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 /* 불러오기 버튼 */
-.draft-item button {
-  background: #4f46e5;
+.loadBtn {
+  background: #1E63EC;
   color: #fff;
   border: none;
   padding: 0.4rem 0.8rem;
   border-radius: 6px;
   font-size: 0.85rem;
   transition: background 0.2s;
+  cursor: pointer;
 }
 
-.draft-item button:hover {
-  background: #4338ca;
+.loadBtn:hover {
+  background: #493ae9;
+  transition: transform 0.2s;
+}
+
+/* 삭제 버튼 */
+.deleteBtn {
+  background: #dc2626;
+  color: #fff;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.deleteBtn:hover {
+  background: #b91c1c;
 }
 
 /* 기존 화면 위에 나타나는 팝업 */
@@ -77,8 +117,15 @@
   background-color: white;
   padding: 16px;
   border-radius: 8px;
-  width: 350px;
+  width: 600px;
   max-height: 70%;
   overflow-y: auto;
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.CloseButton{
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  margin-top: 20px;
 }

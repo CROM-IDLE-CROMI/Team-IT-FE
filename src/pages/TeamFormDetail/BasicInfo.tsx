@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import Select from 'react-select';
-import type { MultiValue, ActionMeta } from 'react-select';
+import type { MultiValue } from 'react-select';
 import type { TechStackType } from '../../styles/TechStack';
 import { techStacksInit } from '../../styles/TechStack';
 import './BasicInfo.css'
@@ -139,8 +139,12 @@ const DateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }: Props
 
 const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
   // 기존 useState 대신 data에 연결
-  const [startDate, setStartDate] = useState(data.startDate || '');
-  const [endDate, setEndDate] = useState(data.endDate || '');
+  const [startDate, setStartDate] = useState<Date | null>(
+    data.startDate ? (typeof data.startDate === 'string' ? new Date(data.startDate) : data.startDate) : null
+  );
+  const [endDate, setEndDate] = useState<Date | null>(
+    data.endDate ? (typeof data.endDate === 'string' ? new Date(data.endDate) : data.endDate) : null
+  );
   const [platform, setPlatform] = useState(data.platform || '');
   const [customPlatform, setCustomPlatform] = useState(data.customPlatform || '');
   const [showCustomPlatformInput, setShowCustomPlatformInput] = useState(false);
@@ -153,8 +157,12 @@ const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
 
   // data prop이 변경될 때 state 업데이트 (실제 값이 변경되었을 때만)
   useEffect(() => {
-    if (data.startDate !== undefined) setStartDate(data.startDate || '');
-    if (data.endDate !== undefined) setEndDate(data.endDate || '');
+    if (data.startDate !== undefined) {
+      setStartDate(data.startDate ? (typeof data.startDate === 'string' ? new Date(data.startDate) : data.startDate) : null);
+    }
+    if (data.endDate !== undefined) {
+      setEndDate(data.endDate ? (typeof data.endDate === 'string' ? new Date(data.endDate) : data.endDate) : null);
+    }
     if (data.platform !== undefined) setPlatform(data.platform || '');
     if (data.customPlatform !== undefined) setCustomPlatform(data.customPlatform || '');
     if (data.selectedJobs !== undefined) setSelectedJobs(data.selectedJobs || []);
@@ -173,8 +181,8 @@ const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       memoizedSetData({
-        startDate,
-        endDate,
+        startDate: startDate ? startDate.toISOString() : '',
+        endDate: endDate ? endDate.toISOString() : '',
         platform,
         customPlatform,
         selectedJobs,
@@ -191,8 +199,8 @@ const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
   useEffect(() => {
     const isComplete =
       peopleCount.trim() !== '' &&
-      startDate !== '' &&
-      endDate !== '' &&
+      startDate !== null &&
+      endDate !== null &&
       platform.trim() !== '' &&
       selectedJobs.length > 0 &&
       !selectedJobs.some(opt => opt.value === '기타' && customJob.trim() === '') &&

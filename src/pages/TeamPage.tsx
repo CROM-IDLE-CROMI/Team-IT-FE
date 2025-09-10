@@ -92,8 +92,8 @@ const TeamPage = () => {
 
     setBasicInfoComplete(
       basicInfo.peopleCount?.trim() !== '' &&
-      basicInfo.startDate !== '' &&
-      basicInfo.endDate !== '' &&
+      (basicInfo.startDate !== '' && basicInfo.startDate !== null) &&
+      (basicInfo.endDate !== '' && basicInfo.endDate !== null) &&
       basicInfo.platform?.trim() !== '' &&
       basicInfo.selectedJobs?.length > 0 &&
       basicInfo.selectedTechStacks?.length > 0
@@ -102,9 +102,9 @@ const TeamPage = () => {
     setProjectInfoComplete(
       projectInfo.teamName?.trim() !== '' &&
       projectInfo.playType?.trim() !== '' &&
-      projectInfo.startDate !== '' &&
-      projectInfo.endDate !== '' &&
-      projectInfo.projectStartDate !== '' &&
+      (projectInfo.startDate !== '' && projectInfo.startDate !== null) &&
+      (projectInfo.endDate !== '' && projectInfo.endDate !== null) &&
+      (projectInfo.projectStartDate !== '' && projectInfo.projectStartDate !== null) &&
       projectInfo.selectedJobs?.length > 0
     );
 

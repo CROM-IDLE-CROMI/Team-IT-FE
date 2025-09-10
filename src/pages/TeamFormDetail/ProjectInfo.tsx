@@ -6,7 +6,7 @@ import type { StepData } from "../../types/Draft";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Box, TextField } from "@mui/material";
+import { Box } from "@mui/material";
 import "../../App.css";
 
 type OptionType = {
@@ -48,9 +48,15 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
   const [showCustomPlayTypeInput, setShowCustomPlayTypeInput] = useState(false);
   const [customPlayType, setCustomPlayType] = useState(data.customPlayType || '');
 
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  const [projectStartDate, setProjectStartDate] = useState<Date | null>(null);
+  const [startDate, setStartDate] = useState<Date | null>(
+    data.startDate ? (typeof data.startDate === 'string' ? new Date(data.startDate) : data.startDate) : null
+  );
+  const [endDate, setEndDate] = useState<Date | null>(
+    data.endDate ? (typeof data.endDate === 'string' ? new Date(data.endDate) : data.endDate) : null
+  );
+  const [projectStartDate, setProjectStartDate] = useState<Date | null>(
+    data.projectStartDate ? (typeof data.projectStartDate === 'string' ? new Date(data.projectStartDate) : data.projectStartDate) : null
+  );
 
 
   
@@ -63,9 +69,15 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
     if (data.otherText !== undefined) setOtherText(data.otherText || '');
     if (data.playType !== undefined) setPlayType(data.playType || '');
     if (data.customPlayType !== undefined) setCustomPlayType(data.customPlayType || '');
-    if (data.startDate !== undefined) setStartDate(data.startDate || '');
-    if (data.endDate !== undefined) setEndDate(data.endDate || '');
-    if (data.projectStartDate !== undefined) setProjectStartDate(data.projectStartDate || '');
+    if (data.startDate !== undefined) {
+      setStartDate(data.startDate ? (typeof data.startDate === 'string' ? new Date(data.startDate) : data.startDate) : null);
+    }
+    if (data.endDate !== undefined) {
+      setEndDate(data.endDate ? (typeof data.endDate === 'string' ? new Date(data.endDate) : data.endDate) : null);
+    }
+    if (data.projectStartDate !== undefined) {
+      setProjectStartDate(data.projectStartDate ? (typeof data.projectStartDate === 'string' ? new Date(data.projectStartDate) : data.projectStartDate) : null);
+    }
   }, [data.teamName, data.selectedJobs, data.customJob, data.otherText, data.playType, data.customPlayType, data.startDate, data.endDate, data.projectStartDate]);
 
   // setData 함수를 메모이제이션
@@ -83,9 +95,9 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
         otherText,
         playType,
         customPlayType,
-        startDate,
-        endDate,
-        projectStartDate,
+        startDate: startDate ? startDate.toISOString() : '',
+        endDate: endDate ? endDate.toISOString() : '',
+        projectStartDate: projectStartDate ? projectStartDate.toISOString() : '',
       });
     }, 300); // 300ms 디바운싱
 
@@ -211,7 +223,31 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
                 setEndDate(null); // 시작일 이후로 종료일 자동 리셋
               }
             }}
-            slotProps={{textField: {variant: "outlined", fullWidth: true}}}
+            slotProps={{
+                textField: {
+      size: "small", // compact
+      sx: {
+  width: 140, // 가로폭 줄이기
+  "& .MuiInputBase-input": {
+    padding: "6px 8px", // 내부 여백 줄이기
+    fontSize: "0.8rem", // 글자 크기 줄이기
+    color: "#000", // 글자색 검정
+  },
+  "& .MuiInputLabel-root": {
+    color: "#000", // placeholder/label 색상
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#000", // 기본 테두리 검정
+    },
+    "&:hover fieldset": {
+      borderColor: "#000", // hover 시 검정
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#000", // focus 시 검정
+    },
+  },
+}}}}
           />
           <span> ~ </span>
           <DatePicker
@@ -219,7 +255,31 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
             value={endDate}
             minDate={startDate ?? undefined}
             onChange={(newValue) => setEndDate(newValue)}
-            slotProps={{textField: {variant: "outlined", fullWidth: true}}}
+            slotProps={{
+               textField: {
+      size: "small", // compact
+      sx: {
+  width: 140, // 가로폭 줄이기
+  "& .MuiInputBase-input": {
+    padding: "6px 8px", // 내부 여백 줄이기
+    fontSize: "0.8rem", // 글자 크기 줄이기
+    color: "#000", // 글자색 검정
+  },
+  "& .MuiInputLabel-root": {
+    color: "#000", // placeholder/label 색상
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#000", // 기본 테두리 검정
+    },
+    "&:hover fieldset": {
+      borderColor: "#000", // hover 시 검정
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#000", // focus 시 검정
+    },
+  },
+}}}}
           />
         </Box>
       </div>
@@ -231,7 +291,31 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
           label="예상 시작일"
           value={projectStartDate}
           onChange={(newValue) => setProjectStartDate(newValue)}
-          slotProps={{textField: {variant: "outlined", fullWidth: true}}}
+          slotProps={{
+             textField: {
+      size: "small", // compact
+      sx: {
+  width: 140, // 가로폭 줄이기
+  "& .MuiInputBase-input": {
+    padding: "6px 8px", // 내부 여백 줄이기
+    fontSize: "0.8rem", // 글자 크기 줄이기
+    color: "#000", // 글자색 검정
+  },
+  "& .MuiInputLabel-root": {
+    color: "#000", // placeholder/label 색상
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#000", // 기본 테두리 검정
+    },
+    "&:hover fieldset": {
+      borderColor: "#000", // hover 시 검정
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#000", // focus 시 검정
+    },
+  },
+}}}}
         />
         </Box>
       </div>

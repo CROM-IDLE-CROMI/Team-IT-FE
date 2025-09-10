@@ -36,19 +36,26 @@ const DraftList = ({ onClose, onLoadDraft }: DraftProps) => {
       <div className="draftPopupContent" onClick={e => e.stopPropagation()}>
         <h3>임시저장 목록</h3>
         {drafts.length === 0 ? (
-          <p>저장된 임시저장이 없습니다.</p>
+          <p>저장된 목록이 없습니다.</p>
         ) : (
           <ul>
             {drafts.map(draft => (
-              <li key={draft.id}>
-                <strong>{draft.title}</strong> - {new Date(draft.savedAt).toLocaleString()}
-                <button className="loadBtn" onClick={() => handleLoad(draft.data)}>불러오기</button>
-                <button className="deleteBtn" onClick={() => handleDelete(draft.id)}>삭제</button>
+              <li key={draft.id} className="draft-item">
+                <div className="draft-info">
+                  <strong>{draft.title}</strong>
+                  <span className="draft-date"> - {new Date(draft.savedAt).toLocaleString()}</span>
+                </div>
+                <div className="buttonGroup">
+                  <button className="loadBtn" onClick={() => handleLoad(draft.data)}>불러오기</button>
+                  <button className="deleteBtn" onClick={() => handleDelete(draft.id)}>삭제</button>
+                </div>
               </li>
             ))}
           </ul>
         )}
+        <div className="CloseButton">
         <button onClick={onClose}>닫기</button>
+        </div>
       </div>
     </div>
   );

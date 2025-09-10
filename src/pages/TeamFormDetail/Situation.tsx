@@ -3,6 +3,7 @@ import type { MultiValue, ActionMeta } from 'react-select';
 import { useState, useEffect, useCallback } from 'react';
 import '../../App.css';
 import type { StepData } from "../../types/Draft";
+import "./Situation.css"
 
 type OptionType = {
   value: string;
