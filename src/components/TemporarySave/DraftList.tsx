@@ -12,9 +12,10 @@ export interface Draft {
 interface DraftProps {
   onClose: () => void;
   onLoadDraft: (data: any) => void;
+  onDelete?: () => void; // 삭제 후 콜백 추가
 }
 
-const DraftList = ({ onClose, onLoadDraft }: DraftProps) => {
+const DraftList = ({ onClose, onLoadDraft, onDelete }: DraftProps) => {
   const [drafts, setDrafts] = useState<Draft[]>([]);
 
   useEffect(() => {
@@ -24,6 +25,10 @@ const DraftList = ({ onClose, onLoadDraft }: DraftProps) => {
   const handleDelete = (id: string) => {
     const updatedDrafts = deleteDraft(id);
     setDrafts(updatedDrafts);
+    // 삭제 후 콜백 호출
+    if (onDelete) {
+      onDelete();
+    }
   };
 
   const handleLoad = (data: any) => {

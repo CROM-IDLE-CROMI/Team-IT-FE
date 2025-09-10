@@ -27,5 +27,4 @@ export const techStacksInit: TechStackType[] = [
   { value: 'Django', label: 'Django', icon: '/icons/Django.svg' },
   { value: 'FastAPI', label: 'FastAPI', icon: '/icons/FastAPI.svg' },
   { value: 'TensorFlow', label: 'TensorFlow', icon: '/icons/TensorFlow.svg' },
-  { value: 'C#', label: 'C#', icon: '/icons/CSharp.svg' },
 ];

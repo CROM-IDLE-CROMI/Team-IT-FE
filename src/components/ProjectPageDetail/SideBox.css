@@ -137,18 +137,6 @@
 }
 
 /* 기술 스택 섹션 */
-.tech-stack-container {
-  display: flex;
-  gap: 1rem;
-}
-
-.tech-stack-left {
-  flex: 1;
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 1rem;
-}
-
 .tech-search {
   position: relative;
   margin-bottom: 1rem;
@@ -172,23 +160,29 @@
 
 .tech-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.5rem;
-  max-height: 200px;
+  max-height: 300px;
   overflow-y: auto;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
 }
 
 .tech-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border: 2px solid #e1e8ed;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
   background: white;
+  padding: 4px;
+  box-sizing: border-box;
 }
 
 .tech-item:hover {
@@ -202,61 +196,76 @@
 }
 
 .tech-item img {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
+  pointer-events: none; /* 클릭 이벤트가 부모로 전달되도록 */
 }
 
-.tech-stack-right {
-  flex: 0 0 80px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.tech-item span {
+  font-size: 8px;
+  color: #666;
+  text-align: center;
+  line-height: 1;
+  margin-top: 2px;
+  pointer-events: none;
 }
 
-.selected-tech {
+/* 선택된 기술 스택 섹션 */
+.selected-tech-section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e1e8ed;
+}
+
+.selected-tech-section h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 0.8rem 0;
+}
+
+.selected-tech-list {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 0.5rem;
-  width: 100%;
 }
 
 .selected-tech-item {
-  position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
+  gap: 0.4rem;
   background: white;
   border: 2px solid #4a90e2;
-  border-radius: 8px;
+  border-radius: 20px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  color: #4a90e2;
+  position: relative;
 }
 
 .selected-tech-item img {
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   object-fit: contain;
 }
 
 .remove-tech {
   position: absolute;
-  top: -8px;
-  right: -8px;
-  width: 16px;
-  height: 16px;
+  top: -6px;
+  right: -6px;
+  width: 14px;
+  height: 14px;
   background: #ff4757;
   color: white;
   border: none;
   border-radius: 50%;
-  font-size: 10px;
+  font-size: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 1;
 }
 
 /* 위치 섹션 */
@@ -318,23 +327,27 @@
     right: -100%;
   }
   
-  .tech-stack-container {
-    flex-direction: column;
+  .tech-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
   
-  .tech-stack-right {
-    flex: none;
-    flex-direction: row;
-    justify-content: flex-start;
-    overflow-x: auto;
-  }
-  
-  .selected-tech {
-    flex-direction: row;
+  .selected-tech-list {
+    justify-content: center;
   }
   
   .option-buttons {
     justify-content: center;
+  }
+  
+  .button-container {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .reset-filters-btn,
+  .apply-filters-btn {
+    flex: none;
+    width: 100%;
   }
 }
 
@@ -371,4 +384,72 @@
 .location-container::-webkit-scrollbar-thumb {
   background: #c1c1c1;
   border-radius: 2px;
+}
+
+/* 버튼 컨테이너 */
+.button-container {
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+  padding: 1.5rem 0;
+  margin: 0 -2rem;
+  border-top: 1px solid #e1e8ed;
+  display: flex;
+  gap: 1rem;
+  margin: 0 -2rem;
+  padding: 1.5rem 2rem;
+}
+
+/* 초기화 버튼 */
+.reset-filters-btn {
+  flex: 1;
+  background: white;
+  color: #666;
+  border: 2px solid #e1e8ed;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.reset-filters-btn:hover {
+  background: #f8f9fa;
+  border-color: #d1d9e0;
+  color: #333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.reset-filters-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 적용하기 버튼 */
+.apply-filters-btn {
+  flex: 2;
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  color: white;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.apply-filters-btn:hover {
+  background: linear-gradient(135deg, #357abd 0%, #2c5aa0 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(74, 144, 226, 0.4);
+}
+
+.apply-filters-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
 }

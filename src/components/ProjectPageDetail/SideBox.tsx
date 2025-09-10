@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import "./SideBox.css";
 import { techStacksInit } from "../../styles/TechStack";
+import LocationSelector from "../LocationSelector";
 
 interface FilterState {
   selectedActivity: string[];
   selectedPositions: string[];
   selectedTechStacks: string[];
   selectedLocations: string[];
+  selectedRegion: string;
   selectedProgress: string[];
   selectedMethod: string[];
   recruitEndDate: string;
@@ -19,9 +21,11 @@ interface SideBoxProps {
   onClose: () => void;
   filters: FilterState;
   onFiltersChange: (filters: FilterState) => void;
+  onApplyFilters: () => void;
+  onResetFilters: () => void;
 }
 
-const SideBox: React.FC<SideBoxProps> = ({ isOpen, onClose, filters, onFiltersChange }) => {
+const SideBox: React.FC<SideBoxProps> = ({ isOpen, onClose, filters, onFiltersChange, onApplyFilters, onResetFilters }) => {
   const [techStackSearch, setTechStackSearch] = useState("");
 
   const activityOptions = ["앱", "웹", "게임", "기타"];
@@ -34,9 +38,9 @@ const SideBox: React.FC<SideBoxProps> = ({ isOpen, onClose, filters, onFiltersCh
     "경기도", "강원도", "충청북도", "충청남도", "전라북도", "전라남도", "경상북도", "경상남도", "제주도"
   ];
 
-  const updateFilters = (newFilters: Partial<FilterState>) => {
-    onFiltersChange({ ...filters, ...newFilters });
-  };
+  const updateFilters = useCallback((newFilters: Partial<FilterState>) => {
+    onFiltersChange(prevFilters => ({ ...prevFilters, ...newFilters }));
+  }, [onFiltersChange]);
 
   const handleOptionToggle = (option: string, current: string[], field: keyof FilterState) => {
     if (current.includes(option)) {
@@ -68,6 +72,7 @@ const SideBox: React.FC<SideBoxProps> = ({ isOpen, onClose, filters, onFiltersCh
       selectedPositions: [],
       selectedTechStacks: [],
       selectedLocations: [],
+      selectedRegion: "서울특별시",
       selectedProgress: [],
       selectedMethod: [],
       recruitEndDate: "",
@@ -80,6 +85,19 @@ const SideBox: React.FC<SideBoxProps> = ({ isOpen, onClose, filters, onFiltersCh
   const filteredTechStacks = techStacksInit.filter(tech => 
     tech.label.toLowerCase().includes(techStackSearch.toLowerCase())
   );
+
+  // LocationSelector에 전달할 함수들을 메모이제이션
+  const handleLocationSelect = useCallback((locations: string[]) => {
+    updateFilters({ selectedLocations: locations });
+  }, [updateFilters]);
+
+  const handleRegionSelect = useCallback((region: string) => {
+    updateFilters({ selectedRegion: region });
+  }, [updateFilters]);
+
+  const handleCompleteChange = useCallback(() => {
+    // LocationSelector의 완료 상태는 필터링에 사용하지 않음
+  }, []);
 
   return (
     <div className={`side-box ${isOpen ? "open" : ""}`}>
@@ -138,40 +156,53 @@ const SideBox: React.FC<SideBoxProps> = ({ isOpen, onClose, filters, onFiltersCh
         {/* 기술 스택 */}
         <div className="filter-section">
           <div className="filter-header">
-      <h3>기술 스택</h3>
+            <h3>기술 스택</h3>
             <button className="reset-btn" onClick={resetAll}>초기화</button>
           </div>
-          <div className="tech-stack-container">
-            <div className="tech-stack-left">
-              <div className="tech-search">
-                <input
-                  type="text"
-                  placeholder="기술 스택 검색"
-                  value={techStackSearch}
-                  onChange={(e) => setTechStackSearch(e.target.value)}
-                  className="tech-search-input"
+          <div className="tech-search">
+            <input
+              type="text"
+              placeholder="기술 스택 검색"
+              value={techStackSearch}
+              onChange={(e) => setTechStackSearch(e.target.value)}
+              className="tech-search-input"
+            />
+            <span className="search-icon">🔍</span>
+          </div>
+          <div className="tech-grid">
+            {filteredTechStacks.map(tech => (
+              <div
+                key={tech.value}
+                className={`tech-item ${filters.selectedTechStacks.includes(tech.value) ? 'selected' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleTechStackToggle(tech.value);
+                }}
+              >
+                <img 
+                  src={tech.icon} 
+                  alt={tech.label}
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
                 />
-                <span className="search-icon">🔍</span>
+                <span style={{ fontSize: '10px', marginTop: '2px' }}>{tech.label}</span>
               </div>
-              <div className="tech-grid">
-                {filteredTechStacks.map(tech => (
-                  <div
-                    key={tech.value}
-                    className={`tech-item ${filters.selectedTechStacks.includes(tech.value) ? 'selected' : ''}`}
-                    onClick={() => handleTechStackToggle(tech.value)}
-                  >
-                    <img src={tech.icon} alt={tech.label} />
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="tech-stack-right">
-              <div className="selected-tech">
+            ))}
+          </div>
+          
+          {/* 선택된 기술 스택 */}
+          {filters.selectedTechStacks.length > 0 && (
+            <div className="selected-tech-section">
+              <h4>선택된 기술 스택</h4>
+              <div className="selected-tech-list">
                 {filters.selectedTechStacks.map(tech => {
                   const techData = techStacksInit.find(t => t.value === tech);
                   return (
                     <div key={tech} className="selected-tech-item">
                       <img src={techData?.icon} alt={techData?.label} />
+                      <span>{techData?.label}</span>
                       <button 
                         onClick={() => handleTechStackToggle(tech)}
                         className="remove-tech"
@@ -183,32 +214,22 @@ const SideBox: React.FC<SideBoxProps> = ({ isOpen, onClose, filters, onFiltersCh
                 })}
               </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* 위치 */}
         <div className="filter-section">
           <div className="filter-header">
-      <h3>위치</h3>
+            <h3>위치</h3>
             <button className="reset-btn" onClick={resetAll}>초기화</button>
           </div>
-          <div className="location-container">
-            <div className="location-list">
-              {locationOptions.map(location => (
-                <div key={location} className="location-item">
-                  <label className="location-checkbox">
-                    <input
-                      type="checkbox"
-                      checked={filters.selectedLocations.includes(location)}
-                      onChange={() => handleLocationToggle(location)}
-                    />
-                    <span className="location-name">{location}</span>
-                  </label>
-                  <span className="location-count">□ {Math.floor(Math.random() * 5) + 1}개</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          <LocationSelector
+            onCompleteChange={handleCompleteChange}
+            onLocationSelect={handleLocationSelect}
+            onRegionSelect={handleRegionSelect}
+            selectedRegion={filters.selectedRegion || "서울특별시"}
+            selectedLocations={filters.selectedLocations}
+          />
         </div>
 
         {/* 진행 방식 */}
@@ -269,6 +290,16 @@ const SideBox: React.FC<SideBoxProps> = ({ isOpen, onClose, filters, onFiltersCh
               className="date-input"
             />
           </div>
+        </div>
+
+        {/* 적용하기 및 초기화 버튼 */}
+        <div className="button-container">
+          <button className="reset-filters-btn" onClick={onResetFilters}>
+            초기화
+          </button>
+          <button className="apply-filters-btn" onClick={onApplyFilters}>
+            적용하기
+          </button>
         </div>
       </div>
     </div>

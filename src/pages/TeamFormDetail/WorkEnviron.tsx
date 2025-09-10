@@ -1,5 +1,5 @@
 import LocationSelector from "../../components/LocationSelector";
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "../../App.css";
 import "./WorkEnviron.css";
 import "../../TeamPageDetail.css";
@@ -11,30 +11,18 @@ interface WorkEnvironProps {
 }
 
 const WorkEnviron: React.FC<WorkEnvironProps> = ({ data, setData, onCompleteChange }) => {
-  const [meetingType, setMeetingType] = useState("");
-  const [locationComplete, setLocationComplete] = useState(false);
-  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
-  const [selectedRegion, setSelectedRegion] = useState("서울특별시");
+  const [meetingType, setMeetingType] = useState(data.meetingType || "");
+  const [locationComplete, setLocationComplete] = useState(!!data.locationComplete);
+  const [selectedLocations, setSelectedLocations] = useState<string[]>(data.selectedLocations || []);
+  const [selectedRegion, setSelectedRegion] = useState(data.selectedRegion || "서울특별시");
   const [showSelector, setShowSelector] = useState(false);
-  
-  const prevDataRef = useRef(data);
 
-  // ✅ data 변경 시 상태 동기화 (실제로 데이터가 변경되었을 때만)
+  // data 변경 시 상태 동기화
   useEffect(() => {
-    const prevData = prevDataRef.current;
-    const hasDataChanged = 
-      prevData.meetingType !== data.meetingType ||
-      prevData.locationComplete !== data.locationComplete ||
-      JSON.stringify(prevData.selectedLocations) !== JSON.stringify(data.selectedLocations) ||
-      prevData.selectedRegion !== data.selectedRegion;
-
-    if (hasDataChanged) {
-      setMeetingType(data.meetingType || "");
-      setLocationComplete(!!data.locationComplete);
-      setSelectedLocations(data.selectedLocations || []);
-      setSelectedRegion(data.selectedRegion || "서울특별시");
-      prevDataRef.current = data;
-    }
+    setMeetingType(data.meetingType || "");
+    setLocationComplete(!!data.locationComplete);
+    setSelectedLocations(data.selectedLocations || []);
+    setSelectedRegion(data.selectedRegion || "서울특별시");
   }, [data]);
 
   const memoizedSetData = useCallback(

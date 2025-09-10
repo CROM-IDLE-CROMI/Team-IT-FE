@@ -182,38 +182,29 @@ const DateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }: Props
 
 const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
   // 기존 useState 대신 data에 연결
-  const [startDate, setStartDate] = useState<Date | null>(
-    data.startDate ? (typeof data.startDate === 'string' ? new Date(data.startDate) : data.startDate) : null
-  );
-  const [endDate, setEndDate] = useState<Date | null>(
-    data.endDate ? (typeof data.endDate === 'string' ? new Date(data.endDate) : data.endDate) : null
-  );
-  const [platform, setPlatform] = useState(data.platform || '');
-  const [customPlatform, setCustomPlatform] = useState(data.customPlatform || '');
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [platform, setPlatform] = useState('');
+  const [customPlatform, setCustomPlatform] = useState('');
   const [showCustomPlatformInput, setShowCustomPlatformInput] = useState(false);
-  const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>(data.selectedJobs || []);
-  const [customJob, setCustomJob] = useState(data.customJob || '');
-  const [peopleCount, setPeopleCount] = useState(data.peopleCount || '');
-  const [selectedTechStacks, setSelectedTechStacks] = useState<TechStackType[]>(data.selectedTechStacks || []);
+  const [selectedJobs, setSelectedJobs] = useState<MultiValue<OptionType>>([]);
+  const [customJob, setCustomJob] = useState('');
+  const [peopleCount, setPeopleCount] = useState('');
+  const [selectedTechStacks, setSelectedTechStacks] = useState<TechStackType[]>([]);
   const [isStackOpen, setIsStackOpen] = useState(false);
-  const [recruitNumber, setRecruitNumber] = useState(data.recruitNumber || '');
 
-  // data prop이 변경될 때 state 업데이트 (실제 값이 변경되었을 때만)
+
+  // data prop이 변경될 때 state 업데이트
   useEffect(() => {
-    if (data.startDate !== undefined) {
-      setStartDate(data.startDate ? (typeof data.startDate === 'string' ? new Date(data.startDate) : data.startDate) : null);
-    }
-    if (data.endDate !== undefined) {
-      setEndDate(data.endDate ? (typeof data.endDate === 'string' ? new Date(data.endDate) : data.endDate) : null);
-    }
-    if (data.platform !== undefined) setPlatform(data.platform || '');
-    if (data.customPlatform !== undefined) setCustomPlatform(data.customPlatform || '');
-    if (data.selectedJobs !== undefined) setSelectedJobs(data.selectedJobs || []);
-    if (data.customJob !== undefined) setCustomJob(data.customJob || '');
-    if (data.peopleCount !== undefined) setPeopleCount(data.peopleCount || '');
-    if (data.selectedTechStacks !== undefined) setSelectedTechStacks(data.selectedTechStacks || []);
-    if (data.recruitNumber !== undefined) setRecruitNumber(data.recruitNumber || '');
-  }, [data.startDate, data.endDate, data.platform, data.customPlatform, data.selectedJobs, data.customJob, data.peopleCount, data.selectedTechStacks, data.recruitNumber]);
+    setStartDate(data.startDate ? (typeof data.startDate === 'string' ? new Date(data.startDate) : data.startDate) : null);
+    setEndDate(data.endDate ? (typeof data.endDate === 'string' ? new Date(data.endDate) : data.endDate) : null);
+    setPlatform(data.platform || '');
+    setCustomPlatform(data.customPlatform || '');
+    setSelectedJobs(data.selectedJobs || []);
+    setCustomJob(data.customJob || '');
+    setPeopleCount(data.peopleCount || '');
+    setSelectedTechStacks(data.selectedTechStacks || []);
+  }, [data]);
 
   // setData 함수를 메모이제이션
   const memoizedSetData = useCallback((newData: StepData) => {
@@ -232,12 +223,11 @@ const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
         customJob,
         peopleCount,
         selectedTechStacks,
-        recruitNumber,
       });
     }, 300); // 300ms 디바운싱
 
     return () => clearTimeout(timeoutId);
-  }, [startDate, endDate, platform, customPlatform, selectedJobs, customJob, peopleCount, selectedTechStacks, recruitNumber, memoizedSetData]);
+  }, [startDate, endDate, platform, customPlatform, selectedJobs, customJob, peopleCount, selectedTechStacks, memoizedSetData]);
 
   useEffect(() => {
     const isComplete =
@@ -250,7 +240,7 @@ const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
       selectedTechStacks.length > 0;
 
     onCompleteChange(isComplete);
-  }, [peopleCount, startDate, endDate, platform, selectedJobs, customJob, selectedTechStacks]);
+  }, [peopleCount, startDate, endDate, platform, selectedJobs, customJob, selectedTechStacks, onCompleteChange]);
 
   // 기존 JSX 그대로 + formData 연결
   return (

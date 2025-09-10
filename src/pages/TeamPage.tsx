@@ -9,7 +9,6 @@ import Button from './TeamFormDetail/Button';
 import ProjectInfo from './TeamFormDetail/ProjectInfo';
 import Situation from './TeamFormDetail/Situation';
 import WorkEnviron from './TeamFormDetail/WorkEnviron';
-import DraftList from "../components/TemporarySave/DraftList";
 import Header from '../layouts/Header';
 import AuthGuard from '../components/AuthGuard';
 import type { TeamFormData, StepData } from '../types/Draft';
@@ -17,7 +16,6 @@ import "./TeamPage.css";
 
 const TeamPage = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [isListModalOpen, setIsListModalOpen] = useState(false);
 
   const [basicInfoComplete, setBasicInfoComplete] = useState(false);
   const [projectInfoComplete, setProjectInfoComplete] = useState(false);
@@ -82,6 +80,7 @@ const TeamPage = () => {
     applicantInfoComplete;
 
   const handleLoadDraft = (data: TeamFormData) => {
+    console.log('TeamPage handleLoadDraft - received data:', data); // 디버깅용
     setFormData(data);
 
     const basicInfo = data.basicInfo || {};
@@ -89,6 +88,14 @@ const TeamPage = () => {
     const situation = data.situation || {};
     const workEnviron = data.workEnviron || {};
     const applicantInfo = data.applicantInfo || {};
+
+    console.log('TeamPage extracted sections:', { // 디버깅용
+      basicInfo,
+      projectInfo,
+      situation,
+      workEnviron,
+      applicantInfo
+    });
 
     setBasicInfoComplete(
       basicInfo.peopleCount?.trim() !== '' &&
@@ -176,12 +183,6 @@ const TeamPage = () => {
               onCompleteChange={setApplicantInfoComplete}
             />
           </section>
-          {isListModalOpen && (
-            <DraftList
-              onClose={() => setIsListModalOpen(false)}
-              onLoadDraft={handleLoadDraft}
-            />
-          )}
 
           <Button
             formData={formData}

@@ -33,6 +33,18 @@ const LocationSelector = ({ onCompleteChange, onLocationSelect, onRegionSelect, 
   const [selectedDistricts, setSelectedDistricts] = useState<string[]>(initialLocations || []);
   const allSelected = selectedDistricts.length === regionData[selectedRegion].length;
 
+  // 최신 함수들을 참조하기 위한 ref
+  const onCompleteChangeRef = useRef(onCompleteChange);
+  const onLocationSelectRef = useRef(onLocationSelect);
+  const onRegionSelectRef = useRef(onRegionSelect);
+
+  // ref 업데이트
+  useEffect(() => {
+    onCompleteChangeRef.current = onCompleteChange;
+    onLocationSelectRef.current = onLocationSelect;
+    onRegionSelectRef.current = onRegionSelect;
+  });
+
   const handleAllToggle = () => {
     if (allSelected) {
       setSelectedDistricts([]);
@@ -54,14 +66,14 @@ const LocationSelector = ({ onCompleteChange, onLocationSelect, onRegionSelect, 
 
 
   useEffect(() => {
-    onCompleteChange(selectedDistricts.length > 0);
-    if (onLocationSelect) {
+    onCompleteChangeRef.current(selectedDistricts.length > 0);
+    if (onLocationSelectRef.current) {
       const locations = allSelected 
         ? [`${selectedRegion} 전체`]
         : selectedDistricts.map(district => `${selectedRegion} ${district}`);
-      onLocationSelect(locations);
+      onLocationSelectRef.current(locations);
     }
-  }, [selectedDistricts, selectedRegion, allSelected, onCompleteChange, onLocationSelect]);
+  }, [selectedDistricts, selectedRegion, allSelected]);
 
   return (
     <div className="locationSelector">
@@ -73,8 +85,8 @@ const LocationSelector = ({ onCompleteChange, onLocationSelect, onRegionSelect, 
             onClick={() => {
               setSelectedRegion(region);
               setSelectedDistricts([]);
-              if (onRegionSelect) {
-                onRegionSelect(region);
+              if (onRegionSelectRef.current) {
+                onRegionSelectRef.current(region);
               }
             }}
           >

@@ -10,14 +10,16 @@ interface ApplicantInfoProps {
 }
 
 const ApplicantInfo: React.FC<ApplicantInfoProps> = ({ data, setData, onCompleteChange }) => {
-  const [questions, setQuestions] = useState<string[]>(data.questions || []);
+  const [questions, setQuestions] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
-  const [minRequirement, setMinRequirement] = useState(data.minRequirement || "");
+  const [minRequirement, setMinRequirement] = useState("");
 
-  // data prop이 변경될 때 state 업데이트 (실제 값이 변경되었을 때만)
+  // data prop이 변경될 때 state 업데이트
   useEffect(() => {
-    if (data.questions !== undefined) setQuestions(data.questions || []);
-    if (data.minRequirement !== undefined) setMinRequirement(data.minRequirement || "");
+    console.log('ApplicantInfo useEffect - data:', data); // 디버깅용
+    
+    setQuestions(data.questions || []);
+    setMinRequirement(data.minRequirement || "");
   }, [data.questions, data.minRequirement]);
 
   // setData 함수를 메모이제이션

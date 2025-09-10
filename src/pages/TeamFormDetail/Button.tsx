@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../App.css";
 import SavePopup from "../../components/TemporarySave/SavePopup";
@@ -37,6 +37,12 @@ const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: B
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isListModalOpen, setIsListModalOpen] = useState(false);
+  const [hasDraftsState, setHasDraftsState] = useState(false);
+
+  // hasDrafts() 결과를 상태로 관리하여 무한렌더링 방지
+  useEffect(() => {
+    setHasDraftsState(hasDrafts());
+  }, []);
 
   const handleConfirmSave = (title: string) => {
     const draft: Draft = {
@@ -46,6 +52,7 @@ const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: B
       data: formData,
     };
     saveDraft(draft);
+    setHasDraftsState(true); // 임시저장 후 상태 업데이트
     alert("임시저장 완료!");
     setIsListModalOpen(false);
     setIsModalOpen(false);
@@ -68,7 +75,7 @@ const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: B
         </button>
 
         {/* 임시저장이 있으면 DraftList 팝업 버튼 */}
-        {hasDrafts() && (
+        {hasDraftsState && (
           <button onClick={() => setIsListModalOpen(true)}>
             임시저장목록보기
           </button>
@@ -89,6 +96,10 @@ const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: B
           onLoadDraft={(data) => {
             onLoadDraft(data); // TeamPage의 handleLoadDraft 함수 사용
             setIsListModalOpen(false); // 불러온 후 팝업 닫기
+          }}
+          onDelete={() => {
+            // 삭제 후 hasDraftsState 업데이트
+            setHasDraftsState(hasDrafts());
           }}
         />
       )}

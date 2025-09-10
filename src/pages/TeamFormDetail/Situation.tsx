@@ -25,20 +25,29 @@ const progressOptions: OptionType[] = [
 ];
 
 const Situation = ({ data, setData, onCompleteChange }: SituationProps) => {
-  const [title, setTitle] = useState(data.title || '');
-  const [progress, setProgress] = useState(data.progress || '');
+  const [title, setTitle] = useState('');
+  const [progress, setProgress] = useState('');
   const [showCustomProgressInput, setShowCustomProgressInput] = useState(false);
-  const [customProgress, setCustomProgress] = useState(data.customProgress || '');
-  const [content, setContent] = useState(data.content || '');
-  const [otherText, setOtherText] = useState(data.otherText || '');
+  const [customProgress, setCustomProgress] = useState('');
+  const [content, setContent] = useState('');
+  const [otherText, setOtherText] = useState('');
 
-  // data prop이 변경될 때 state 업데이트 (실제 값이 변경되었을 때만)
+  // data prop이 변경될 때 state 업데이트
   useEffect(() => {
-    if (data.title !== undefined) setTitle(data.title || '');
-    if (data.progress !== undefined) setProgress(data.progress || '');
-    if (data.customProgress !== undefined) setCustomProgress(data.customProgress || '');
-    if (data.content !== undefined) setContent(data.content || '');
-    if (data.otherText !== undefined) setOtherText(data.otherText || '');
+    console.log('Situation useEffect - data:', data); // 디버깅용
+    
+    setTitle(data.title || '');
+    setProgress(data.progress || '');
+    setCustomProgress(data.customProgress || '');
+    setContent(data.content || '');
+    setOtherText(data.otherText || '');
+    
+    // progress가 '기타'이고 customProgress가 있으면 커스텀 입력 표시
+    if (data.progress === '기타' && data.customProgress) {
+      setShowCustomProgressInput(true);
+    } else {
+      setShowCustomProgressInput(false);
+    }
   }, [data.title, data.progress, data.customProgress, data.content, data.otherText]);
 
   // const handleOtherTextChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {

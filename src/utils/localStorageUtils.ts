@@ -13,11 +13,13 @@ export type Draft = DraftType;
 
 
 function getItemSafe(k: string): string | null {
-  if (!isBrowser) return memoryFallback.get(k) ?? null;
+  if (!isBrowser) {
+    return memoryFallback.get(k) ?? null;
+  }
   try {
     const v = window.localStorage.getItem(k);
     return v !== null ? v : memoryFallback.get(k) ?? null;
-  } catch {
+  } catch (error) {
     return memoryFallback.get(k) ?? null;
   }
 }
@@ -29,7 +31,7 @@ function setItemSafe(k: string, v: string) {
   }
   try {
     window.localStorage.setItem(k, v);
-  } catch {
+  } catch (error) {
     // 용량 초과/프라이빗 모드 등 → 메모리에라도 보관
     memoryFallback.set(k, v);
   }
@@ -58,7 +60,7 @@ function readList(): Draft[] {
     const list = JSON.parse(raw) as Draft[];
     if (!Array.isArray(list)) return [];
     return list;
-  } catch {
+  } catch (error) {
     // 손상 시 정리
     removeItemSafe(KEY);
     return [];

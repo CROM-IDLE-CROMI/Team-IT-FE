@@ -1,6 +1,6 @@
 import Header from "../layouts/Header";
 import '../App.css';
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import SideBox from "../components/ProjectPageDetail/SideBox";
 import { techStacksInit } from "../styles/TechStack";
@@ -10,6 +10,7 @@ interface FilterState {
   selectedPositions: string[];
   selectedTechStacks: string[];
   selectedLocations: string[];
+  selectedRegion: string;
   selectedProgress: string[];
   selectedMethod: string[];
   recruitEndDate: string;
@@ -170,17 +171,38 @@ const dummyProjects = [
 const ProjectPage = () => {
   const [isOptionOpen, setIsOptionOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filters, setFilters] = useState<FilterState>({
+  
+  // 임시 필터 (사이드바에서 선택하는 필터)
+  const [tempFilters, setTempFilters] = useState<FilterState>({
     selectedActivity: [],
     selectedPositions: [],
     selectedTechStacks: [],
     selectedLocations: [],
+    selectedRegion: "서울특별시",
     selectedProgress: [],
     selectedMethod: [],
     recruitEndDate: "",
     projectStartDate: "",
     projectEndDate: ""
   });
+
+  // 디버깅용: tempFilters 변경 감지 (useEffect로 이동)
+  // console.log('ProjectPage tempFilters:', tempFilters); // 디버깅용
+  
+  // 적용된 필터 (실제로 프로젝트를 필터링하는 필터)
+  const [appliedFilters, setAppliedFilters] = useState<FilterState>({
+    selectedActivity: [],
+    selectedPositions: [],
+    selectedTechStacks: [],
+    selectedLocations: [],
+    selectedRegion: "서울특별시",
+    selectedProgress: [],
+    selectedMethod: [],
+    recruitEndDate: "",
+    projectStartDate: "",
+    projectEndDate: ""
+  });
+  
   const navigate = useNavigate();
 
   // 필터링 로직
@@ -193,42 +215,42 @@ const ProjectPage = () => {
         project.techStack.some(tech => tech.toLowerCase().includes(searchTerm.toLowerCase()));
 
       // 플랫폼 필터링
-      const matchesActivity = filters.selectedActivity.length === 0 || 
-        filters.selectedActivity.includes(project.activityType);
+      const matchesActivity = appliedFilters.selectedActivity.length === 0 || 
+        appliedFilters.selectedActivity.includes(project.activityType);
 
       // 모집 직군 필터링
-      const matchesPositions = filters.selectedPositions.length === 0 || 
-        filters.selectedPositions.some(pos => project.recruitPositions.includes(pos));
+      const matchesPositions = appliedFilters.selectedPositions.length === 0 || 
+        appliedFilters.selectedPositions.some(pos => project.recruitPositions.includes(pos));
 
       // 기술 스택 필터링
-      const matchesTechStack = filters.selectedTechStacks.length === 0 || 
-        filters.selectedTechStacks.some(tech => project.techStack.includes(tech));
+      const matchesTechStack = appliedFilters.selectedTechStacks.length === 0 || 
+        appliedFilters.selectedTechStacks.some(tech => project.techStack.includes(tech));
 
       // 위치 필터링
-      const matchesLocation = filters.selectedLocations.length === 0 || 
-        filters.selectedLocations.includes(project.location);
+      const matchesLocation = appliedFilters.selectedLocations.length === 0 || 
+        appliedFilters.selectedLocations.includes(project.location);
 
       // 진행 상황 필터링
-      const matchesProgress = filters.selectedProgress.length === 0 || 
-        filters.selectedProgress.includes(project.progress);
+      const matchesProgress = appliedFilters.selectedProgress.length === 0 || 
+        appliedFilters.selectedProgress.includes(project.progress);
 
       // 진행 방식 필터링
-      const matchesMethod = filters.selectedMethod.length === 0 || 
-        filters.selectedMethod.includes(project.method);
+      const matchesMethod = appliedFilters.selectedMethod.length === 0 || 
+        appliedFilters.selectedMethod.includes(project.method);
 
       // 모집 종료 기한 필터링
-      const matchesRecruitEndDate = filters.recruitEndDate === "" || 
-        new Date(project.recruitEndDate) >= new Date(filters.recruitEndDate);
+      const matchesRecruitEndDate = appliedFilters.recruitEndDate === "" || 
+        new Date(project.recruitEndDate) >= new Date(appliedFilters.recruitEndDate);
 
       // 프로젝트 기간 필터링
-      const matchesProjectDate = (filters.projectStartDate === "" && filters.projectEndDate === "") ||
-        (filters.projectStartDate === "" || new Date(project.startDate) >= new Date(filters.projectStartDate)) &&
-        (filters.projectEndDate === "" || new Date(project.endDate) <= new Date(filters.projectEndDate));
+      const matchesProjectDate = (appliedFilters.projectStartDate === "" && appliedFilters.projectEndDate === "") ||
+        (appliedFilters.projectStartDate === "" || new Date(project.startDate) >= new Date(appliedFilters.projectStartDate)) &&
+        (appliedFilters.projectEndDate === "" || new Date(project.endDate) <= new Date(appliedFilters.projectEndDate));
 
       return matchesSearch && matchesActivity && matchesPositions && matchesTechStack && 
              matchesLocation && matchesProgress && matchesMethod && matchesRecruitEndDate && matchesProjectDate;
     });
-  }, [searchTerm, filters]);
+  }, [searchTerm, appliedFilters]);
 
   // 카드 클릭 핸들러
   const handleCardClick = (projectId: number) => {
@@ -241,6 +263,35 @@ const ProjectPage = () => {
     // 좋아요 로직 구현 (나중에 실제 데이터와 연동)
     console.log(`Project ${projectId} liked!`);
   };
+
+  // 필터 적용 함수
+  const handleApplyFilters = useCallback(() => {
+    setAppliedFilters(tempFilters);
+    setIsOptionOpen(false); // 사이드바 닫기
+  }, [tempFilters]);
+
+  // 필터 초기화 함수
+  const handleResetFilters = useCallback(() => {
+    const emptyFilters: FilterState = {
+      selectedActivity: [],
+      selectedPositions: [],
+      selectedTechStacks: [],
+      selectedLocations: [],
+      selectedRegion: "서울특별시",
+      selectedProgress: [],
+      selectedMethod: [],
+      recruitEndDate: "",
+      projectStartDate: "",
+      projectEndDate: ""
+    };
+    setTempFilters(emptyFilters);
+    setAppliedFilters(emptyFilters);
+  }, []);
+
+  // tempFilters 업데이트 함수를 메모이제이션
+  const handleTempFiltersChange = useCallback((newFilters: FilterState) => {
+    setTempFilters(newFilters);
+  }, []);
 
   return (
     <div style={{ padding: "4rem 0" }}>
@@ -351,8 +402,10 @@ const ProjectPage = () => {
         <SideBox 
           isOpen={isOptionOpen} 
           onClose={() => setIsOptionOpen(false)}
-          filters={filters}
-          onFiltersChange={setFilters}
+          filters={tempFilters}
+          onFiltersChange={handleTempFiltersChange}
+          onApplyFilters={handleApplyFilters}
+          onResetFilters={handleResetFilters}
         />
       </div>
     </div>
