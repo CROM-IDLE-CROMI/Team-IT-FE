@@ -3,7 +3,7 @@
 /* ===== 위치 선택기 ===== */
 .locationSelector {
   display: flex;
-  width: 320px;
+  width: 280px;
   height: 250px;
   border: 1px solid #e1e8ed;
   border-radius: 4px;

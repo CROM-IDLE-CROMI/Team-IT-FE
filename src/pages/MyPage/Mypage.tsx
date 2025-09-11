@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import ViewProfile from "../../components/MyPageDetail/ViewProfile";
 import EditProfile from "../../components/MyPageDetail/EditProfile";
+import PublicProfile from "../../components/MyPageDetail/PublicProfile";
 import Header from "../../layouts/Header";
 import "./Mypage.css";
 
@@ -29,7 +30,7 @@ interface ProfileData {
 }
 
 export default function Mypage() {
-  const [isEditing, setIsEditing] = useState(false);
+  const [activeTab, setActiveTab] = useState<'view' | 'public' | 'edit'>('view');
   const [profileData, setProfileData] = useState<ProfileData>({
     profileImage: null,
     backgroundImage: null,
@@ -84,24 +85,56 @@ export default function Mypage() {
 
   const handleEditComplete = (updatedData: Partial<ProfileData>) => {
     updateProfileData(updatedData);
-    setIsEditing(false);
+    setActiveTab('view');
   };
 
   return (
     <div className="mypage-container">
       <Header />
-      {isEditing ? (
-        <EditProfile 
-          profileData={profileData}
-          onSave={handleEditComplete}
-        />
-      ) : (
-        <ViewProfile 
-          onEdit={() => setIsEditing(true)}
-          profileData={profileData}
-          onUpdateAwards={(awards) => updateProfileData({ awards })}
-        />
-      )}
+      
+      {/* 탭 네비게이션 */}
+      <div className="tab-navigation">
+        <button 
+          className={`tab-button ${activeTab === 'view' ? 'active' : ''}`}
+          onClick={() => setActiveTab('view')}
+        >
+          내 프로필
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'public' ? 'active' : ''}`}
+          onClick={() => setActiveTab('public')}
+        >
+          공개 프로필
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'edit' ? 'active' : ''}`}
+          onClick={() => setActiveTab('edit')}
+        >
+          편집
+        </button>
+      </div>
+
+      {/* 탭 콘텐츠 */}
+      <div className="tab-content">
+        {activeTab === 'view' && (
+          <ViewProfile 
+            onEdit={() => setActiveTab('edit')}
+            profileData={profileData}
+            onUpdateAwards={(awards) => updateProfileData({ awards })}
+          />
+        )}
+        {activeTab === 'public' && (
+          <PublicProfile 
+            profileData={profileData}
+          />
+        )}
+        {activeTab === 'edit' && (
+          <EditProfile 
+            profileData={profileData}
+            onSave={handleEditComplete}
+          />
+        )}
+      </div>
     </div>
   );
 }

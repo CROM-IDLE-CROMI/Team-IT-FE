@@ -125,7 +125,7 @@
 
 /* 날짜 입력 */
 .date-input {
-  width: 100%;
+  width: 250px;
   padding: 0.8rem;
   border: 2px solid #e1e8ed;
   border-radius: 8px;
@@ -157,19 +157,11 @@
 }
 
 .tech-search-input {
-  width: 100%;
+  width: 220px;
   padding: 0.6rem 2rem 0.6rem 0.8rem;
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 0.85rem;
-}
-
-.search-icon {
-  position: absolute;
-  right: 0.6rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #666;
 }
 
 .tech-grid {
@@ -188,8 +180,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 58px;
+  height: 58px;
   border: 2px solid #e1e8ed;
   border-radius: 8px;
   cursor: pointer;
@@ -407,7 +399,7 @@
   padding: 1.5rem 2rem;
   border-top: 1px solid #e1e8ed;
   display: flex;
-  gap: 1rem;
+  gap: 5rem;
   flex-shrink: 0;
   box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -418,13 +410,14 @@
   background: white;
   color: #666;
   border: 2px solid #e1e8ed;
-  padding: 1rem 1.5rem;
   border-radius: 12px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  max-width: 100px;
+  max-height: 45px;
 }
 
 .reset-filters-btn:hover {
@@ -446,13 +439,14 @@
   background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
   color: white;
   border: none;
-  padding: 1rem 1.5rem;
   border-radius: 12px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+  max-width: 140px;
+  max-height: 45px;
 }
 
 .apply-filters-btn:hover {

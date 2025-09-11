@@ -172,6 +172,7 @@ const ProjectPage = () => {
   const [isOptionOpen, setIsOptionOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [appliedSearchTerm, setAppliedSearchTerm] = useState("");
+  const [likedProjects, setLikedProjects] = useState<Set<number>>(new Set());
   
   // 임시 필터 (사이드바에서 선택하는 필터)
   const [tempFilters, setTempFilters] = useState<FilterState>({
@@ -279,8 +280,15 @@ const ProjectPage = () => {
   // 좋아요 토글
   const handleLikeClick = (e: React.MouseEvent, projectId: number) => {
     e.stopPropagation(); // 카드 클릭 이벤트 방지
-    // 좋아요 로직 구현 (나중에 실제 데이터와 연동)
-    console.log(`Project ${projectId} liked!`);
+    setLikedProjects(prev => {
+      const newLiked = new Set(prev);
+      if (newLiked.has(projectId)) {
+        newLiked.delete(projectId);
+      } else {
+        newLiked.add(projectId);
+      }
+      return newLiked;
+    });
   };
 
   // 필터 적용 함수
@@ -395,10 +403,10 @@ const ProjectPage = () => {
               <h3>
                 {project.title} 
                 <span 
-                  className="heart" 
+                  className={`heart ${likedProjects.has(project.id) ? 'liked' : ''}`}
                   onClick={(e) => handleLikeClick(e, project.id)}
                 >
-                  ♡
+                  {likedProjects.has(project.id) ? '♥' : '♡'}
                 </span>
               </h3>
               <div className="info">
