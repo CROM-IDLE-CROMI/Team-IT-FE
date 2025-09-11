@@ -23,7 +23,7 @@ const WorkEnviron: React.FC<WorkEnvironProps> = ({ data, setData, onCompleteChan
     setLocationComplete(!!data.locationComplete);
     setSelectedLocations(data.selectedLocations || []);
     setSelectedRegion(data.selectedRegion || "서울특별시");
-  }, [data]);
+  }, [data.meetingType, data.locationComplete, data.selectedLocations, data.selectedRegion]);
 
   const memoizedSetData = useCallback(
     (newData: any) => setData(newData),

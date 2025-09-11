@@ -39,7 +39,9 @@ const DraftList = ({ onClose, onLoadDraft, onDelete }: DraftProps) => {
   return (
     <div className="draftPopupOverlay" onClick={onClose}>
       <div className="draftPopupContent" onClick={e => e.stopPropagation()}>
-        <h3>임시저장 목록</h3>
+        <div className="draft-header">
+          <h3>임시저장 목록</h3>
+        </div>
         {drafts.length === 0 ? (
           <p>저장된 목록이 없습니다.</p>
         ) : (
@@ -59,7 +61,7 @@ const DraftList = ({ onClose, onLoadDraft, onDelete }: DraftProps) => {
           </ul>
         )}
         <div className="CloseButton">
-        <button onClick={onClose}>닫기</button>
+          <button onClick={onClose}>닫기</button>
         </div>
       </div>
     </div>

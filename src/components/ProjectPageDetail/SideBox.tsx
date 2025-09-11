@@ -103,7 +103,8 @@ const SideBox: React.FC<SideBoxProps> = ({ isOpen, onClose, filters, onFiltersCh
     <div className={`side-box ${isOpen ? "open" : ""}`}>
       <button className="close-btn" onClick={onClose}>✕</button>
 
-      <div className="filter-container">
+      <div className="side-box-content">
+        <div className="filter-container">
         {/* 플랫폼 */}
         <div className="filter-section">
           <div className="filter-header">
@@ -290,6 +291,8 @@ const SideBox: React.FC<SideBoxProps> = ({ isOpen, onClose, filters, onFiltersCh
               className="date-input"
             />
           </div>
+        </div>
+
         </div>
 
         {/* 적용하기 및 초기화 버튼 */}

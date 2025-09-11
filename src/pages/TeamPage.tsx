@@ -11,7 +11,7 @@ import Situation from './TeamFormDetail/Situation';
 import WorkEnviron from './TeamFormDetail/WorkEnviron';
 import Header from '../layouts/Header';
 import AuthGuard from '../components/AuthGuard';
-import type { TeamFormData, StepData } from '../types/Draft';
+import type { TeamFormData } from '../types/Draft';
 import "./TeamPage.css";
 
 const TeamPage = () => {
@@ -24,12 +24,46 @@ const TeamPage = () => {
   const [applicantInfoComplete, setApplicantInfoComplete] = useState(false);
 
   const [formData, setFormData] = useState<TeamFormData>({
-    basicInfo: {} as StepData,
-    projectInfo: {} as StepData,
-    situation: {} as StepData,
-    workEnviron: {} as StepData,
-    applicantInfo: {} as StepData,
+    basicInfo: {
+      startDate: '',
+      endDate: '',
+      platform: '',
+      customPlatform: '',
+      selectedJobs: [],
+      customJob: '',
+      peopleCount: '',
+      selectedTechStacks: []
+    },
+    projectInfo: {
+      teamName: '',
+      selectedJobs: [],
+      customJob: '',
+      otherText: '',
+      playType: '',
+      customPlayType: '',
+      startDate: '',
+      endDate: '',
+      projectStartDate: ''
+    },
+    situation: {
+      title: '',
+      progress: '',
+      customProgress: '',
+      content: '',
+      otherText: ''
+    },
+    workEnviron: {
+      meetingType: '',
+      locationComplete: false,
+      selectedLocations: [],
+      selectedRegion: '서울특별시'
+    },
+    applicantInfo: {
+      questions: [],
+      minRequirement: ''
+    },
   });
+
 
   // ✅ Hook 최상위에서 ref 배열 선언
   const sectionRefs: React.RefObject<HTMLDivElement | null>[] = [
@@ -80,22 +114,60 @@ const TeamPage = () => {
     applicantInfoComplete;
 
   const handleLoadDraft = (data: TeamFormData) => {
-    console.log('TeamPage handleLoadDraft - received data:', data); // 디버깅용
-    setFormData(data);
+    // 안전한 데이터 병합
+    const safeData: TeamFormData = {
+      basicInfo: {
+        startDate: '',
+        endDate: '',
+        platform: '',
+        customPlatform: '',
+        selectedJobs: [],
+        customJob: '',
+        peopleCount: '',
+        selectedTechStacks: [],
+        ...(data.basicInfo || {})
+      },
+      projectInfo: {
+        teamName: '',
+        selectedJobs: [],
+        customJob: '',
+        otherText: '',
+        playType: '',
+        customPlayType: '',
+        startDate: '',
+        endDate: '',
+        projectStartDate: '',
+        ...(data.projectInfo || {})
+      },
+      situation: {
+        title: '',
+        progress: '',
+        customProgress: '',
+        content: '',
+        otherText: '',
+        ...(data.situation || {})
+      },
+      workEnviron: {
+        meetingType: '',
+        locationComplete: false,
+        selectedLocations: [],
+        selectedRegion: '서울특별시',
+        ...(data.workEnviron || {})
+      },
+      applicantInfo: {
+        questions: [],
+        minRequirement: '',
+        ...(data.applicantInfo || {})
+      },
+    };
+    
+    setFormData(safeData);
 
-    const basicInfo = data.basicInfo || {};
-    const projectInfo = data.projectInfo || {};
-    const situation = data.situation || {};
-    const workEnviron = data.workEnviron || {};
-    const applicantInfo = data.applicantInfo || {};
-
-    console.log('TeamPage extracted sections:', { // 디버깅용
-      basicInfo,
-      projectInfo,
-      situation,
-      workEnviron,
-      applicantInfo
-    });
+    const basicInfo = safeData.basicInfo;
+    const projectInfo = safeData.projectInfo;
+    const situation = safeData.situation;
+    const workEnviron = safeData.workEnviron;
+    const applicantInfo = safeData.applicantInfo;
 
     setBasicInfoComplete(
       basicInfo.peopleCount?.trim() !== '' &&

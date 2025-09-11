@@ -45,18 +45,28 @@ const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: B
   }, []);
 
   const handleConfirmSave = (title: string) => {
-    const draft: Draft = {
-      id: uuidv4(),
-      title,
-      savedAt: new Date().toISOString(),
-      data: formData,
-    };
-    saveDraft(draft);
-    setHasDraftsState(true); // 임시저장 후 상태 업데이트
-    alert("임시저장 완료!");
-    setIsListModalOpen(false);
-    setIsModalOpen(false);
-    navigate("/Teams");
+    try {
+      const draft: Draft = {
+        id: uuidv4(),
+        title,
+        savedAt: new Date().toISOString(),
+        data: formData,
+      };
+      saveDraft(draft);
+      setHasDraftsState(true); // 임시저장 후 상태 업데이트
+      alert(`"${title}" 임시저장이 완료되었습니다!`);
+      setIsListModalOpen(false);
+      setIsModalOpen(false);
+      // 페이지 이동 제거 - 현재 페이지에 머물도록 수정
+    } catch (error) {
+      console.error('임시저장 중 오류 발생:', error);
+      alert('임시저장 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }
+  };
+
+  // 임시저장 목록 새로고침 함수
+  const refreshDrafts = () => {
+    setHasDraftsState(hasDrafts());
   };
 
   return (
@@ -99,7 +109,7 @@ const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: B
           }}
           onDelete={() => {
             // 삭제 후 hasDraftsState 업데이트
-            setHasDraftsState(hasDrafts());
+            refreshDrafts();
           }}
         />
       )}

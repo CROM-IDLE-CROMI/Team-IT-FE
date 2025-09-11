@@ -16,8 +16,6 @@ const ApplicantInfo: React.FC<ApplicantInfoProps> = ({ data, setData, onComplete
 
   // data prop이 변경될 때 state 업데이트
   useEffect(() => {
-    console.log('ApplicantInfo useEffect - data:', data); // 디버깅용
-    
     setQuestions(data.questions || []);
     setMinRequirement(data.minRequirement || "");
   }, [data.questions, data.minRequirement]);

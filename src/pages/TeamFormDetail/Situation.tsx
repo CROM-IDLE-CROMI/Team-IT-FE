@@ -34,8 +34,6 @@ const Situation = ({ data, setData, onCompleteChange }: SituationProps) => {
 
   // data prop이 변경될 때 state 업데이트
   useEffect(() => {
-    console.log('Situation useEffect - data:', data); // 디버깅용
-    
     setTitle(data.title || '');
     setProgress(data.progress || '');
     setCustomProgress(data.customProgress || '');

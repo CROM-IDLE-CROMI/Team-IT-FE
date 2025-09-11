@@ -285,15 +285,75 @@ html, body {
 }
 
 .search-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   text-align: right;
   padding-right: 2.8rem;
 }
 
 .search-bar input {
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   border-radius: 20px;
   border: 1px solid #aaa;
   width: 250px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-bar input:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.search-btn {
+  padding: 0.5rem 1.5rem;
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.search-btn:hover {
+  background: linear-gradient(135deg, #357abd 0%, #2c5aa0 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.search-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(74, 144, 226, 0.3);
+}
+
+.clear-btn {
+  padding: 0.5rem;
+  background: #f8f9fa;
+  color: #666;
+  border: 1px solid #dee2e6;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.8rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.clear-btn:hover {
+  background: #e9ecef;
+  color: #dc3545;
+  border-color: #dc3545;
+  transform: scale(1.1);
+}
+
+.clear-btn:active {
+  transform: scale(0.95);
 }
 
 .filter-icon {
@@ -723,5 +783,25 @@ button:disabled {
 
 .arrow {
   font-size: 2rem;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .search-bar {
+    flex-direction: column;
+    gap: 0.8rem;
+    padding-right: 0;
+    text-align: center;
+  }
+  
+  .search-bar input {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .search-btn {
+    width: 100%;
+    max-width: 300px;
+  }
 }
 

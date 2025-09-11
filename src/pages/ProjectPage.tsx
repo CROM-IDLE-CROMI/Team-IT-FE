@@ -171,6 +171,7 @@ const dummyProjects = [
 const ProjectPage = () => {
   const [isOptionOpen, setIsOptionOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [appliedSearchTerm, setAppliedSearchTerm] = useState("");
   
   // 임시 필터 (사이드바에서 선택하는 필터)
   const [tempFilters, setTempFilters] = useState<FilterState>({
@@ -209,10 +210,10 @@ const ProjectPage = () => {
   const filteredProjects = useMemo(() => {
     return dummyProjects.filter(project => {
       // 검색어 필터링
-      const matchesSearch = searchTerm === "" || 
-        project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.techStack.some(tech => tech.toLowerCase().includes(searchTerm.toLowerCase()));
+      const matchesSearch = appliedSearchTerm === "" || 
+        project.title.toLowerCase().includes(appliedSearchTerm.toLowerCase()) ||
+        project.description.toLowerCase().includes(appliedSearchTerm.toLowerCase()) ||
+        project.techStack.some(tech => tech.toLowerCase().includes(appliedSearchTerm.toLowerCase()));
 
       // 플랫폼 필터링
       const matchesActivity = appliedFilters.selectedActivity.length === 0 || 
@@ -250,7 +251,25 @@ const ProjectPage = () => {
       return matchesSearch && matchesActivity && matchesPositions && matchesTechStack && 
              matchesLocation && matchesProgress && matchesMethod && matchesRecruitEndDate && matchesProjectDate;
     });
-  }, [searchTerm, appliedFilters]);
+  }, [appliedSearchTerm, appliedFilters]);
+
+  // 검색 핸들러
+  const handleSearch = () => {
+    setAppliedSearchTerm(searchTerm);
+  };
+
+  // 검색 초기화 핸들러
+  const handleClearSearch = () => {
+    setSearchTerm("");
+    setAppliedSearchTerm("");
+  };
+
+  // 엔터키 검색 핸들러
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
 
   // 카드 클릭 핸들러
   const handleCardClick = (projectId: number) => {
@@ -357,7 +376,16 @@ const ProjectPage = () => {
             placeholder="제목, 내용을 검색하세요..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
           />
+          <button className="search-btn" onClick={handleSearch}>
+            검색
+          </button>
+          {(searchTerm || appliedSearchTerm) && (
+            <button className="clear-btn" onClick={handleClearSearch} title="검색 초기화">
+              ✕
+            </button>
+          )}
         </div>
         </div>
 
