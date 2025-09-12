@@ -30,6 +30,7 @@ const ProjectComment = ({ comments, setComments, onApply }: ProjectCommentProps)
   const [editingComment, setEditingComment] = useState<string | null>(null);
   const [editingReply, setEditingReply] = useState<{commentId: string, replyId: string} | null>(null);
   const [editText, setEditText] = useState("");
+  const [showAllComments, setShowAllComments] = useState(false);
   const editTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   const currentUser = getCurrentUser(); // 로그인된 유저 ID
@@ -242,7 +243,7 @@ const ProjectComment = ({ comments, setComments, onApply }: ProjectCommentProps)
 
         {/* 댓글 목록 */}
         <div className="comments-list">
-          {comments.map((comment) => {
+          {(showAllComments ? comments : comments.slice(0, 5)).map((comment) => {
             const isAuthor = currentUser === comment.author;
 
             return (
@@ -397,6 +398,18 @@ const ProjectComment = ({ comments, setComments, onApply }: ProjectCommentProps)
             );
           })}
         </div>
+
+        {/* 더보기 버튼 */}
+        {comments.length > 5 && (
+          <div className="load-more-section">
+            <button 
+              className="load-more-btn" 
+              onClick={() => setShowAllComments(!showAllComments)}
+            >
+              {showAllComments ? '댓글 접기' : `댓글 더보기 (${comments.length - 5}개 더)`}
+            </button>
+          </div>
+        )}
 
         {/* 지원하기 버튼 */}
         {onApply && (

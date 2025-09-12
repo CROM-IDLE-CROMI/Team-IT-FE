@@ -258,13 +258,6 @@ const ProjectPage = () => {
   const handleSearch = () => {
     setAppliedSearchTerm(searchTerm);
   };
-
-  // 검색 초기화 핸들러
-  const handleClearSearch = () => {
-    setSearchTerm("");
-    setAppliedSearchTerm("");
-  };
-
   // 엔터키 검색 핸들러
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -316,8 +309,8 @@ const ProjectPage = () => {
   }, []);
 
   // tempFilters 업데이트 함수를 메모이제이션
-  const handleTempFiltersChange = useCallback((newFilters: FilterState) => {
-    setTempFilters(newFilters);
+  const handleTempFiltersChange = useCallback((filters: FilterState | ((prev: FilterState) => FilterState)) => {
+    setTempFilters(filters);
   }, []);
 
   return (
@@ -389,11 +382,6 @@ const ProjectPage = () => {
           <button className="search-btn" onClick={handleSearch}>
             검색
           </button>
-          {(searchTerm || appliedSearchTerm) && (
-            <button className="clear-btn" onClick={handleClearSearch} title="검색 초기화">
-              ✕
-            </button>
-          )}
         </div>
         </div>
 

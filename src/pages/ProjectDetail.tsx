@@ -136,7 +136,8 @@ const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [project, setProject] = useState<any>(null);
-  const [comments, setComments] = useState<any[]>([]);
+  const [comments, setComments] = useState<any[]>([
+]);
 
   useEffect(() => {
     const projectId = parseInt(id || "1");

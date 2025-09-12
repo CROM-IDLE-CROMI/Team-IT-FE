@@ -414,6 +414,39 @@
   background-color: #357abd;
 }
 
+/* 더보기 버튼 섹션 */
+.load-more-section {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+  padding: 1rem 0;
+}
+
+.load-more-btn {
+  padding: 0.8rem 1.5rem;
+  background-color: #f8f9fa;
+  color: #4a90e2;
+  border: 2px solid #4a90e2;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.load-more-btn:hover {
+  background-color: #4a90e2;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(74, 144, 226, 0.3);
+}
+
+.load-more-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 /* 지원하기 섹션 */
 .apply-section {
   margin-top: 2rem;
@@ -490,5 +523,10 @@
   
   .reply-input {
     margin-left: 1rem;
+  }
+  
+  .load-more-btn {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
   }
 }
