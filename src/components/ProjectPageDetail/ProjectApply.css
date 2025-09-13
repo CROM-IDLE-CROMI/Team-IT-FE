@@ -233,26 +233,6 @@
   line-height: 1.6;
   margin: 0;
 }
-
-/* 스크롤 애니메이션 효과 */
-.content-panel {
-  transition: transform 0.1s ease-out, box-shadow 0.3s ease;
-}
-
-.content-panel:hover {
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
-
-/* 본문 내용 내부 애니메이션 */
-.content-display {
-  transition: all 0.3s ease;
-}
-
-.content-display:hover {
-  background: #f0f8ff;
-  border-color: #4a90e2;
-}
-
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .apply-layout {

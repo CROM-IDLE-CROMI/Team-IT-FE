@@ -3,6 +3,7 @@
   min-height: 100vh;
   background-color: #f8f9fa;
   padding-top: 88px; /* 헤더 높이만큼 패딩 */
+  font-family: 'Gothic A1', sans-serif;
 }
 
 .project-detail-layout {

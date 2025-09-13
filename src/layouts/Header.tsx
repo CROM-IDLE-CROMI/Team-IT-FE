@@ -30,7 +30,15 @@ const Header = () => {
   return (
     <header className="header">
       <div className="logo" onClick={() => window.location.href = '/'}>
-        <img src="./Team-IT-2.png" alt="Team-IT로고" className='logo'/>
+        <img 
+          src="/Team-IT-2.png" 
+          alt="Team-IT로고" 
+          className='logo'
+          onError={(e) => {
+            console.error('Failed to load logo:', e.currentTarget.src);
+            e.currentTarget.style.display = 'none';
+          }}
+        />
       </div>
 
       <nav className="nav-links">
@@ -45,8 +53,24 @@ const Header = () => {
       <div className="auth-buttons">
         {isLoggedIn ? (
           <>
-            <Link to="/Mypage"><button className="profile"><img src ="./Profile.png" className='Profile'/></button></Link>
-            <Link to="/Notific"><button className="notification"><img src ="./Notific.png" className='notic'/> </button></Link>
+            <Link to="/Mypage"><button className="profile"><img 
+              src="/Profile.png" 
+              className='Profile'
+              alt="프로필"
+              onError={(e) => {
+                console.error('Failed to load profile icon:', e.currentTarget.src);
+                e.currentTarget.style.display = 'none';
+              }}
+            /></button></Link>
+            <Link to="/Notific"><button className="notification"><img 
+              src="/Notific.png" 
+              className='notic'
+              alt="알림"
+              onError={(e) => {
+                console.error('Failed to load notification icon:', e.currentTarget.src);
+                e.currentTarget.style.display = 'none';
+              }}
+            /> </button></Link>
             <button onClick={handleLogout}>로그아웃</button>
           </>
         ) : (

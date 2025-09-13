@@ -2,6 +2,10 @@ import React, { useState, useCallback } from "react";
 import "./SideBox.css";
 import { techStacksInit } from "../../styles/TechStack";
 import LocationSelector from "../LocationSelector";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { Box } from "@mui/material";
 
 interface FilterState {
   selectedActivity: string[];
@@ -34,6 +38,15 @@ const SideBox: React.FC<SideBoxProps> = ({
   onResetFilters
 }) => {
   const [techStackSearch, setTechStackSearch] = useState<string>("");
+  const [recruitEndDate, setRecruitEndDate] = useState<Date | null>(
+    filters.recruitEndDate ? new Date(filters.recruitEndDate) : null
+  );
+  const [projectStartDate, setProjectStartDate] = useState<Date | null>(
+    filters.projectStartDate ? new Date(filters.projectStartDate) : null
+  );
+  const [projectEndDate, setProjectEndDate] = useState<Date | null>(
+    filters.projectEndDate ? new Date(filters.projectEndDate) : null
+  );
 
   const activityOptions = ["앱", "웹", "게임", "기타"];
   const positionOptions = ["프론트", "백", "PM", "디자인", "기획","기타"];
@@ -83,6 +96,9 @@ const SideBox: React.FC<SideBoxProps> = ({
       projectEndDate: ""
     });
     setTechStackSearch("");
+    setRecruitEndDate(null);
+    setProjectStartDate(null);
+    setProjectEndDate(null);
   };
 
   const filteredTechStacks = techStacksInit.filter(tech => 
@@ -100,6 +116,28 @@ const SideBox: React.FC<SideBoxProps> = ({
   const handleCompleteChange = useCallback(() => {
     // LocationSelector의 완료 상태는 필터링에 사용하지 않음
   }, []);
+
+  // 날짜 변경 핸들러
+  const handleRecruitEndDateChange = useCallback((date: Date | null) => {
+    setRecruitEndDate(date);
+    updateFilters({ 
+      recruitEndDate: date ? date.toISOString().split('T')[0] : '' 
+    });
+  }, [updateFilters]);
+
+  const handleProjectStartDateChange = useCallback((date: Date | null) => {
+    setProjectStartDate(date);
+    updateFilters({ 
+      projectStartDate: date ? date.toISOString().split('T')[0] : '' 
+    });
+  }, [updateFilters]);
+
+  const handleProjectEndDateChange = useCallback((date: Date | null) => {
+    setProjectEndDate(date);
+    updateFilters({ 
+      projectEndDate: date ? date.toISOString().split('T')[0] : '' 
+    });
+  }, [updateFilters]);
 
   return (
     <div className={`side-box ${isOpen ? "open" : ""}`}>
@@ -142,19 +180,31 @@ const SideBox: React.FC<SideBoxProps> = ({
           {/* 프로젝트 모집 종료 기한 */}
           <div className="filter-section">
             <div className="filter-header"><h3>프로젝트 모집 종료 기한</h3></div>
-            <input 
-              type="date" 
-              value={filters.recruitEndDate}
-              onChange={(e) => updateFilters({ recruitEndDate: e.target.value })}
-              className="date-input"
-            />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                value={recruitEndDate}
+                onChange={handleRecruitEndDateChange}
+                format="yyyy/MM/dd"
+                slotProps={{
+                  textField: {
+                    size: "small",
+                    sx: { 
+                      width: "100%",
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "8px",
+                        fontSize: "0.9rem"
+                      }
+                    }
+                  }
+                }}
+              />
+            </LocalizationProvider>
           </div>
 
           {/* 기술 스택 */}
           <div className="filter-section">
             <div className="filter-header">
               <h3>기술 스택</h3>
-              <button className="reset-btn" onClick={resetAll}>초기화</button>
             </div>
             <div className="tech-search">
               <input
@@ -210,7 +260,6 @@ const SideBox: React.FC<SideBoxProps> = ({
           <div className="filter-section">
             <div className="filter-header">
               <h3>위치</h3>
-              <button className="reset-btn" onClick={resetAll}>초기화</button>
             </div>
             <LocationSelector
               onCompleteChange={handleCompleteChange}
@@ -241,7 +290,6 @@ const SideBox: React.FC<SideBoxProps> = ({
           <div className="filter-section">
             <div className="filter-header">
               <h3>프로젝트 진행 상황</h3>
-              <button className="reset-btn" onClick={resetAll}>초기화</button>
             </div>
             <div className="option-buttons">
               {progressOptions.map(option => (
@@ -260,23 +308,84 @@ const SideBox: React.FC<SideBoxProps> = ({
           <div className="filter-section">
             <div className="filter-header">
               <h3>프로젝트 기간</h3>
-              <button className="reset-btn" onClick={resetAll}>초기화</button>
             </div>
-            <div className="date-range">
-              <input 
-                type="date" 
-                value={filters.projectStartDate}
-                onChange={(e) => updateFilters({ projectStartDate: e.target.value })}
-                className="date-input"
-              />
-              <span>~</span>
-              <input 
-                type="date" 
-                value={filters.projectEndDate}
-                onChange={(e) => updateFilters({ projectEndDate: e.target.value })}
-                className="date-input"
-              />
-            </div>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <Box
+  className="date-range"
+  sx={{
+    display: "flex",
+    alignItems: "center",
+    gap: 2,
+    width: "100%",
+    p: 1,
+    border: "1px solid #e5e5e5",
+    borderRadius: "10px",
+    backgroundColor: "#fff",
+  }}
+>
+  <DatePicker
+    label="시작일"
+    value={projectStartDate}
+    onChange={handleProjectStartDateChange}
+    format="yyyy/MM/dd"
+    slotProps={{
+      textField: {
+        size: "small",
+        sx: {
+          flex: 1,
+          "& .MuiOutlinedInput-root": {
+            borderRadius: "8px",
+            fontSize: "0.9rem",
+            backgroundColor: "#fafafa",
+            "& fieldset": {
+              borderColor: "#ddd",
+            },
+            "&:hover fieldset": {
+              borderColor: "#aaa",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "#000",
+              borderWidth: "1.5px",
+            },
+          },
+        },
+      },
+    }}
+  />
+  <Box sx={{ fontSize: "1.2rem", color: "#888", mx: 1 }}>~</Box>
+  <DatePicker
+    label="종료일"
+    value={projectEndDate}
+    onChange={handleProjectEndDateChange}
+    format="yyyy/MM/dd"
+    minDate={projectStartDate ?? undefined}
+    slotProps={{
+      textField: {
+        size: "small",
+        sx: {
+          flex: 1,
+          "& .MuiOutlinedInput-root": {
+            borderRadius: "8px",
+            fontSize: "0.9rem",
+            backgroundColor: "#fafafa",
+            "& fieldset": {
+              borderColor: "#ddd",
+            },
+            "&:hover fieldset": {
+              borderColor: "#aaa",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "#000",
+              borderWidth: "1.5px",
+            },
+          },
+        },
+      },
+    }}
+  />
+</Box>
+
+            </LocalizationProvider>
           </div>
 
         </div>

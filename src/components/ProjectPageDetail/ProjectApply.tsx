@@ -207,7 +207,6 @@ const ProjectApply = () => {
           ref={contentPanelRef}
           className="content-panel"
           style={{
-            transform: `translateY(${Math.min(scrollY * 0.15, 50)}px) rotateX(${Math.min(scrollY * 0.02, 5)}deg)`,
             transition: 'transform 0.1s ease-out'
           }}
         >
@@ -220,12 +219,6 @@ const ProjectApply = () => {
               <p style={{ margin: '0 0 1rem 0', color: '#666', fontSize: '0.9rem' }}>
                 이 프로젝트는 혁신적인 웹 서비스를 개발하는 것을 목표로 합니다.
               </p>
-              <h4 style={{ margin: '0 0 0.5rem 0', color: '#333' }}>기술 스택</h4>
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                <span style={{ background: '#e3f2fd', color: '#1976d2', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem' }}>React</span>
-                <span style={{ background: '#e8f5e8', color: '#2e7d32', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem' }}>Node.js</span>
-                <span style={{ background: '#fff3e0', color: '#f57c00', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem' }}>MongoDB</span>
-              </div>
             </div>
           </div>
         </div>

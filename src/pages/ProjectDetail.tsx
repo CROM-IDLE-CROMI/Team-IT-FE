@@ -217,7 +217,7 @@ const ProjectDetail = () => {
           </div>
 
           {/* 구분선 */}
-          <hr className="divider" />
+          <hr className="divider"/>
 
           {/* 프로젝트 소개 */}
           <div className="project-intro-section">

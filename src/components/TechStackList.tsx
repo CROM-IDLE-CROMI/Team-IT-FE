@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface TechStack {
   value: string;
@@ -17,6 +17,12 @@ const TechStackList: React.FC<TechStackListProps> = ({
   selectedTechStacks,
   toggleTechStack,
 }) => {
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
+
+  const handleImageError = (stackValue: string) => {
+    setImageErrors(prev => new Set(prev).add(stackValue));
+  };
+
   return (
     <div className="techStackBox">
       <div className="techStackListWrapper">
@@ -25,13 +31,26 @@ const TechStackList: React.FC<TechStackListProps> = ({
             const isSelected = selectedTechStacks.some(
               (item) => item.value === stack.value
             );
+            const hasImageError = imageErrors.has(stack.value);
+            
             return (
               <div
                 key={stack.value}
                 className={`techStackItem ${isSelected ? "selected" : ""}`}
                 onClick={() => toggleTechStack(stack)}
               >
-                <img src={stack.icon} alt={stack.label} />
+                {!hasImageError ? (
+                  <img 
+                    src={stack.icon} 
+                    alt={stack.label}
+                    onError={() => handleImageError(stack.value)}
+                    onLoad={() => {
+                      console.log(`Successfully loaded icon for ${stack.label}:`, stack.icon);
+                    }}
+                  />
+                ) : (
+                  <div className="fallback-icon">🔧</div>
+                )}
                 <span>{stack.label}</span>
               </div>
             );
