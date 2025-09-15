@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface Member {
   id: number;
@@ -21,6 +21,7 @@ const MemberChangeLeader: React.FC = () => {
 
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [newLeader, setNewLeader] = useState<Member | null>(null);
+  const { id } = useParams<{ id: string }>();
 
   const handleSave = () => {
     if (selectedId === null) {
@@ -92,7 +93,7 @@ const MemberChangeLeader: React.FC = () => {
             새로운 팀장은 <strong>{newLeader.nickname}</strong>님입니다.
           </p>
           <button
-            onClick={() => navigate("/myproject")}
+            onClick={() => navigate(`/myproject/${id}`)}
             className="change-leader-back-btn"
           >
             마이 프로젝트로 돌아가기
