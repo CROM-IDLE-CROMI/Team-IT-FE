@@ -3,7 +3,7 @@ import "../pages/ProjectDetail.css";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ProjectComment from "../components/ProjectPageDetail/ProjectComment";
-import { requireAuth } from "../utils/authUtils";
+import { requireAuth, getCurrentUser } from "../utils/authUtils";
 import "../styles/TechStack";
 
 /**
@@ -236,20 +236,99 @@ const dummyProjects: Project[] = [
 ];
 
 
+interface Reply {
+  id: string;
+  text: string;
+  author: string;
+  date: string;
+}
+
+interface Comment {
+  id: string;
+  text: string;
+  author: string;
+  date: string;
+  replies: Reply[];
+}
+
 const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   // 상태 관리: API 데이터와 로딩 상태
   const [project, setProject] = useState<Project | null>(null);
-  const [comments, setComments] = useState<any[]>([]); // 댓글 상태는 기존과 동일
+  const [comments, setComments] = useState<Comment[]>([]); // 댓글 상태 (타입 수정)
+  const [newComment, setNewComment] = useState(""); // 새로운 댓글 입력 상태
   const [isLoading, setIsLoading] = useState(true);
+
+  // 댓글 전송 로직
+  const handleCommentSubmit = async (commentText: string) => {
+    // 폼이 비어있으면 전송하지 않음
+    if (commentText.trim() === "") {
+      return;
+    }
+
+    // 백엔드 서버 URL로 수정
+    const API_BASE = "http://localhost:4000";
+    const API_ENDPOINT = `${API_BASE}/api/projects/${project?.id}/comments`;
+
+    try {
+      const currentUser = getCurrentUser();
+      const newCommentData = {
+        projectId: project?.id,
+        author: currentUser || "익명", // 실제 로그인한 사용자 ID 사용
+        text: commentText,
+        date: new Date().toISOString().split('T')[0],
+      };
+
+      console.log("📤 댓글 전송 시도:", newCommentData);
+      console.log("🔗 API 엔드포인트:", API_ENDPOINT);
+
+      const res = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newCommentData),
+      });
+
+      if (!res.ok) {
+        throw new Error(`API error: ${res.status} - ${res.statusText}`);
+      }
+      
+      const savedComment = await res.json();
+      console.log("✅ 댓글 전송 성공:", savedComment);
+      
+      // 로컬 상태를 업데이트하여 화면에 즉시 반영
+      setComments(prev => [...prev, savedComment]);
+      // 입력창 비우기
+      setNewComment('');
+
+    } catch (err) {
+      console.error("⚠️ 댓글 전송 실패:", err);
+      console.log("💡 백엔드 서버가 실행 중인지 확인해주세요. (http://localhost:4000)");
+      
+      // 백엔드가 없을 때 임시로 로컬에 추가하여 테스트 가능하게 함
+      const currentUser = getCurrentUser();
+      const tempComment: Comment = { 
+        id: Date.now().toString(),
+        author: currentUser || "익명",
+        text: commentText,
+        date: new Date().toLocaleDateString("ko-KR"),
+        replies: []
+      };
+      setComments(prev => [...prev, tempComment]);
+      setNewComment('');
+      console.log("🔄 임시 댓글 추가됨 (백엔드 없이 테스트용)");
+    }
+  };
+
 
   useEffect(() => {
     const projectId = parseInt(id || "1", 10);
     
-    // process.env를 제거하고 직접 URL을 정의합니다.
-    const API_BASE = "http://localhost:5173";
+    // 백엔드 서버 URL로 통일
+    const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:5173";
     const API_ENDPOINT = `${API_BASE}/api/projects/${projectId}`;
 
     const controller = new AbortController();
@@ -381,9 +460,13 @@ const ProjectDetail = () => {
 
       {/* 댓글 섹션 + 지원하기 버튼 */}
       <ProjectComment 
+        projectId={project.id}
         comments={comments} 
-        setComments={setComments} 
+        setComments={setComments}
+        onCommentSubmit={handleCommentSubmit}
         onApply={handleApply}
+        newComment={newComment}
+        setNewComment={setNewComment}
       />
     </div>
   );

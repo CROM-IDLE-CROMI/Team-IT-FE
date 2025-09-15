@@ -27,27 +27,7 @@ const BoardDetail: React.FC<BoardDetailProps> = ({ postsByCategory }) => {
 
   // 댓글 상태 관리
   const [comments, setComments] = useState<Comment[]>([
-    {
-      id: 1,
-      author: "사용자1",
-      content: "좋은 정보 감사합니다!",
-      createdAt: new Date().toISOString(),
-      replies: [
-        {
-          id: 2,
-          author: "작성자",
-          content: "도움이 되었다니 다행입니다!",
-          createdAt: new Date().toISOString()
-        }
-      ]
-    },
-    {
-      id: 3,
-      author: "사용자2",
-      content: "추가로 궁금한 점이 있습니다.",
-      createdAt: new Date().toISOString()
-    }
-  ]);
+]);
 
   const handleAddComment = (content: string) => {
     const newComment: Comment = {

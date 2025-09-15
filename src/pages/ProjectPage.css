@@ -141,35 +141,6 @@
   margin: 1rem 0;
 }
 
-.heart {
-  float: right;
-  cursor: pointer;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-  user-select: none;
-}
-
-.heart:hover {
-  transform: scale(1.2);
-}
-
-.heart.liked {
-  color: #e74c3c;
-  animation: heartBeat 0.6s ease-in-out;
-}
-
-@keyframes heartBeat {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.3);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
 .tech-icons {
   font-size: 1.3rem;
   margin-top: 0.5rem;
@@ -266,13 +237,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-top: 5rem;
 }
 
 .divider_1{
   border: none;
   border-top: 2px solid #ddd;
-  margin: 2rem 0;
+  margin: 2rem
   
 }
 
@@ -659,7 +630,7 @@
   /* 페이지네이션 */
   .pagination-container {
     padding: 0 1rem;
-    margin: 2rem 0;
+  margin: 2rem 0;
   }
   
   .pagination {
@@ -926,5 +897,225 @@
   .slide-indicator {
     font-size: 0.7rem;
     min-width: 30px;
+  }
+}
+
+/* 상단 인기 섹션들 */
+.top-sections {
+  display: flex;
+  gap: 4rem;
+  padding: 3rem;
+  background: white;
+  flex-wrap: wrap;
+}
+
+.popular-section,
+.posts-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-header h2::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #ddd;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.slide-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.slide-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+.slide-btn:hover:not(:disabled) {
+  border-color: #4a90e2;
+  color: #4a90e2;
+  background: #f8f9ff;
+}
+
+.slide-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.cards-row {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.simple-card {
+  flex: 1;
+  border: 2px solid #000;
+  border-radius: 10px;
+  background: white;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 180px;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.simple-card:hover {
+  background: #f8f9ff;
+  border-color: #4a90e2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
+  text-align: left;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.author {
+  font-weight: normal;
+  margin-bottom: 0.2rem;
+}
+
+.date {
+  font-weight: normal;
+  margin-bottom: 0.2rem;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.likes,
+.views {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+  .top-sections {
+    flex-direction: column;
+    gap: 3rem;
+    padding: 2rem;
+  }
+  
+  .cards-row {
+    gap: 2rem;
+    justify-content: flex-start;
+  }
+  
+  .simple-card {
+    width: 160px;
+    min-width: 160px;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-sections {
+    padding: 1.5rem 1rem;
+    gap: 2rem;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .section-header h2::after {
+    display: none;
+  }
+  
+  .cards-row {
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .simple-card {
+    width: 150px;
+    min-width: 150px;
+    padding: 0.8rem;
+  }
+  
+  .card-title {
+    font-size: 1rem;
+  }
+  
+  .card-info {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cards-row {
+    gap: 1rem;
+  }
+  
+  .simple-card {
+    width: 140px;
+    min-width: 140px;
+    padding: 0.7rem;
+  }
+  
+  .card-title {
+    font-size: 0.9rem;
+  }
+  
+  .card-info {
+    font-size: 0.75rem;
   }
 }

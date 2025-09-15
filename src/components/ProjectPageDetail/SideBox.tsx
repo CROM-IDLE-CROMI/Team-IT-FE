@@ -49,7 +49,7 @@ const SideBox: React.FC<SideBoxProps> = ({
   );
 
   const activityOptions = ["앱", "웹", "게임", "기타"];
-  const positionOptions = ["프론트", "백", "PM", "디자인", "기획","기타"];
+  const positionOptions = ["프론트", "백", "PM", "디자인", "기획", "데이터", "기타"];
   const progressOptions = ["아이디어 구상 중", "아이디어 기획 중", "개발 진행 중"];
   const methodOptions = ["온라인", "오프라인", "온/오프라인"];
 

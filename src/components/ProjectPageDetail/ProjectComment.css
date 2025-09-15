@@ -136,19 +136,23 @@
 }
 
 .comment-actions .reply-btn {
-  padding: 0.3rem 0.7rem;
-  border-radius: 5px;
-  border: 1px solid #4a90e2;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #6c757d;
   background: none;
-  color: #4a90e2;
+  color: #6c757d;
   cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.8rem;
+  transition: all 0.2s ease;
+  font-size: 0.7rem;
+  font-weight: 500;
+  min-height: 24px;
 }
 
 .comment-actions .reply-btn:hover {
-  background-color: #4a90e2;
+  background-color: #6c757d;
   color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(108, 117, 125, 0.2);
 }
 
 .comment-date {
@@ -157,31 +161,42 @@
 }
 
 /* 수정/삭제 버튼 */
-.comment-actions button:not(.reply-btn) {
-  padding: 0.3rem 0.7rem;
-  border-radius: 5px;
-  border: 1px solid #dc3545;
+.comment-actions .button-group button {
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  border: 1px solid #dee2e6;
   background: none;
-  color: #dc3545;
+  color: #6c757d;
   cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.8rem;
-  margin-left: 0.5rem;
+  transition: all 0.2s ease;
+  font-size: 0.65rem;
+  font-weight: 500;
+  min-height: 22px;
+  margin-left: 0.3rem;
 }
 
-.comment-actions button:not(.reply-btn):first-of-type {
-  border-color: #ffc107;
-  color: #ffc107;
+.comment-actions .button-group button:first-of-type {
+  border-color: #17a2b8;
+  color: #17a2b8;
 }
 
-.comment-actions button:not(.reply-btn):first-of-type:hover {
-  background-color: #ffc107;
+.comment-actions .button-group button:first-of-type:hover {
+  background-color: #17a2b8;
   color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(23, 162, 184, 0.2);
 }
 
-.comment-actions button:not(.reply-btn):last-of-type:hover {
+.comment-actions .button-group button:last-of-type {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.comment-actions .button-group button:last-of-type:hover {
   background-color: #dc3545;
   color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
 }
 
 /* 버튼 그룹 스타일링 */
@@ -325,19 +340,23 @@
 }
 
 .reply-actions .reply-btn {
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  border: 1px solid #4a90e2;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  border: 1px solid #6c757d;
   background: none;
-  color: #4a90e2;
+  color: #6c757d;
   cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.75rem;
+  transition: all 0.2s ease;
+  font-size: 0.65rem;
+  font-weight: 500;
+  min-height: 20px;
 }
 
 .reply-actions .reply-btn:hover {
-  background-color: #4a90e2;
+  background-color: #6c757d;
   color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(108, 117, 125, 0.2);
 }
 
 .reply-date {
@@ -346,31 +365,42 @@
 }
 
 /* 대댓글 수정/삭제 버튼 */
-.reply-actions button:not(.reply-btn) {
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  border: 1px solid #dc3545;
+.reply-actions .button-group button {
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  border: 1px solid #dee2e6;
   background: none;
-  color: #dc3545;
+  color: #6c757d;
   cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.75rem;
-  margin-left: 0.5rem;
+  transition: all 0.2s ease;
+  font-size: 0.6rem;
+  font-weight: 500;
+  min-height: 20px;
+  margin-left: 0.25rem;
 }
 
-.reply-actions button:not(.reply-btn):first-of-type {
-  border-color: #ffc107;
-  color: #ffc107;
+.reply-actions .button-group button:first-of-type {
+  border-color: #17a2b8;
+  color: #17a2b8;
 }
 
-.reply-actions button:not(.reply-btn):first-of-type:hover {
-  background-color: #ffc107;
+.reply-actions .button-group button:first-of-type:hover {
+  background-color: #17a2b8;
   color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(23, 162, 184, 0.2);
 }
 
-.reply-actions button:not(.reply-btn):last-of-type:hover {
+.reply-actions .button-group button:last-of-type {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.reply-actions .button-group button:last-of-type:hover {
   background-color: #dc3545;
   color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
 }
 
 /* 대댓글 입력 */
