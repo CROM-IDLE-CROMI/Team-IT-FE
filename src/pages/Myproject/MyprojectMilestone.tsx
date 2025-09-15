@@ -4,31 +4,25 @@ import ProjectSidebar from '../../components/myproject/ProjectSidebar';
 import ProgressBar from '../../components/ProgressBar';
 import '../../App.css';
 
-type ProjectStatus = 'RECRUITING' | 'ONGOING' | 'COMPLETED';
+import type { ProjectData } from '../../types/project';
+import type { Milestone } from '../../types/milestone';
 
-interface ProjectData {
-  id: number;
-  title: string;
-  status: ProjectStatus;
-  logoUrl?: string;
-}
 
-interface ProjectMilestone {
-  id: number;
-  name: string;
-  startDate: string;
-  deadline: string;
-  progress: number;
-}
 
 const dummyProject: ProjectData = {
   id: 1,
   title: 'TEAM-IT 프로젝트',
   status: 'ONGOING',
+  description: '이 프로젝트는 TEAM-IT의 협업 프로젝트입니다.',
+  progress: 50,
+  recruit_positions: [],
+  required_stacks: [],
+  members: [],
+  milestones: [],
   logoUrl: 'https://placehold.co/180x180/EFEFEF/333?text=Logo',
 };
 
-const dummyMilestones: ProjectMilestone[] = [
+const dummyMilestones: Milestone[] = [
   { id: 1, name: '알파 버전 출시', startDate: '2025-09-01', deadline: '2025-09-30', progress: 75 },
   { id: 2, name: '사용자 피드백 반영', startDate: '2025-10-01', deadline: '2025-10-15', progress: 20 },
   { id: 3, name: '베타 버전 출시', startDate: '2025-10-16', deadline: '2025-10-31', progress: 0 },
@@ -39,7 +33,7 @@ export default function MyprojectMilestone() {
   const nav = useNavigate();
 
   const [project, setProject] = useState<ProjectData | null>(null);
-  const [milestones, setMilestones] = useState<ProjectMilestone[]>([]);
+  const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

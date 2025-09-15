@@ -3,30 +3,21 @@ import { useParams, useNavigate } from 'react-router-dom';
 import ProjectSidebar from '../../components/myproject/ProjectSidebar';
 import '../../App.css';
 
-// --- 타입 정의 (SidebarProjectData 재사용) ---
-type ProjectStatus = 'RECRUITING' | 'ONGOING' | 'COMPLETED';
+import type { ProjectData } from '../../types/project';
+import type { MemberData } from '../../types/member';
 
-interface ProjectData {
-  id: number;
-  title: string;
-  status: ProjectStatus;
-  logoUrl?: string;
-}
-
-interface MemberData {
-  id: number;
-  nickname: string;
-  email: string;
-  role: string;
-  techStack: string;
-  rating: number;
-}
 
 // --- 더미 데이터 ---
 const dummyProject: ProjectData = {
   id: 1,
   title: 'TEAM-IT 프로젝트',
   status: 'ONGOING',
+  description: '이 프로젝트는 TEAM-IT의 협업 프로젝트입니다.',
+  progress: 50,
+  recruit_positions: [],
+  required_stacks: [],
+  members: [],
+  milestones: [],
   logoUrl: 'https://placehold.co/180x180/EFEFEF/333?text=Logo',
 };
 

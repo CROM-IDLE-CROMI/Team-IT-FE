@@ -3,38 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import '../../App.css';
 import ProjectSidebar from '../../components/myproject/ProjectSidebar';
 
-// --- 타입 정의 ---
-type ProjectStatus = 'RECRUITING' | 'ONGOING' | 'COMPLETED';
-
-interface RecruitPosition {
-  position: string;
-  count: number;
-}
-
-interface Member {
-  id: string;
-  name: string;
-  role: string;
-}
-
-interface Milestone {
-  id: string;
-  title: string;
-  progress: number;
-}
-
-interface ProjectData {
-  id: number;
-  title: string;
-  status: ProjectStatus;
-  description: string;
-  progress: number | null;
-  recruit_positions: RecruitPosition[] | null;
-  required_stacks: string[] | null;
-  members: Member[] | null;
-  milestones: Milestone[] | null;
-  logoUrl?: string;
-}
+import type { ProjectData } from '../../types/project';
 
 export default function MyprojectExplain() {
   const { id } = useParams<{ id: string }>();
@@ -66,7 +35,11 @@ export default function MyprojectExplain() {
   }, [id]);
 
   const handleGoBack = () => navigate(`/myproject/${id}`);
-  const handleEdit = () => navigate(`/myproject/${id}/explain/edit`);
+  const handleEdit = () => { 
+    navigate(`/myproject/${id}/explain/edit`, { 
+      state: { project },
+    }); 
+  };
 
   if (loading) return <div>Loading...</div>;
   if (!project) return <div>Project not found.</div>;
