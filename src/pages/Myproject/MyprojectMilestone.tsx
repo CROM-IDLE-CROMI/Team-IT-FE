@@ -75,7 +75,7 @@ export default function MyprojectMilestone() {
             <button className="edit-button" onClick={handleEdit}>수정하기</button>
           </div>
 
-          <table className="data-table">
+          <table className="milestone-table">
             <thead>
               <tr>
                 <th>마일스톤 이름</th>
@@ -89,7 +89,7 @@ export default function MyprojectMilestone() {
                 <tr key={milestone.id}>
                   <td>{milestone.name}</td>
                   <td>
-                    <div className="progress-container">
+                    <div className="milestone-progress">
                       <ProgressBar progress={milestone.progress} />
                     </div>
                   </td>
