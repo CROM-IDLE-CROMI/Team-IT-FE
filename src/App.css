@@ -1,10 +1,7 @@
+/* =====================================================
+   색상 변수 & 기본 설정
+====================================================== */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-  
-  /*색상 변수*/
   --black: #141414;
   --dark: #383c49;
   --grey: #bdc3c7;
@@ -16,6 +13,11 @@
   --lightblue: #b5eaff;
   --purple: #d1c8ff;
   --blue: #1E63EC;
+
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
 }
 
 /* =====================================================
@@ -23,9 +25,9 @@
 ====================================================== */
 .input-group {
   width: 100%;
-  box-sizing: border-box;
   margin: 0 auto 20px;
   text-align: left;
+  box-sizing: border-box;
 }
 
 .input-group label {
@@ -50,15 +52,15 @@
   width: 100%;
   padding: 12px;
   font-size: 16px;
-  box-sizing: border-box;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .btn-check {
   background-color: #4a90e2;
-  color: white;
+  color: #fff;
   font-size: 13px;
   padding: 10px 14px;
   width: auto;
@@ -66,22 +68,22 @@
 
 .btn-agree {
   background-color: #2ee59d;
-  color: white;
-  padding: 6px 12px;
+  color: #fff;
   font-size: 13px;
+  padding: 6px 12px;
   width: auto;
 }
 
 .btn-signup {
   background-color: #c49cfa;
-  color: white;
+  color: #fff;
   border-radius: 8px;
   margin-top: 20px;
 }
 
 .btn-login {
   background-color: #333;
-  color: rgb(255, 255, 255);
+  color: #fff;
   border-radius: 6px;
   margin-top: 10px;
 }
@@ -117,8 +119,9 @@
   border-top: 1px solid #ccc;
 }
 
+
 /* =====================================================
-   공통 프로그래스 바 스타일
+   공통 프로그래스 바
 ====================================================== */
 .progress-container {
   width: 100%;
@@ -134,23 +137,78 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #fff;
   font-size: 12px;
 }
 
+
 /* =====================================================
-   로그인 페이지 스타일
+   공통 사이드바 스타일
+====================================================== */
+.project-sidebar {
+  flex: 0 0 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-sidebar .team-logo,
+.project-sidebar .team-logo-placeholder {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  border: 1px dashed #d0d0d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a0a0a0;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.project-sidebar .sidebar-nav h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.project-sidebar .sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.project-sidebar .sidebar-nav li a {
+  display: block;
+  padding: 0.75rem;
+  color: #333;
+  font-size: 1rem;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.project-sidebar .sidebar-nav li a:hover {
+  background-color: #f0f0f0;
+}
+
+.project-sidebar .sidebar-nav li a.active {
+  font-weight: 600;
+  color: #000;
+}
+
+
+/* =====================================================
+   로그인 페이지
 ====================================================== */
 .login-container {
   width: 100%;
   max-width: 400px;
-  box-sizing: border-box;
   margin: 80px auto;
   padding: 40px;
   border: 1px solid #ddd;
   border-radius: 8px;
   text-align: center;
   font-family: 'Noto Sans KR', sans-serif;
+  box-sizing: border-box;
 }
 
 .login-title {
@@ -159,15 +217,15 @@
 }
 
 /* =====================================================
-   회원가입 페이지 스타일
+   회원가입 페이지
 ====================================================== */
 .signup-container {
   max-width: 450px;
   margin: 60px auto;
   padding: 40px;
-  background-color: #fff;
-  border-radius: 12px;
   border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #fff;
 }
 
 .signup-title {
@@ -186,6 +244,7 @@
   flex: 1;
 }
 
+/* 생년월일 입력 */
 .birthdate-input {
   margin-bottom: 20px;
   text-align: left;
@@ -207,16 +266,16 @@
   min-width: 0;
   padding: 10px;
   font-size: 16px;
+  text-align: center;
   border: 1px solid #ccc;
   border-radius: 6px;
-  text-align: center;
   transition: border-color 0.2s ease;
   box-sizing: border-box;
 }
 
 .date-group input:focus {
   border-color: #a67ef7;
-  background-color: white;
+  background-color: #fff;
   outline: none;
 }
 
@@ -231,16 +290,16 @@
 }
 
 /* =====================================================
-   마이프로젝트 메인페이지 스타일
+   마이프로젝트 메인페이지
 ====================================================== */
 .myproject-container {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  padding: 2rem;
   max-width: 1000px;
   margin: 2rem auto;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
-/* h2 제목 스타일 */
+/* 제목 */
 .myproject-container h2 {
   font-size: 1.5rem;
   font-weight: 600;
@@ -249,41 +308,38 @@
   border-bottom: 1px solid #e0e0e0;
 }
 
-/* 테이블 기본 스타일 */
+/* 테이블 */
 .myproject-container table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 3rem;
 }
 
-/* 테이블 헤더(th) 및 데이터 셀(td) 공통 스타일 */
 .myproject-container th,
 .myproject-container td {
   padding: 16px 10px;
-  text-align: center; 
-  border-bottom: 1px solid #f0f0f0;
+  text-align: center;
   vertical-align: middle;
+  border-bottom: 1px solid #f0f0f0;
 }
 
-/* 테이블 헤더(thead) 특별 스타일 */
 .myproject-container thead th {
   background-color: #f8f9fa;
   font-weight: 600;
   color: var(--black);
 }
 
-/* 테이블 본문(tbody) 행 호버 효과 */
 .myproject-container tbody tr:hover {
   background-color: #f1f3f5;
 }
 
-/* 프로젝트 이름 링크(버튼) 스타일 */
+/* 프로젝트 링크 */
 .myproject-container .project-link {
+  font-size: 1rem;
+  font-family: inherit;
   background: none;
   border: none;
   padding: 0;
-  font-family: inherit;
-  font-size: 1rem;
   color: var(--blue);
   cursor: pointer;
   text-decoration: none;
@@ -294,41 +350,29 @@
 }
 
 /* =====================================================
-   마이프로젝트 상세 메인페이지 스타일
+   마이프로젝트 상세 메인
 ====================================================== */
 .project-detail-layout {
   display: flex;
+  gap: 2rem;
   max-width: 1200px;
   margin: 2rem auto;
-  gap: 2rem;
-}
-
-.project-sidebar {
-  flex: 0 0 220px;
 }
 
 .team-logo {
   width: 100%;
+  aspect-ratio: 1 / 1;
   border-radius: 8px;
+  border: 1px dashed #d0d0d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a0a0a0;
+  font-size: 1rem;
   margin-bottom: 1rem;
 }
 
-.sidebar-nav h2 {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-}
-
-.sidebar-nav ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 1rem;
-}
-
-.sidebar-nav li {
-  padding: 0.75rem;
-  cursor: pointer;
-}
-
+/* 상태 배지 */
 .status-badge {
   display: inline-block;
   padding: 0.25rem 0.6rem;
@@ -337,17 +381,9 @@
   color: var(--dark);
 }
 
-.status-ongoing {
-  background-color: var(--lightblue);
-}
-
-.status-recruiting {
-  background-color: var(--green);
-}
-
-.status-completed {
-  background-color: var(--grey);
-}
+.status-ongoing { background-color: var(--lightblue); }
+.status-recruiting { background-color: var(--green); }
+.status-completed { background-color: var(--grey); }
 
 .project-main-content {
   flex: 1;
@@ -357,9 +393,9 @@
 }
 
 .card {
+  padding: 1.5rem;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  padding: 1.5rem;
 }
 
 .card-header {
@@ -369,14 +405,14 @@
   margin-bottom: 0.75rem;
 }
 
-.card-header h3{
+.card-header h3,
+.card-header h4 {
   margin: 0;
+  font-weight: 600;
 }
 
 .card-header h4 {
-  margin: 0;
   font-size: 1rem;
-  font-weight: 600;
 }
 
 .card-header span {
@@ -384,7 +420,6 @@
   font-weight: 600;
   color: #555;
 }
-
 
 .edit-button-wrapper {
   display: flex;
@@ -406,21 +441,19 @@
   gap: 1.5rem;
 }
 
-
 /* =====================================================
-   마이프로젝트 상세 소개페이지 스타일
+   마이프로젝트 상세페이지 메인 수정하기
 ====================================================== */
 .edit-container {
-  width: 100%;
-  max-width: 800px; /* 최대 너비 설정 */
-  margin: 40px auto; /* 중앙 정렬 */
+  max-width: 800px;
+  margin: 40px auto;
   padding: 20px;
   font-family: sans-serif;
 }
 
 .completion-button-wrapper {
   display: flex;
-  justify-content: flex-end; /* 버튼을 오른쪽으로 정렬 */
+  justify-content: flex-end;
   margin-bottom: 20px;
 }
 
@@ -432,8 +465,8 @@
 }
 
 .edit-form {
-  border: 1px solid #e0e0e0;
   padding: 30px;
+  border: 1px solid #e0e0e0;
   background-color: #fff;
 }
 
@@ -445,8 +478,8 @@
 
 .form-group label {
   width: 120px;
-  font-weight: bold;
   flex-shrink: 0;
+  font-weight: bold;
 }
 
 .form-group input[type="text"],
@@ -457,7 +490,8 @@
   border-radius: 4px;
 }
 
-.file-input-wrapper, .progress-input-wrapper {
+.file-input-wrapper,
+.progress-input-wrapper {
   display: flex;
   flex-grow: 1;
   align-items: center;
@@ -474,9 +508,8 @@
   border: 1px solid #ccc;
   background-color: #e9e9e9;
   cursor: pointer;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
   flex-shrink: 0;
+  border-radius: 0 4px 4px 0;
 }
 
 .progress-input-wrapper span {
@@ -486,22 +519,23 @@
 
 .form-actions {
   display: flex;
-  justify-content: center; /* 버튼 중앙 정렬 */
-  gap: 15px; /* 버튼 사이 간격 */
+  justify-content: center;
+  gap: 15px;
   margin-top: 40px;
 }
 
-.save-btn, .cancel-btn {
+.save-btn,
+.cancel-btn {
   padding: 10px 30px;
+  font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
 }
 
 .save-btn {
   background-color: #333;
-  color: white;
+  color: #fff;
   border-color: #333;
 }
 
@@ -510,117 +544,483 @@
   color: #333;
 }
 
-
-
 /* =====================================================
-   마이프로젝트 소개페이지 스타일
+   마이프로젝트 상세페이지 프로젝트 소개
 ====================================================== */
 .explain-page-layout {
   display: flex;
-  gap: 32px; /* 사이드바와 메인 컨텐츠 사이의 간격 */
-  padding: 32px;
-  max-width: 1400px;
-  margin: 0 auto; /* 페이지 중앙 정렬 */
-  font-family: 'Pretendard', sans-serif; /* Pretendard 폰트 적용 */
-  background-color: #ffffff;
-  height: calc(100vh - 64px); /* 화면 높이에 맞춰 조정 (헤더 높이 제외) */
+  gap: 2rem;
+  max-width: 1200px;       /* 상세페이지와 동일 */
+  margin: 2rem auto;       /* 동일 마진 */
+  font-family: 'Pretendard', sans-serif;
+  background-color: #fff;
 }
 
-/* 왼쪽 사이드바 */
-.project-sidebar {
-  flex: 0 0 220px; /* 사이드바 너비 고정 */
-  display: flex;
-  flex-direction: column;
-}
-
-.team-logo-placeholder {
-  width: 180px;
-  height: 180px;
-  border: 1px dashed #d0d0d0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #a0a0a0;
-  font-size: 1rem;
-  margin-bottom: 24px;
-}
-
-.sidebar-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar-nav li a {
-  display: block;
-  padding: 12px 16px;
-  text-decoration: none;
-  color: #333;
-  font-size: 1rem;
-  border-radius: 6px;
-  transition: background-color 0.2s;
-}
-
-.sidebar-nav li a:hover {
-  background-color: #f0f0f0;
-}
-
-/* 활성화된 네비게이션 아이템 스타일 */
-.sidebar-nav li a.active {
-  font-weight: 600;
-  color: #000000;
-}
-
-/* 오른쪽 메인 컨텐츠 */
+/* 메인 컨텐츠 */
 .project-main-content {
-  flex: 1; /* 남은 공간을 모두 차지 */
+  flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 1.5rem;
 }
 
-.content-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 16px;
-}
-
-.back-button, .edit-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.back-button:hover, .edit-button:hover {
-    color: #000;
-}
-
+/* 카드 공통 스타일 */
 .introduction-card {
-  flex-grow: 1; /* 컨텐츠 영역이 남은 세로 공간을 모두 채우도록 설정 */
+  flex-grow: 1;
+  padding: 1.5rem;
   border: 1px solid #e0e0e0;
-  background-color: #fdfdfd;
   border-radius: 8px;
+  background-color: #fff;   /* 상세페이지 카드와 동일 */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .introduction-card h2 {
-  font-size: 2.5rem;
-  color: #b0b0b0; /* 와이어프레임 느낌을 위해 연한 색상 사용 */
+  font-size: 2rem;
   font-weight: 500;
+  color: #b0b0b0;
+}
+
+/* 상단 헤더 */
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.back-button,
+.edit-button {
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: #555;
+}
+
+.back-button:hover,
+.edit-button:hover {
+  color: #000;
 }
 
 
 /* =====================================================
-   마이프로젝트 상세 멤버페이지 스타일
+   마이프로젝트 상세페이지 멤버 페이지
 ====================================================== */
+.myproject-layout {
+  display: flex;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
+.project-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 헤더 버튼 영역 */
+.content-header {
+  display: flex;
+  justify-content: space-between; /* 돌아가기와 수정하기 버튼 양쪽 배치 */
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* 카드 스타일 */
+.card {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* 테이블 스타일 */
+.member-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.member-table th,
+.member-table td {
+  padding: 16px;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--border-color, #ddd);
+}
+
+/* 헤더 스타일 */
+.member-table thead th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: var(--dark, #333);
+  border-right: 1px solid var(--border-color, #ddd);
+}
+
+.member-table thead th:last-child {
+  border-right: none;
+}
+
+/* 바디 스타일 */
+.member-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.member-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
 
 
 /* =====================================================
-   마이프로젝트 상세 마일스톤페이지 스타일
+   마이프로젝트 상세페이지 마일스톤 페이지
 ====================================================== */
+.milestone-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.milestone-table th,
+.milestone-table td {
+  padding: 16px;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--border-color, #ddd);
+}
+
+/* 헤더 스타일 */
+.milestone-table thead th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: var(--dark, #333);
+  border-right: 1px solid var(--border-color, #ddd);
+}
+
+.milestone-table thead th:last-child {
+  border-right: none;
+}
+
+/* 바디 스타일 */
+.milestone-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.milestone-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* 프로그레스바 셀 최적화 */
+.milestone-table td .progress-container {
+  width: 100%;
+  max-width: 200px; /* 너무 길어지지 않게 제한 */
+  margin: 0 auto;
+}
+
+
+/* =====================================================
+   마이프로젝트 상세페이지 상세설명 수정 페이지
+====================================================== */
+.explain-edit-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* 뒤로가기 버튼 */
+.explain-edit-back-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+}
+
+.explain-edit-back-btn {
+  padding: 6px 12px;
+  background-color: #ecf0f1;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.explain-edit-back-btn:hover {
+  background-color: #d0d7da;
+}
+
+/* 텍스트 입력란 */
+.explain-edit-textarea {
+  width: 100%;
+  height: 250px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  resize: none;
+}
+
+/* 저장 버튼 */
+.explain-edit-save-btn {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.explain-edit-save-btn:hover {
+  background-color: #2980b9;
+}
+
+
+/* =====================================================
+   마이프로젝트 상세페이지 멤버 수정 페이지
+====================================================== */
+.member-edit-container {
+  padding: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* 테이블 */
+.member-edit-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
+
+.member-edit-table th,
+.member-edit-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.member-edit-table th {
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+
+/* 삭제 버튼 (X) */
+.member-edit-remove-btn {
+  padding: 4px 8px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.member-edit-remove-btn:hover {
+  background-color: #c0392b;
+}
+
+/* 팀장 위임하기 버튼 */
+.member-edit-leader-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin: 16px 0;
+}
+
+.member-edit-leader-btn {
+  padding: 8px 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.member-edit-leader-btn:hover {
+  background-color: #2980b9;
+}
+
+/* 하단 버튼 영역 */
+.member-edit-bottom-btns {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.member-edit-save-btn {
+  padding: 10px 20px;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.member-edit-save-btn:hover {
+  background-color: #1e8449;
+}
+
+.member-edit-cancel-btn {
+  padding: 10px 20px;
+  background-color: #bdc3c7;
+  color: black;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.member-edit-cancel-btn:hover {
+  background-color: #95a5a6;
+}
+
+
+/* =====================================================
+   마이프로젝트 상세페이지 멤버 수정 팀장위임 페이지
+====================================================== */
+.change-leader-container {
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.change-leader-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.change-leader-table th,
+.change-leader-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.change-leader-btns {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.change-leader-save-btn {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.change-leader-save-btn:hover {
+  background-color: #2980b9;
+}
+
+.change-leader-cancel-btn {
+  padding: 10px 20px;
+  background-color: #bdc3c7;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.change-leader-cancel-btn:hover {
+  background-color: #95a5a6;
+}
+
+/* 결과 화면 */
+.change-leader-result-container {
+  text-align: center;
+  padding: 40px;
+}
+
+.change-leader-title {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.change-leader-message {
+  font-size: 18px;
+  margin-bottom: 24px;
+}
+
+.change-leader-back-btn {
+  padding: 10px 20px;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.change-leader-back-btn:hover {
+  background-color: #1e8449;
+}
+
+
+/* =====================================================
+   마이프로젝트 상세페이지 마일스톤 수정 페이지
+====================================================== */
+.milestone-edit-container {
+  padding: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.milestone-edit-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.milestone-edit-table th,
+.milestone-edit-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.milestone-edit-table input {
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: center;
+}
+
+.milestone-delete-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.milestone-delete-btn:hover {
+  background-color: #c0392b;
+}
+
+.milestone-add-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background-color: #3498db;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.milestone-add-btn:hover {
+  background-color: #2980b9;
+}
