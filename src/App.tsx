@@ -12,6 +12,7 @@ import MyprojectExplainEdit from './pages/Myproject/MyprojectExplainEdit';
 import MyprojectMilestoneEdit from './pages/Myproject/MyprojectMilestoneEdit';
 import MyprojectMemberEdit from './pages/Myproject/MyprojectMemberEdit';
 import MemberChangeLeader from './pages/Myproject/MemberChangeLeader';
+import Notification from './pages/Notification';
 import './App.css';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path="/myproject/:id/milestone/edit" element={<MyprojectMilestoneEdit />} />
         <Route path="/myproject/:id/member/edit" element={<MyprojectMemberEdit />} />
         <Route path="/myproject/:id/member/edit/change-leader" element={<MemberChangeLeader />} />
+        <Route path="/notification" element={<Notification />} />
       </Routes>
     </Router>
   );

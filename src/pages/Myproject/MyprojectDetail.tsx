@@ -5,35 +5,7 @@ import '../../App.css';
 import ProgressBar from '../../components/ProgressBar';
 import ProjectSidebar from '../../components/myproject/ProjectSidebar';
 
-// --- ERD 및 UI 기반 타입 정의 ---
-type ProjectStatus = 'RECRUITING' | 'ONGOING' | 'COMPLETED';
-
-interface RecruitPosition {
-  position: string;
-  count: number;
-}
-interface Member {
-  id: string;
-  name: string;
-  role: string;
-}
-interface Milestone {
-  id: string;
-  title: string;
-  progress: number;
-}
-interface ProjectData {
-  id: bigint;
-  title: string;
-  status: ProjectStatus;
-  description: string;
-  progress: number | null;
-  recruit_positions: RecruitPosition[] | null;
-  required_stacks: string[] | null;
-  members: Member[] | null;
-  milestones: Milestone[] | null;
-  logoUrl?: string;
-}
+import type { ProjectData } from '../../types/project';
 
 // --- 메인 컴포넌트 ---
 export default function ProjectDetail() {

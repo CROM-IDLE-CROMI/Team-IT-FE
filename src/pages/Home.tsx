@@ -9,6 +9,7 @@ const Home = () => {
       <button onClick={() => navigate('/login')}>로그인</button>
       <button onClick={() => navigate('/signup')}>회원가입</button>
       <button onClick={() => navigate('/myprojectmain')}>마이프로젝트</button>
+      <button onClick={() => navigate('/notification')}>알람</button>
     </div>
   );
 };

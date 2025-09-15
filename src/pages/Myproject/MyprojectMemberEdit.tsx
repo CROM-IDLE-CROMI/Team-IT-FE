@@ -29,6 +29,16 @@ const MyprojectMemberEdit: React.FC = () => {
 
   return (
     <div className="member-edit-container">
+      {/* 팀장 위임하기 버튼 */}
+      <div className="member-edit-leader-btn-wrapper">
+        <button
+          onClick={() => navigate(`/myproject/${id}/member/edit/change-leader`)}
+          className="member-edit-leader-btn"
+        >
+          팀장 위임하기
+        </button>
+      </div>
+
       {/* 멤버 테이블 */}
       <table className="member-edit-table">
         <thead>
@@ -61,16 +71,6 @@ const MyprojectMemberEdit: React.FC = () => {
           ))}
         </tbody>
       </table>
-
-      {/* 팀장 위임하기 버튼 */}
-      <div className="member-edit-leader-btn-wrapper">
-        <button
-          onClick={() => navigate(`/myproject/${id}/member/edit/change-leader`)} // ✅ 경로 수정
-          className="member-edit-leader-btn"
-        >
-          팀장 위임하기
-        </button>
-      </div>
 
       {/* 하단 수정/취소 버튼 */}
       <div className="member-edit-bottom-btns">
