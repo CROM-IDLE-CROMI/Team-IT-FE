@@ -13,8 +13,10 @@ interface FilterState {
   selectedActivity: string[];
   selectedPositions: string[];
   selectedTechStacks: string[];
-  selectedLocations: string[];
-  selectedRegion: string;
+  selectedLocations: {
+    region: string;
+    districts: string[];
+  }
   selectedProgress: string[];
   selectedMethod: string[];
   recruitEndDate: string;
@@ -27,7 +29,10 @@ interface Project {
   title: string;
   author: string;
   date: string;
-  location: string;
+  location: {
+    region: string;
+    districts: string[];
+  }
   techStack: string[];
   positions: string[];
   likes: number;
@@ -36,7 +41,6 @@ interface Project {
   status: string; 
   teamSize?: string;
   duration?: string;
-  recruitCount?: string;
   recruitPositions?: string[];
   recruitPeriod?: string;
   startDate?: string;
@@ -54,16 +58,15 @@ const dummyProjects: Project[] = [
     title: "웹 개발 프로젝트 팀원 모집",
     author: "김한성",
     date: "2025.01.15",
-    location: "서울특별시 강남구",
+    location: { region: "서울특별시", districts: ["강남구"] },
     techStack: ["React", "MongoDB"],
     positions: ["프론트", "백"],
     likes: 12,
     views: 45,
     description: "혁신적인 웹 서비스를 개발하는 프로젝트입니다. React와 Node.js를 사용하여 풀스택 개발을 진행합니다.",
     status: "모집중",
-    teamSize: "3-5명",
+    teamSize: "2명",
     duration: "3-6개월",
-    recruitCount: "2명",
     recruitPositions: ["프론트", "백"],
     recruitPeriod: "3개월",
     startDate: "2025.02.01",
@@ -78,16 +81,15 @@ const dummyProjects: Project[] = [
     title: "모바일 앱 개발자 구합니다",
     author: "이지은",
     date: "2025.01.14",
-    location: "부산광역시 해운대구",
+    location: { region: "부산광역시", districts: ["해운대구"] },
     techStack: ["Flutter", "Firebase"],
     positions: ["프론트"],
     likes: 8,
     views: 32,
     description: "Flutter를 사용한 크로스 플랫폼 모바일 앱을 개발합니다. UI/UX에 관심 있는 개발자를 찾습니다.",
     status: "모집중",
-    teamSize: "2-3명",
+    teamSize: "1명",
     duration: "2-4개월",
-    recruitCount: "1명",
     recruitPositions: ["프론트"],
     recruitPeriod: "2개월",
     startDate: "2025.01.20",
@@ -102,16 +104,15 @@ const dummyProjects: Project[] = [
     title: "AI 프로젝트 팀원 모집",
     author: "박민수",
     date: "2025.01.13",
-    location: "대구광역시 수성구",
+    location: { region: "대구광역시", districts: ["수성구"] },
     techStack: ["Python", "TensorFlow", "FastAPI"],
     positions: ["백", "데이터"],
     likes: 15,
     views: 67,
     description: "머신러닝을 활용한 예측 모델을 개발하는 프로젝트입니다. 데이터 분석과 AI 모델링 경험이 있는 분을 찾습니다.",
     status: "모집중",
-    teamSize: "4-6명",
+    teamSize: "2명",
     duration: "6-12개월",
-    recruitCount: "2명",
     recruitPositions: ["데이터", "백"],
     recruitPeriod: "6개월",
     startDate: "2025.02.15",
@@ -126,16 +127,15 @@ const dummyProjects: Project[] = [
     title: "게임 개발 프로젝트",
     author: "최영희",
     date: "2025.01.12",
-    location: "인천광역시 연수구",
+    location: { region: "인천광역시", districts: ["연수구"] },
     techStack: ["Unity", "C#"],
     positions: ["기획", "디자인"],
     likes: 20,
     views: 89,
     description: "Unity를 사용한 3D 게임을 개발합니다. 게임 개발 경험이 있거나 열정이 있는 분을 찾습니다.",
     status: "모집중",
-    teamSize: "5-8명",
+    teamSize: "3명",
     duration: "8-12개월",
-    recruitCount: "3명",
     recruitPositions: ["기획", "디자인"],
     recruitPeriod: "8개월",
     startDate: "2025.03.01",
@@ -150,17 +150,16 @@ const dummyProjects: Project[] = [
     title: "블록체인 프로젝트 팀원",
     author: "정현우",
     date: "2025.01.11",
-    location: "광주광역시 서구",
+    location: { region: "광주광역시", districts: ["서구"] },
     techStack: ["Solidity", "React"],
     positions: ["프론트", "백"],
     likes: 6,
     views: 28,
     description: "이더리움 기반의 DApp을 개발하는 프로젝트입니다. 블록체인 기술에 관심 있는 개발자를 찾습니다.",
     status: "모집중",
-    teamSize: "3-4명",
+    teamSize: "2명",
     duration: "4-8개월",
     contact: "jung@email.com",
-    recruitCount: "2명",
     recruitPositions: ["프론트", "백"],
     recruitPeriod: "4개월",
     startDate: "2025.01.25",
@@ -175,17 +174,16 @@ const dummyProjects: Project[] = [
     title: "데이터 분석 프로젝트",
     author: "한소영",
     date: "2025.01.10",
-    location: "대전광역시 유성구",
+    location: { region: "대전광역시", districts: ["유성구"] },
     techStack: ["Python"],
     positions: ["데이터", "기획"],
     likes: 9,
     views: 41,
     description: "대용량 데이터를 분석하고 시각화하는 프로젝트입니다. 통계학적 지식과 데이터 분석 경험이 있는 분을 찾습니다.",
     status: "모집중",
-    teamSize: "2-4명",
+    teamSize: "2명",
     duration: "3-6개월",
     contact: "han@email.com",
-    recruitCount: "2명",
     recruitPositions: ["데이터", "기획"],
     recruitPeriod: "3개월",
     startDate: "2025.01.30",
@@ -200,16 +198,15 @@ const dummyProjects: Project[] = [
     title: "IoT 스마트홈 프로젝트",
     author: "김태현",
     date: "2025.01.09",
-    location: "서울특별시 마포구",
+    location: { region: "서울특별시", districts: ["마포구"] },
     techStack: ["Arduino", "Raspberry Pi", "Python"],
     positions: ["프론트", "백", "기획"],
     likes: 14,
     views: 52,
     description: "IoT 센서를 활용한 스마트홈 시스템을 개발합니다. 하드웨어와 소프트웨어 모두 경험이 있는 분을 찾습니다.",
     status: "모집중",
-    teamSize: "4-6명",
+    teamSize: "3명",
     duration: "6-9개월",
-    recruitCount: "3명",
     recruitPositions: ["프론트", "백", "기획"],
     recruitPeriod: "6개월",
     startDate: "2025.02.01",
@@ -224,16 +221,15 @@ const dummyProjects: Project[] = [
     title: "VR/AR 교육 콘텐츠",
     author: "박서연",
     date: "2025.01.08",
-    location: "부산광역시 중구",
+    location: { region: "부산광역시", districts: ["중구"] },
     techStack: ["Unity", "C#", "Blender"],
     positions: ["기획", "디자인", "프론트"],
     likes: 18,
     views: 73,
     description: "VR/AR을 활용한 교육 콘텐츠를 개발합니다. 3D 모델링과 게임 개발 경험이 있는 분을 찾습니다.",
     status: "모집중",
-    teamSize: "5-7명",
+    teamSize: "4명",
     duration: "8-12개월",
-    recruitCount: "4명",
     recruitPositions: ["기획", "디자인", "프론트"],
     recruitPeriod: "8개월",
     startDate: "2025.03.01",
@@ -249,7 +245,6 @@ const ProjectPage = () => {
   const [isOptionOpen, setIsOptionOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [appliedSearchTerm, setAppliedSearchTerm] = useState("");
-  const [likedProjects, setLikedProjects] = useState<Set<number>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [popularSlideIndex, setPopularSlideIndex] = useState(0);
@@ -259,8 +254,7 @@ const ProjectPage = () => {
     selectedActivity: [],
     selectedPositions: [],
     selectedTechStacks: [],
-    selectedLocations: [],
-    selectedRegion: "서울특별시",
+    selectedLocations: {region: "", districts: [] },
     selectedProgress: [],
     selectedMethod: [],
     recruitEndDate: "",
@@ -288,7 +282,15 @@ const ProjectPage = () => {
       appliedFilters.selectedActivity.forEach(v => params.append('activity', v));
       appliedFilters.selectedPositions.forEach(v => params.append('position', v));
       appliedFilters.selectedTechStacks.forEach(v => params.append('techStack', v));
-      appliedFilters.selectedLocations.forEach(v => params.append('location', v));
+      // 지역 필터: region과 districts를 각각 쿼리에 추가
+      if (appliedFilters.selectedLocations.region) {
+        params.append('location', appliedFilters.selectedLocations.region);
+      }
+      if (appliedFilters.selectedLocations.districts && appliedFilters.selectedLocations.districts.length > 0) {
+        appliedFilters.selectedLocations.districts.forEach(district => {
+          params.append('location', district);
+        });
+      }
       appliedFilters.selectedProgress.forEach(v => params.append('progress', v));
       appliedFilters.selectedMethod.forEach(v => params.append('method', v));
       if (appliedFilters.recruitEndDate) params.append('recruitEndDate_gte', appliedFilters.recruitEndDate);
@@ -374,21 +376,33 @@ const ProjectPage = () => {
       }
 
       // 지역 필터링 (시/도 또는 구 단위 매칭)
-      if (appliedFilters.selectedLocations.length > 0) {
-        const hasMatchingLocation = appliedFilters.selectedLocations.some(selectedLocation => {
-          // 정확히 일치하는 경우
-          if (project.location === selectedLocation) return true;
-          
-          // 시/도 단위로 일치하는 경우 (예: "서울특별시" 선택 시 "서울특별시 강남구" 매칭)
-          if (project.location.startsWith(selectedLocation + " ")) return true;
-          
-          // 구 단위로 일치하는 경우 (예: "강남구" 선택 시 "서울특별시 강남구" 매칭)
-          if (project.location.endsWith(" " + selectedLocation)) return true;
-          
-          return false;
-        });
-        if (!hasMatchingLocation) return false;
+      if (
+        appliedFilters.selectedLocations &&
+        (appliedFilters.selectedLocations.region ||
+          (appliedFilters.selectedLocations.districts?.length ?? 0) > 0)
+      ) {
+        const { region, districts } = appliedFilters.selectedLocations;
+        let hasMatchingLocation = false;
+
+        // 시/도 단위 매칭 (region이 선택되고 districts가 비어있거나 모든 구가 선택된 경우)
+        if (region && project.location.region === region) {
+          if (!districts || districts.length === 0) {
+            // districts가 비어있으면 region만으로 매칭
+            hasMatchingLocation = true;
+          } else {
+            // districts가 있으면 구 단위로 매칭
+            hasMatchingLocation = districts.some((district) =>
+              project.location.districts.includes(district)
+            );
+          }
+        }
+
+        if (!hasMatchingLocation) {
+          return false; // 필터 조건 불일치 → 제외
+        }
       }
+
+
 
       // 진행상황 필터링
       if (appliedFilters.selectedProgress.length > 0 && 
@@ -450,16 +464,6 @@ const ProjectPage = () => {
 
   const handleCardClick = (projectId: number) => {
     navigate(`/project/${projectId}`);
-  };
-
-  const handleLikeClick = (e: React.MouseEvent, projectId: number) => {
-    e.stopPropagation();
-    setLikedProjects(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(projectId)) newSet.delete(projectId);
-      else newSet.add(projectId);
-      return newSet;
-    });
   };
 
   const handleApplyFilters = useCallback(() => {
@@ -593,7 +597,7 @@ const ProjectPage = () => {
               <div className="info">
                 {project.author}<br />
                 {project.date}<br />
-                📍 {project.location}<br />
+                📍 {project.location.region} {project.location.districts.join(" ")}<br />
                 <span className="tech-icons">
                       {(project.techStack || []).map(tech => {
     const stack = techStacksInit.find(item => item.value === tech);

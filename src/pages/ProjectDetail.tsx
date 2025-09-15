@@ -15,7 +15,10 @@ interface Project {
   title: string;
   author: string;
   date: string;
-  location: string;
+  location: {
+    region: string;
+    districts: string[];
+  }
   techStack: string[];
   positions: string[];
   likes: number;
@@ -26,7 +29,6 @@ interface Project {
   duration?: string;
   recruitCount?: string;
   recruitPositions?: string[];
-  recruitPeriod?: string;
   startDate?: string;
   endDate?: string;
   activityType?: string;
@@ -44,18 +46,16 @@ const dummyProjects: Project[] = [
     title: "웹 개발 프로젝트 팀원 모집",
     author: "김한성",
     date: "2025.01.15",
-    location: "서울 특별시",
+    location: { region: "서울 특별시", districts: [] },
     techStack: ["React", "MongoDB"],
     positions: ["웹"],
     likes: 12,
     views: 45,
     description: "혁신적인 웹 서비스를 개발하는 프로젝트입니다. React와 Node.js를 사용하여 풀스택 개발을 진행합니다.",
     status: "모집중",
-    teamSize: "3-5명",
+    teamSize: "2명",
     duration: "3-6개월",
-    recruitCount: "2명",
     recruitPositions: ["프론트", "백"],
-    recruitPeriod: "3개월",
     startDate: "2025.02.01",
     endDate: "2025.05.01",
     activityType: "웹",
@@ -68,18 +68,16 @@ const dummyProjects: Project[] = [
     title: "모바일 앱 개발자 구합니다",
     author: "이지은",
     date: "2025.01.14",
-    location: "부산 광역시",
+    location: { region: "부산 광역시", districts: [] },
     techStack: ["Flutter", "Firebase"],
     positions: ["앱"],
     likes: 8,
     views: 32,
     description: "Flutter를 사용한 크로스 플랫폼 모바일 앱을 개발합니다. UI/UX에 관심 있는 개발자를 찾습니다.",
     status: "모집중",
-    teamSize: "2-3명",
+    teamSize: "1명",
     duration: "2-4개월",
-    recruitCount: "1명",
     recruitPositions: ["프론트"],
-    recruitPeriod: "2개월",
     startDate: "2025.01.20",
     endDate: "2025.03.20",
     activityType: "앱",
@@ -92,18 +90,16 @@ const dummyProjects: Project[] = [
     title: "AI 프로젝트 팀원 모집",
     author: "박민수",
     date: "2025.01.13",
-    location: "대구 광역시",
+    location: { region: "대구 광역시", districts: [] },
     techStack: ["Python", "TensorFlow", "FastAPI"],
     positions: ["앱"],
     likes: 15,
     views: 67,
     description: "머신러닝을 활용한 예측 모델을 개발하는 프로젝트입니다. 데이터 분석과 AI 모델링 경험이 있는 분을 찾습니다.",
     status: "모집중",
-    teamSize: "4-6명",
+    teamSize: "2명",
     duration: "6-12개월",
-    recruitCount: "2명",
     recruitPositions: ["데이터", "백"],
-    recruitPeriod: "6개월",
     startDate: "2025.02.15",
     endDate: "2025.08.15",
     activityType: "앱",
@@ -116,18 +112,16 @@ const dummyProjects: Project[] = [
     title: "게임 개발 프로젝트",
     author: "최영희",
     date: "2025.01.12",
-    location: "인천 광역시",
+    location: { region: "인천 광역시", districts: [] },
     techStack: ["Unity", "C#"],
     positions: ["게임"],
     likes: 20,
     views: 89,
     description: "Unity를 사용한 3D 게임을 개발합니다. 게임 개발 경험이 있거나 열정이 있는 분을 찾습니다.",
     status: "모집중",
-    teamSize: "5-8명",
+    teamSize: "3명",
     duration: "8-12개월",
-    recruitCount: "3명",
     recruitPositions: ["기획", "디자인"],
-    recruitPeriod: "8개월",
     startDate: "2025.03.01",
     endDate: "2025.11.01",
     activityType: "게임",
@@ -140,19 +134,17 @@ const dummyProjects: Project[] = [
     title: "블록체인 프로젝트 팀원",
     author: "정현우",
     date: "2025.01.11",
-    location: "광주 광역시",
+    location: { region: "광주 광역시", districts: [] },
     techStack: ["Solidity", "React"],
     positions: ["앱"],
     likes: 6,
     views: 28,
     description: "이더리움 기반의 DApp을 개발하는 프로젝트입니다. 블록체인 기술에 관심 있는 개발자를 찾습니다.",
     status: "모집중",
-    teamSize: "3-4명",
+    teamSize: "2명",
     duration: "4-8개월",
     contact: "jung@email.com",
-    recruitCount: "2명",
     recruitPositions: ["프론트", "백"],
-    recruitPeriod: "4개월",
     startDate: "2025.01.25",
     endDate: "2025.05.25",
     activityType: "앱",
@@ -165,19 +157,17 @@ const dummyProjects: Project[] = [
     title: "데이터 분석 프로젝트",
     author: "한소영",
     date: "2025.01.10",
-    location: "대전 광역시",
+    location: { region: "대전 광역시", districts: [] },
     techStack: ["Python"],
     positions: ["앱"],
     likes: 9,
     views: 41,
     description: "대용량 데이터를 분석하고 시각화하는 프로젝트입니다. 통계학적 지식과 데이터 분석 경험이 있는 분을 찾습니다.",
     status: "모집중",
-    teamSize: "2-4명",
+    teamSize: "2명",
     duration: "3-6개월",
     contact: "han@email.com",
-    recruitCount: "2명",
     recruitPositions: ["데이터", "기획"],
-    recruitPeriod: "3개월",
     startDate: "2025.01.30",
     endDate: "2025.04.30",
     activityType: "앱",
@@ -190,18 +180,16 @@ const dummyProjects: Project[] = [
     title: "IoT 스마트홈 프로젝트",
     author: "김태현",
     date: "2025.01.09",
-    location: "서울특별시",
+    location: { region: "서울특별시", districts: [] },
     techStack: ["Arduino", "Raspberry Pi", "Python"],
     positions: ["웹"],
     likes: 14,
     views: 52,
     description: "IoT 센서를 활용한 스마트홈 시스템을 개발합니다. 하드웨어와 소프트웨어 모두 경험이 있는 분을 찾습니다.",
     status: "모집중",
-    teamSize: "4-6명",
+    teamSize: "3명",
     duration: "6-9개월",
-    recruitCount: "3명",
     recruitPositions: ["프론트", "백", "기획"],
-    recruitPeriod: "6개월",
     startDate: "2025.02.01",
     endDate: "2025.08.01",
     activityType: "웹",
@@ -214,18 +202,16 @@ const dummyProjects: Project[] = [
     title: "VR/AR 교육 콘텐츠",
     author: "박서연",
     date: "2025.01.08",
-    location: "부산 광역시",
+    location: { region:"부산 광역시", districts: [] },
     techStack: ["Unity", "C#", "Blender"],
     positions: ["게임"],
     likes: 18,
     views: 73,
     description: "VR/AR을 활용한 교육 콘텐츠를 개발합니다. 3D 모델링과 게임 개발 경험이 있는 분을 찾습니다.",
     status: "모집중",
-    teamSize: "5-7명",
+    teamSize: "4명",
     duration: "8-12개월",
-    recruitCount: "4명",
     recruitPositions: ["기획", "디자인", "프론트"],
-    recruitPeriod: "8개월",
     startDate: "2025.03.01",
     endDate: "2025.11.01",
     activityType: "게임",
@@ -408,7 +394,7 @@ const ProjectDetail = () => {
               </div>
             </div>
             <div className="post-date-section">
-              <div className="post-date">{project.date}</div>
+            <div className="post-date">{project.date}</div>
             </div>
           </div>
           
@@ -418,32 +404,38 @@ const ProjectDetail = () => {
               <label>모집 인원</label>
               <span>{project.recruitCount}</span>
             </div>
-            
+          
             <div className="info-item">
               <label>모집 직군</label>
               <span>{project.recruitPositions ? project.recruitPositions.join(", ") : '정보 없음'}</span>
             </div>
-            
+          
             <div className="info-item">
-              <label>모집 기간</label>
-              <span>{project.recruitPeriod}</span>
+              <label>프로젝트 기간</label>
+              <span>{project.startDate}~{project.endDate}</span>
             </div>
-            
-            <div className="info-item">
-              <label>시작일</label>
-              <span>{project.startDate}</span>
-            </div>
-            
+          
             <div className="info-item">
               <label>지역</label>
-              <span>{project.location}</span>
+              <span>
+                {project.location.region}
+                {project.location.districts && project.location.districts.length > 0
+                  ? ` (${project.location.districts.join(", ")})`
+                  : ""}
+              </span>
             </div>
             
             <div className="info-item">
               <label>활동 종류</label>
               <span>{project.activityType}</span>
             </div>
+            
+             <div className="info-item">
+              <label>프로젝트 모집 종료</label>
+              <span>{project.recruitEndDate}</span>
+            </div>
           </div>
+
 
           {/* 구분선 */}
           <hr className="divider"/>
