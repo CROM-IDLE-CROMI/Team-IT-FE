@@ -607,3 +607,47 @@
   transform: translateY(0);
   box-shadow: 0 2px 4px rgba(33, 37, 41, 0.2);
 }
+
+/* 기본 HTML input[type="date"] 스타일 */
+.date-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: white;
+  color: #333;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.date-input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.date-range {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.date-separator {
+  font-size: 1.2rem;
+  color: #888;
+  font-weight: 500;
+}
+
+/* 반응형 - 모바일에서 날짜 입력 */
+@media (max-width: 768px) {
+  .date-range {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .date-separator {
+    display: none;
+  }
+}

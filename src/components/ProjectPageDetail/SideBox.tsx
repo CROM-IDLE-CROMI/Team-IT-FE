@@ -2,10 +2,8 @@ import React, { useState, useCallback } from "react";
 import "./SideBox.css";
 import { techStacksInit } from "../../styles/TechStack";
 import LocationSelector from "../LocationSelector";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Box } from "@mui/material";
+// MUI LocalizationProvider 제거 - 기본 HTML input[type="date"] 사용
+// MUI DatePicker 제거 - 기본 HTML input[type="date"] 사용
 
 interface FilterState {
   selectedActivity: string[];
@@ -117,25 +115,31 @@ const SideBox: React.FC<SideBoxProps> = ({
     // LocationSelector의 완료 상태는 필터링에 사용하지 않음
   }, []);
 
-  // 날짜 변경 핸들러
-  const handleRecruitEndDateChange = useCallback((date: Date | null) => {
+  // 날짜 변경 핸들러 (HTML input[type="date"]용)
+  const handleRecruitEndDateChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const dateValue = e.target.value;
+    const date = dateValue ? new Date(dateValue) : null;
     setRecruitEndDate(date);
     updateFilters({ 
-      recruitEndDate: date ? date.toISOString().split('T')[0] : '' 
+      recruitEndDate: dateValue 
     });
   }, [updateFilters]);
 
-  const handleProjectStartDateChange = useCallback((date: Date | null) => {
+  const handleProjectStartDateChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const dateValue = e.target.value;
+    const date = dateValue ? new Date(dateValue) : null;
     setProjectStartDate(date);
     updateFilters({ 
-      projectStartDate: date ? date.toISOString().split('T')[0] : '' 
+      projectStartDate: dateValue 
     });
   }, [updateFilters]);
 
-  const handleProjectEndDateChange = useCallback((date: Date | null) => {
+  const handleProjectEndDateChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const dateValue = e.target.value;
+    const date = dateValue ? new Date(dateValue) : null;
     setProjectEndDate(date);
     updateFilters({ 
-      projectEndDate: date ? date.toISOString().split('T')[0] : '' 
+      projectEndDate: dateValue 
     });
   }, [updateFilters]);
 
@@ -180,25 +184,12 @@ const SideBox: React.FC<SideBoxProps> = ({
           {/* 프로젝트 모집 종료 기한 */}
           <div className="filter-section">
             <div className="filter-header"><h3>프로젝트 모집 종료 기한</h3></div>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                value={recruitEndDate}
-                onChange={handleRecruitEndDateChange}
-                format="yyyy/MM/dd"
-                slotProps={{
-                  textField: {
-                    size: "small",
-                    sx: { 
-                      width: "100%",
-                      "& .MuiOutlinedInput-root": {
-                        borderRadius: "8px",
-                        fontSize: "0.9rem"
-                      }
-                    }
-                  }
-                }}
-              />
-            </LocalizationProvider>
+            <input
+              type="date"
+              value={recruitEndDate ? recruitEndDate.toISOString().split('T')[0] : ''}
+              onChange={handleRecruitEndDateChange}
+              className="date-input"
+            />
           </div>
 
           {/* 기술 스택 */}
@@ -309,83 +300,24 @@ const SideBox: React.FC<SideBoxProps> = ({
             <div className="filter-header">
               <h3>프로젝트 기간</h3>
             </div>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <Box
-  className="date-range"
-  sx={{
-    display: "flex",
-    alignItems: "center",
-    gap: 2,
-    width: "100%",
-    p: 1,
-    border: "1px solid #e5e5e5",
-    borderRadius: "10px",
-    backgroundColor: "#fff",
-  }}
->
-  <DatePicker
-    label="시작일"
-    value={projectStartDate}
-    onChange={handleProjectStartDateChange}
-    format="yyyy/MM/dd"
-    slotProps={{
-      textField: {
-        size: "small",
-        sx: {
-          flex: 1,
-          "& .MuiOutlinedInput-root": {
-            borderRadius: "8px",
-            fontSize: "0.9rem",
-            backgroundColor: "#fafafa",
-            "& fieldset": {
-              borderColor: "#ddd",
-            },
-            "&:hover fieldset": {
-              borderColor: "#aaa",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "#000",
-              borderWidth: "1.5px",
-            },
-          },
-        },
-      },
-    }}
-  />
-  <Box sx={{ fontSize: "1.2rem", color: "#888", mx: 1 }}>~</Box>
-  <DatePicker
-    label="종료일"
-    value={projectEndDate}
-    onChange={handleProjectEndDateChange}
-    format="yyyy/MM/dd"
-    minDate={projectStartDate ?? undefined}
-    slotProps={{
-      textField: {
-        size: "small",
-        sx: {
-          flex: 1,
-          "& .MuiOutlinedInput-root": {
-            borderRadius: "8px",
-            fontSize: "0.9rem",
-            backgroundColor: "#fafafa",
-            "& fieldset": {
-              borderColor: "#ddd",
-            },
-            "&:hover fieldset": {
-              borderColor: "#aaa",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "#000",
-              borderWidth: "1.5px",
-            },
-          },
-        },
-      },
-    }}
-  />
-</Box>
-
-            </LocalizationProvider>
+            <div className="date-range">
+              <input
+                type="date"
+                value={projectStartDate ? projectStartDate.toISOString().split('T')[0] : ''}
+                onChange={handleProjectStartDateChange}
+                className="date-input"
+                placeholder="시작일"
+              />
+              <span className="date-separator">~</span>
+              <input
+                type="date"
+                value={projectEndDate ? projectEndDate.toISOString().split('T')[0] : ''}
+                onChange={handleProjectEndDateChange}
+                className="date-input"
+                placeholder="종료일"
+                min={projectStartDate ? projectStartDate.toISOString().split('T')[0] : undefined}
+              />
+            </div>
           </div>
 
         </div>

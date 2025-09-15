@@ -1,52 +1,50 @@
 /* 공통 스타일은 TeamPage.css에서 import */
 
-/* 달력 날짜 기본 */
-.MuiPickersDay-root {
-  font-weight: 600;
-  color: #2c3e50;
+/* 기본 HTML input[type="date"] 스타일 */
+.date-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 2px solid #e9ecef;
   border-radius: 8px;
+  font-size: 0.9rem;
+  background: white;
+  color: #333;
   transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
-/* hover 효과 */
-.MuiPickersDay-root:hover {
-  background: linear-gradient(135deg, #ffebee, #ffcdd2);
-  transform: scale(1.1);
-  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+.date-input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
-/* 선택된 날짜 */
-.MuiPickersDay-root.Mui-selected {
-  background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
-  color: white !important;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
-  font-weight: 700;
-}
-
-/* 오늘 날짜 강조 */
-.MuiPickersDay-today {
-  border: 2px solid #e74c3c !important;
-  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
-  font-weight: 700;
-}
-
-/* 달력 헤더 (월/년 표시되는 부분) */
-.MuiPickersCalendarHeader-root {
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  padding: 12px;
+.dateRange {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 400px;
+  padding: 0.5rem;
   border-radius: 12px;
-  margin-bottom: 8px;
+  background: white;
+  border: 1px solid #e5e5e5;
 }
 
-/* 화살표 버튼 */
-.MuiPickersArrowSwitcher-root button {
-  color: #e74c3c;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+.date-separator {
+  font-size: 1.2rem;
+  color: #888;
+  font-weight: 500;
 }
 
-.MuiPickersArrowSwitcher-root button:hover {
-  background: linear-gradient(135deg, #ffebee, #ffcdd2);
-  transform: scale(1.1);
+/* 반응형 - 모바일에서 날짜 입력 */
+@media (max-width: 768px) {
+  .dateRange {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .date-separator {
+    display: none;
+  }
 }

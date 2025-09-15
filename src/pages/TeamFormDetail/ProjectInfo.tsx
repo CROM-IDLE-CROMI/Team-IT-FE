@@ -2,10 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Select from 'react-select';
 import type { MultiValue } from 'react-select';
 import type { StepData } from "../../types/Draft";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Box } from "@mui/material";
+// MUI DatePicker 제거 - 기본 HTML input[type="date"] 사용
 import './ProjectInfo.css';
 import '../../App.css';
 import '../../TeamPageDetail.css';
@@ -193,36 +190,47 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
         )}
       </div>
 
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <div className="formGroup">
-          <label>진행 예상 기간</label>
-          <Box className="dateRange" sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <DatePicker
-              label="시작일"
-              value={startDate}
-              onChange={setStartDate}
-              format="yyyy/MM/dd"
-            />
-            <Box>~</Box>
-            <DatePicker
-              label="종료일"
-              value={endDate}
-              minDate={startDate ?? undefined}
-              onChange={setEndDate}
-            />
-          </Box>
-        </div>
-
-        <div className="formGroup">
-          <label>프로젝트 시작 예상일</label>
-          <DatePicker
-            label="예상 시작일"
-            value={projectStartDate}
-            onChange={setProjectStartDate}
-            format="yyyy/MM/dd"
+      <div className="formGroup">
+        <label>진행 예상 기간</label>
+        <div className="dateRange">
+          <input
+            type="date"
+            value={startDate ? startDate.toISOString().split('T')[0] : ''}
+            onChange={(e) => {
+              const dateValue = e.target.value;
+              const date = dateValue ? new Date(dateValue) : null;
+              setStartDate(date);
+            }}
+            className="date-input"
+          />
+          <span className="date-separator">~</span>
+          <input
+            type="date"
+            value={endDate ? endDate.toISOString().split('T')[0] : ''}
+            min={startDate ? startDate.toISOString().split('T')[0] : undefined}
+            onChange={(e) => {
+              const dateValue = e.target.value;
+              const date = dateValue ? new Date(dateValue) : null;
+              setEndDate(date);
+            }}
+            className="date-input"
           />
         </div>
-      </LocalizationProvider>
+      </div>
+
+      <div className="formGroup">
+        <label>프로젝트 시작 예상일</label>
+        <input
+          type="date"
+          value={projectStartDate ? projectStartDate.toISOString().split('T')[0] : ''}
+          onChange={(e) => {
+            const dateValue = e.target.value;
+            const date = dateValue ? new Date(dateValue) : null;
+            setProjectStartDate(date);
+          }}
+          className="date-input"
+        />
+      </div>
 
       <div className="formGroup">
         <label>모집자 직군</label>

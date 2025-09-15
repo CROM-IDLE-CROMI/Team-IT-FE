@@ -9,10 +9,7 @@ import '../../TeamPageDetail.css';
 import TechStackList from '../../components/TechStackList';
 import type { StepData } from "../../types/Draft";
 import type { Dispatch, SetStateAction } from "react";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Box } from "@mui/material";
+// MUI DatePicker 제거 - 기본 HTML input[type="date"] 사용
 
 type OptionType = { value: string; label: string };
 
@@ -47,43 +44,50 @@ type DateProps = {
 };
 
 const DateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }: DateProps) => {
-  const today = new Date();
+  const today = new Date().toISOString().split('T')[0];
 
   const getMaxEndDate = (start: Date) => {
     const date = new Date(start);
     date.setMonth(date.getMonth() + 2);
-    return date;
+    return date.toISOString().split('T')[0];
+  };
+
+  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const dateValue = e.target.value;
+    const date = dateValue ? new Date(dateValue) : null;
+    setStartDate(date);
+    setEndDate(null); // 시작일이 변경되면 종료일 초기화
+  };
+
+  const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const dateValue = e.target.value;
+    const date = dateValue ? new Date(dateValue) : null;
+    setEndDate(date);
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <div className="formGroup">
-        <label>모집 기간</label>
-        <Box className="dateRange" sx={{ display: "flex", alignItems: "center", gap: 2, width: '100%', maxWidth: '400px', padding: '0.5rem', borderRadius: '12px' }}>
-          <DatePicker
-            label="시작일"
-            value={startDate}
-            minDate={today}
-            onChange={newValue => {
-              setStartDate(newValue);
-              setEndDate(null);
-            }}
-            format="yyyy/MM/dd"
-            slotProps={{ textField: { size: "small", sx: { width: 180 } } }}
-          />
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '35px', fontSize: '1.5rem' }}>~</Box>
-          <DatePicker
-            label="종료일"
-            value={endDate}
-            minDate={startDate ?? today}
-            maxDate={startDate ? getMaxEndDate(startDate) : undefined}
-            onChange={newValue => setEndDate(newValue)}
-            disabled={!startDate}
-            slotProps={{ textField: { size: "small", sx: { width: 180 } } }}
-          />
-        </Box>
+    <div className="formGroup">
+      <label>모집 기간</label>
+      <div className="dateRange">
+        <input
+          type="date"
+          value={startDate ? startDate.toISOString().split('T')[0] : ''}
+          min={today}
+          onChange={handleStartDateChange}
+          className="date-input"
+        />
+        <span className="date-separator">~</span>
+        <input
+          type="date"
+          value={endDate ? endDate.toISOString().split('T')[0] : ''}
+          min={startDate ? startDate.toISOString().split('T')[0] : today}
+          max={startDate ? getMaxEndDate(startDate) : undefined}
+          onChange={handleEndDateChange}
+          disabled={!startDate}
+          className="date-input"
+        />
       </div>
-    </LocalizationProvider>
+    </div>
   );
 };
 
