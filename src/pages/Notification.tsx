@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
-type NotificationType = 'project' | 'comment' | 'shop' | 'invite';
+type NotificationType = 'project' | 'board' | 'shop' | 'invite';
 
 interface Notification {
   id: number;
@@ -18,23 +18,23 @@ const Notification: React.FC = () => {
 
   const [notifications, setNotifications] = useState<Notification[]>([
     { id: 1, text: '김철수님의 "OOO" 프로젝트에 합격하였습니다.', type: 'project', targetId: '1' },
-    { id: 2, text: '홍길동님의 "XXX" 프로젝트에 새로운 지원자가 있습니다.', type: 'comment', targetId: '11' },
+    { id: 2, text: '홍길동님의 "XXX" 프로젝트에 새로운 지원자가 있습니다.', type: 'board', targetId: '11' },
     { id: 3, text: '김일성님의 "ㅁㅁㅁ" 프로젝트에서 제외되셨습니다.', type: 'project', targetId: '2' },
-    { id: 4, text: '어나경님이 "ㅆㅆㅆ" 프로젝트의 새로운 팀장이 되셨습니다.', type: 'invite', targetId: '3' },
-    { id: 5, text: '구매하신 상품의 배송이 시작되었습니다.', type: 'shop', targetId: '100' },
+    { id: 4, text: '어나경님이 "ㅆㅆㅆ" 프로젝트의 새로운 팀장이 되셨습니다.', type: 'project', targetId: '3' },
+    //{ id: 5, text: '구매하신 상품의 배송이 시작되었습니다.', type: 'shop', targetId: '100' },
   ]);
 
   const handleGo = (n: Notification) => {
     switch (n.type) {
       case 'project':
-        navigate(`/project/${n.targetId}`);
+        navigate(`/myproject/${n.targetId}`);
         break;
-      case 'comment':
+      case 'board':
         navigate(`/recruit/${n.targetId}`);
         break;
-      case 'shop':
-        navigate(`/shop/${n.targetId}`);
-        break;
+      // case 'shop':
+      //   navigate(`/shop/${n.targetId}`);
+      //   break;
       case 'invite':
         setModalNotification(n); // 모달 열기
         break;
@@ -68,17 +68,17 @@ const Notification: React.FC = () => {
           프로젝트
         </button>
         <button
-          className={`notification-tab ${activeTab === 'comment' ? 'active' : ''}`}
-          onClick={() => setActiveTab('comment')}
+          className={`notification-tab ${activeTab === 'board' ? 'active' : ''}`}
+          onClick={() => setActiveTab('board')}
         >
           좋아요/댓글
         </button>
-        <button
+        {/* <button
           className={`notification-tab ${activeTab === 'shop' ? 'active' : ''}`}
           onClick={() => setActiveTab('shop')}
         >
           상점
-        </button>
+        </button> */}
       </div>
 
       {/* 알림 리스트 */}
