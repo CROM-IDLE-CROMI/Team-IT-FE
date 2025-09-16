@@ -16,7 +16,7 @@ interface FilterState {
   selectedLocations: {
     region: string;
     districts: string[];
-  }
+  };
   selectedProgress: string[];
   selectedMethod: string[];
   recruitEndDate: string;
@@ -32,15 +32,14 @@ interface Project {
   location: {
     region: string;
     districts: string[];
-  }
+  };
   techStack: string[];
   positions: string[];
   likes: number;
   views: number;
   description: string;
-  status: string; 
+  status: string;
   teamSize?: string;
-  duration?: string;
   recruitPositions?: string[];
   recruitPeriod?: string;
   startDate?: string;
@@ -65,8 +64,7 @@ const dummyProjects: Project[] = [
     views: 45,
     description: "혁신적인 웹 서비스를 개발하는 프로젝트입니다. React와 Node.js를 사용하여 풀스택 개발을 진행합니다.",
     status: "모집중",
-    teamSize: "2명",
-    duration: "3-6개월",
+    teamSize: "3명",
     recruitPositions: ["프론트", "백"],
     recruitPeriod: "3개월",
     startDate: "2025.02.01",
@@ -88,8 +86,7 @@ const dummyProjects: Project[] = [
     views: 32,
     description: "Flutter를 사용한 크로스 플랫폼 모바일 앱을 개발합니다. UI/UX에 관심 있는 개발자를 찾습니다.",
     status: "모집중",
-    teamSize: "1명",
-    duration: "2-4개월",
+    teamSize: "2명",
     recruitPositions: ["프론트"],
     recruitPeriod: "2개월",
     startDate: "2025.01.20",
@@ -106,14 +103,13 @@ const dummyProjects: Project[] = [
     date: "2025.01.13",
     location: { region: "대구광역시", districts: ["수성구"] },
     techStack: ["Python", "TensorFlow", "FastAPI"],
-    positions: ["백", "데이터"],
+    positions: ["백", "기타"],
     likes: 15,
     views: 67,
     description: "머신러닝을 활용한 예측 모델을 개발하는 프로젝트입니다. 데이터 분석과 AI 모델링 경험이 있는 분을 찾습니다.",
     status: "모집중",
-    teamSize: "2명",
-    duration: "6-12개월",
-    recruitPositions: ["데이터", "백"],
+    teamSize: "4명",
+    recruitPositions: ["기타", "백"],
     recruitPeriod: "6개월",
     startDate: "2025.02.15",
     endDate: "2025.08.15",
@@ -134,8 +130,7 @@ const dummyProjects: Project[] = [
     views: 89,
     description: "Unity를 사용한 3D 게임을 개발합니다. 게임 개발 경험이 있거나 열정이 있는 분을 찾습니다.",
     status: "모집중",
-    teamSize: "3명",
-    duration: "8-12개월",
+    teamSize: "5명",
     recruitPositions: ["기획", "디자인"],
     recruitPeriod: "8개월",
     startDate: "2025.03.01",
@@ -157,9 +152,7 @@ const dummyProjects: Project[] = [
     views: 28,
     description: "이더리움 기반의 DApp을 개발하는 프로젝트입니다. 블록체인 기술에 관심 있는 개발자를 찾습니다.",
     status: "모집중",
-    teamSize: "2명",
-    duration: "4-8개월",
-    contact: "jung@email.com",
+    teamSize: "3명",
     recruitPositions: ["프론트", "백"],
     recruitPeriod: "4개월",
     startDate: "2025.01.25",
@@ -176,15 +169,13 @@ const dummyProjects: Project[] = [
     date: "2025.01.10",
     location: { region: "대전광역시", districts: ["유성구"] },
     techStack: ["Python"],
-    positions: ["데이터", "기획"],
+    positions: ["기타", "기획"],
     likes: 9,
     views: 41,
     description: "대용량 데이터를 분석하고 시각화하는 프로젝트입니다. 통계학적 지식과 데이터 분석 경험이 있는 분을 찾습니다.",
     status: "모집중",
     teamSize: "2명",
-    duration: "3-6개월",
-    contact: "han@email.com",
-    recruitPositions: ["데이터", "기획"],
+    recruitPositions: ["기타", "기획"],
     recruitPeriod: "3개월",
     startDate: "2025.01.30",
     endDate: "2025.04.30",
@@ -200,14 +191,13 @@ const dummyProjects: Project[] = [
     date: "2025.01.09",
     location: { region: "서울특별시", districts: ["마포구"] },
     techStack: ["Arduino", "Raspberry Pi", "Python"],
-    positions: ["프론트", "백", "기획"],
+    positions: ["프론트", "백", "PM"],
     likes: 14,
     views: 52,
     description: "IoT 센서를 활용한 스마트홈 시스템을 개발합니다. 하드웨어와 소프트웨어 모두 경험이 있는 분을 찾습니다.",
     status: "모집중",
-    teamSize: "3명",
-    duration: "6-9개월",
-    recruitPositions: ["프론트", "백", "기획"],
+    teamSize: "4명",
+    recruitPositions: ["프론트", "백", "PM"],
     recruitPeriod: "6개월",
     startDate: "2025.02.01",
     endDate: "2025.08.01",
@@ -228,8 +218,7 @@ const dummyProjects: Project[] = [
     views: 73,
     description: "VR/AR을 활용한 교육 콘텐츠를 개발합니다. 3D 모델링과 게임 개발 경험이 있는 분을 찾습니다.",
     status: "모집중",
-    teamSize: "4명",
-    duration: "8-12개월",
+    teamSize: "5명",
     recruitPositions: ["기획", "디자인", "프론트"],
     recruitPeriod: "8개월",
     startDate: "2025.03.01",
@@ -241,6 +230,86 @@ const dummyProjects: Project[] = [
   },
 ];
 
+// 클라이언트-측에서 더미 데이터를 필터링하는 함수
+const filterDummyProjects = (
+  projects: Project[],
+  filters: FilterState,
+  searchTerm: string
+) => {
+  if (import.meta.env.MODE !== 'production') {
+    console.log('🔍 클라이언트 필터링 시작:', {
+      projectsCount: projects.length,
+      selectedActivity: filters.selectedActivity,
+      searchTerm: searchTerm
+    });
+  }
+
+  return projects.filter(project => {
+    // 검색어 필터링
+    const matchesSearch = !searchTerm || 
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (project.description && project.description.toLowerCase().includes(searchTerm.toLowerCase()));
+    if (!matchesSearch) return false;
+
+    // 활동 유형 필터링
+    const matchesActivity = filters.selectedActivity.length === 0 || 
+      (project.activityType && filters.selectedActivity.includes(project.activityType));
+    if (!matchesActivity) return false;
+
+    // 포지션 필터링
+    const matchesPosition = filters.selectedPositions.length === 0 || 
+      filters.selectedPositions.some(pos => project.positions.includes(pos));
+    if (!matchesPosition) return false;
+
+    // 기술스택 필터링
+    const matchesTechStack = filters.selectedTechStacks.length === 0 ||
+      filters.selectedTechStacks.some(tech => project.techStack.includes(tech));
+    if (!matchesTechStack) return false;
+
+    // 지역 필터링
+    const matchesLocation = (!filters.selectedLocations.region && !filters.selectedLocations.districts.length) ||
+      (project.location.region === filters.selectedLocations.region &&
+        (filters.selectedLocations.districts.length === 0 ||
+          filters.selectedLocations.districts.some(district => project.location.districts.includes(district))));
+    if (!matchesLocation) return false;
+
+    // 진행상황 필터링
+    const matchesProgress = filters.selectedProgress.length === 0 || 
+      (project.progress && filters.selectedProgress.includes(project.progress));
+    if (!matchesProgress) return false;
+    
+    // 진행방식 필터링
+    const matchesMethod = filters.selectedMethod.length === 0 || 
+      (project.method && filters.selectedMethod.includes(project.method));
+    if (!matchesMethod) return false;
+
+    // 모집 마감일 필터링
+    if (filters.recruitEndDate && project.recruitEndDate) {
+      const projectEndDate = new Date(project.recruitEndDate);
+      const filterEndDate = new Date(filters.recruitEndDate);
+      if (projectEndDate < filterEndDate) return false;
+    }
+
+    // 프로젝트 기간 필터링
+    if (filters.projectStartDate || filters.projectEndDate) {
+      const projectStartDate = new Date(project.startDate || '');
+      const projectEndDate = new Date(project.endDate || '');
+
+      if (filters.projectStartDate) {
+        const filterStartDate = new Date(filters.projectStartDate);
+        if (projectStartDate < filterStartDate) return false;
+      }
+      if (filters.projectEndDate) {
+        const filterEndDate = new Date(filters.projectEndDate);
+        if (projectEndDate > filterEndDate) return false;
+      }
+    }
+    
+    return true;
+  });
+};
+
+
 const ProjectPage = () => {
   const [isOptionOpen, setIsOptionOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -250,53 +319,42 @@ const ProjectPage = () => {
   const [popularSlideIndex, setPopularSlideIndex] = useState(0);
   const popularProjectsPerSlide = 2;
   
-  const initialFilters: FilterState = {
+  const initialFilters: FilterState = useMemo(() => ({
     selectedActivity: [],
     selectedPositions: [],
     selectedTechStacks: [],
-    selectedLocations: {region: "", districts: [] },
+    selectedLocations: { region: "", districts: [] },
     selectedProgress: [],
     selectedMethod: [],
     recruitEndDate: "",
     projectStartDate: "",
     projectEndDate: ""
-  };
+  }), []);
 
   const [tempFilters, setTempFilters] = useState<FilterState>(initialFilters);
   const [appliedFilters, setAppliedFilters] = useState<FilterState>(initialFilters);
   const navigate = useNavigate();
-  const [projects, setProjects] = useState<Project[]>(dummyProjects);
+  const [projects, setProjects] = useState<Project[]>([]); // 초기 상태를 빈 배열로 설정
   const [isLoading, setIsLoading] = useState(true);
+  const [isApiSuccess, setIsApiSuccess] = useState(false); // API 호출 성공 여부 상태
 
   // API 요청 로직 (Server-side filtering 적용)
   useEffect(() => {
-    const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:5173";
+    const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:4000";
     
-    // 필터 객체를 쿼리 문자열로 변환하는 함수
     const buildQueryString = () => {
       const params = new URLSearchParams();
-
-      if (appliedSearchTerm) {
-        params.append('q', appliedSearchTerm);
-      }
+      if (appliedSearchTerm) params.append('q', appliedSearchTerm);
       appliedFilters.selectedActivity.forEach(v => params.append('activity', v));
       appliedFilters.selectedPositions.forEach(v => params.append('position', v));
       appliedFilters.selectedTechStacks.forEach(v => params.append('techStack', v));
-      // 지역 필터: region과 districts를 각각 쿼리에 추가
-      if (appliedFilters.selectedLocations.region) {
-        params.append('location', appliedFilters.selectedLocations.region);
-      }
-      if (appliedFilters.selectedLocations.districts && appliedFilters.selectedLocations.districts.length > 0) {
-        appliedFilters.selectedLocations.districts.forEach(district => {
-          params.append('location', district);
-        });
-      }
+      if (appliedFilters.selectedLocations.region) params.append('region', appliedFilters.selectedLocations.region);
+      appliedFilters.selectedLocations.districts.forEach(d => params.append('district', d));
       appliedFilters.selectedProgress.forEach(v => params.append('progress', v));
       appliedFilters.selectedMethod.forEach(v => params.append('method', v));
       if (appliedFilters.recruitEndDate) params.append('recruitEndDate_gte', appliedFilters.recruitEndDate);
       if (appliedFilters.projectStartDate) params.append('startDate_gte', appliedFilters.projectStartDate);
       if (appliedFilters.projectEndDate) params.append('endDate_lte', appliedFilters.projectEndDate);
-      
       return params.toString();
     };
 
@@ -305,9 +363,12 @@ const ProjectPage = () => {
 
     const fetchProjects = async () => {
       setIsLoading(true);
+      setIsApiSuccess(false); // API 성공 상태 초기화
       const queryString = buildQueryString();
       const API_ENDPOINT = `${API_BASE}/api/projects?${queryString}`;
-      console.log(`🚀 API 요청: ${API_ENDPOINT}`);
+      if (import.meta.env.MODE !== 'production') {
+        console.log(`🚀 API 요청: ${API_ENDPOINT}`);
+      }
 
       try {
         const res = await fetch(API_ENDPOINT, { signal: controller.signal });
@@ -315,17 +376,22 @@ const ProjectPage = () => {
         
         const data: Project[] = await res.json();
         if (!Array.isArray(data)) throw new Error("API 응답이 배열이 아님");
-
+        
         setProjects(data);
-        console.info("✅ API에서 필터링된 프로젝트 불러오기 성공", data.length, "items");
-      } catch (err: any) {
-        if (err.name === "AbortError") {
-          console.warn("⏱️ API 요청 타임아웃/취소 - 더미 데이터 사용");
-        } else {
-          console.warn("⚠️ API 불러오기 실패 - 더미 데이터 사용", err);
+        setIsApiSuccess(true);
+        if (import.meta.env.MODE !== 'production') {
+          console.info("✅ API에서 필터링된 프로젝트 불러오기 성공", data.length, "items");
         }
-        // 실패 시 더미 데이터로 대체 (필터링 없이)
+      } catch (err: any) {
+        if (import.meta.env.MODE !== 'production') {
+          if (err.name === "AbortError") {
+            console.warn("⏱️ API 요청 타임아웃/취소 - 더미 데이터 사용");
+          } else {
+            console.warn("⚠️ API 불러오기 실패 - 더미 데이터 사용", err);
+          }
+        }
         setProjects(dummyProjects);
+        setIsApiSuccess(false); // API 실패 상태로 설정
       } finally {
         setIsLoading(false);
         clearTimeout(timeoutId);
@@ -338,108 +404,19 @@ const ProjectPage = () => {
       controller.abort();
       clearTimeout(timeoutId);
     };
-  }, [appliedFilters, appliedSearchTerm]); // 검색어 또는 필터가 적용될 때마다 API 재요청
+  }, [appliedFilters, appliedSearchTerm]);
 
-  // 클라이언트 사이드 필터링 로직
+  // filteredProjects는 API 성공 여부에 따라 다른 로직을 적용
   const filteredProjects = useMemo(() => {
-    return projects.filter(project => {
-      // 검색어 필터링
-      if (appliedSearchTerm && !project.title.toLowerCase().includes(appliedSearchTerm.toLowerCase()) &&
-          !project.description.toLowerCase().includes(appliedSearchTerm.toLowerCase())) {
-        return false;
-      }
+    if (isApiSuccess) {
+      // API가 성공했을 경우, 서버에서 이미 필터링된 데이터이므로 그대로 사용
+      return projects;
+    } else {
+      // API가 실패했을 경우, 더미 데이터를 클라이언트-측에서 필터링
+      return filterDummyProjects(projects, appliedFilters, appliedSearchTerm);
+    }
+  }, [projects, appliedFilters, appliedSearchTerm, isApiSuccess]);
 
-      // 활동 유형 필터링
-      if (appliedFilters.selectedActivity.length > 0 && 
-          !appliedFilters.selectedActivity.includes(project.activityType || '')) {
-        return false;
-      }
-
-      // 포지션 필터링
-      if (appliedFilters.selectedPositions.length > 0) {
-        const hasMatchingPosition = appliedFilters.selectedPositions.some(position => 
-          project.positions.some(projectPosition => 
-            projectPosition.toLowerCase().includes(position.toLowerCase())
-          )
-        );
-        if (!hasMatchingPosition) return false;
-      }
-
-      // 기술스택 필터링
-      if (appliedFilters.selectedTechStacks.length > 0) {
-        const hasMatchingTech = appliedFilters.selectedTechStacks.some(tech => 
-          project.techStack.some(projectTech => 
-            projectTech.toLowerCase().includes(tech.toLowerCase())
-          )
-        );
-        if (!hasMatchingTech) return false;
-      }
-
-      // 지역 필터링 (시/도 또는 구 단위 매칭)
-      if (
-        appliedFilters.selectedLocations &&
-        (appliedFilters.selectedLocations.region ||
-          (appliedFilters.selectedLocations.districts?.length ?? 0) > 0)
-      ) {
-        const { region, districts } = appliedFilters.selectedLocations;
-        let hasMatchingLocation = false;
-
-        // 시/도 단위 매칭 (region이 선택되고 districts가 비어있거나 모든 구가 선택된 경우)
-        if (region && project.location.region === region) {
-          if (!districts || districts.length === 0) {
-            // districts가 비어있으면 region만으로 매칭
-            hasMatchingLocation = true;
-          } else {
-            // districts가 있으면 구 단위로 매칭
-            hasMatchingLocation = districts.some((district) =>
-              project.location.districts.includes(district)
-            );
-          }
-        }
-
-        if (!hasMatchingLocation) {
-          return false; // 필터 조건 불일치 → 제외
-        }
-      }
-
-
-
-      // 진행상황 필터링
-      if (appliedFilters.selectedProgress.length > 0 && 
-          !appliedFilters.selectedProgress.includes(project.progress || '')) {
-        return false;
-      }
-
-      // 진행방식 필터링
-      if (appliedFilters.selectedMethod.length > 0 && 
-          !appliedFilters.selectedMethod.includes(project.method || '')) {
-        return false;
-      }
-
-      // 모집 마감일 필터링
-      if (appliedFilters.recruitEndDate) {
-        const projectEndDate = new Date(project.recruitEndDate || '');
-        const filterEndDate = new Date(appliedFilters.recruitEndDate);
-        if (projectEndDate < filterEndDate) return false;
-      }
-
-      // 프로젝트 시작일 필터링
-      if (appliedFilters.projectStartDate) {
-        const projectStartDate = new Date(project.startDate || '');
-        const filterStartDate = new Date(appliedFilters.projectStartDate);
-        if (projectStartDate < filterStartDate) return false;
-      }
-
-      // 프로젝트 종료일 필터링
-      if (appliedFilters.projectEndDate) {
-        const projectEndDate = new Date(project.endDate || '');
-        const filterEndDate = new Date(appliedFilters.projectEndDate);
-        if (projectEndDate > filterEndDate) return false;
-      }
-
-      return true;
-    });
-  }, [projects, appliedFilters, appliedSearchTerm]);
 
   // 페이지네이션 계산
   const totalPages = Math.max(1, Math.ceil(filteredProjects.length / itemsPerPage));
@@ -466,24 +443,25 @@ const ProjectPage = () => {
     navigate(`/project/${projectId}`);
   };
 
-  const handleApplyFilters = useCallback(() => {
+  // 필터 적용 및 초기화 핸들러 (useCallback 제거)
+  const handleApplyFilters = () => {
     setAppliedFilters(tempFilters);
     setIsOptionOpen(false);
     setCurrentPage(1);
-  }, [tempFilters]);
+  };
 
-  const handleResetFilters = useCallback(() => {
+  const handleResetFilters = () => {
     setTempFilters(initialFilters);
     setAppliedFilters(initialFilters);
     setCurrentPage(1);
-  }, [initialFilters]);
-
-  const handleTempFiltersChange = useCallback((filters: FilterState | ((prev: FilterState) => FilterState)) => {
-    setTempFilters(filters as FilterState);
-  }, []);
+  };
+  
+  const handleTempFiltersChange = (filters: FilterState | ((prev: FilterState) => FilterState)) => {
+    setTempFilters(filters);
+  };
 
   // 인기 프로젝트 (필터링된 프로젝트 중 상위 4개)
-  const popularProjects = filteredProjects.slice(0, 4);
+  const popularProjects = useMemo(() => filteredProjects.slice(0, 4), [filteredProjects]);
   const totalPopularSlides = Math.ceil(popularProjects.length / popularProjectsPerSlide);
   const currentPopularProjects = popularProjects.slice(
     popularSlideIndex * popularProjectsPerSlide,
@@ -491,7 +469,6 @@ const ProjectPage = () => {
   );
   const handlePopularSlideNext = () => setPopularSlideIndex((prev) => (prev + 1) % Math.max(1, totalPopularSlides));
   const handlePopularSlidePrev = () => setPopularSlideIndex((prev) => (prev - 1 + totalPopularSlides) % Math.max(1, totalPopularSlides));
-
 
   return (
     <div style={{ padding: "8rem 0" }}>
@@ -567,53 +544,53 @@ const ProjectPage = () => {
           </div>
         </div>
 
-      <div className="section">
-        <div className="Minisection">
-        <div className="Option" onClick={() => setIsOptionOpen(true)}>
-          <img src="/Option.png" alt="옵션" />
-        </div>
-        <div className="search-bar">
-          <input 
-            type="text" 
-            placeholder="제목, 내용을 검색하세요..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyPress={handleKeyPress}
-          />
+        <div className="section">
+          <div className="Minisection">
+            <div className="Option" onClick={() => setIsOptionOpen(true)}>
+              <img src="/Option.png" alt="옵션" />
+            </div>
+            <div className="search-bar">
+              <input 
+                type="text" 
+                placeholder="제목, 내용을 검색하세요..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyPress={handleKeyPress}
+              />
               <button className="search-btn" onClick={handleSearch}>검색</button>
-        </div>
-        </div>
+            </div>
+          </div>
 
-          {/* 프로젝트 리스트 카드 (이제 currentProjects를 사용) */}
-        <div className="card-container">
+          {/* 프로젝트 리스트 카드 */}
+          <div className="card-container">
             {isLoading ? (
-              <div>Loading...</div>
+              <div>로딩 중...</div>
+            ) : filteredProjects.length === 0 ? (
+                <div>표시할 프로젝트가 없습니다.</div>
             ) : currentProjects.length > 0 ? (
               currentProjects.map(project => (
-            <div key={project.id} className="card" onClick={() => handleCardClick(project.id)}>
-              <h3>
-                {project.title} 
-              </h3>
-              <div className="info">
-                {project.author}<br />
-                {project.date}<br />
-                📍 {project.location.region} {project.location.districts.join(" ")}<br />
-                <span className="tech-icons">
+                <div key={project.id} className="card" onClick={() => handleCardClick(project.id)}>
+                  <h3>{project.title}</h3>
+                  <div className="info">
+                    {project.author}<br />
+                    {project.date}<br />
+                    📍 {project.location.region} {project.location.districts.join(" ")}<br />
+                    <span className="tech-icons">
                       {(project.techStack || []).map(tech => {
-    const stack = techStacksInit.find(item => item.value === tech);
-    return stack ? (
+                        const stack = techStacksInit.find(item => item.value === tech);
+                        return stack ? (
                           <img key={tech} src={stack.icon} alt={stack.label} title={stack.label} className="tech-icon-img" />
                         ) : (
                           <span key={tech}>🔧 {tech}</span>
-    );
-  })}
-                </span><br />
+                        );
+                      })}
+                    </span><br />
                     👥 {(project.positions || []).join(', ')}
                   </div>
                 </div>
               ))
             ) : (
-              <div>표시할 프로젝트가 없습니다.</div>
+                <div>현재 페이지에 표시할 프로젝트가 없습니다.</div>
             )}
           </div>
 
@@ -648,14 +625,14 @@ const ProjectPage = () => {
             </div>
           )}
 
-        <SideBox 
-          isOpen={isOptionOpen} 
-          onClose={() => setIsOptionOpen(false)}
-          filters={tempFilters}
-          onFiltersChange={handleTempFiltersChange}
-          onApplyFilters={handleApplyFilters}
-          onResetFilters={handleResetFilters}
-        />
+          <SideBox 
+            isOpen={isOptionOpen} 
+            onClose={() => setIsOptionOpen(false)}
+            filters={tempFilters}
+            onFiltersChange={handleTempFiltersChange}
+            onApplyFilters={handleApplyFilters}
+            onResetFilters={handleResetFilters}
+          />
         </div>
       </div>
     </div>
