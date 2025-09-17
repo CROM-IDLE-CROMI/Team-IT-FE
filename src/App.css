@@ -1,54 +1,61 @@
+/* =====================================================
+   공통 기본 스타일
+====================================================== */
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Gothic A1', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Gothic A1', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
 }
 
 * {
-  font-family: 'Gothic A1', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: inherit;
+  box-sizing: border-box;
 }
 
-/* 공통 애니메이션 */
+/* =====================================================
+   색상 변수
+====================================================== */
+:root {
+  --black: #141414;
+  --dark: #383c49;
+  --grey: #bdc3c7;
+  --white: #f2fdff;
+  --red: #ffb1b2;
+  --yellow: #fffc93;
+  --green: #c6ffba;
+  --turquois: #8fe5ce;
+  --lightblue: #b5eaff;
+  --purple: #d1c8ff;
+  --blue: #1E63EC;
+}
+
+/* =====================================================
+   공통 애니메이션
+====================================================== */
 @keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
-
 
 /* =====================================================
    공통 입력 그룹 스타일
 ====================================================== */
 .input-group {
+  width: 100%;
   margin-bottom: 20px;
   text-align: left;
 }
@@ -79,390 +86,12 @@ html, body {
   cursor: pointer;
 }
 
-.btn-check {
-  background-color: #4a90e2;
-  color: white;
-  font-size: 13px;
-  padding: 10px 14px;
-  width: auto;
-}
+.btn-check { background-color: #4a90e2; color: #fff; font-size: 13px; padding: 10px 14px; width: auto; }
+.btn-agree { background-color: #2ee59d; color: #fff; font-size: 13px; padding: 6px 12px; width: auto; }
+.btn-signup { background-color: #c49cfa; color: #fff; border-radius: 8px; margin-top: 20px; }
+.btn-login { background-color: #333; color: #fff; border-radius: 6px; margin-top: 10px; }
 
-
-/* =====================================================
-   댓글 섹션 스타일
-====================================================== */
-.comments-section {
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid #eee;
-}
-
-/* =====================================================
-   공통 링크 스타일
-====================================================== */
-.link-text {
-  font-size: 12px;
-  margin-top: 10px;
-  color: #666;
-}
-
-.link-text a {
-  color: #0066cc;
-  text-decoration: none;
-}
-
-.link-text a:hover {
-  text-decoration: underline;
-}
-
-.agreement a {
-  color: #ff4d4f;
-  text-decoration: none;
-  margin: 0 10px;
-}
-
-/* 공통 구분선 */
-.divider {
-  margin: 30px 0;
-  border: none;
-  border-top: 1px solid #ccc;
-}
-
-/* =====================================================
-   로그인 페이지 스타일
-====================================================== */
-.login-container {
-  max-width: 400px;
-  margin: 80px auto;
-  padding: 40px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  text-align: center;
-  font-family: 'Gothic A1', sans-serif;
-}
-
-.login-title {
-  font-size: 32px;
-  margin-bottom: 30px;
-}
-.btn-agree {
-  background-color: #2ee59d;
-  color: white;
-  padding: 6px 12px;
-  font-size: 13px;
-  width: auto;
-}
-
-.btn-signup {
-  background-color: #c49cfa;
-  color: white;
-  border-radius: 8px;
-  margin-top: 20px;
-}
-
-.btn-login {
-  background-color: #333;
-  color: rgb(255, 255, 255);
-  border-radius: 6px;
-  margin-top: 10px;
-}
-
-/* =====================================================
-   회원가입 페이지 스타일
-====================================================== */
-.signup-container {
-  max-width: 450px;
-  margin: 60px auto;
-  padding: 40px;
-  background-color: #fff;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-}
-
-.signup-title {
-  font-size: 28px;
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.row-group {
-  display: flex;
-  gap: 10px;
-  align-items: flex-end;
-}
-
-.row-group input {
-  flex: 1;
-}
-
-.birthdate-input {
-  margin-bottom: 20px;
-  text-align: left;
-}
-
-.birthdate-input label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: bold;
-}
-
-.date-group {
-  display: flex;
-  gap: 10px;
-}
-
-.date-group input {
-  width: 128px;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  text-align: center;
-  transition: border-color 0.2s ease;
-}
-
-.date-group input:focus {
-  border-color: #a67ef7;
-  background-color: white;
-  outline: none;
-}
-
-.agree-group {
-  font-size: 14px;
-}
-
-.agreement {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-
-
-/*===================================================================================
-=====================Main.tsx========================================================
-====================================================================================*/
-
-.Main-wrapper {
-  padding: 7rem 0;
-}
-
-
-.Board-section {
-  padding: 3rem 0;
-}
-
-.Board-cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-}
-
-.Board-card {
-  width: 260px;
-  height: 430px;
-  border: 2px solid #ccc;
-  border-radius: 20px;
-  overflow: hidden;
-  background-color: #fff;
-}
-
-
-/*===================components Css 정리=====================*/
-
-/*===================================================================================
-=====================DashBoard.tsx=====================================================
-====================================================================================*/
-.intro-slider {
-  width: 100%;
-  max-width: 1100px;
-  margin: auto;
-  overflow: hidden;
-  position: relative;
-  padding-top: 1rem;
-}
-
-.intro-track {
-  display: flex;
-  transition: transform 0.6s ease-in-out;
-}
-
-
-.intro-box {
-  min-width: 100%;
-  box-sizing: border-box;
-  padding: 6rem;
-  background-color: #86DDFF;
-  border-radius: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  text-align: center;
-  position: relative;
-  height: 330px;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.intro-text{
-  font-size: 50px;
-  font-weight: bold;
-  margin-bottom: 8px;
-  color: #444;
-}
-.box-title {
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color:#000;
- }
-
-.box-description {
-  font-size: 16px;
-  color: #444;
-}
-
-.box-links {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-direction: column;
-}
-
-.box-links a {
-  text-decoration: none;
-  background-color: #f2fdff;
-  color: #000;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  text-decoration: none;
-}
-
-.box-links a:hover {
-  background-color: #bdc3c7;
-}
-
-.intro-dots {
-  position: absolute;  /* 박스 안쪽에 고정 */
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  display: flex;
-  justify-content: center;
-}
-
-.dot {
-  width: 12px;
-  height: 12px;
-  background-color: #bbb;
-  border-radius: 50%;
-  margin: 0 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.dot.active {
-  background-color: #4f46e5;
-}
-
-
-/*===================================================================================
-=====================ProjectCard.tsx=================================================
-====================================================================================*/
-.project-section {
-  padding: 4rem 0;
-}
-
-.section-title {
-  display: flex;
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding-bottom: 0.5rem;
-  padding-left: 11rem;
-}
-
-.project-cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 3rem;
-}
-
-.project-card {
-  width: 230px;
-  height: 280px;
-  border: 2px solid #ccc;
-  border-radius: 20px;
-  overflow: hidden;
-  background-color: #fff;
-}
-
-/*===================================================================================
-=====================BoardCard.tsx=================================================
-====================================================================================*/
-.Board-section {
-  padding: 2rem 0;
-}
-
-.Board-cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 3rem;
-}
-
-.Board-card {
-  width: 230px;
-  height: 280px;
-  border: 2px solid #ccc;
-  border-radius: 20px;
-  overflow: hidden;
-  background-color: #fff;
-}
-
-/*===================================================================================
-=====================TeamPage 공통 css는 TeamPage.css로 이동됨======================
-====================================================================================*/
-/*===================================================================================
-=====================LocationSelector.tsx는 TeamPage.css로 이동됨===================
-====================================================================================*/
-
-
-
-
-
-/*===================================================================================
-=====================Button.tsx======================================================
-====================================================================================*/
-.formContainer_B {
-  display: flex;
-  justify-content: flex-end;
-  width: 95%;
-  background-color: #fff;
-  border-top: 1px solid #ddd;
-  position: fixed;
-  bottom: 0;
-  z-index: 1000;
-  padding-bottom: 2rem;
-  border-top : none;
-  left: 0;
-  background: linear-gradient(135deg, #b5eaff 0%,  #f2fdff 100%);
-}
-
-.formGroup_B {
-  display: flex;
-  gap: 2rem; 
-}
-
+/* 버튼 호버/활성화/비활성화 */
 button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination-page-btn):not(.slide-btn) {
   background: linear-gradient(135deg, #3498db, #2980b9);
   color: white;
@@ -482,12 +111,7 @@ button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination
   box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
 }
 
-button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination-page-btn):not(.slide-btn):active :not(.project-info-section){
-  transform: scale(0.98);
-}
-
-button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination-page-btn):not(.slide-btn).disabled,:not(.project-info-section)
-button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination-page-btn):not(.slide-btn):disabled :not(.project-info-section){
+button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination-page-btn):not(.slide-btn):disabled {
   background: linear-gradient(135deg, #bdc3c7, #95a5a6);
   cursor: not-allowed;
   pointer-events: none;
@@ -495,153 +119,131 @@ button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination
   box-shadow: none;
 }
 
+/* =====================================================
+   공통 링크 스타일
+====================================================== */
+.link-text {
+  font-size: 12px;
+  margin-top: 10px;
+  color: #666;
+}
 
+.link-text a {
+  color: #0066cc;
+  text-decoration: none;
+}
 
+.link-text a:hover { text-decoration: underline; }
 
+.agreement a { color: #ff4d4f; text-decoration: none; margin: 0 10px; }
 
+/* 공통 구분선 */
+.divider { margin: 30px 0; border: none; border-top: 1px solid #ccc; }
 
-/*===================================================================================
-=====================Introduction.tsx======================================================
-====================================================================================*/
-.preview-section {
-  max-width: 1200px;
-  margin: auto;
-  padding: 5rem;
-  background: #f0f0f0;
-  border-color: #000;
-  border-radius: 20px;
+/* =====================================================
+   공통 프로그래스 바
+====================================================== */
+.progress-container { width: 100%; background-color: #e9ecef; border-radius: 10px; }
+.progress-bar {
+  background-color: var(--blue);
+  height: 20px;
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+  display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 5rem;
+  color: #fff;
+  font-size: 12px;
 }
 
-.Introduction-title {
-  font-size: 2.2rem;
-  margin-bottom: 0.3rem;
-  margin-left: 8rem;
+/* =====================================================
+   로그인/회원가입 페이지
+====================================================== */
+.login-container {
+  width: 100%; max-width: 400px; margin: 80px auto; padding: 40px;
+  border: 1px solid #ddd; border-radius: 8px; text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
-.subtitle {
-  color: #444;
-  margin-bottom: 1rem;
-  line-height: 1.4;
-  font-size: 1.2rem;
-  margin-left: 8rem;
-  margin-top: 0.3rem;
+.login-title { font-size: 32px; margin-bottom: 30px; }
+
+.signup-container {
+  max-width: 450px; margin: 60px auto; padding: 40px;
+  border: 1px solid #ddd; border-radius: 12px; background-color: #fff;
 }
 
-.tab-buttons {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 1.5rem;
-  margin-left: 8rem;
+.signup-title { font-size: 28px; text-align: center; margin-bottom: 30px; }
+.row-group { display: flex; gap: 10px; align-items: flex-end; }
+.row-group input { flex: 1; }
+
+/* 생년월일 입력 */
+.birthdate-input { margin-bottom: 20px; text-align: left; }
+.birthdate-input label { display: block; margin-bottom: 6px; font-weight: bold; }
+.date-group { display: flex; gap: 8px; }
+.date-group input {
+  flex: 1; min-width: 0; padding: 10px; font-size: 16px; text-align: center;
+  border: 1px solid #ccc; border-radius: 6px; transition: border-color 0.2s ease;
+}
+.date-group input:focus { border-color: #a67ef7; background-color: #fff; outline: none; }
+.agree-group { font-size: 14px; }
+.agreement { display: flex; justify-content: space-between; align-items: center; }
+
+/* =====================================================
+   마이프로젝트 메인/상세/편집 페이지
+====================================================== */
+/* 기본 레이아웃 */
+.myproject-container, .project-detail-layout, .explain-page-layout, .myproject-layout {
+  max-width: 1200px; margin: 0 auto; padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem;
 }
 
-.tab {
-  padding: 6px 16px;
-  border: 1px solid #000;
-  background: #fff;
-  border-radius: 16px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.2s;
-  color: #000;
+/* 카드 스타일 */
+.card, .introduction-card { padding: 1rem; border-radius: 8px; border: 1px solid #e0e0e0; background-color: #fff; }
+.introduction-card { display: flex; align-items: center; justify-content: center; }
+
+/* 상태 배지 */
+.status-badge { display: inline-block; padding: 0.25rem 0.6rem; border-radius: 12px; font-size: 0.8rem; color: var(--dark); }
+.status-ongoing { background-color: var(--lightblue); }
+.status-recruiting { background-color: var(--green); }
+.status-completed { background-color: var(--grey); }
+
+/* 프로젝트 상세/편집 */
+.edit-form, .explain-page-container, .member-edit-container, .change-leader-container, .milestone-edit-container {
+  padding: 20px; background-color: #fff; border-radius: 8px; border: 1px solid #ddd;
 }
 
-.tab:hover {
-  background-color: #eee;
-}
+/* =====================================================
+   마이프로젝트 테이블 스타일
+====================================================== */
+table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+th, td { padding: 12px 16px; text-align: center; border-bottom: 1px solid #eee; }
+thead th { background-color: #f8f9fa; font-weight: 600; color: var(--black); }
+tbody tr:hover { background-color: #f1f3f5; }
 
-.tab.active {
-  background: #B5EAFF;
-  color: #000;
-  border-color: #000;
-}
+/* =====================================================
+   알림 페이지
+====================================================== */
+.notification-container { max-width: 800px; margin: 2rem auto; padding: 1rem; font-family: 'Noto Sans KR', sans-serif; }
+.notification-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; text-align: left; }
+.notification-list { display: flex; flex-direction: column; gap: 10px; }
+.notification-item { display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; border-radius: 8px; padding: 12px 16px; background-color: #fff; position: relative; }
+.notification-text { flex: 1; text-align: left; font-size: 14px; color: #333; }
 
+/* 버튼 */
+.notification-link-btn { padding: 6px 12px; font-size: 13px; background-color: #f2f2f2; border: 1px solid #ccc; border-radius: 6px; cursor: pointer; margin-left: 12px; }
+.notification-link-btn:hover { background-color: #e6e6e6; }
 
-.preview-box {
-  background-color: #fef9d6;
-  padding: 2rem;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 13rem;
-  justify-content: center;
-  max-width: 900px;
-  min-height: 300px;
-  margin-left: 8rem;
-  margin-top: 2rem;
-}
+.notification-close-btn { margin-left: 6px; font-size: 13px; border: none; background: none; cursor: pointer; color: #888; }
+.notification-close-btn:hover { color: #000; }
 
-.preview-text {
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #222;
-  line-height: 1.8;
-}
+.notification-tabs { display: flex; gap: 6px; margin-bottom: 1.5rem; justify-content: flex-start; }
+.notification-tab { padding: 8px 14px; border: 1px solid #ddd; border-radius: 6px; background: #f8f9fa; cursor: pointer; font-size: 13px; }
+.notification-tab.active { background-color: #fff; border: 1px solid #333; font-weight: bold; }
 
-.preview-images {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.profile-box {
-  width: 200px;
-  height: 60px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px;
-}
-
-.profile-box.gray {
-  background-color: #ccc;
-}
-
-.profile-box.colored .nickname {
-  background-image: url('https://via.placeholder.com/140x40?text=Background');
-  background-size: cover;
-  background-position: center;
-}
-
-.avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: #999;
-}
-
-.nickname {
-  flex: 1;
-  height: 32px;
-  background-color: #e0e0e0;
-  border-radius: 4px;
-}
-
-.arrow {
-  font-size: 2rem;
-}
-
-/* 반응형 디자인 */
+/* =====================================================
+   반응형 디자인
+====================================================== */
 @media (max-width: 768px) {
-  .search-bar {
-    flex-direction: column;
-    gap: 0.8rem;
-    padding-right: 0;
-    text-align: center;
-  }
-  
-  .search-bar input {
-    width: 100%;
-    max-width: 300px;
-  }
-  
-  .search-btn {
-    width: 100%;
-    max-width: 300px;
-  }
+  .search-bar { flex-direction: column; gap: 0.8rem; padding-right: 0; text-align: center; }
+  .search-bar input, .search-btn { width: 100%; max-width: 300px; }
+  .row-group { flex-direction: column; }
 }
-
