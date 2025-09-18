@@ -1,0 +1,144 @@
+
+.project-detail-container {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding-top: 88px; /* 헤더 높이만큼 패딩 */
+  font-family: 'Gothic A1', sans-serif;
+}
+
+.project-detail-layout {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+.project-main-content {
+  flex: 1;
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.recruit-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 2rem;
+  font-weight: bold;
+}
+
+/* 작성자 정보 섹션 */
+.author-info-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+/* 프로필 섹션 */
+.author-profile-section {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e9ecef;
+  flex: 1;
+  margin-right: 1rem;
+  max-height: 20px;
+}
+
+/* 작성일시 섹션 */
+.post-date-section {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e9ecef;
+  flex: 1;
+  margin-left: 1rem;
+}
+
+.author-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.author-avatar {
+  width: 30px;
+  height: 30px;
+  background: #4a90e2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.author-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom:10px;
+}
+
+.post-date {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.project-info-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-item label {
+  font-weight: bold;
+  color: #333;
+  min-width: 120px;
+  margin-right: 1rem;
+}
+
+.info-item span {
+  color: #666;
+  flex: 1;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 2rem 0;
+}
+
+.project-intro-section h2 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.intro-content {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.intro-content p {
+  line-height: 1.6;
+  color: #666;
+  margin: 0;
+}

@@ -1,7 +1,25 @@
 /* =====================================================
-   색상 변수 & 기본 설정
+   공통 기본 스타일
 ====================================================== */
-#root {
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Gothic A1', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+* {
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+/* =====================================================
+   색상 변수
+====================================================== */
+:root {
   --black: #141414;
   --dark: #383c49;
   --grey: #bdc3c7;
@@ -13,11 +31,24 @@
   --lightblue: #b5eaff;
   --purple: #d1c8ff;
   --blue: #1E63EC;
+}
 
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* =====================================================
+   공통 애니메이션
+====================================================== */
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
 /* =====================================================
@@ -25,9 +56,8 @@
 ====================================================== */
 .input-group {
   width: 100%;
-  margin: 0 auto 20px;
+  margin-bottom: 20px;
   text-align: left;
-  box-sizing: border-box;
 }
 
 .input-group label {
@@ -42,7 +72,6 @@
   font-size: 14px;
   border-radius: 4px;
   border: 1px solid #ccc;
-  box-sizing: border-box;
 }
 
 /* =====================================================
@@ -55,37 +84,39 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  box-sizing: border-box;
 }
 
-.btn-check {
-  background-color: #4a90e2;
-  color: #fff;
-  font-size: 13px;
-  padding: 10px 14px;
-  width: auto;
-}
+.btn-check { background-color: #4a90e2; color: #fff; font-size: 13px; padding: 10px 14px; width: auto; }
+.btn-agree { background-color: #2ee59d; color: #fff; font-size: 13px; padding: 6px 12px; width: auto; }
+.btn-signup { background-color: #c49cfa; color: #fff; border-radius: 8px; margin-top: 20px; }
+.btn-login { background-color: #333; color: #fff; border-radius: 6px; margin-top: 10px; }
 
-.btn-agree {
-  background-color: #2ee59d;
-  color: #fff;
-  font-size: 13px;
-  padding: 6px 12px;
-  width: auto;
-}
-
-.btn-signup {
-  background-color: #c49cfa;
-  color: #fff;
+/* 버튼 호버/활성화/비활성화 */
+button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination-page-btn):not(.slide-btn) {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
   border-radius: 8px;
-  margin-top: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3);
 }
 
-.btn-login {
-  background-color: #333;
-  color: #fff;
-  border-radius: 6px;
-  margin-top: 10px;
+button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination-page-btn):not(.slide-btn):hover {
+  background: linear-gradient(135deg, #2980b9, #1f4e79);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+}
+
+button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination-page-btn):not(.slide-btn):disabled {
+  background: linear-gradient(135deg, #bdc3c7, #95a5a6);
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+  box-shadow: none;
 }
 
 /* =====================================================
@@ -102,33 +133,17 @@
   text-decoration: none;
 }
 
-.link-text a:hover {
-  text-decoration: underline;
-}
+.link-text a:hover { text-decoration: underline; }
 
-.agreement a {
-  color: #ff4d4f;
-  text-decoration: none;
-  margin: 0 10px;
-}
+.agreement a { color: #ff4d4f; text-decoration: none; margin: 0 10px; }
 
 /* 공통 구분선 */
-.divider {
-  margin: 30px 0;
-  border: none;
-  border-top: 1px solid #ccc;
-}
-
+.divider { margin: 30px 0; border: none; border-top: 1px solid #ccc; }
 
 /* =====================================================
    공통 프로그래스 바
 ====================================================== */
-.progress-container {
-  width: 100%;
-  background-color: #e9ecef;
-  border-radius: 10px;
-}
-
+.progress-container { width: 100%; background-color: #e9ecef; border-radius: 10px; }
 .progress-bar {
   background-color: var(--blue);
   height: 20px;
@@ -141,974 +156,94 @@
   font-size: 12px;
 }
 
-
 /* =====================================================
-   공통 사이드바 스타일
-====================================================== */
-.project-sidebar {
-  flex: 0 0 220px;
-  display: flex;
-  flex-direction: column;
-}
-
-.project-sidebar .team-logo,
-.project-sidebar .team-logo-placeholder {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 8px;
-  border: 1px dashed #d0d0d0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #a0a0a0;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-}
-
-.project-sidebar .sidebar-nav h2 {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-}
-
-.project-sidebar .sidebar-nav ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 1rem;
-}
-
-.project-sidebar .sidebar-nav li a {
-  display: block;
-  padding: 0.75rem;
-  color: #333;
-  font-size: 1rem;
-  text-decoration: none;
-  border-radius: 6px;
-  transition: background-color 0.2s;
-}
-
-.project-sidebar .sidebar-nav li a:hover {
-  background-color: #f0f0f0;
-}
-
-.project-sidebar .sidebar-nav li a.active {
-  font-weight: 600;
-  color: #000;
-}
-
-
-/* =====================================================
-   로그인 페이지
+   로그인/회원가입 페이지
 ====================================================== */
 .login-container {
-  width: 100%;
-  max-width: 400px;
-  margin: 80px auto;
-  padding: 40px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  text-align: center;
+  width: 100%; max-width: 400px; margin: 80px auto; padding: 40px;
+  border: 1px solid #ddd; border-radius: 8px; text-align: center;
   font-family: 'Noto Sans KR', sans-serif;
-  box-sizing: border-box;
 }
 
-.login-title {
-  font-size: 32px;
-  margin-bottom: 30px;
-}
+.login-title { font-size: 32px; margin-bottom: 30px; }
 
-/* =====================================================
-   회원가입 페이지
-====================================================== */
 .signup-container {
-  max-width: 450px;
-  margin: 60px auto;
-  padding: 40px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  background-color: #fff;
+  max-width: 450px; margin: 60px auto; padding: 40px;
+  border: 1px solid #ddd; border-radius: 12px; background-color: #fff;
 }
 
-.signup-title {
-  font-size: 28px;
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.row-group {
-  display: flex;
-  gap: 10px;
-  align-items: flex-end;
-}
-
-.row-group input {
-  flex: 1;
-}
+.signup-title { font-size: 28px; text-align: center; margin-bottom: 30px; }
+.row-group { display: flex; gap: 10px; align-items: flex-end; }
+.row-group input { flex: 1; }
 
 /* 생년월일 입력 */
-.birthdate-input {
-  margin-bottom: 20px;
-  text-align: left;
-}
-
-.birthdate-input label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: bold;
-}
-
-.date-group {
-  display: flex;
-  gap: 8px;
-}
-
+.birthdate-input { margin-bottom: 20px; text-align: left; }
+.birthdate-input label { display: block; margin-bottom: 6px; font-weight: bold; }
+.date-group { display: flex; gap: 8px; }
 .date-group input {
-  flex: 1;
-  min-width: 0;
-  padding: 10px;
-  font-size: 16px;
-  text-align: center;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  transition: border-color 0.2s ease;
-  box-sizing: border-box;
+  flex: 1; min-width: 0; padding: 10px; font-size: 16px; text-align: center;
+  border: 1px solid #ccc; border-radius: 6px; transition: border-color 0.2s ease;
 }
-
-.date-group input:focus {
-  border-color: #a67ef7;
-  background-color: #fff;
-  outline: none;
-}
-
-.agree-group {
-  font-size: 14px;
-}
-
-.agreement {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+.date-group input:focus { border-color: #a67ef7; background-color: #fff; outline: none; }
+.agree-group { font-size: 14px; }
+.agreement { display: flex; justify-content: space-between; align-items: center; }
 
 /* =====================================================
-   마이프로젝트 메인페이지
+   마이프로젝트 메인/상세/편집 페이지
 ====================================================== */
-.myproject-container {
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 2rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+/* 기본 레이아웃 */
+.myproject-container, .project-detail-layout, .explain-page-layout, .myproject-layout {
+  max-width: 1200px; margin: 0 auto; padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem;
 }
 
-/* 제목 */
-.myproject-container h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-/* 테이블 */
-.myproject-container table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 3rem;
-}
-
-.myproject-container th,
-.myproject-container td {
-  padding: 16px 10px;
-  text-align: center;
-  vertical-align: middle;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.myproject-container thead th {
-  background-color: #f8f9fa;
-  font-weight: 600;
-  color: var(--black);
-}
-
-.myproject-container tbody tr:hover {
-  background-color: #f1f3f5;
-}
-
-/* 프로젝트 링크 */
-.myproject-container .project-link {
-  font-size: 1rem;
-  font-family: inherit;
-  background: none;
-  border: none;
-  padding: 0;
-  color: var(--blue);
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.myproject-container .project-link:hover {
-  text-decoration: underline;
-}
-
-/* =====================================================
-   마이프로젝트 상세 메인
-====================================================== */
-.project-detail-layout {
-  display: flex;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 2rem auto;
-}
-
-.team-logo {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 8px;
-  border: 1px dashed #d0d0d0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #a0a0a0;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-}
+/* 카드 스타일 */
+.card, .introduction-card { padding: 1rem; border-radius: 8px; border: 1px solid #e0e0e0; background-color: #fff; }
+.introduction-card { display: flex; align-items: center; justify-content: center; }
 
 /* 상태 배지 */
-.status-badge {
-  display: inline-block;
-  padding: 0.25rem 0.6rem;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  color: var(--dark);
-}
-
+.status-badge { display: inline-block; padding: 0.25rem 0.6rem; border-radius: 12px; font-size: 0.8rem; color: var(--dark); }
 .status-ongoing { background-color: var(--lightblue); }
 .status-recruiting { background-color: var(--green); }
 .status-completed { background-color: var(--grey); }
 
-.project-main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.card {
-  padding: 1.5rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.75rem;
-}
-
-.card-header h3,
-.card-header h4 {
-  margin: 0;
-  font-weight: 600;
-}
-
-.card-header h4 {
-  font-size: 1rem;
-}
-
-.card-header span {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #555;
-}
-
-.edit-button-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: -1rem;
-}
-
-.edit-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.25rem 0.5rem;
-  font-size: 1rem;
-}
-
-.content-grid {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  gap: 1.5rem;
+/* 프로젝트 상세/편집 */
+.edit-form, .explain-page-container, .member-edit-container, .change-leader-container, .milestone-edit-container {
+  padding: 20px; background-color: #fff; border-radius: 8px; border: 1px solid #ddd;
 }
 
 /* =====================================================
-   마이프로젝트 상세페이지 메인 수정하기
+   마이프로젝트 테이블 스타일
 ====================================================== */
-.edit-container {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 20px;
-  font-family: sans-serif;
-}
-
-.completion-button-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 20px;
-}
-
-.complete-btn {
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  background-color: #f0f0f0;
-  cursor: pointer;
-}
-
-.edit-form {
-  padding: 30px;
-  border: 1px solid #e0e0e0;
-  background-color: #fff;
-}
-
-.form-group {
-  display: flex;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-.form-group label {
-  width: 120px;
-  flex-shrink: 0;
-  font-weight: bold;
-}
-
-.form-group input[type="text"],
-.form-group input[type="number"] {
-  flex-grow: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.file-input-wrapper,
-.progress-input-wrapper {
-  display: flex;
-  flex-grow: 1;
-  align-items: center;
-}
-
-.file-input-wrapper input {
-  border-right: none;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.find-btn {
-  padding: 10px 15px;
-  border: 1px solid #ccc;
-  background-color: #e9e9e9;
-  cursor: pointer;
-  flex-shrink: 0;
-  border-radius: 0 4px 4px 0;
-}
-
-.progress-input-wrapper span {
-  margin-left: 10px;
-  font-weight: bold;
-}
-
-.form-actions {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 40px;
-}
-
-.save-btn,
-.cancel-btn {
-  padding: 10px 30px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.save-btn {
-  background-color: #333;
-  color: #fff;
-  border-color: #333;
-}
-
-.cancel-btn {
-  background-color: #fff;
-  color: #333;
-}
-
-/* =====================================================
-   마이프로젝트 상세페이지 프로젝트 소개
-====================================================== */
-.explain-page-layout {
-  display: flex;
-  gap: 2rem;
-  max-width: 1200px;       /* 상세페이지와 동일 */
-  margin: 2rem auto;       /* 동일 마진 */
-  font-family: 'Pretendard', sans-serif;
-  background-color: #fff;
-}
-
-/* 메인 컨텐츠 */
-.project-main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-/* 카드 공통 스타일 */
-.introduction-card {
-  flex-grow: 1;
-  padding: 1.5rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  background-color: #fff;   /* 상세페이지 카드와 동일 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.introduction-card h2 {
-  font-size: 2rem;
-  font-weight: 500;
-  color: #b0b0b0;
-}
-
-/* 상단 헤더 */
-.content-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: -15px;
-  width: 100%;
-}
-
-.back-button,
-.edit-button {
-  background: none;
-  border: none;
-  font-size: 0.9rem;
-  cursor: pointer;
-  color: #555;
-}
-
-.back-button:hover,
-.edit-button:hover {
-  color: #000;
-}
-
-
-/* =====================================================
-   마이프로젝트 상세페이지 멤버 페이지
-====================================================== */
-.myproject-layout {
-  display: flex;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.project-main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-/* 카드 스타일 */
-.card {
-  background-color: #fff;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-/* 테이블 스타일 */
-.member-table {
-  width: 100%;
-  border-collapse: collapse;
-  border: 1px solid var(--border-color, #ddd);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.member-table th,
-.member-table td {
-  padding: 16px;
-  text-align: center;
-  vertical-align: middle;
-  border-bottom: 1px solid var(--border-color, #ddd);
-}
-
-/* 헤더 스타일 */
-.member-table thead th {
-  background-color: #fafafa;
-  font-weight: 600;
-  color: var(--dark, #333);
-  border-right: 1px solid var(--border-color, #ddd);
-}
-
-.member-table thead th:last-child {
-  border-right: none;
-}
-
-/* 바디 스타일 */
-.member-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.member-table tbody tr:hover {
-  background-color: #f5f5f5;
-}
-
-
-/* =====================================================
-   마이프로젝트 상세페이지 마일스톤 페이지
-====================================================== */
-.milestone-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  border-radius: 8px;
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-.milestone-table th {
-  background: #f5f6fa;
-  color: #333;
-  padding: 14px;
-  font-size: 15px;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
-}
-
-.milestone-table td {
-  padding: 14px;
-  font-size: 14px;
-  text-align: center;
-  border-bottom: 1px solid #eee;
-}
-
-.milestone-table tr:last-child td {
-  border-bottom: none;
-}
-
-.milestone-progress {
-  width: 150px;
-  margin: 0 auto;
-}
-
-
-/* =====================================================
-   마이프로젝트 상세페이지 상세설명 수정 페이지
-====================================================== */
-.explain-page-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 24px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-/* 뒤로가기 버튼 */
-.explain-page-back-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 16px;
-}
-
-.explain-page-back-btn {
-  padding: 6px 12px;
-  background-color: #ecf0f1;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.explain-page-back-btn:hover {
-  background-color: #d0d7da;
-}
-
-/* 텍스트 입력란 */
-.explain-page-textarea {
-  width: 100%;
-  height: 250px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 16px;
-  margin-bottom: 20px;
-  resize: none;
-}
-
-/* 저장 버튼 */
-.explain-page-save-btn {
-  padding: 10px 20px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 15px;
-}
-
-.explain-page-save-btn:hover {
-  background-color: #2980b9;
-}
-
-
-/* =====================================================
-   마이프로젝트 상세페이지 멤버 수정 페이지
-====================================================== */
-.member-edit-container {
-  padding: 24px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-/* 테이블 */
-.member-edit-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 16px;
-}
-
-.member-edit-table th,
-.member-edit-table td {
-  border: 1px solid #ddd;
-  padding: 12px;
-  text-align: center;
-}
-
-.member-edit-table th {
-  background-color: #f9f9f9;
-  font-weight: bold;
-}
-
-/* 삭제 버튼 (X) */
-.member-edit-remove-btn {
-  padding: 4px 8px;
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.member-edit-remove-btn:hover {
-  background-color: #c0392b;
-}
-
-/* 팀장 위임하기 버튼 */
-.member-edit-leader-btn-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin: 16px 0;
-}
-
-.member-edit-leader-btn {
-  padding: 8px 16px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.member-edit-leader-btn:hover {
-  background-color: #2980b9;
-}
-
-/* 하단 버튼 영역 */
-.member-edit-bottom-btns {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 24px;
-}
-
-.member-edit-save-btn {
-  padding: 10px 20px;
-  background-color: #27ae60;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.member-edit-save-btn:hover {
-  background-color: #1e8449;
-}
-
-.member-edit-cancel-btn {
-  padding: 10px 20px;
-  background-color: #bdc3c7;
-  color: black;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.member-edit-cancel-btn:hover {
-  background-color: #95a5a6;
-}
-
-
-/* =====================================================
-   마이프로젝트 상세페이지 멤버 수정 팀장위임 페이지
-====================================================== */
-.change-leader-container {
-  padding: 24px;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.change-leader-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-}
-
-.change-leader-table th,
-.change-leader-table td {
-  border: 1px solid #ddd;
-  padding: 12px;
-  text-align: center;
-}
-
-.change-leader-btns {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-}
-
-.change-leader-save-btn {
-  padding: 10px 20px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.change-leader-save-btn:hover {
-  background-color: #2980b9;
-}
-
-.change-leader-cancel-btn {
-  padding: 10px 20px;
-  background-color: #bdc3c7;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.change-leader-cancel-btn:hover {
-  background-color: #95a5a6;
-}
-
-/* 결과 화면 */
-.change-leader-result-container {
-  text-align: center;
-  padding: 40px;
-}
-
-.change-leader-title {
-  font-size: 24px;
-  margin-bottom: 16px;
-}
-
-.change-leader-message {
-  font-size: 18px;
-  margin-bottom: 24px;
-}
-
-.change-leader-back-btn {
-  padding: 10px 20px;
-  background-color: #27ae60;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.change-leader-back-btn:hover {
-  background-color: #1e8449;
-}
-
-
-/* =====================================================
-   마이프로젝트 상세페이지 마일스톤 수정 페이지
-====================================================== */
-.milestone-edit-container {
-  padding: 24px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.milestone-edit-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-}
-
-.milestone-edit-table th,
-.milestone-edit-table td {
-  border: 1px solid #ddd;
-  padding: 12px;
-  text-align: center;
-}
-
-.milestone-edit-table input {
-  width: 100%;
-  border: none;
-  outline: none;
-  text-align: center;
-}
-
-.milestone-delete-btn {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.milestone-delete-btn:hover {
-  background-color: #c0392b;
-}
-
-.milestone-add-btn {
-  display: block;
-  width: 100%;
-  padding: 14px;
-  background-color: #3498db;
-  color: white;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.milestone-add-btn:hover {
-  background-color: #2980b9;
-}
-
+table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+th, td { padding: 12px 16px; text-align: center; border-bottom: 1px solid #eee; }
+thead th { background-color: #f8f9fa; font-weight: 600; color: var(--black); }
+tbody tr:hover { background-color: #f1f3f5; }
 
 /* =====================================================
    알림 페이지
 ====================================================== */
-.notification-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 1rem;
-  font-family: 'Noto Sans KR', sans-serif;
-}
+.notification-container { max-width: 800px; margin: 2rem auto; padding: 1rem; font-family: 'Noto Sans KR', sans-serif; }
+.notification-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; text-align: left; }
+.notification-list { display: flex; flex-direction: column; gap: 10px; }
+.notification-item { display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; border-radius: 8px; padding: 12px 16px; background-color: #fff; position: relative; }
+.notification-text { flex: 1; text-align: left; font-size: 14px; color: #333; }
 
-.notification-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  text-align: left;
-}
+/* 버튼 */
+.notification-link-btn { padding: 6px 12px; font-size: 13px; background-color: #f2f2f2; border: 1px solid #ccc; border-radius: 6px; cursor: pointer; margin-left: 12px; }
+.notification-link-btn:hover { background-color: #e6e6e6; }
 
-.notification-tab.active {
-  background-color: #fff;
-  border: 1px solid #333;
-  font-weight: bold;
-}
+.notification-close-btn { margin-left: 6px; font-size: 13px; border: none; background: none; cursor: pointer; color: #888; }
+.notification-close-btn:hover { color: #000; }
 
-.notification-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+.notification-tabs { display: flex; gap: 6px; margin-bottom: 1.5rem; justify-content: flex-start; }
+.notification-tab { padding: 8px 14px; border: 1px solid #ddd; border-radius: 6px; background: #f8f9fa; cursor: pointer; font-size: 13px; }
+.notification-tab.active { background-color: #fff; border: 1px solid #333; font-weight: bold; }
 
-.notification-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 12px 16px;
-  background-color: #fff;
-  position: relative;
-}
-
-.notification-text {
-  flex: 1;
-  text-align: left;
-  font-size: 14px;
-  color: #333;
-}
-
-.notification-link-btn {
-  padding: 6px 12px;
-  font-size: 13px;
-  background-color: #f2f2f2;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-left: 12px;
-}
-
-.notification-link-btn:hover {
-  background-color: #e6e6e6;
-}
-
-.notification-close-btn {
-  margin-left: 6px;
-  font-size: 13px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: #888;
-}
-
-.notification-close-btn:hover {
-  color: #000;
-}
-
-/* 알림 페이지 - 탭 */
-.notification-tabs {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 1.5rem;
-  justify-content: flex-start; /* 왼쪽 정렬 */
-}
-
-.notification-tab {
-  padding: 8px 14px; /* 가로 길이 줄임 */
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background: #f8f9fa;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.notification-tab.active {
-  background-color: #fff;
-  border: 1px solid #333;
-  font-weight: bold;
-}
-
-.notification-empty {
-  text-align: center;
-  color: #888;
-  font-size: 14px;
-  padding: 20px;
+/* =====================================================
+   반응형 디자인
+====================================================== */
+@media (max-width: 768px) {
+  .search-bar { flex-direction: column; gap: 0.8rem; padding-right: 0; text-align: center; }
+  .search-bar input, .search-btn { width: 100%; max-width: 300px; }
+  .row-group { flex-direction: column; }
 }

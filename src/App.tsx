@@ -1,8 +1,25 @@
+import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
+
+// HEAD 기능
+import Main from './pages/Main';
+import ProjectPage from './pages/ProjectPage';
+import ProjectDetail from './pages/ProjectDetail';
+import TeamPage from './pages/TeamPage';
+import BoardPage from './pages/BoardPage/Boarder';
+import BoardWrite from './pages/BoardPage/BoardWrite';
+import BoardDetail from './pages/BoardPage/BoardDetail';
+import type { Post, Category } from './pages/BoardPage/DummyPosts';
+import { dummyPosts } from './pages/BoardPage/DummyPosts';
+import Mypage from './pages/MyPage/Mypage';
+import ProjectApply from './components/ProjectPageDetail/ProjectApply';
+
+// develop 기능
 import Login from './pages/Login/Login';
-import KakaoCallback from "./auth/KakaoCallback";
 import Signup from './pages/Signup';
 import Home from './pages/Home';
+import KakaoCallback from './auth/KakaoCallback';
 import MyprojectMain from './pages/Myproject/MyprojectMain';
 import MyProjectDetail from './pages/Myproject/MyprojectDetail';
 import MyprojectEdit from './pages/Myproject/MyprojectEdit';
@@ -14,16 +31,35 @@ import MyprojectMilestoneEdit from './pages/Myproject/MyprojectMilestoneEdit';
 import MyprojectMemberEdit from './pages/Myproject/MyprojectMemberEdit';
 import MemberChangeLeader from './pages/Myproject/MemberChangeLeader';
 import Notification from './pages/Notification';
-import './App.css';
 
 function App() {
+  const [postsByCategory, setPostsByCategory] = useState<Record<Category, Post[]>>(dummyPosts);
+
+  const handleAddPost = (category: Category, newPost: Post) => {
+    setPostsByCategory(prev => ({
+      ...prev,
+      [category]: [newPost, ...prev[category]],
+    }));
+  };
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        {/* HEAD 기능 */}
+        <Route path="/" element={<Main />} />
+        <Route path="/projects" element={<ProjectPage />} />
+        <Route path="/project/:id" element={<ProjectDetail />} />
+        <Route path="/apply" element={<ProjectApply />} />
+        <Route path="/Teams" element={<TeamPage />} />
+        <Route path="/Boarder" element={<BoardPage postsByCategory={postsByCategory} />} />
+        <Route path="/BoardWrite" element={<BoardWrite onAddPost={handleAddPost} />} />
+        <Route path="/Board/:id" element={<BoardDetail postsByCategory={postsByCategory} />} />
+        <Route path="/Mypage" element={<Mypage />} />
+
+        {/* develop 기능 */}
         <Route path="/login" element={<Login />} />
-        <Route path="/oauth/callback/kakao" element={<KakaoCallback />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/oauth/callback/kakao" element={<KakaoCallback />} />
         <Route path="/myprojectmain" element={<MyprojectMain />} />
         <Route path="/myproject/:id" element={<MyProjectDetail />} />
         <Route path="/myproject/:id/edit" element={<MyprojectEdit />} />
