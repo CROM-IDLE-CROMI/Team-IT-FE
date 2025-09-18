@@ -1,0 +1,28 @@
+[
+  {
+    "id": 1,
+    "project_name": "React 팀 프로젝트",
+    "owner_id": "홍길동",
+    "platform": "WEB",
+    "role": "Frontend",
+    "start_date": "2025-06-01",
+    "end_date": "",
+    "status": "ongoing",
+    "type": null,
+    "stack": null,
+    "isComplete": false
+  },
+  {
+    "id": 2,
+    "project_name": "Vue 팀 프로젝트",
+    "owner_id": "김철수",
+    "platform": "WEB",
+    "role": "Backend",
+    "start_date": "2025-03-15",
+    "end_date": "2025-06-25",
+    "status": "completed",
+    "type": "앱 개발",
+    "stack": "Node.js, MongoDB",
+    "isComplete": true
+  }
+]

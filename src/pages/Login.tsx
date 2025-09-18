@@ -13,12 +13,12 @@ const Login = () => {
 
     // localStorage에서 유저 정보 가져오기
     const userData = localStorage.getItem(id);
-    if (id === '') {
+    if (id == '') {
       setError('아이디를 입력해주세요.');
       return;
     }
 
-    if (password === '') {
+    if (password == '') {
       setError('비밀번호를 입력해주세요.');
       return;
     }
@@ -35,9 +35,17 @@ const Login = () => {
     }
 
     // 로그인 성공
+    localStorage.setItem('isLoggedIn','true');
     alert(`${parsed.name}님 환영합니다!`);
     setError('');
-    navigate('/'); // 홈으로 이동
+    
+    // 로그인 상태 변경 이벤트 발생
+    window.dispatchEvent(new Event('storage'));
+    
+    // AuthGuard의 alert 플래그 리셋을 위해 잠시 대기
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 100);
   };
 
   return (
