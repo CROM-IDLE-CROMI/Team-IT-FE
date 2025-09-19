@@ -17,10 +17,12 @@ const BoardWrite: React.FC<BoardWriteProps> = ({ onAddPost }) => {
   const handleSubmit = () => {
     if (!title || !content) return alert("제목과 본문을 입력해주세요");
 
+    const currentUser = "로그인한 작성자 이름";
+
     const newPost: Post = {
       id: Date.now(),
       title,
-      author: "작성자", // 작성자 고정
+      author: "currentUser", // 작성자 고정
       content, // 본문 추가
       date: new Date().toLocaleDateString(),
     };
