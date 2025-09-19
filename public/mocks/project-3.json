@@ -7,9 +7,30 @@
   "recruit_positions": null,
   "required_stacks": null,
   "members": [
-    { "id": "m1", "name": "최선장", "role": "PM" },
-    { "id": "m2", "name": "이항해", "role": "개발" },
-    { "id": "m3", "name": "김디쟌", "role": "디자인" }
+    {
+      "id": 5,
+      "nickname": "최선장",
+      "email": "captain@example.com",
+      "role": "PM",
+      "techStack": "Project Management, Agile",
+      "rating": 4.8
+    },
+    {
+      "id": 6,
+      "nickname": "이항해",
+      "email": "devlee@example.com",
+      "role": "개발",
+      "techStack": "React, Node.js, AWS",
+      "rating": 4.5
+    },
+    {
+      "id": 7,
+      "nickname": "김디쟌",
+      "email": "designer.kim@example.com",
+      "role": "디자인",
+      "techStack": "Figma, Photoshop, Illustrator",
+      "rating": 4.7
+    }
   ],
   "milestones": null,
   "logoUrl": "https://via.placeholder.com/150/6C757D/FFFFFF?text=Completed"

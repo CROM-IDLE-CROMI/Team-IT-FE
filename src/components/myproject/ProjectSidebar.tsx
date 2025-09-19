@@ -36,6 +36,7 @@ export default function ProjectSidebar({ project }: ProjectSidebarProps) {
       statusText = '모집중';
       navItems = [
         { name: '프로젝트 소개', path: `/myproject/${id}/explain` },
+        { name: '멤버', path: `/myproject/${id}/member` },
         { name: '지원서 보기', path: `/myproject/${id}/applications` },
       ];
       break;
