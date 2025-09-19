@@ -39,11 +39,32 @@
   border-radius: 10px;
   padding: 1rem;
   width: 180px;
+  position: relative;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
 }
 
 .card h3 {
   margin-top: 0;
   font-size: 1.1rem;
+  flex: 1;
+  margin-right: 0.5rem;
+}
+
+.team-recruit-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
 }
 
 .info {

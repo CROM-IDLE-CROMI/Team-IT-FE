@@ -6,6 +6,7 @@ import DraftList from "../../components/TemporarySave/DraftList";
 import { v4 as uuidv4 } from "uuid";
 import { saveDraft, hasDrafts } from "../../utils/localStorageUtils";
 import type { Draft } from "../../types/Draft";
+import { convertTeamDataToProject, validateTeamData, saveProjectToStorage } from "../../utils/teamToProjectConverter";
 
 interface StepData {
   [key: string]: any;
@@ -64,6 +65,31 @@ const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: B
     }
   };
 
+  // 팀원 모집 등록 처리
+  const handleTeamRegistration = () => {
+    try {
+      // 데이터 유효성 검사
+      if (!validateTeamData(formData)) {
+        alert('모든 필수 정보를 입력해주세요.');
+        return;
+      }
+
+      // 팀원 모집 데이터를 프로젝트 형식으로 변환
+      const project = convertTeamDataToProject(formData);
+      
+      // 프로젝트를 localStorage에 저장
+      saveProjectToStorage(project);
+      
+      alert('팀원 모집이 성공적으로 등록되었습니다! 프로젝트 찾기에서 확인할 수 있습니다.');
+      
+      // 프로젝트 찾기 페이지로 이동
+      navigate('/Projects');
+    } catch (error) {
+      console.error('팀원 모집 등록 중 오류 발생:', error);
+      alert('팀원 모집 등록 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }
+  };
+
   // 임시저장 목록 새로고침 함수
   const refreshDrafts = () => {
     setHasDraftsState(hasDrafts());
@@ -77,7 +103,7 @@ const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: B
 
         {/* 등록하기 버튼 */}
         <button
-          onClick={() => navigate("/Regist")}
+          onClick={handleTeamRegistration}
           className={`submitBtn ${disabled ? "disabled" : ""}`}
           disabled={disabled}
         >

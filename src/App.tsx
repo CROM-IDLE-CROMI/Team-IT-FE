@@ -61,7 +61,7 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/projects" element={<ProjectPage />} />
         <Route path="/project/:id" element={<ProjectDetail />} />
-        <Route path="/apply" element={<ProjectApply />} />
+        <Route path="/project/:id/apply" element={<ProjectApply />} />
         <Route path="/Teams" element={<TeamPage />} />
         <Route path="/Boarder" element={<BoardPage postsByCategory={postsByCategory} />} />
         <Route path="/BoardWrite" element={<BoardWrite onAddPost={handleAddPost} />} />
