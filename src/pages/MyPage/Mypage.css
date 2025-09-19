@@ -53,10 +53,66 @@
   background: linear-gradient(135deg, #357abd 0%, #2c5aa0 100%);
 }
 
+/* ===== 옵션 토글 버튼 ===== */
+.option-toggle-btn {
+  position: fixed;
+  top: 100px;
+  left: 20px;
+  z-index: 999;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.option-toggle-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.option-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
 /* ===== 탭 콘텐츠 ===== */
 .tab-content {
   width: 100%;
   max-width: 1200px;
+}
+
+/* ===== 콘텐츠 플레이스홀더 ===== */
+.content-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+  color: #6c757d;
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.content-placeholder h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #495057;
+}
+
+.content-placeholder p {
+  font-size: 1.1rem;
+  line-height: 1.6;
 }
 
 /* ===== 반응형 디자인 ===== */
@@ -64,6 +120,31 @@
   .mypage-container {
     padding: 1rem;
     padding-top: 6rem;
+  }
+  
+  .option-toggle-btn {
+    top: 80px;
+    left: 15px;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .option-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .content-placeholder {
+    min-height: 300px;
+    padding: 1.5rem;
+  }
+  
+  .content-placeholder h2 {
+    font-size: 1.5rem;
+  }
+  
+  .content-placeholder p {
+    font-size: 1rem;
   }
   
   .tab-navigation {
@@ -81,6 +162,31 @@
   .mypage-container {
     padding: 0.5rem;
     padding-top: 5rem;
+  }
+  
+  .option-toggle-btn {
+    top: 70px;
+    left: 10px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .option-icon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .content-placeholder {
+    min-height: 250px;
+    padding: 1rem;
+  }
+  
+  .content-placeholder h2 {
+    font-size: 1.3rem;
+  }
+  
+  .content-placeholder p {
+    font-size: 0.9rem;
   }
   
   .tab-navigation {
