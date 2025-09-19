@@ -64,6 +64,55 @@ export const getCurrentUser = (): string | null => {
 };
 
 /**
+ * 현재 로그인된 사용자의 닉네임 반환
+ * - JWT 토큰이 있으면 decode해서 nickname 반환
+ * - 없으면 localStorage의 userData에서 name 반환
+ */
+export const getCurrentUserNickname = (): string | null => {
+  // 1. JWT 기반 (백엔드 연동 후)
+  const token = localStorage.getItem("accessToken");
+  if (token) {
+    try {
+      const decoded = jwtDecode<DecodedToken & { nickname?: string }>(token);
+      return decoded.nickname || null;
+    } catch (e) {
+      console.error("토큰 decode 실패:", e);
+      return null;
+    }
+  }
+
+  // 2. currentUserId로 userData 찾기
+  const currentUserId = localStorage.getItem("currentUserId");
+  if (currentUserId) {
+    try {
+      const userData = JSON.parse(localStorage.getItem(currentUserId) || "");
+      if (userData && userData.name) {
+        return userData.name;
+      }
+    } catch {
+      // JSON 파싱 실패 시 무시
+    }
+  }
+
+  // 3. 프론트 전용 fallback
+  const keys = Object.keys(localStorage);
+  for (const key of keys) {
+    if (key !== "isLoggedIn" && key !== "IsLoggedIn" && key !== "currentUserId") {
+      try {
+        const userData = JSON.parse(localStorage.getItem(key) || "");
+        if (userData && userData.name) {
+          return userData.name;
+        }
+      } catch {
+        // JSON 파싱 실패 시 무시
+      }
+    }
+  }
+
+  return null;
+};
+
+/**
  * 인증이 필요한 동작을 실행하는 헬퍼
  * - 로그인 안 되어 있으면 경고 후 종료
  * - 로그인 되어 있으면 callback 실행

@@ -1,6 +1,7 @@
 import "./PublicProfile.css";
 import { useNavigate } from "react-router-dom";
 import { techStacksInit } from "../../styles/TechStack";
+import { getCurrentUser, getCurrentUserNickname } from "../../utils/authUtils";
 
 interface Award {
   id: string;
@@ -66,7 +67,7 @@ export default function PublicProfile({ profileData }: Props) {
 
           {/* 사용자 ID와 뱃지 */}
           <div className="user-info">
-            <span className="user-id">사용자 ID</span>
+            <span className="user-id">{getCurrentUser() || "사용자 ID"}</span>
             <div className="user-badge">
               <div className="badge-placeholder"></div>
             </div>
@@ -88,7 +89,7 @@ export default function PublicProfile({ profileData }: Props) {
             <div className="info-list">
               <div className="info-item">
                 <span className="info-label">닉네임</span>
-                <span className="info-value">{profileData.nickname}</span>
+                <span className="info-value">{getCurrentUserNickname() || profileData.nickname}</span>
               </div>
               <div className="info-item">
                 <span className="info-label">생년월일</span>
