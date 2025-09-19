@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import type { Post, Category } from "./DummyPosts";
 import AuthGuard from "../../components/AuthGuard";
 import { getCurrentUser } from "../../utils/authUtils";
+import { addMyPost } from "../../utils/myPostsUtils";
 import "./BoardWrite.css";
 
 type BoardWriteProps = {
@@ -34,6 +35,12 @@ const BoardWrite: React.FC<BoardWriteProps> = ({ onAddPost }) => {
     };
 
     onAddPost(category, newPost); // App 상태 갱신
+    
+    // 내가 쓴 게시글에도 추가
+    addMyPost({
+      ...newPost
+    });
+    
     navigate("/Boarder"); // 게시판으로 돌아가기
   };
 

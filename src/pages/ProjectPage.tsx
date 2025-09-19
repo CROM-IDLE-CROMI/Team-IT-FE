@@ -1,11 +1,12 @@
 // src/pages/ProjectPage.tsx
 import Header from "../layouts/Header";
 import '../App.css';
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import SideBox from "../components/ProjectPageDetail/SideBox";
 import { techStacksInit } from "../styles/TechStack";
-import { getPopularProjects, type Project as PopularProject } from "../data/popularProjects";
+import { getPopularProjects } from "../data/popularProjects";
+import { getPopularPosts } from "../data/popularPosts";
 import "../pages/ProjectPage.css";
 
 // ... (Interface Project, FilterState, dummyProjects는 이전과 동일하게 유지) ...
@@ -311,6 +312,26 @@ const ProjectPage = () => {
   const [popularSlideIndex, setPopularSlideIndex] = useState(0);
   const popularProjectsPerSlide = 2;
   
+  // 인기 게시물 데이터 가져오기
+  const popularPosts = getPopularPosts(4);
+  
+  // 슬라이드 함수들
+  const nextSlide = () => {
+    const maxSlides = Math.ceil(popularPosts.length / popularProjectsPerSlide);
+    setPopularSlideIndex((prev) => (prev + 1) % maxSlides);
+  };
+  
+  const prevSlide = () => {
+    const maxSlides = Math.ceil(popularPosts.length / popularProjectsPerSlide);
+    setPopularSlideIndex((prev) => (prev - 1 + maxSlides) % maxSlides);
+  };
+  
+  // 현재 슬라이드에 표시할 게시물들
+  const currentPosts = popularPosts.slice(
+    popularSlideIndex * popularProjectsPerSlide,
+    (popularSlideIndex + 1) * popularProjectsPerSlide
+  );
+  
   const initialFilters: FilterState = useMemo(() => ({
     selectedActivity: [],
     selectedPositions: [],
@@ -507,31 +528,23 @@ const ProjectPage = () => {
             <div className="section-header">
               <h2>🔥 최근 핫한 게시물</h2>
               <div className="slide-controls">
-                <button className="slide-btn prev">‹</button>
-                <button className="slide-btn next">›</button>
+                <button className="slide-btn prev" onClick={prevSlide}>‹</button>
+                <button className="slide-btn next" onClick={nextSlide}>›</button>
               </div>
             </div>
             <div className="cards-row">
-              <div className="simple-card">
-                <div className="card-title">제목</div>
-                <div className="card-info">
-                  <span className="author">작성자</span>
-                  <div className="stats-row">
-                    <span className="likes">좋아요 수</span>
-                    <span className="views">조회수</span>
+              {currentPosts.map((post) => (
+                <div key={post.id} className="simple-card" onClick={() => navigate(`/board/${post.id}`)}>
+                  <div className="card-title">{post.title}</div>
+                  <div className="card-info">
+                    <span className="author">{post.author}</span>
+                    <div className="stats-row">
+                      <span className="category">{post.category}</span>
+                      <span className="views">👁 {post.views}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="simple-card">
-                <div className="card-title">제목</div>
-                <div className="card-info">
-                  <span className="author">작성자</span>
-                  <div className="stats-row">
-                    <span className="likes">좋아요 수</span>
-                    <span className="views">조회수</span>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
