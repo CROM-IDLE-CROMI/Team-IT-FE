@@ -39,19 +39,19 @@ export const convertTeamDataToProject = (teamData: TeamFormData): Project => {
     `${basicInfo.platform || '프로젝트'} 팀원 모집`;
 
   // 기술 스택 추출 (객체 배열인 경우 value 속성만 추출)
-  const techStack = (basicInfo.selectedTechStacks || []).map(tech => 
+  const techStack = (basicInfo.selectedTechStacks || []).map((tech: any) => 
     typeof tech === 'object' && tech !== null ? tech.value : tech
   );
 
   // 모집 포지션 추출 (객체 배열인 경우 value 속성만 추출)
-  const positions = (basicInfo.selectedJobs || []).map(job => 
+  const positions = (basicInfo.selectedJobs || []).map((job: any) => 
     typeof job === 'object' && job !== null ? job.value : job
   );
 
   // 지역 정보 추출
   const location = {
     region: workEnviron.selectedRegion || '서울특별시',
-    districts: (workEnviron.selectedLocations || []).map(loc => 
+    districts: (workEnviron.selectedLocations || []).map((loc: any) => 
       typeof loc === 'object' && loc !== null ? loc.value : loc
     )
   };
@@ -85,7 +85,7 @@ export const convertTeamDataToProject = (teamData: TeamFormData): Project => {
 
   // 프로젝트 생성
   const project: Project = {
-    id: 10000 + Date.now() % 10000, // 10000 이상의 고유 ID 생성
+    id: Date.now(), // 고유 ID 생성
     title: projectTitle,
     author: currentUserNickname || currentUser || '익명',
     date: formatDate(new Date()),
@@ -104,14 +104,7 @@ export const convertTeamDataToProject = (teamData: TeamFormData): Project => {
     progress,
     method,
     recruitEndDate,
-    contact,
-    // 지원서에 필요한 정보 추가
-    applicationQuestions: applicantInfo.questions || [
-      "프로젝트에 기여할 수 있는 기술은 무엇인가요?",
-      "가장 기억에 남는 프로젝트 경험에 대해 설명해주세요.",
-      "이 프로젝트에 지원하게 된 동기는 무엇인가요?"
-    ],
-    applicationDescription: description
+    contact
   };
 
   return project;
@@ -179,8 +172,6 @@ export const getTeamRecruitProjects = (): Project[] => {
 // 모든 프로젝트 (기존 + 팀원 모집) 가져오기
 export const getAllProjects = (): Project[] => {
   const teamRecruitProjects = getTeamRecruitProjects();
-  console.log('📦 localStorage에서 가져온 팀원 모집 프로젝트:', teamRecruitProjects);
-  console.log('📦 localStorage 키 "teamRecruitProjects" 내용:', localStorage.getItem('teamRecruitProjects'));
   // 기존 popularProjects는 별도로 관리되므로 여기서는 팀원 모집 프로젝트만 반환
   return teamRecruitProjects;
 };
