@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import './BoardComment.css';
 
 interface Comment {
-  id: number;
+  id: string;
   author: string;
-  content: string;
+  text: string;
   createdAt: string;
   replies?: Comment[];
 }
@@ -13,7 +13,7 @@ interface BoardCommentProps {
   postId: number;
   comments: Comment[];
   onAddComment: (content: string) => void;
-  onAddReply: (commentId: number, content: string) => void;
+  onAddReply: (commentId: string, content: string) => void;
 }
 
 const BoardComment: React.FC<BoardCommentProps> = ({
@@ -23,7 +23,7 @@ const BoardComment: React.FC<BoardCommentProps> = ({
   onAddReply
 }) => {
   const [newComment, setNewComment] = useState('');
-  const [replyTo, setReplyTo] = useState<number | null>(null);
+  const [replyTo, setReplyTo] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState('');
 
   const handleSubmitComment = (e: React.FormEvent) => {
@@ -34,7 +34,7 @@ const BoardComment: React.FC<BoardCommentProps> = ({
     }
   };
 
-  const handleSubmitReply = (e: React.FormEvent, commentId: number) => {
+  const handleSubmitReply = (e: React.FormEvent, commentId: string) => {
     e.preventDefault();
     if (replyContent.trim()) {
       onAddReply(commentId, replyContent.trim());
@@ -54,10 +54,11 @@ const BoardComment: React.FC<BoardCommentProps> = ({
     });
   };
 
+
   return (
     <div className="board-comment-container">
       <div className="board-comment-box">
-        <h3 className="comment-title">댓글 ({comments.length})</h3>
+        <h3 className="comment-title">댓글</h3>
         
         {/* 댓글 작성 섹션 */}
         <div className="comment-input-section">
@@ -85,7 +86,7 @@ const BoardComment: React.FC<BoardCommentProps> = ({
               <span className="comment-author">{comment.author}</span>
               <span className="comment-date">{formatDate(comment.createdAt)}</span>
             </div>
-            <div className="comment-content">{comment.content}</div>
+            <div className="comment-content">{comment.text}</div>
             <div className="comment-actions">
               <button
                 onClick={() => setReplyTo(replyTo === comment.id ? null : comment.id)}
@@ -136,7 +137,7 @@ const BoardComment: React.FC<BoardCommentProps> = ({
                       <span className="reply-author">{reply.author}</span>
                       <span className="reply-date">{formatDate(reply.createdAt)}</span>
                     </div>
-                    <div className="reply-content">{reply.content}</div>
+                    <div className="reply-content">{reply.text}</div>
                   </div>
                 ))}
               </div>
@@ -144,12 +145,6 @@ const BoardComment: React.FC<BoardCommentProps> = ({
           </div>
         ))}
       </div>
-
-        {comments.length === 0 && (
-          <div className="no-comments">
-            <p>아직 댓글이 없습니다. 첫 번째 댓글을 작성해보세요!</p>
-          </div>
-        )}
       </div>
     </div>
   );

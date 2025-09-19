@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Post, Category } from "./DummyPosts";
 import AuthGuard from "../../components/AuthGuard";
+import { getCurrentUser } from "../../utils/authUtils";
 import "./BoardWrite.css";
 
 type BoardWriteProps = {
@@ -17,12 +18,19 @@ const BoardWrite: React.FC<BoardWriteProps> = ({ onAddPost }) => {
   const handleSubmit = () => {
     if (!title || !content) return alert("제목과 본문을 입력해주세요");
 
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
     const newPost: Post = {
       id: Date.now(),
       title,
-      author: "작성자", // 작성자 고정
+      author: currentUser, // 실제 로그인한 사용자
       content, // 본문 추가
       date: new Date().toLocaleDateString(),
+      views: 0, // 조회수 추가
     };
 
     onAddPost(category, newPost); // App 상태 갱신

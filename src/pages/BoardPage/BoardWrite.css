@@ -20,7 +20,7 @@
 
 /* 카테고리 선택 */
 .board-write-wrapper select {
-  width: 100%;
+  width: 95%;
   padding: 10px 14px;
   margin-bottom: 16px;
   font-size: 16px;
@@ -36,7 +36,7 @@
 
 /* 제목 input */
 .board-write-wrapper input[type="text"] {
-  width: 100%;
+  width: 95%;
   padding: 12px 14px;
   margin-bottom: 16px;
   font-size: 18px;
@@ -52,13 +52,13 @@
 
 /* 본문 textarea */
 .board-write-wrapper textarea {
-  width: 100%;
+  width: 95%;
   padding: 14px;
   font-size: 16px;
   border-radius: 8px;
   border: 1px solid #ccc;
   outline: none;
-  resize: vertical;
+  resize: none;
   transition: border 0.2s;
   margin-bottom: 20px;
 }

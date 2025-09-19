@@ -24,6 +24,8 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('currentUserId');
     setIsLoggedIn(false);
   };
 
@@ -42,11 +44,10 @@ const Header = () => {
       </div>
 
       <nav className="nav-links">
-        <Link to="/teams">팀원 모집</Link>
+        <Link to="/Teams">팀원 모집</Link>
         <Link to="/Projects">프로젝트 찾기</Link>
         <a href="/Boarder">게시판</a>
-        <a href="/Stor">상점</a>
-        {isLoggedIn && <Link to="/MyProject">마이 프로젝트</Link>}
+        {isLoggedIn && <Link to="/myprojectmain">마이 프로젝트</Link>}
       </nav>
 
       <div className="auth-buttons">
