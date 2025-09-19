@@ -22,7 +22,7 @@ const BoardWrite: React.FC<BoardWriteProps> = ({ onAddPost }) => {
     const newPost: Post = {
       id: Date.now(),
       title,
-      author: "currentUser", // 작성자 고정
+      author: currentUser, // 작성자 고정
       content, // 본문 추가
       date: new Date().toLocaleDateString(),
     };

@@ -5,6 +5,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import SideBox from "../components/ProjectPageDetail/SideBox";
 import { techStacksInit } from "../styles/TechStack";
+import { getPopularProjects, type Project as PopularProject } from "../data/popularProjects";
 import "../pages/ProjectPage.css";
 
 // ... (Interface Project, FilterState, dummyProjects는 이전과 동일하게 유지) ...
@@ -35,7 +36,6 @@ interface Project {
   };
   techStack: string[];
   positions: string[];
-  likes: number;
   views: number;
   description: string;
   status: string;
@@ -60,7 +60,6 @@ const dummyProjects: Project[] = [
     location: { region: "서울특별시", districts: ["강남구"] },
     techStack: ["React", "MongoDB"],
     positions: ["프론트", "백"],
-    likes: 12,
     views: 45,
     description: "혁신적인 웹 서비스를 개발하는 프로젝트입니다. React와 Node.js를 사용하여 풀스택 개발을 진행합니다.",
     status: "모집중",
@@ -82,7 +81,6 @@ const dummyProjects: Project[] = [
     location: { region: "부산광역시", districts: ["해운대구"] },
     techStack: ["Flutter", "Firebase"],
     positions: ["프론트"],
-    likes: 8,
     views: 32,
     description: "Flutter를 사용한 크로스 플랫폼 모바일 앱을 개발합니다. UI/UX에 관심 있는 개발자를 찾습니다.",
     status: "모집중",
@@ -104,7 +102,6 @@ const dummyProjects: Project[] = [
     location: { region: "대구광역시", districts: ["수성구"] },
     techStack: ["Python", "TensorFlow", "FastAPI"],
     positions: ["백", "기타"],
-    likes: 15,
     views: 67,
     description: "머신러닝을 활용한 예측 모델을 개발하는 프로젝트입니다. 데이터 분석과 AI 모델링 경험이 있는 분을 찾습니다.",
     status: "모집중",
@@ -126,7 +123,6 @@ const dummyProjects: Project[] = [
     location: { region: "인천광역시", districts: ["연수구"] },
     techStack: ["Unity", "C#"],
     positions: ["기획", "디자인"],
-    likes: 20,
     views: 89,
     description: "Unity를 사용한 3D 게임을 개발합니다. 게임 개발 경험이 있거나 열정이 있는 분을 찾습니다.",
     status: "모집중",
@@ -148,7 +144,6 @@ const dummyProjects: Project[] = [
     location: { region: "광주광역시", districts: ["서구"] },
     techStack: ["Solidity", "React"],
     positions: ["프론트", "백"],
-    likes: 6,
     views: 28,
     description: "이더리움 기반의 DApp을 개발하는 프로젝트입니다. 블록체인 기술에 관심 있는 개발자를 찾습니다.",
     status: "모집중",
@@ -170,7 +165,6 @@ const dummyProjects: Project[] = [
     location: { region: "대전광역시", districts: ["유성구"] },
     techStack: ["Python"],
     positions: ["기타", "기획"],
-    likes: 9,
     views: 41,
     description: "대용량 데이터를 분석하고 시각화하는 프로젝트입니다. 통계학적 지식과 데이터 분석 경험이 있는 분을 찾습니다.",
     status: "모집중",
@@ -192,7 +186,6 @@ const dummyProjects: Project[] = [
     location: { region: "서울특별시", districts: ["마포구"] },
     techStack: ["Arduino", "Raspberry Pi", "Python"],
     positions: ["프론트", "백", "PM"],
-    likes: 14,
     views: 52,
     description: "IoT 센서를 활용한 스마트홈 시스템을 개발합니다. 하드웨어와 소프트웨어 모두 경험이 있는 분을 찾습니다.",
     status: "모집중",
@@ -214,7 +207,6 @@ const dummyProjects: Project[] = [
     location: { region: "부산광역시", districts: ["중구"] },
     techStack: ["Unity", "C#", "Blender"],
     positions: ["기획", "디자인", "프론트"],
-    likes: 18,
     views: 73,
     description: "VR/AR을 활용한 교육 콘텐츠를 개발합니다. 3D 모델링과 게임 개발 경험이 있는 분을 찾습니다.",
     status: "모집중",
@@ -460,8 +452,8 @@ const ProjectPage = () => {
     setTempFilters(filters);
   };
 
-  // 인기 프로젝트 (필터링된 프로젝트 중 상위 4개)
-  const popularProjects = useMemo(() => filteredProjects.slice(0, 4), [filteredProjects]);
+  // 인기 프로젝트 (공통 데이터 소스에서 가져오기)
+  const popularProjects = useMemo(() => getPopularProjects(4), []);
   const totalPopularSlides = Math.ceil(popularProjects.length / popularProjectsPerSlide);
   const currentPopularProjects = popularProjects.slice(
     popularSlideIndex * popularProjectsPerSlide,
