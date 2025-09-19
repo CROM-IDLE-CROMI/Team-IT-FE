@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../../layouts/Header";
+import { getAllProjects } from "../../utils/teamToProjectConverter";
 import "./ProjectApply.css";
 
 // API 응답에 맞춰 프로젝트 데이터 타입을 정의합니다.
@@ -58,38 +59,74 @@ const ProjectApply = () => {
 
   // 프로젝트 데이터 불러오기
   useEffect(() => {
-    const fetchProject = async () => {
+    const fetchProject = () => {
       setIsLoading(true);
       const projectId = parseInt(id || "1", 10);
-      const API_BASE = "http://localhost:5173";
-      const API_ENDPOINT = `${API_BASE}/api/projects/${projectId}`;
-
-        try { //백엔드 한테 받아서 프론트에 보여주는 코드
-          const res = await fetch(API_ENDPOINT);
-          if (!res.ok) {
-            throw new Error(`API error: ${res.status}`);
-          }
-          const data: Project = await res.json();
-          setProject(data);
+      
+      try {
+        // 1. 팀원 모집 프로젝트에서 먼저 찾기
+        const teamRecruitProjects = getAllProjects();
+        console.log('🔍 팀원 모집 프로젝트 목록:', teamRecruitProjects);
+        console.log('🔍 찾고 있는 프로젝트 ID:', projectId);
+        
+        const teamProject = teamRecruitProjects.find(p => p.id === projectId);
+        console.log('🔍 찾은 팀원 모집 프로젝트:', teamProject);
+        console.log('🔍 프로젝트 ID 타입 비교:', {
+          projectId,
+          projectIdType: typeof projectId,
+          teamProjectIds: teamRecruitProjects.map(p => ({ id: p.id, type: typeof p.id }))
+        });
+        
+        if (teamProject) {
+          // 팀원 모집 프로젝트를 Project 타입으로 변환
+          const convertedProject: Project = {
+            id: teamProject.id,
+            title: teamProject.title,
+            author: teamProject.author,
+            description: teamProject.applicationDescription || teamProject.description || "프로젝트에 대한 자세한 설명이 없습니다.",
+            recruitPositions: teamProject.positions || [],
+            questions: teamProject.applicationQuestions || [
+              "프로젝트에 기여할 수 있는 기술은 무엇인가요?",
+              "가장 기억에 남는 프로젝트 경험에 대해 설명해주세요.",
+              "이 프로젝트에 지원하게 된 동기는 무엇인가요?"
+            ]
+          };
+          
+          setProject(convertedProject);
           setFormData(prev => ({ 
             ...prev, 
-            title: `[지원서] ${data.title} (${data.author})`,
-            position: data.recruitPositions?.[0] || "",
-            answers: new Array(data.questions?.length || 0).fill(""),
+            title: `[지원서] ${convertedProject.title} (${convertedProject.author})`,
+            position: convertedProject.recruitPositions?.[0] || "",
+            answers: new Array(convertedProject.questions?.length || 0).fill(""),
           }));
-          console.info("✅ 프로젝트 정보 불러오기 성공");
-        } catch (error) {
-          console.warn("⚠️ 프로젝트 정보 불러오기 실패 - 더미 데이터 사용", error);
-          setProject(dummyProject);
-          setFormData(prev => ({ 
-            ...prev, 
-            title: `[지원서] ${dummyProject.title} (${dummyProject.author})`,
-            position: dummyProject.recruitPositions?.[0] || "",
-            answers: new Array(dummyProject.questions?.length || 0).fill(""),
-          }));
-        } finally {
-          setIsLoading(false);
+          console.info("✅ 팀원 모집 프로젝트에서 정보 불러오기 성공");
+          return;
         }
+        
+        // 2. 팀원 모집 프로젝트에도 없으면 더미 데이터 사용
+        console.warn("⚠️ 팀원 모집 프로젝트를 찾을 수 없음 - 더미 데이터 사용");
+        setProject(dummyProject);
+        setFormData(prev => ({ 
+          ...prev, 
+          title: `[지원서] ${dummyProject.title} (${dummyProject.author})`,
+          position: dummyProject.recruitPositions?.[0] || "",
+          answers: new Array(dummyProject.questions?.length || 0).fill(""),
+        }));
+        console.info("✅ 더미 데이터 사용");
+        
+      } catch (error) {
+        console.error("❌ 프로젝트 정보 불러오기 실패:", error);
+        // 에러 발생 시 더미 데이터 사용
+        setProject(dummyProject);
+        setFormData(prev => ({ 
+          ...prev, 
+          title: `[지원서] ${dummyProject.title} (${dummyProject.author})`,
+          position: dummyProject.recruitPositions?.[0] || "",
+          answers: new Array(dummyProject.questions?.length || 0).fill(""),
+        }));
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchProject();
@@ -113,7 +150,7 @@ const ProjectApply = () => {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setStatusMessage("");
 
@@ -128,28 +165,36 @@ const ProjectApply = () => {
       return;
     }
 
-    const API_BASE = "http://localhost:5173";
-    const API_ENDPOINT = `${API_BASE}/api/applications`;
+    try {
+      // 로컬스토리지에 지원서 저장
+      const applicationData = {
+        id: Date.now(),
+        projectId: project?.id,
+        projectTitle: project?.title,
+        projectAuthor: project?.author,
+        ...formData,
+        submittedAt: new Date().toISOString()
+      };
 
-    try { //백엔드한테 보내는 코드
-      const res = await fetch(API_ENDPOINT, {
-        method: 'POST', // 이 방식으로
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData), // formData를 JSON 문자열로 변환하여 보냄
-      });
-
-      if (!res.ok) {
-        throw new Error(`API error: ${res.status}`);
-      }
-
-      const result = await res.json();
-      console.log("✅ 지원서 제출 성공:", result);
+      // 기존 지원서 목록 가져오기
+      const existingApplications = JSON.parse(localStorage.getItem('userApplications') || '[]');
+      
+      // 새 지원서 추가
+      const updatedApplications = [...existingApplications, applicationData];
+      
+      // 로컬스토리지에 저장
+      localStorage.setItem('userApplications', JSON.stringify(updatedApplications));
+      
+      console.log("✅ 지원서 제출 성공:", applicationData);
       setStatusMessage("🎉 지원이 완료되었습니다!");
+      
+      // 3초 후 프로젝트 페이지로 이동
+      setTimeout(() => {
+        navigate('/Projects');
+      }, 3000);
 
     } catch (error) {
-      console.error("⚠️ 지원서 제출 실패:", error);
+      console.error("❌ 지원서 제출 실패:", error);
       setStatusMessage("⚠️ 지원서 제출에 실패했습니다. 다시 시도해주세요.");
     }
   };
@@ -290,15 +335,53 @@ const ProjectApply = () => {
           </form>
         </div>
 
-        {/* 오른쪽 패널 - 본문 내용 */}
+        {/* 오른쪽 패널 - 프로젝트 정보 */}
         <div className="content-panel">
-          <h3 className="content-title">본문 내용</h3>
+          <h3 className="content-title">프로젝트 정보</h3>
           <div className="content-display">
+            {/* 프로젝트 기본 정보 */}
             <div style={{ marginTop: '1rem', padding: '1rem', background: '#fff', borderRadius: '8px', border: '1px solid #e9ecef' }}>
               <h4 style={{ margin: '0 0 0.5rem 0', color: '#333' }}>프로젝트 개요</h4>
               <p style={{ margin: '0 0 1rem 0', color: '#666', fontSize: '0.9rem' }}>
                 {project.description}
               </p>
+              
+              {/* 팀원 모집 프로젝트인 경우 추가 정보 표시 */}
+              {project.id > 10000 && (
+                <div style={{ marginTop: '1rem', padding: '1rem', background: '#f8f9fa', borderRadius: '6px', border: '1px solid #dee2e6' }}>
+                  <h5 style={{ margin: '0 0 0.5rem 0', color: '#495057', fontSize: '0.9rem' }}>📋 모집 정보</h5>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', fontSize: '0.8rem' }}>
+                    <div>
+                      <strong>모집 직군:</strong> {project.recruitPositions?.join(', ') || '정보 없음'}
+                    </div>
+                    <div>
+                      <strong>작성자:</strong> {project.author}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* 지원 가능한 직군 */}
+            <div style={{ marginTop: '1rem', padding: '1rem', background: '#fff', borderRadius: '8px', border: '1px solid #e9ecef' }}>
+              <h4 style={{ margin: '0 0 0.5rem 0', color: '#333' }}>모집 직군</h4>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                {project.recruitPositions?.map((position, index) => (
+                  <span
+                    key={index}
+                    style={{
+                      padding: '0.25rem 0.5rem',
+                      background: '#e3f2fd',
+                      color: '#1976d2',
+                      borderRadius: '4px',
+                      fontSize: '0.8rem',
+                      fontWeight: '500'
+                    }}
+                  >
+                    {position}
+                  </span>
+                )) || <span style={{ color: '#666', fontSize: '0.9rem' }}>모집 직군 정보가 없습니다.</span>}
+              </div>
             </div>
           </div>
         </div>

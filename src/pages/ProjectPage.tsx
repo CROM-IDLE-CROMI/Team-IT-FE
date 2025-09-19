@@ -7,6 +7,7 @@ import SideBox from "../components/ProjectPageDetail/SideBox";
 import { techStacksInit } from "../styles/TechStack";
 import { getPopularProjects } from "../data/popularProjects";
 import { getPopularPosts } from "../data/popularPosts";
+import { getAllProjects } from "../utils/teamToProjectConverter";
 import "../pages/ProjectPage.css";
 
 // ... (Interface Project, FilterState, dummyProjects는 이전과 동일하게 유지) ...
@@ -308,7 +309,7 @@ const ProjectPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [appliedSearchTerm, setAppliedSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 8;
   const [popularSlideIndex, setPopularSlideIndex] = useState(0);
   const popularProjectsPerSlide = 2;
   
@@ -351,7 +352,7 @@ const ProjectPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isApiSuccess, setIsApiSuccess] = useState(false); // API 호출 성공 여부 상태
 
-  // API 요청 로직 (Server-side filtering 적용)
+  // 프로젝트 데이터 로드 (API + 팀원 모집 프로젝트 통합)
   useEffect(() => {
     const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:4000";
     
@@ -376,9 +377,10 @@ const ProjectPage = () => {
 
     const fetchProjects = async () => {
       setIsLoading(true);
-      setIsApiSuccess(false); // API 성공 상태 초기화
+      setIsApiSuccess(false);
       const queryString = buildQueryString();
       const API_ENDPOINT = `${API_BASE}/api/projects?${queryString}`;
+      
       if (import.meta.env.MODE !== 'production') {
         console.log(`🚀 API 요청: ${API_ENDPOINT}`);
       }
@@ -387,13 +389,24 @@ const ProjectPage = () => {
         const res = await fetch(API_ENDPOINT, { signal: controller.signal });
         if (!res.ok) throw new Error(`API error: ${res.status}`);
         
-        const data: Project[] = await res.json();
-        if (!Array.isArray(data)) throw new Error("API 응답이 배열이 아님");
+        const apiData: Project[] = await res.json();
+        if (!Array.isArray(apiData)) throw new Error("API 응답이 배열이 아님");
         
-        setProjects(data);
+        // 팀원 모집 프로젝트 가져오기
+        const teamRecruitProjects = getAllProjects();
+        
+        // API 데이터와 팀원 모집 프로젝트 통합
+        const allProjects = [...apiData, ...teamRecruitProjects];
+        
+        setProjects(allProjects);
         setIsApiSuccess(true);
+        
         if (import.meta.env.MODE !== 'production') {
-          console.info("✅ API에서 필터링된 프로젝트 불러오기 성공", data.length, "items");
+          console.info("✅ 프로젝트 불러오기 성공", {
+            apiProjects: apiData.length,
+            teamRecruitProjects: teamRecruitProjects.length,
+            total: allProjects.length
+          });
         }
       } catch (err: any) {
         if (import.meta.env.MODE !== 'production') {
@@ -403,7 +416,10 @@ const ProjectPage = () => {
             console.warn("⚠️ API 불러오기 실패 - 더미 데이터 사용", err);
           }
         }
-        setProjects(dummyProjects);
+        // API 실패 시 더미 데이터와 팀원 모집 프로젝트 통합
+        const teamRecruitProjects = getAllProjects();
+        const fallbackProjects = [...dummyProjects, ...teamRecruitProjects];
+        setProjects(fallbackProjects);
         setIsApiSuccess(false); // API 실패 상태로 설정
       } finally {
         setIsLoading(false);
@@ -431,11 +447,25 @@ const ProjectPage = () => {
   }, [projects, appliedFilters, appliedSearchTerm, isApiSuccess]);
 
 
+  // 등록순으로 정렬 (ID 기준 오름차순)
+  const sortedProjects = [...filteredProjects].sort((a, b) => a.id - b.id);
+  
   // 페이지네이션 계산
-  const totalPages = Math.max(1, Math.ceil(filteredProjects.length / itemsPerPage));
+  const totalPages = Math.max(1, Math.ceil(sortedProjects.length / itemsPerPage));
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentProjects = filteredProjects.slice(startIndex, endIndex);
+  const currentProjects = sortedProjects.slice(startIndex, endIndex);
+  
+  // 디버깅용 로그
+  console.log('페이지네이션 정보:', {
+    totalProjects: sortedProjects.length,
+    itemsPerPage,
+    currentPage,
+    totalPages,
+    startIndex,
+    endIndex,
+    currentProjectsCount: currentProjects.length
+  });
 
   const handlePageChange = (page: number) => {
     const newPage = Math.min(Math.max(1, page), totalPages);
@@ -573,36 +603,47 @@ const ProjectPage = () => {
             ) : filteredProjects.length === 0 ? (
                 <div>표시할 프로젝트가 없습니다.</div>
             ) : currentProjects.length > 0 ? (
-              currentProjects.map(project => (
-                <div key={project.id} className="card" onClick={() => handleCardClick(project.id)}>
-                  <h3>{project.title}</h3>
-                  <div className="info">
-                    {project.author}<br />
-                    {project.date}<br />
-                    📍 {project.location.region} {project.location.districts.join(" ")}<br />
-                    <span className="tech-icons">
-                      {(project.techStack || []).map(tech => {
-                        const stack = techStacksInit.find(item => item.value === tech);
-                        return stack ? (
-                          <img key={tech} src={stack.icon} alt={stack.label} title={stack.label} className="tech-icon-img" />
-                        ) : (
-                          <span key={tech}>🔧 {tech}</span>
-                        );
-                      })}
-                    </span><br />
-                    👥 {(project.positions || []).join(', ')}
+              currentProjects.map(project => {
+                // 팀원 모집 프로젝트인지 확인 (ID가 큰 경우 팀원 모집으로 간주)
+                const isTeamRecruit = project.id > 10000; // 팀원 모집 프로젝트는 큰 ID 사용
+                
+                return (
+                  <div key={project.id} className="card" onClick={() => handleCardClick(project.id)}>
+                    <div className="card-header">
+                      <h3>{project.title}</h3>
+                    </div>
+                    <div className="info">
+                      {project.author}<br />
+                      {project.date}<br />
+                      📍 {project.location.region} {project.location.districts.join(" ")}<br />
+                      <span className="tech-icons">
+                        {(project.techStack || []).map((tech: any, index) => {
+                          // tech가 객체인 경우 value 속성 사용, 문자열인 경우 그대로 사용
+                          const techValue = typeof tech === 'object' && tech !== null ? tech.value : tech;
+                          const stack = techStacksInit.find(item => item.value === techValue);
+                          return stack ? (
+                            <img key={`${project.id}-tech-${index}`} src={stack.icon} alt={stack.label} title={stack.label} className="tech-icon-img" />
+                          ) : (
+                            <span key={`${project.id}-tech-${index}`}>🔧 {techValue}</span>
+                          );
+                        })}
+                      </span><br />
+                      👥 {(project.positions || []).map((pos: any) => 
+                        typeof pos === 'object' && pos !== null ? pos.value : pos
+                      ).join(', ')}
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             ) : (
                 <div>현재 페이지에 표시할 프로젝트가 없습니다.</div>
             )}
           </div>
 
           {/* 페이지네이션 UI */}
-          {!isLoading && filteredProjects.length > 0 && (
+          {!isLoading && sortedProjects.length > 0 && (
             <div className="pagination-container">
-              <div className="pagination">
+                            <div className="pagination">
                 <button
                   className="pagination-nav-btn"
                   onClick={() => handlePageChange(currentPage - 1)}

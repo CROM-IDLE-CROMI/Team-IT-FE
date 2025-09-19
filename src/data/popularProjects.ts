@@ -12,6 +12,7 @@ export interface Project {
   positions: string[];
   views: number;
   description: string;
+  status: string;
   teamSize?: string;
   recruitPositions?: string[];
   recruitPeriod?: string;
@@ -22,6 +23,9 @@ export interface Project {
   method?: string;
   recruitEndDate?: string;
   contact?: string;
+  // 지원서 관련 필드
+  applicationQuestions?: string[];
+  applicationDescription?: string;
 }
 
 // 인기 프로젝트 데이터 (좋아요 수 기준으로 정렬)
@@ -36,6 +40,7 @@ export const popularProjects: Project[] = [
     positions: ["프론트", "백"],
     views: 45,
     description: "혁신적인 웹 서비스를 개발하는 프로젝트입니다. React와 Node.js를 사용하여 풀스택 개발을 진행합니다.",
+    status: "모집중",
     teamSize: "3명",
     recruitPositions: ["프론트", "백"],
     recruitPeriod: "3개월",
@@ -56,6 +61,7 @@ export const popularProjects: Project[] = [
     positions: ["백", "기타"],
     views: 67,
     description: "머신러닝을 활용한 예측 모델을 개발하는 프로젝트입니다. 데이터 분석과 AI 모델링 경험이 있는 분을 찾습니다.",
+    status: "모집중",
     teamSize: "4명",
     recruitPositions: ["기타", "백"],
     recruitPeriod: "6개월",
@@ -76,6 +82,7 @@ export const popularProjects: Project[] = [
     positions: ["기획", "디자인"],
     views: 89,
     description: "Unity를 사용한 3D 게임을 개발합니다. 게임 개발 경험이 있거나 열정이 있는 분을 찾습니다.",
+    status: "모집중",
     teamSize: "5명",
     recruitPositions: ["기획", "디자인"],
     recruitPeriod: "8개월",
@@ -96,6 +103,7 @@ export const popularProjects: Project[] = [
     positions: ["프론트", "백", "PM"],
     views: 52,
     description: "IoT 센서를 활용한 스마트홈 시스템을 개발합니다. 하드웨어와 소프트웨어 모두 경험이 있는 분을 찾습니다.",
+    status: "모집중",
     teamSize: "4명",
     recruitPositions: ["프론트", "백", "PM"],
     recruitPeriod: "6개월",
@@ -116,6 +124,7 @@ export const popularProjects: Project[] = [
     positions: ["기획", "디자인", "프론트"],
     views: 73,
     description: "VR/AR을 활용한 교육 콘텐츠를 개발합니다. 3D 모델링과 게임 개발 경험이 있는 분을 찾습니다.",
+    status: "모집중",
     teamSize: "5명",
     recruitPositions: ["기획", "디자인", "프론트"],
     recruitPeriod: "8개월",
@@ -136,6 +145,7 @@ export const popularProjects: Project[] = [
     positions: ["프론트"],
     views: 32,
     description: "Flutter를 사용한 크로스 플랫폼 모바일 앱을 개발합니다. UI/UX에 관심 있는 개발자를 찾습니다.",
+    status: "모집중",
     teamSize: "2명",
     recruitPositions: ["프론트"],
     recruitPeriod: "2개월",
@@ -145,7 +155,7 @@ export const popularProjects: Project[] = [
     progress: "아이디어 기획 중",
     method: "온라인",
     recruitEndDate: "2025.01.25"
-  }
+  },
 ];
 
 // 인기 프로젝트를 조회수 기준으로 정렬하는 함수

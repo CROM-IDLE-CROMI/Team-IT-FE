@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ProjectComment from "../components/ProjectPageDetail/ProjectComment";
 import { requireAuth, getCurrentUser } from "../utils/authUtils";
+import { getAllProjects } from "../utils/teamToProjectConverter";
 import "../styles/TechStack";
 
 /**
@@ -333,6 +334,20 @@ const ProjectDetail = () => {
         setProject(data);
         console.info("✅ API에서 프로젝트 상세 데이터 불러오기 성공");
       } catch (err: any) {
+        // API 실패 시 팀원 모집 프로젝트에서 먼저 찾기
+        const teamRecruitProjects = getAllProjects();
+        const teamProject = teamRecruitProjects.find(p => p.id === projectId);
+        if (teamProject) {
+          // 팀원 모집 프로젝트를 Project 타입으로 변환
+          const convertedProject: Project = {
+            ...teamProject,
+            likes: 0, // 팀원 모집 프로젝트는 likes가 없으므로 0으로 설정
+            duration: teamProject.recruitPeriod || '미정'
+          };
+          setProject(convertedProject);
+          console.info("✅ 팀원 모집 프로젝트에서 데이터 불러오기 성공");
+          return; // 성공적으로 찾았으므로 더미 데이터 검색 생략
+        }
         if (err.name === "AbortError") {
           console.warn("⏱️ API 요청 타임아웃/취소 - 더미 데이터 사용");
         } else {
@@ -344,8 +359,8 @@ const ProjectDetail = () => {
         if (foundProject) {
           setProject(foundProject);
         } else {
-          // 더미 데이터에도 없으면 이전 페이지로 리디렉션
-          navigate("/projects");
+          // 모든 데이터에서 찾지 못하면 이전 페이지로 리디렉션
+          navigate("/project");
         }
       } finally {
         clearTimeout(timeoutId);
@@ -363,7 +378,7 @@ const ProjectDetail = () => {
 
   const handleApply = () => {
     requireAuth(() => {
-      navigate("/apply");
+      navigate(`/project/${project?.id}/apply`);
     });
   };
 
@@ -383,7 +398,9 @@ const ProjectDetail = () => {
         {/* 메인 콘텐츠 */}
         <main className="project-main-content">
           {/* 모집 제목 */}
-          <h1 className="recruit-title">{project.title}</h1>
+          <div className="title-section">
+            <h1 className="recruit-title">{project.title}</h1>
+          </div>
           
           {/* 작성자 정보 섹션 */}
           <div className="author-info-section">
