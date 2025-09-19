@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import "./EditProfile.css";
 import AwardHistoryPopup from "./AwardHistoryPopup";
+import { getCurrentUser, getCurrentUserNickname } from "../../utils/authUtils";
 
 interface Award {
   id: string;
@@ -35,7 +36,7 @@ export default function EditProfile({ profileData, onSave }: Props) {
   const [backgroundImage, setBackgroundImage] = useState<string | null>(profileData.backgroundImage);
   const [showAwardPopup, setShowAwardPopup] = useState(false);
   const [formData, setFormData] = useState({
-    nickname: profileData.nickname,
+    nickname: getCurrentUserNickname() || profileData.nickname,
     birthDate: profileData.birthDate,
     organization: profileData.organization,
     email: profileData.email,
@@ -74,6 +75,14 @@ export default function EditProfile({ profileData, onSave }: Props) {
         }
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleResetToDefault = (type: 'profile' | 'background') => {
+    if (type === 'profile') {
+      setProfileImage(null);
+    } else {
+      setBackgroundImage(null);
     }
   };
 
@@ -136,9 +145,21 @@ export default function EditProfile({ profileData, onSave }: Props) {
               배경 사진
             </div>
           )}
-          <div className="edit-overlay always-visible" onClick={handleBackgroundImageClick}>
-            <div className="edit-icon">+</div>
-            <button className="edit-btn" type="button">배경 수정</button>
+          <div className="edit-overlay always-visible">
+            <div className="edit-buttons">
+              <button className="edit-btn" type="button" onClick={handleBackgroundImageClick}>
+                배경 수정
+              </button>
+              {backgroundImage && (
+                <button 
+                  className="reset-btn" 
+                  type="button" 
+                  onClick={() => handleResetToDefault('background')}
+                >
+                  기본으로 되돌리기
+                </button>
+              )}
+            </div>
           </div>
           <input
             type="file"
@@ -162,11 +183,22 @@ export default function EditProfile({ profileData, onSave }: Props) {
                 </div>
               )}
               <div className="add-photo-overlay always-visible">
-                <div className="add-icon">+</div>
-                <span className="add-text">프로필 사진 추가</span>
+                <div className="photo-buttons">
+                  <button className="add-photo-btn" onClick={handleProfileImageClick}>
+                    <div className="add-icon">+</div>
+                    <span className="add-text">프로필 사진 추가</span>
+                  </button>
+                  {profileImage && (
+                    <button 
+                      className="reset-photo-btn" 
+                      onClick={() => handleResetToDefault('profile')}
+                    >
+                      기본으로 되돌리기
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
-            <div className="border-edit-label always-visible">테두리 수정</div>
             <input
               type="file"
               ref={fileInputRef}
@@ -178,12 +210,8 @@ export default function EditProfile({ profileData, onSave }: Props) {
 
           {/* 사용자 ID와 뱃지 */}
           <div className="user-info">
-            <span className="user-id">사용자 ID</span>
+            <span className="user-id">{getCurrentUser() || "사용자 ID"}</span>
             <div className="user-badge">
-              <div className="badge-edit-overlay always-visible">
-                <div className="badge-icon">+</div>
-                <button className="badge-edit-btn">뱃지 수정</button>
-              </div>
             </div>
           </div>
 
