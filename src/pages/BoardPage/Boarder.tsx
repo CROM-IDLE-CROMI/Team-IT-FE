@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Post, Category } from "./DummyPosts";
-import { requireAuth } from "../../utils/authUtils";
+import { requireAuth, getCurrentUser } from "../../utils/authUtils";
 import "./Boarder.css";
 import Header from "../../layouts/Header";
 
@@ -18,6 +18,9 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
     "질문": 1,
     "홍보": 1,
   });
+
+  // 현재 로그인한 사용자 확인
+  const currentUser = getCurrentUser();
 
   const postsPerPage = 5;
   const currentPage = pageByCategory[category];
@@ -121,17 +124,20 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
               >
                 <span className="post-title">{post.title}</span>
                 <span className="post-meta">
-                  <button onClick={(e) => toggleScrap(e, post.id)}>
-                    <img
-                      src={
-                        scrappedPosts.has(post.id)
-                          ? "/스크랩 이후.png"
-                          : "/스크랩 이전.png"
-                      }
-                      alt="스크랩"
-                      width="20"
-                    />
-                  </button>
+                  {/* 본인이 작성한 글이 아닐 때만 스크랩 버튼 표시 */}
+                  {currentUser !== post.author && (
+                    <button onClick={(e) => toggleScrap(e, post.id)}>
+                      <img
+                        src={
+                          scrappedPosts.has(post.id)
+                            ? "/스크랩 이후.png"
+                            : "/스크랩 이전.png"
+                        }
+                        alt="스크랩"
+                        width="20"
+                      />
+                    </button>
+                  )}
                   <span className="post-author">{post.author}</span>
                   <span className="post-date">{post.date}</span>
                 </span>

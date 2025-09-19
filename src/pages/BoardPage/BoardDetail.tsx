@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import type { Post, Category } from "./DummyPosts";
 import BoardComment from "../../components/BoardComment";
+import { getCurrentUser } from "../../utils/authUtils";
 import "./BoardDetail.css";
 
 type BoardDetailProps = {
   postsByCategory: Record<Category, Post[]>;
+  onDeletePost: (postId: number) => void;
 };
 
 interface Comment {
@@ -16,7 +18,7 @@ interface Comment {
   replies?: Comment[];
 }
 
-const BoardDetail: React.FC<BoardDetailProps> = ({ postsByCategory }) => {
+const BoardDetail: React.FC<BoardDetailProps> = ({ postsByCategory, onDeletePost }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const postId = Number(id);
@@ -27,9 +29,9 @@ const BoardDetail: React.FC<BoardDetailProps> = ({ postsByCategory }) => {
 
   if (!post) return <div>게시글을 찾을 수 없습니다.</div>;
 
-  // 현재 로그인 사용자 (실제 프로젝트에서는 Context, Redux 등에서 가져오기)
-  const currentUser = "로그인한 작성자 이름";
-  const isAuthor = true
+  // 현재 로그인 사용자 확인
+  const currentUser = getCurrentUser();
+  const isAuthor = currentUser === post.author;
 
   // 게시글 수정 상태
   const [isEditing, setIsEditing] = useState(false);
@@ -63,7 +65,8 @@ const BoardDetail: React.FC<BoardDetailProps> = ({ postsByCategory }) => {
     const confirmDelete = window.confirm("정말 삭제하시겠습니까?");
     if (!confirmDelete) return;
 
-    // 실제 삭제 로직 (예: 부모 컴포넌트에 함수 전달)
+    // 실제 삭제 로직
+    onDeletePost(postId);
     alert("게시글이 삭제되었습니다.");
     navigate("/Boarder"); // 목록으로 이동
   };
@@ -72,7 +75,7 @@ const BoardDetail: React.FC<BoardDetailProps> = ({ postsByCategory }) => {
   const handleAddComment = async (content: string) => {
     const newComment: Comment = {
       id: Date.now().toString(),
-      author: currentUser,
+      author: currentUser || "guest",
       text: content,
       createdAt: new Date().toISOString(),
     };
@@ -82,7 +85,7 @@ const BoardDetail: React.FC<BoardDetailProps> = ({ postsByCategory }) => {
   const handleAddReply = (commentId: string, content: string) => {
     const newReply: Comment = {
       id: Date.now().toString(),
-      author: currentUser,
+      author: currentUser || "guest",
       text: content,
       createdAt: new Date().toISOString(),
     };
