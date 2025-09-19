@@ -1,0 +1,401 @@
+/* ========================================
+   AwardHistoryPopup.css - 수상이력 팝업 스타일
+   ======================================== */
+
+/* ===== 팝업 오버레이 ===== */
+.award-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ===== 팝업 컨테이너 ===== */
+.award-popup-container {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: hidden;
+  animation: slideInUp 0.3s ease-out;
+}
+
+/* ===== 패널 헤더 ===== */
+.award-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 2rem 1rem 2rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.award-panel-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #666;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  background: #f8f9fa;
+  color: #333;
+}
+
+/* ===== 수상이력 목록 패널 ===== */
+.award-list-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.award-list {
+  flex: 1;
+  padding: 1rem 2rem;
+  overflow-y: auto;
+}
+
+.award-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.award-item:hover {
+  background: #e9ecef;
+  border-color: #dee2e6;
+}
+
+.award-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.award-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+.award-details {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.award-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+  background: #f8d7da;
+  transform: scale(1.1);
+}
+
+.award-date {
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.no-awards {
+  text-align: center;
+  color: #6c757d;
+  font-size: 1rem;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+/* ===== 추가 버튼 ===== */
+.add-award-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 1.5rem;
+  margin: 1rem 2rem 2rem 2rem;
+  border-radius: 12px;
+  font-size: 2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-award-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* ===== 수상이력 폼 패널 ===== */
+.award-form-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.award-form {
+  flex: 1;
+  padding: 1rem 2rem;
+  overflow-y: auto;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #333;
+  background: white;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group input::placeholder {
+  color: #6c757d;
+}
+
+/* ===== 날짜 입력 컨테이너 ===== */
+.date-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.date-input-container input[type="date"] {
+  padding-right: 3rem;
+  color-scheme: light;
+}
+
+.date-input-container input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.calendar-icon {
+  position: absolute;
+  right: 1rem;
+  font-size: 1.2rem;
+  color: #666;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ===== 폼 액션 버튼 ===== */
+.form-actions {
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.register-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.register-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* ===== 팝업 액션 버튼들 ===== */
+.popup-actions {
+  padding: 1rem 2rem;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.cancel-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+}
+
+/* ===== 애니메이션 ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== 반응형 디자인 ===== */
+@media (max-width: 768px) {
+  .award-popup-container {
+    width: 95%;
+    max-height: 90vh;
+  }
+  
+  .award-panel-header {
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+  }
+  
+  .award-list {
+    padding: 1rem 1.5rem;
+  }
+  
+  .award-form {
+    padding: 1rem 1.5rem;
+  }
+  
+  .add-award-btn {
+    margin: 1rem 1.5rem 1.5rem 1.5rem;
+  }
+  
+  .form-actions,
+  .popup-actions {
+    padding: 1rem 1.5rem;
+  }
+  
+  .award-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .award-actions {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .award-panel-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .award-item {
+    padding: 1rem;
+  }
+  
+  .form-group input {
+    padding: 0.7rem 0.8rem;
+  }
+  
+  .save-btn,
+  .cancel-btn,
+  .register-btn {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}

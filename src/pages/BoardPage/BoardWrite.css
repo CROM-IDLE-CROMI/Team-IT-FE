@@ -1,0 +1,109 @@
+/* 전체 컨테이너 */
+.board-write-wrapper {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  font-family: 'Gothic A1', sans-serif;
+}
+
+/* 제목 */
+.board-write-wrapper h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* 카테고리 선택 */
+.board-write-wrapper select {
+  width: 95%;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.board-write-wrapper select:focus {
+  border-color: #007bff;
+}
+
+/* 제목 input */
+.board-write-wrapper input[type="text"] {
+  width: 95%;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  font-size: 18px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.board-write-wrapper input[type="text"]:focus {
+  border-color: #007bff;
+}
+
+/* 본문 textarea */
+.board-write-wrapper textarea {
+  width: 95%;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  resize: none;
+  transition: border 0.2s;
+  margin-bottom: 20px;
+}
+
+.board-write-wrapper textarea:focus {
+  border-color: #007bff;
+}
+
+/* 버튼 */
+.board-write-wrapper button {
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.board-write-wrapper button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* 모바일 대응 */
+@media (max-width: 600px) {
+  .board-write-wrapper {
+    margin: 20px;
+    padding: 16px;
+  }
+
+  .board-write-wrapper h2 {
+    font-size: 24px;
+  }
+
+  .board-write-wrapper input[type="text"],
+  .board-write-wrapper select,
+  .board-write-wrapper textarea {
+    font-size: 16px;
+  }
+
+  .board-write-wrapper button {
+    width: 100%;
+    font-size: 16px;
+  }
+}

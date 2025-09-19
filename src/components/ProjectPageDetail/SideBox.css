@@ -1,0 +1,653 @@
+/*===================================================================================
+=====================SideBox.css====================================================
+====================================================================================*/
+
+.side-box {
+  position: fixed;
+  top: 0;
+  left: -400px;
+  width: 400px;
+  height: 100vh;
+  background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+  transition: left 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  font-family: 'Gothic A1', sans-serif;
+}
+
+.side-box.open {
+  left: 0;
+}
+
+.side-box-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.filter-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem;
+  padding-bottom: 0;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #6c757d;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.close-btn:hover {
+  background: #e9ecef;
+  border-color: #dee2e6;
+  color: #495057;
+  transform: scale(1.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.filter-container {
+  margin-top: 2rem;
+}
+
+.filter-section {
+  margin-bottom: 2rem;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.filter-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.reset-btn {
+  background: #6c757d;
+  color: white;
+  border: 1px solid #6c757d;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(108, 117, 125, 0.2);
+}
+
+.reset-btn:hover {
+  background: #5a6268;
+  border-color: #5a6268;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(90, 98, 104, 0.3);
+}
+
+/* 옵션 버튼들 - 모던한 디자인 */
+.option-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.option-btn {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  color: #495057;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  position: relative;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.option-btn:hover {
+  background: #e9ecef;
+  border-color: #dee2e6;
+  color: #212529;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.option-btn.selected {
+  background: #212529;
+  border-color: #212529;
+  color: white;
+  font-weight: 600;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(33, 37, 41, 0.3);
+}
+
+.option-btn.selected::before {
+  content: '✓';
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #28a745;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+}
+
+/* 애니메이션 제거 - 모던한 디자인에서는 단순한 호버 효과만 사용 */
+
+/* 날짜 입력 */
+.date-input_1 {
+  max-width: 100px;
+  padding: 0.8rem;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease;
+}
+.date-input {
+  width: 250px;
+  padding: 0.8rem;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease;
+}
+
+.date-input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.date-range {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.date-range span {
+  color: #666;
+  font-weight: 500;
+}
+
+/* MUI DatePicker 스타일 */
+.MuiDatePicker-root {
+  width: 100%;
+}
+
+.MuiFormControl-root {
+  width: 100%;
+}
+
+.MuiOutlinedInput-root {
+  border-radius: 8px !important;
+  font-size: 0.9rem !important;
+}
+
+.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #4a90e2 !important;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #4a90e2 !important;
+  border-width: 2px !important;
+}
+
+.MuiInputLabel-root {
+  font-size: 0.9rem !important;
+  color: #666 !important;
+}
+
+.MuiInputLabel-root.Mui-focused {
+  color: #4a90e2 !important;
+}
+
+/* 기술 스택 섹션 */
+.tech-search {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.tech-search-input {
+  width: 220px;
+  padding: 0.6rem 2rem 0.6rem 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.tech-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #f8f9fa;
+  padding: 4px;
+  box-sizing: border-box;
+  position: relative;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.tech-item:hover {
+  border-color: #dee2e6;
+  background: #e9ecef;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tech-item.selected {
+  border-color: #212529;
+  background: #212529;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(33, 37, 41, 0.3);
+}
+
+.tech-item.selected::before {
+  content: '✓';
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #2ecc71;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(46, 204, 113, 0.3);
+}
+
+/* 기술 스택 애니메이션 제거 */
+
+.tech-item img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  pointer-events: none; /* 클릭 이벤트가 부모로 전달되도록 */
+}
+
+.tech-item span {
+  font-size: 8px;
+  color: #666;
+  text-align: center;
+  line-height: 1;
+  margin-top: 2px;
+  pointer-events: none;
+}
+
+/* 선택된 기술 스택 섹션 */
+.selected-tech-section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e1e8ed;
+}
+
+.selected-tech-section h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 0.8rem 0;
+}
+
+.selected-tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.selected-tech-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #212529;
+  border: 1px solid #212529;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  color: white;
+  position: relative;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(33, 37, 41, 0.2);
+}
+
+/* 선택된 기술 스택 애니메이션 제거 */
+
+.selected-tech-item img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.remove-tech {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 14px;
+  height: 14px;
+  background: #dc3545;
+  color: white;
+  border: 1px solid white;
+  border-radius: 50%;
+  font-size: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(220, 53, 69, 0.3);
+}
+
+.remove-tech:hover {
+  background: #c82333;
+  transform: scale(1.1);
+  box-shadow: 0 2px 4px rgba(200, 35, 51, 0.4);
+}
+
+/* 위치 섹션 */
+.location-container {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #e1e8ed;
+  border-radius: 8px;
+  background: white;
+}
+
+.location-list {
+  padding: 0.5rem;
+}
+
+.location-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.location-item:last-child {
+  border-bottom: none;
+}
+
+.location-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  flex: 1;
+}
+
+.location-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #4a90e2;
+}
+
+.location-name {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.location-count {
+  font-size: 0.8rem;
+  color: #666;
+  background: #f8f9fa;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .side-box {
+    width: 100%;
+    right: -100%;
+  }
+  
+  .tech-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .selected-tech-list {
+    justify-content: center;
+  }
+  
+  .option-buttons {
+    justify-content: center;
+  }
+  
+  .button-container {
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 1rem;
+  }
+  
+  .reset-filters-btn,
+  .apply-filters-btn {
+    flex: none;
+    width: 100%;
+  }
+  
+  /* 모바일에서 체크마크 크기 조정 */
+  .option-btn.selected::before {
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+  }
+  
+  .tech-item.selected::before {
+    width: 14px;
+    height: 14px;
+    font-size: 9px;
+  }
+  
+  .remove-tech {
+    width: 14px;
+    height: 14px;
+    font-size: 9px;
+  }
+}
+
+/* 스크롤바 스타일링 */
+.filter-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.filter-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.filter-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.filter-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+.tech-grid::-webkit-scrollbar,
+.location-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.tech-grid::-webkit-scrollbar-track,
+.location-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.tech-grid::-webkit-scrollbar-thumb,
+.location-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 2px;
+}
+
+/* 버튼 컨테이너 */
+.button-container {
+  background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+  padding: 1.5rem 2rem;
+  border-top: 1px solid #e1e8ed;
+  display: flex;
+  gap: 5rem;
+  flex-shrink: 0;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 초기화 버튼 - 모던한 디자인 */
+.reset-filters-btn {
+  flex: 1;
+  background: #f8f9fa;
+  color: #495057;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  max-width: 100px;
+  max-height: 40px;
+  padding: 0.75rem 1rem;
+}
+
+.reset-filters-btn:hover {
+  background: #e9ecef;
+  border-color: #dee2e6;
+  color: #212529;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.reset-filters-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* 적용하기 버튼 - 모던한 디자인 */
+.apply-filters-btn {
+  flex: 2;
+  background: #212529;
+  color: white;
+  border: 1px solid #212529;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(33, 37, 41, 0.2);
+  max-width: 140px;
+  max-height: 40px;
+  padding: 0.75rem 1rem;
+}
+
+.apply-filters-btn:hover {
+  background: #343a40;
+  border-color: #343a40;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(33, 37, 41, 0.3);
+}
+
+.apply-filters-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(33, 37, 41, 0.2);
+}
+
+/* 기본 HTML input[type="date"] 스타일 */
+.date-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: white;
+  color: #333;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.date-input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.date-range {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.date-separator {
+  font-size: 1.2rem;
+  color: #888;
+  font-weight: 500;
+}
+
+/* 반응형 - 모바일에서 날짜 입력 */
+@media (max-width: 768px) {
+  .date-range {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .date-separator {
+    display: none;
+  }
+}
