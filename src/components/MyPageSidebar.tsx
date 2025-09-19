@@ -10,9 +10,9 @@ interface MyPageSidebarProps {
 
 const MyPageSidebar: React.FC<MyPageSidebarProps> = ({ isOpen, onClose, activeTab, onTabChange }) => {
   const menuItems = [
-    { id: 'view', label: '내 프로필', icon: '👤' },
-    { id: 'posts', label: '내가 쓴 게시물', icon: '📝' },
-    { id: 'scrapped', label: '내가 스크랩한 게시물', icon: '📌' },
+    { id: 'view', label: '내 프로필' },
+    { id: 'posts', label: '내가 쓴 게시물' },
+    { id: 'scrapped', label: '내가 스크랩한 게시물'},
   ];
 
   const handleItemClick = (itemId: string) => {
@@ -38,7 +38,6 @@ const MyPageSidebar: React.FC<MyPageSidebarProps> = ({ isOpen, onClose, activeTa
               className={`sidebar-item ${activeTab === item.id ? 'active' : ''}`}
               onClick={() => handleItemClick(item.id)}
             >
-              <span className="sidebar-icon">{item.icon}</span>
               <span className="sidebar-label">{item.label}</span>
             </button>
           ))}

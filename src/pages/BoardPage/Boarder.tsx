@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Post, Category } from "./DummyPosts";
 import { requireAuth, getCurrentUser } from "../../utils/authUtils";
+import { addScrap, isScraped } from "../../utils/scrapUtils";
 import "./Boarder.css";
 import Header from "../../layouts/Header";
 
@@ -52,20 +53,56 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
     setPageByCategory(prev => ({ ...prev, [category]: 1 }));
   };
 
-  // ✅ 게시물별 스크랩 상태 저장
+  // ✅ 게시물별 스크랩 상태 저장 (실제 데이터와 연동)
   const [scrappedPosts, setScrappedPosts] = useState<Set<number>>(new Set());
+
+  // 컴포넌트 마운트 시 기존 스크랩 데이터 로드
+  React.useEffect(() => {
+    const allPosts = Object.values(postsByCategory).flat();
+    const scrapedIds = new Set<number>();
+    
+    allPosts.forEach(post => {
+      if (isScraped(post.id)) {
+        scrapedIds.add(post.id);
+      }
+    });
+    
+    setScrappedPosts(scrapedIds);
+  }, [postsByCategory]);
 
   const toggleScrap = (e: React.MouseEvent, postId: number) => {
     e.stopPropagation(); // 게시물 클릭 이벤트 막기
-    setScrappedPosts(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(postId)) {
-        newSet.delete(postId); // 이미 스크랩된 경우 해제
-      } else {
-        newSet.add(postId); // 스크랩 추가
-      }
-      return newSet;
-    });
+    
+    const post = Object.values(postsByCategory).flat().find(p => p.id === postId);
+    if (!post) return;
+
+    if (scrappedPosts.has(postId)) {
+      // 이미 스크랩된 경우 - 스크랩 해제는 ScrapedPosts 컴포넌트에서 처리
+      alert('스크랩 해제는 마이페이지 > 스크랩한 게시물에서 가능합니다.');
+    } else {
+      // 스크랩 추가
+      addScrap({
+        postId: post.id,
+        title: post.title,
+        author: post.author,
+        content: post.content,
+        category: category,
+        date: post.date,
+        views: post.views || 0,
+        originalPost: {
+          id: post.id,
+          title: post.title,
+          author: post.author,
+          content: post.content,
+          category: category,
+          date: post.date,
+          views: post.views || 0
+        }
+      });
+      
+      // 로컬 상태 업데이트
+      setScrappedPosts(prev => new Set(prev).add(postId));
+    }
   };
 
   return (
@@ -122,22 +159,22 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
                 style={{ cursor: "pointer" }}
                 className="board-item"
               >
+                {currentUser !== post.author && (
+                  <button onClick={(e) => toggleScrap(e, post.id)}>
+                    <img
+                      src={
+                        scrappedPosts.has(post.id)
+                          ? "/스크랩 이후.png"
+                          : "/스크랩 이전.png"
+                      }
+                      alt="스크랩"
+                      width="20"
+                    />
+                  </button>
+                )}
                 <span className="post-title">{post.title}</span>
                 <span className="post-meta">
                   {/* 본인이 작성한 글이 아닐 때만 스크랩 버튼 표시 */}
-                  {currentUser !== post.author && (
-                    <button onClick={(e) => toggleScrap(e, post.id)}>
-                      <img
-                        src={
-                          scrappedPosts.has(post.id)
-                            ? "/스크랩 이후.png"
-                            : "/스크랩 이전.png"
-                        }
-                        alt="스크랩"
-                        width="20"
-                      />
-                    </button>
-                  )}
                   <span className="post-author">{post.author}</span>
                   <span className="post-date">{post.date}</span>
                 </span>

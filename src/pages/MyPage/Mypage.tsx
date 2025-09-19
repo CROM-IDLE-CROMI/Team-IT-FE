@@ -5,6 +5,7 @@ import EditProfile from "../../components/MyPageDetail/EditProfile";
 import PublicProfile from "../../components/MyPageDetail/PublicProfile";
 import TechStackPopup from "../../components/MyPageDetail/TechStackPopup";
 import MyPageSidebar from "../../components/MyPageSidebar";
+import ScrapedPosts from "../../components/ScrapedPosts";
 import Header from "../../layouts/Header";
 import "./Mypage.css";
 
@@ -159,12 +160,7 @@ export default function Mypage() {
           </div>
         );
       case 'scrapped':
-        return (
-          <div className="content-placeholder">
-            <h2>내가 스크랩한 게시물</h2>
-            <p>스크랩한 게시물 목록이 여기에 표시됩니다.</p>
-          </div>
-        );
+        return <ScrapedPosts />;
       case 'inbox':
         return (
           <div className="content-placeholder">
