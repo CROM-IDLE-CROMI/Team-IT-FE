@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "dev:custom": "vite --host team-it.local --port 3000",
+    "dev": "vite --host 0.0.0.0 --port 3000",
+    "dev:localhost": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
