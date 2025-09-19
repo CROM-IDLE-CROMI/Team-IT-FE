@@ -1,48 +1,118 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useBeforeUnload, useParams } from 'react-router-dom';
 import '../../App.css';
+import { usePrompt } from '../../hooks/usePrompt';
+
+import type { ProjectData } from '../../types/project';
 
 export default function MyprojectEdit() {
-  // 각 입력 필드의 상태를 관리합니다.
-  const [teamName, setTeamName] = useState('TEAM-IT'); // 기존 데이터로 초기화
+  const { id } = useParams<{ id: string }>();
+  const [project, setProject] = useState<ProjectData | null>(null);
+  const [teamName, setTeamName] = useState('');
   const [teamLogo, setTeamLogo] = useState<File | null>(null);
-  const [progress, setProgress] = useState(25); // 기존 데이터로 초기화
+  const [progress, setProgress] = useState(0);
+  const [isDirty, setIsDirty] = useState(false);
+
+  const [loading, setLoading] = useState(true);
   const nav = useNavigate();
 
-  // 파일 선택 시 호출될 함수
+  useEffect(() => {
+    if (!id) return;
+
+    setLoading(true);
+    fetch(`/mocks/project-${id}.json`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('프로젝트 데이터를 불러오지 못했습니다.');
+        }
+        return res.json();
+      })
+      .then((data: ProjectData) => {
+        setProject(data);
+        setTeamName(data.title || ''); // 기본값 세팅
+        setProgress(data.progress || 0);
+      })
+      .catch((err) => {
+        console.error(err);
+        setProject(null);
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  // 파일 선택
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setTeamLogo(e.target.files[0]);
+      setIsDirty(true);
     }
   };
 
-  // '저장' 버튼 클릭 시 호출될 함수
+  // 저장
   const handleSave = (e: React.FormEvent) => {
-    e.preventDefault(); // 폼의 기본 제출 동작 방지
-    // 여기에 수정된 내용을 서버로 전송하는 로직을 추가합니다.
+    e.preventDefault();
+    if (!project) return;
     console.log({
-      teamName,
-      teamLogo: teamLogo?.name, // 실제로는 파일 객체를 전송해야 합니다.
+      ...project,
+      title: teamName,
+      teamLogo: teamLogo?.name,
       progress,
     });
     alert('저장되었습니다.');
-  };
-
-  // '취소' 버튼 클릭 시 호출될 함수
-  const handleCancel = () => {
-    // 이전 페이지로 이동하거나, 수정 전 상태로 되돌립니다.
-    console.log('수정이 취소되었습니다.');
+    setIsDirty(false);
     nav(-1);
   };
 
-  // '프로젝트 완료로 전환' 버튼 클릭 시 호출될 함수
+  // 취소
+  const handleCancel = () => {
+    if (isDirty) {
+      const confirmLeave = window.confirm(
+        '변경 사항이 저장되지 않았습니다. 페이지를 떠나시겠습니까?'
+      );
+      if (!confirmLeave) return;
+    }
+    nav(-1);
+  };
+
+  // 완료 전환
   const handleCompleteProject = () => {
-    // 프로젝트 상태를 '완료'로 변경하는 로직을 추가합니다.
     if (window.confirm('프로젝트를 완료 상태로 전환하시겠습니까?')) {
-      console.log('프로젝트 완료 처리');
+      if (project) {
+        setProject({ ...project, status: 'COMPLETED' });
+      }
       alert('프로젝트가 완료 처리되었습니다.');
+      //삭제하기
+      //
+      //
+      //
+      //
+      nav(`/myproject/I`);
     }
   };
+
+  // 입력 핸들러
+  const handleChangeTeamName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTeamName(e.target.value);
+    setIsDirty(true);
+  };
+
+  const handleChangeProgress = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProgress(Number(e.target.value));
+    setIsDirty(true);
+  };
+
+  // 새로고침/닫기 경고
+  useBeforeUnload((e: BeforeUnloadEvent) => {
+    if (isDirty) {
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
+
+  // 라우터 이동 경고
+  usePrompt('변경 사항이 저장되지 않았습니다. 페이지를 떠나시겠습니까?', isDirty);
+
+  if (loading) return <div>Loading...</div>;
+  if (!project) return <div>Project not found.</div>;
 
   return (
     <div className="edit-container">
@@ -59,7 +129,7 @@ export default function MyprojectEdit() {
             type="text"
             id="teamName"
             value={teamName}
-            onChange={(e) => setTeamName(e.target.value)}
+            onChange={handleChangeTeamName}
           />
         </div>
 
@@ -69,14 +139,14 @@ export default function MyprojectEdit() {
             <input
               type="text"
               readOnly
-              value={teamLogo ? teamLogo.name : 'TEAMIT_로고.jpg'}
+              value={teamLogo ? teamLogo.name : project.logoUrl || 'TEAMIT_로고.jpg'}
               placeholder="파일을 선택하세요"
             />
             <input
               type="file"
               id="teamLogo"
               onChange={handleFileChange}
-              style={{ display: 'none' }} // 실제 파일 input은 숨김
+              style={{ display: 'none' }}
             />
             <button
               type="button"
@@ -95,7 +165,7 @@ export default function MyprojectEdit() {
               type="number"
               id="progress"
               value={progress}
-              onChange={(e) => setProgress(Number(e.target.value))}
+              onChange={handleChangeProgress}
               min="0"
               max="100"
             />
@@ -104,8 +174,12 @@ export default function MyprojectEdit() {
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="save-btn">저장</button>
-          <button type="button" onClick={handleCancel} className="cancel-btn">취소</button>
+          <button type="submit" className="save-btn">
+            저장
+          </button>
+          <button type="button" onClick={handleCancel} className="cancel-btn">
+            취소
+          </button>
         </div>
       </form>
     </div>

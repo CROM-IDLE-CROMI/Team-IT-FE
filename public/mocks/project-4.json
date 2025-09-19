@@ -1,7 +1,7 @@
 {
-  "id": 1,
+  "id": 4,
   "title": "북으로 가자 (JSON)",
-  "status": "ONGOING",
+  "status": "COMPLETED",
   "description": "JSON 파일에서 불러온 더미 데이터입니다. 실제 API 응답과 거의 동일한 방식으로 작동합니다.",
   "progress": 75,
   "recruit_positions": [],

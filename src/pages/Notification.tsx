@@ -21,7 +21,7 @@ const Notification: React.FC = () => {
     { id: 2, text: '홍길동님의 "XXX" 프로젝트에 새로운 지원자가 있습니다.', type: 'board', targetId: '11' },
     { id: 3, text: '김일성님의 "ㅁㅁㅁ" 프로젝트에서 제외되셨습니다.', type: 'project', targetId: '2' },
     { id: 4, text: '어나경님이 "ㅆㅆㅆ" 프로젝트의 새로운 팀장이 되셨습니다.', type: 'project', targetId: '3' },
-    //{ id: 5, text: '구매하신 상품의 배송이 시작되었습니다.', type: 'shop', targetId: '100' },
+    { id: 5, text: '구매하신 상품의 배송이 시작되었습니다.', type: 'shop', targetId: '100' },
   ]);
 
   const handleGo = (n: Notification) => {
@@ -53,7 +53,12 @@ const Notification: React.FC = () => {
   };
 
   // 탭별 알림 필터링
-  const filteredNotifications = notifications.filter(n => n.type === activeTab);
+  const filteredNotifications = notifications.filter(n => {
+    if(activeTab === 'project') {
+      return n.type === 'project' || n.type === 'invite';
+    }
+    return n.type === activeTab;
+  });
 
   return (
     <div className="notification-container">
@@ -61,18 +66,21 @@ const Notification: React.FC = () => {
 
       {/* 탭 */}
       <div className="notification-tabs">
+        {/* 프로젝트 탭 */}
         <button
           className={`notification-tab ${activeTab === 'project' ? 'active' : ''}`}
           onClick={() => setActiveTab('project')}
         >
           프로젝트
         </button>
+        {/* 좋아요/댓글 탭 */}
         <button
           className={`notification-tab ${activeTab === 'board' ? 'active' : ''}`}
           onClick={() => setActiveTab('board')}
         >
           좋아요/댓글
         </button>
+        {/* 상점 */}
         {/* <button
           className={`notification-tab ${activeTab === 'shop' ? 'active' : ''}`}
           onClick={() => setActiveTab('shop')}

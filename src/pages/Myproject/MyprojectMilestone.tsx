@@ -1,32 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import ProjectSidebar from '../../components/myproject/ProjectSidebar';
-import ProgressBar from '../../components/ProgressBar';
-import '../../App.css';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import ProjectSidebar from "../../components/myproject/ProjectSidebar";
+import ProgressBar from "../../components/ProgressBar";
+import "../../App.css";
 
-import type { ProjectData } from '../../types/project';
-import type { Milestone } from '../../types/milestone';
-
-
-
-const dummyProject: ProjectData = {
-  id: 1,
-  title: 'TEAM-IT 프로젝트',
-  status: 'ONGOING',
-  description: '이 프로젝트는 TEAM-IT의 협업 프로젝트입니다.',
-  progress: 50,
-  recruit_positions: [],
-  required_stacks: [],
-  members: [],
-  milestones: [],
-  logoUrl: 'https://placehold.co/180x180/EFEFEF/333?text=Logo',
-};
-
-const dummyMilestones: Milestone[] = [
-  { id: 1, name: '알파 버전 출시', startDate: '2025-09-01', deadline: '2025-09-30', progress: 75 },
-  { id: 2, name: '사용자 피드백 반영', startDate: '2025-10-01', deadline: '2025-10-15', progress: 20 },
-  { id: 3, name: '베타 버전 출시', startDate: '2025-10-16', deadline: '2025-10-31', progress: 0 },
-];
+import type { ProjectData, Milestone } from "../../types/project";
 
 export default function MyprojectMilestone() {
   const { id } = useParams<{ id: string }>();
@@ -37,15 +15,35 @@ export default function MyprojectMilestone() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!id) return;
+
     setLoading(true);
-    setTimeout(() => {
-      setProject(dummyProject);
-      setMilestones(dummyMilestones);
-      setLoading(false);
-    }, 50);
+    fetch(`/mocks/project-${id}.json`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("프로젝트 데이터를 불러오지 못했습니다.");
+        }
+        return res.json();
+      })
+      .then((data: ProjectData) => {
+        setProject(data);
+
+        // milestone이 null, undefined, 혹은 배열이 아닐 경우 빈 배열로 처리
+        if (Array.isArray(data.milestones)) {
+          setMilestones(data.milestones);
+        } else {
+          setMilestones([]);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setProject(null);
+        setMilestones([]);
+      })
+      .finally(() => setLoading(false));
   }, [id]);
 
-  const handleGoBack = () => nav(`/myproject/${id}`);
+  const handleGoBack = () => nav(-1);
   const handleEdit = () => nav(`/myproject/${id}/milestone/edit`);
 
   if (loading) return <div>Loading...</div>;
@@ -63,36 +61,46 @@ export default function MyprojectMilestone() {
       />
 
       <main className="project-main-content">
-        <div className="content-card">
-          <div className="content-header">
-            <button className="back-button" onClick={handleGoBack}>← 돌아가기</button>
-            <button className="edit-button" onClick={handleEdit}>수정하기</button>
-          </div>
+        <div className="content-header">
+          <button className="back-button" onClick={handleGoBack}>
+            ← 돌아가기
+          </button>
+          <button className="edit-button" onClick={handleEdit}>
+            수정하기
+          </button>
+        </div>
 
-          <table className="milestone-table">
-            <thead>
-              <tr>
-                <th>마일스톤 이름</th>
-                <th>진행률</th>
-                <th>시작일</th>
-                <th>종료일</th>
-              </tr>
-            </thead>
-            <tbody>
-              {milestones.map((milestone) => (
-                <tr key={milestone.id}>
-                  <td>{milestone.name}</td>
-                  <td>
-                    <div className="milestone-progress">
-                      <ProgressBar progress={milestone.progress} />
-                    </div>
-                  </td>
-                  <td>{milestone.startDate}</td>
-                  <td>{milestone.deadline}</td>
+        <div className="card">
+          {milestones.length > 0 ? (
+            <table className="milestone-table">
+              <thead>
+                <tr>
+                  <th>마일스톤 이름</th>
+                  <th>닉네임</th>
+                  <th>종료일</th>
+                  <th>진행률</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {milestones.map((milestone) => (
+                  <tr key={milestone.id}>
+                    <td>{milestone.title}</td>
+                    <td>{milestone.nickname}</td>
+                    <td>{milestone.deadline}</td>
+                    <td>
+                      <div className="milestone-progress">
+                        <ProgressBar progress={milestone.progress} />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p style={{ padding: "1rem", textAlign: "center" }}>
+              등록된 마일스톤이 없습니다.
+            </p>
+          )}
         </div>
       </main>
     </div>
