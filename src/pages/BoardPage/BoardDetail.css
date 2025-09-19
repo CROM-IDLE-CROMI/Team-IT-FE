@@ -22,6 +22,74 @@
   white-space: pre-wrap; /* 줄바꿈 유지 */
 }
 
+/* -------------------- 수정 모드 스타일 -------------------- */
+
+/* 제목 입력창 */
+.post-edit-title {
+  width: 100%;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #333;
+}
+
+/* 본문 입력창 */
+.post-edit-content {
+  width: 100%;
+  font-size: 18px;
+  line-height: 1.6;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  resize: vertical; /* 세로로만 크기 조절 가능 */
+  min-height: 200px;
+  color: #555;
+}
+
+/* 수정 모드 버튼 컨테이너는 기존과 동일 */
+.post-detail-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+}
+
+/* 버튼 기본 스타일 (기존과 동일) */
+.post-detail-actions button {
+  padding: 0.5rem 1rem;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* 저장 버튼 (수정 모드 첫 번째 버튼) */
+.post-detail-actions button:first-child {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.post-detail-actions button:first-child:hover {
+  background-color: #45a049;
+}
+
+/* 취소 버튼 (수정 모드 두 번째 버튼) */
+.post-detail-actions button:last-child {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.post-detail-actions button:last-child:hover {
+  background-color: #e53935;
+}
+
+
+
 /* 모바일 대응 */
 @media (max-width: 600px) {
   .post-detail-wrapper {
@@ -32,5 +100,9 @@
   }
   .post-detail-content {
     font-size: 16px;
+  }
+  .post-detail-actions button {
+    font-size: 14px;
+    padding: 0.4rem 0.8rem;
   }
 }

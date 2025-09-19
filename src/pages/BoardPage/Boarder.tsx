@@ -21,15 +21,15 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
 
   const postsPerPage = 5;
   const currentPage = pageByCategory[category];
-  
+
   // 검색 기능을 포함한 게시글 필터링
   const allPosts = postsByCategory[category];
-  const filteredPosts = allPosts.filter(post => 
+  const filteredPosts = allPosts.filter(post =>
     post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
     post.author.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
+
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
   const startIndex = (currentPage - 1) * postsPerPage;
   const currentPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
@@ -67,13 +67,13 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
 
   return (
     <div className="board-page-wrapper">
-      <Header/>
+      <Header />
       <h2>{category} 게시판</h2>
 
       {/* 카테고리 탭과 검색 */}
       <div className="board-button">
         <div className="board-tabs">
-          {(["시사&정보","질문","홍보"] as Category[]).map(cat => (
+          {(["시사&정보", "질문", "홍보"] as Category[]).map(cat => (
             <button
               key={cat}
               className={category === cat ? "active" : ""}
@@ -83,7 +83,7 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
             </button>
           ))}
         </div>
-      
+
         {/* 검색 기능 */}
         <div className="board-search">
           <form onSubmit={handleSearch} className="search-form">
@@ -99,7 +99,7 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
             </button>
           </form>
         </div>
-      
+
         {/* 글 작성 버튼 */}
         <div className="board-actions">
           <button onClick={() => requireAuth(() => navigate("/BoardWrite"))}>
@@ -122,12 +122,12 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
                 <span className="post-title">{post.title}</span>
                 <span className="post-meta">
                   <button onClick={(e) => toggleScrap(e, post.id)}>
-                    <img 
+                    <img
                       src={
                         scrappedPosts.has(post.id)
                           ? "/스크랩 이후.png"
                           : "/스크랩 이전.png"
-                      } 
+                      }
                       alt="스크랩"
                       width="20"
                     />
