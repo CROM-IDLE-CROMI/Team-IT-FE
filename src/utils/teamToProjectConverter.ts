@@ -104,7 +104,14 @@ export const convertTeamDataToProject = (teamData: TeamFormData): Project => {
     progress,
     method,
     recruitEndDate,
-    contact
+    contact,
+    // 지원서에 필요한 정보 추가
+    applicationQuestions: applicantInfo.questions || [
+      "프로젝트에 기여할 수 있는 기술은 무엇인가요?",
+      "가장 기억에 남는 프로젝트 경험에 대해 설명해주세요.",
+      "이 프로젝트에 지원하게 된 동기는 무엇인가요?"
+    ],
+    applicationDescription: description
   };
 
   return project;

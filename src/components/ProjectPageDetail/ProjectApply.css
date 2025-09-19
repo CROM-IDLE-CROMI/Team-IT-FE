@@ -284,6 +284,37 @@
   line-height: 1.6;
   margin: 0;
 }
+/* 질문 관련 스타일 */
+.question-group {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+}
+
+.question-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+
+.no-questions-message {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 2px dashed #dee2e6;
+}
+
+.no-questions-message p {
+  color: #6c757d;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .apply-layout {
