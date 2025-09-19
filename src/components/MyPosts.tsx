@@ -52,7 +52,7 @@ const MyPosts: React.FC = () => {
   return (
     <div className="my-posts-container">
       <div className="my-posts-header">
-        <h2>📝 내가 쓴 게시물</h2>
+        <h2> 내가 쓴 게시물</h2>
         <div className="header-actions">
           <span className="posts-count">총 {myPosts.length}개</span>
         </div>
@@ -60,7 +60,7 @@ const MyPosts: React.FC = () => {
 
       {myPosts.length === 0 ? (
         <div className="empty-state">
-          <div className="empty-icon">📝</div>
+          <div className="empty-icon"></div>
           <h3>작성한 게시물이 없습니다</h3>
           <p>첫 번째 게시물을 작성해보세요!</p>
           <button 

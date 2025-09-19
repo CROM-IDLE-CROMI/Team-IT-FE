@@ -3,6 +3,7 @@ import { getCurrentUser } from './authUtils';
 import type { Post } from '../pages/BoardPage/DummyPosts';
 
 export interface MyPost extends Post {
+  category: string; // 게시글 카테고리
   createdAt: string; // 작성한 날짜
   lastModified?: string; // 마지막 수정 날짜
 }
