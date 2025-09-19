@@ -1045,6 +1045,16 @@
   color: #888;
 }
 
+.category {
+  background: #4a90e2;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
 /* 반응형 디자인 */
 @media (max-width: 1024px) {
   .top-sections {

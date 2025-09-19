@@ -6,6 +6,7 @@ import PublicProfile from "../../components/MyPageDetail/PublicProfile";
 import TechStackPopup from "../../components/MyPageDetail/TechStackPopup";
 import MyPageSidebar from "../../components/MyPageSidebar";
 import ScrapedPosts from "../../components/ScrapedPosts";
+import MyPosts from "../../components/MyPosts";
 import Header from "../../layouts/Header";
 import "./Mypage.css";
 
@@ -153,12 +154,7 @@ export default function Mypage() {
           </div>
         );
       case 'posts':
-        return (
-          <div className="content-placeholder">
-            <h2>내가 쓴 게시물</h2>
-            <p>작성한 게시물 목록이 여기에 표시됩니다.</p>
-          </div>
-        );
+        return <MyPosts />;
       case 'scrapped':
         return <ScrapedPosts />;
       case 'inbox':
