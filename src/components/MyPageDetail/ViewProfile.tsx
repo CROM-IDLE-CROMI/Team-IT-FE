@@ -12,6 +12,12 @@ interface Award {
   websiteUrl?: string;
 }
 
+interface TechStack {
+  id: string;
+  name: string;
+  level: '상' | '중' | '하';
+}
+
 interface ProfileData {
   profileImage: string | null;
   backgroundImage: string | null;
@@ -25,19 +31,18 @@ interface ProfileData {
   rating: number;
   reviewCount: number;
   awards: Award[];
+  techStacks: TechStack[];
 }
 
 type Props = {
   onEdit: () => void;
   profileData: ProfileData;
   onUpdateAwards?: (awards: Award[]) => void;
+  onEditTechStack?: () => void;
 };
 
-const reactStack = techStacksInit.find((s) => s.value === "React");
-const nodeStack = techStacksInit.find((s) => s.value === "Nodejs");
-const tsStack = techStacksInit.find((s) => s.value === "TypeScript");
 
-export default function ViewProfile({ onEdit, profileData, onUpdateAwards }: Props) {
+export default function ViewProfile({ onEdit, profileData, onUpdateAwards, onEditTechStack }: Props) {
   const navigate = useNavigate();
   const [showAwardPopup, setShowAwardPopup] = useState(false);
   return (
@@ -127,42 +132,33 @@ export default function ViewProfile({ onEdit, profileData, onUpdateAwards }: Pro
           <div className="skills-section">
             <div className="section-header">
               <h3>개발 스택</h3>
-              <button className="edit-btn">수정하기</button>
+              <button className="edit-btn" onClick={onEditTechStack}>수정하기</button>
             </div>
             <div className="stack-cards">
-              <div className="stack-card">
-               {reactStack && (
-        <div className="stack-item">
-          <img src={reactStack.icon} className="stack-icon" />
-          <span>{reactStack.label}</span>
-        </div>
-      )}
-                <div className="proficiency-levels">
-                  <span className="level high">상</span>
+              {profileData.techStacks && profileData.techStacks.length > 0 ? (
+                profileData.techStacks.map((techStack) => {
+                  const stackInfo = techStacksInit.find(s => s.value === techStack.id);
+                  return (
+                    <div key={techStack.id} className="stack-card">
+                      {stackInfo && (
+                        <div className="stack-item">
+                          <img src={stackInfo.icon} alt={techStack.name} className="stack-icon" />
+                          <span>{techStack.name}</span>
+                        </div>
+                      )}
+                      <div className="proficiency-levels">
+                        <span className={`level ${techStack.level === '상' ? 'high' : techStack.level === '중' ? 'medium' : 'low'}`}>
+                          {techStack.level}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="no-stacks">
+                  등록된 개발 스택이 없습니다.
                 </div>
-              </div>
-              <div className="stack-card">
-                 {nodeStack && (
-        <div className="stack-item">
-          <img src={nodeStack.icon} alt={nodeStack.label} className="stack-icon" />
-          <span>{nodeStack.label}</span>
-        </div>
-      )}
-                <div className="proficiency-levels">
-                  <span className="level medium">중</span>
-                </div>
-              </div>
-              <div className="stack-card">
-                {tsStack && (
-        <div className="stack-item">
-          <img src={tsStack.icon} alt={tsStack.label} className="stack-icon" />
-          <span>{tsStack.label}</span>
-        </div>
-      )}
-                <div className="proficiency-levels">
-                  <span className="level low">하</span>
-                </div>
-              </div>
+              )}
             </div>
           </div>
 
@@ -207,7 +203,7 @@ export default function ViewProfile({ onEdit, profileData, onUpdateAwards }: Pro
         <div className="project-history-section">
           <div className="section-header">
             <h3>프로젝트 이력</h3>
-            <button className="view-all-btn" onClick={() => navigate("/Myproject")}>전체 목록</button>
+            <button className="view-all-btn" onClick={() => navigate("/myprojectmain")}>전체 목록</button>
           </div>
           <div className="project-list">
             {profileData.projects && profileData.projects.length > 0 ? (

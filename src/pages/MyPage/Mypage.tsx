@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import ViewProfile from "../../components/MyPageDetail/ViewProfile";
 import EditProfile from "../../components/MyPageDetail/EditProfile";
 import PublicProfile from "../../components/MyPageDetail/PublicProfile";
+import TechStackPopup from "../../components/MyPageDetail/TechStackPopup";
 import Header from "../../layouts/Header";
 import "./Mypage.css";
 
@@ -12,6 +13,12 @@ interface Award {
   details: string;
   awardDate: string;
   websiteUrl?: string;
+}
+
+interface TechStack {
+  id: string;
+  name: string;
+  level: '상' | '중' | '하';
 }
 
 interface ProfileData {
@@ -27,10 +34,12 @@ interface ProfileData {
   rating: number;
   reviewCount: number;
   awards: Award[];
+  techStacks: TechStack[];
 }
 
 export default function Mypage() {
   const [activeTab, setActiveTab] = useState<'view' | 'public' | 'edit'>('view');
+  const [showTechStackPopup, setShowTechStackPopup] = useState(false);
   const [profileData, setProfileData] = useState<ProfileData>({
     profileImage: null,
     backgroundImage: null,
@@ -60,6 +69,11 @@ export default function Mypage() {
         details: "1등 - 알고리즘 문제 해결",
         awardDate: "2022. 08. 20"
       }
+    ],
+    techStacks: [
+      { id: "React", name: "React", level: "상" },
+      { id: "Nodejs", name: "Node.js", level: "중" },
+      { id: "TypeScript", name: "TypeScript", level: "하" }
     ]
   });
 
@@ -69,6 +83,10 @@ export default function Mypage() {
     if (savedProfile) {
       try {
         const parsedProfile = JSON.parse(savedProfile);
+        // techStacks가 없는 경우 빈 배열로 초기화
+        if (!parsedProfile.techStacks) {
+          parsedProfile.techStacks = [];
+        }
         setProfileData(parsedProfile);
       } catch (error) {
         console.error('프로필 데이터 로드 실패:', error);
@@ -86,6 +104,10 @@ export default function Mypage() {
   const handleEditComplete = (updatedData: Partial<ProfileData>) => {
     updateProfileData(updatedData);
     setActiveTab('view');
+  };
+
+  const handleTechStackUpdate = (techStacks: TechStack[]) => {
+    updateProfileData({ techStacks });
   };
 
   return (
@@ -121,6 +143,7 @@ export default function Mypage() {
             onEdit={() => setActiveTab('edit')}
             profileData={profileData}
             onUpdateAwards={(awards) => updateProfileData({ awards })}
+            onEditTechStack={() => setShowTechStackPopup(true)}
           />
         )}
         {activeTab === 'public' && (
@@ -135,6 +158,14 @@ export default function Mypage() {
           />
         )}
       </div>
+
+      {/* 개발스택 수정 팝업 */}
+      <TechStackPopup
+        isOpen={showTechStackPopup}
+        onClose={() => setShowTechStackPopup(false)}
+        onSave={handleTechStackUpdate}
+        currentTechStacks={profileData.techStacks || []}
+      />
     </div>
   );
 }
