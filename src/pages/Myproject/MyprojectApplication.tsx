@@ -38,12 +38,15 @@ export default function MyprojectApplications() {
 
   // 모달 상태를 string[] | null 로 변경
   const [modalContent, setModalContent] = useState<string[] | null>(null);
+  const [modalType, setModalType] = useState<"motivation" | "qa" | null>(null);
 
   const openModal = (content: string) => {
+    setModalType("motivation");
     setModalContent([content]);
   };
 
   const openQAModal = (questions: string[], answers: string[]) => {
+    setModalType("qa");
     const merged = questions.map((q, i) => `${q}\n${answers[i] || ""}`);
     setModalContent(merged);
   };
@@ -51,6 +54,7 @@ export default function MyprojectApplications() {
   const handleGoBack = () => navigate(`/myproject/${id}`);
 
   const closeModal = () => {
+    setModalType(null);
     setModalContent(null);
   };
 
@@ -115,19 +119,30 @@ export default function MyprojectApplications() {
       {modalContent && (
         <div className="application-modal">
           <div className="application-modal-content">
-            <h3>지원서 질문/답변</h3>
-            <ul className="qa-list">
-              {modalContent.map((item, idx) => {
-                const [q, ...rest] = item.split("\n");
-                const a = rest.join("\n");
-                return (
-                  <li key={idx} className="qa-item">
-                    <p className="qa-question">{q}</p>
-                    <p className="qa-answer">{a}</p>
-                  </li>
-                );
-              })}
-            </ul>
+            {modalType === "motivation" && (
+              <>
+                <h3>지원 동기</h3>
+                <p className="qa-answer">{modalContent[0]}</p>
+              </>
+            )}
+
+            {modalType === "qa" && (
+              <>
+                <h3>지원서 질문/답변</h3>
+                <ul className="qa-list">
+                  {modalContent.map((item, idx) => {
+                    const [q, ...rest] = item.split("\n");
+                    const a = rest.join("\n");
+                    return (
+                      <li key={idx} className="qa-item">
+                        <p className="qa-question">{q}</p>
+                        <p className="qa-answer">{a}</p>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
+            )}
             <button className="application-modal-close" onClick={closeModal}>
               닫기
             </button>

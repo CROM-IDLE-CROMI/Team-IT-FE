@@ -1,31 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-interface Member {
-  id: number;
-  nickname: string;
-  email: string;
-  position: string;
-  techStack: string;
-  rating: string;
-}
+import type { Member } from "../../types/project";
 
 const MyprojectMemberEdit: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  const [members, setMembers] = useState<Member[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const [members, setMembers] = useState<Member[]>([
-    { id: 1, nickname: "크롱", email: "...", position: "...", techStack: "...", rating: "..." },
-    { id: 2, nickname: "어한명", email: "...", position: "...", techStack: "...", rating: "..." },
-    { id: 3, nickname: "줌니", email: "...", position: "...", techStack: "...", rating: "..." },
-    { id: 4, nickname: "김1성수령", email: "...", position: "...", techStack: "...", rating: "..." },
-  ]);
+  useEffect(() => {
+    if (!id) return;
+
+    setLoading(true);
+    fetch(`/mocks/project-${id}.json`)
+      .then((res) => res.json())
+      .then((data: { members?: Member[] }) => {
+        setMembers(data.members || []);
+      })
+      .catch((err) => {
+        console.error("멤버 데이터를 불러오는 데 실패했습니다:", err);
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
+
 
   const handleRemove = (id: number) => {
     if (window.confirm("정말로 이 멤버를 삭제하시겠습니까?")) {
-      setMembers(members.filter((member) => member.id !== id));
+      setMembers((prev) => prev.filter((member) => member.id !== id));
     }
   };
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div className="member-edit-container">
@@ -52,33 +58,36 @@ const MyprojectMemberEdit: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {members.map((member) => (
-            <tr key={member.id}>
-              <td>{member.nickname}</td>
-              <td>{member.email}</td>
-              <td>{member.position}</td>
-              <td>{member.techStack}</td>
-              <td>{member.rating}</td>
-              <td>
-                <button
-                  onClick={() => handleRemove(member.id)}
-                  className="member-edit-remove-btn"
-                >
-                  X
-                </button>
-              </td>
+          {members.length > 0 ? (
+            members.map((member) => (
+              <tr key={member.id}>
+                <td>{member.nickname}</td>
+                <td>{member.email}</td>
+                <td>{member.role}</td>
+                <td>{member.techStack}</td>
+                <td>{member.rating}</td>
+                <td>
+                  <button
+                    onClick={() => handleRemove(member.id)}
+                    className="member-edit-remove-btn"
+                  >
+                    X
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={6}>등록된 멤버가 없습니다.</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
 
       {/* 하단 수정/취소 버튼 */}
       <div className="member-edit-bottom-btns">
         <button className="member-edit-save-btn">수정 완료</button>
-        <button
-          onClick={() => navigate(-1)}
-          className="member-edit-cancel-btn"
-        >
+        <button onClick={() => navigate(-1)} className="member-edit-cancel-btn">
           취소
         </button>
       </div>

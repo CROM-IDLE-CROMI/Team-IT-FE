@@ -45,12 +45,10 @@ export default function MyprojectMember() {
       />
       <main className="project-main-content">
         <div className="content-header">
-          <button className="back-button" onClick={handleGoBack}>
-            ← 돌아가기
-          </button>
-          <button className="edit-button" onClick={handleEdit}>
-            수정하기
-          </button>
+          <button className="back-button" onClick={handleGoBack}>← 돌아가기</button>
+          { project.status !== 'COMPLETED' && (
+            <button className="edit-button" onClick={handleEdit}>수정하기</button>
+          )}
         </div>
         <div className="card">
           <table className="member-table">
