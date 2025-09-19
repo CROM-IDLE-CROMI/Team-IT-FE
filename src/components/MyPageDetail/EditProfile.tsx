@@ -211,8 +211,6 @@ export default function EditProfile({ profileData, onSave }: Props) {
           {/* 사용자 ID와 뱃지 */}
           <div className="user-info">
             <span className="user-id">{getCurrentUser() || "사용자 ID"}</span>
-            <div className="user-badge">
-            </div>
           </div>
 
           {/* 수정 완료 버튼 */}
