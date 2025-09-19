@@ -4,6 +4,7 @@ import ViewProfile from "../../components/MyPageDetail/ViewProfile";
 import EditProfile from "../../components/MyPageDetail/EditProfile";
 import PublicProfile from "../../components/MyPageDetail/PublicProfile";
 import TechStackPopup from "../../components/MyPageDetail/TechStackPopup";
+import MyPageSidebar from "../../components/MyPageSidebar";
 import Header from "../../layouts/Header";
 import "./Mypage.css";
 
@@ -38,8 +39,9 @@ interface ProfileData {
 }
 
 export default function Mypage() {
-  const [activeTab, setActiveTab] = useState<'view' | 'public' | 'edit'>('view');
+  const [activeTab, setActiveTab] = useState<'view' | 'public' | 'edit' | 'interest' | 'posts' | 'scrapped' | 'inbox'>('view');
   const [showTechStackPopup, setShowTechStackPopup] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [profileData, setProfileData] = useState<ProfileData>({
     profileImage: null,
     backgroundImage: null,
@@ -110,54 +112,92 @@ export default function Mypage() {
     updateProfileData({ techStacks });
   };
 
-  return (
-    <div className="mypage-container">
-      <Header />
-      
-      {/* 탭 네비게이션 */}
-      <div className="tab-navigation">
-        <button 
-          className={`tab-button ${activeTab === 'view' ? 'active' : ''}`}
-          onClick={() => setActiveTab('view')}
-        >
-          내 프로필
-        </button>
-        <button 
-          className={`tab-button ${activeTab === 'public' ? 'active' : ''}`}
-          onClick={() => setActiveTab('public')}
-        >
-          공개 프로필
-        </button>
-        <button 
-          className={`tab-button ${activeTab === 'edit' ? 'active' : ''}`}
-          onClick={() => setActiveTab('edit')}
-        >
-          편집
-        </button>
-      </div>
+  const handleTabChange = (tab: 'view' | 'public' | 'edit' | 'interest' | 'posts' | 'scrapped' | 'inbox') => {
+    setActiveTab(tab);
+  };
 
-      {/* 탭 콘텐츠 */}
-      <div className="tab-content">
-        {activeTab === 'view' && (
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'view':
+        return (
           <ViewProfile 
             onEdit={() => setActiveTab('edit')}
             profileData={profileData}
             onUpdateAwards={(awards) => updateProfileData({ awards })}
             onEditTechStack={() => setShowTechStackPopup(true)}
           />
-        )}
-        {activeTab === 'public' && (
+        );
+      case 'public':
+        return (
           <PublicProfile 
             profileData={profileData}
           />
-        )}
-        {activeTab === 'edit' && (
+        );
+      case 'edit':
+        return (
           <EditProfile 
             profileData={profileData}
             onSave={handleEditComplete}
           />
-        )}
+        );
+      case 'interest':
+        return (
+          <div className="content-placeholder">
+            <h2>나의 관심 프로젝트</h2>
+            <p>관심 프로젝트 목록이 여기에 표시됩니다.</p>
+          </div>
+        );
+      case 'posts':
+        return (
+          <div className="content-placeholder">
+            <h2>내가 쓴 게시물</h2>
+            <p>작성한 게시물 목록이 여기에 표시됩니다.</p>
+          </div>
+        );
+      case 'scrapped':
+        return (
+          <div className="content-placeholder">
+            <h2>내가 스크랩한 게시물</h2>
+            <p>스크랩한 게시물 목록이 여기에 표시됩니다.</p>
+          </div>
+        );
+      case 'inbox':
+        return (
+          <div className="content-placeholder">
+            <h2>수신함</h2>
+            <p>받은 메시지가 여기에 표시됩니다.</p>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="mypage-container">
+      <Header />
+
+      {/* 옵션 버튼 */}
+      <button className="option-toggle-btn" onClick={toggleSidebar}>
+        <img src="/Option.png" alt="옵션" className="option-icon" />
+      </button>
+
+      {/* 탭 콘텐츠 */}
+      <div className="tab-content">
+        {renderContent()}
       </div>
+
+      {/* 사이드바 */}
+      <MyPageSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+      />
 
       {/* 개발스택 수정 팝업 */}
       <TechStackPopup
