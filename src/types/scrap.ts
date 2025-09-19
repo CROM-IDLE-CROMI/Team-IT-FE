@@ -38,6 +38,3 @@ export interface ScrapManager {
   isScraped: (postId: number) => boolean;
   clearAllScraps: () => void;
 }
-
-// 타입들을 named export로만 사용
-// TypeScript에서 interface와 type은 값이 아니므로 default export에서 제거
