@@ -18,7 +18,6 @@ import ProjectApply from './components/ProjectPageDetail/ProjectApply';
 // develop 기능
 import Login from './pages/Login/Login';
 import Signup from './pages/Signup';
-import Home from './pages/Home';
 import KakaoCallback from './auth/KakaoCallback';
 import MyprojectMain from './pages/Myproject/MyprojectMain';
 import MyProjectDetail from './pages/Myproject/MyprojectDetail';

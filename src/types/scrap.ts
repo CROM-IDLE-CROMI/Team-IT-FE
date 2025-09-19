@@ -38,11 +38,3 @@ export interface ScrapManager {
   isScraped: (postId: number) => boolean;
   clearAllScraps: () => void;
 }
-
-// 기본 export도 추가
-export default {
-  ScrapedPost,
-  ScrapData,
-  ScrapAction,
-  ScrapManager
-};
