@@ -38,7 +38,8 @@ const BoardWrite: React.FC<BoardWriteProps> = ({ onAddPost }) => {
     
     // 내가 쓴 게시글에도 추가
     addMyPost({
-      ...newPost
+      ...newPost,
+      category: category
     });
     
     navigate("/Boarder"); // 게시판으로 돌아가기

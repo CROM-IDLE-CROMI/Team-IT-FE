@@ -158,12 +158,6 @@ export default function Mypage() {
       case 'scrapped':
         return <ScrapedPosts />;
       case 'inbox':
-        return (
-          <div className="content-placeholder">
-            <h2>수신함</h2>
-            <p>받은 메시지가 여기에 표시됩니다.</p>
-          </div>
-        );
       default:
         return null;
     }
