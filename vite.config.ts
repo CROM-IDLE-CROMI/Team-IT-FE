@@ -23,5 +23,6 @@ export default defineConfig({
     hmr: {
       port: 3001,
     },
+    allowedHosts: ['TeamIT.com', 'localhost', '127.0.0.1'],
   },
 })
