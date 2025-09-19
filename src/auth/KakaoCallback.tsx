@@ -16,6 +16,7 @@ const KakaoCallback = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log("백엔드 응답:", data);
+        localStorage.setItem('isLoggedIn', 'true');
         alert(`${data.nickname}님 환영합니다!`);
         navigate("/");
       })
