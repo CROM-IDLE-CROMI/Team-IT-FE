@@ -54,9 +54,10 @@ function App() {
         <Route path="/Boarder" element={<BoardPage postsByCategory={postsByCategory} />} />
         <Route path="/BoardWrite" element={<BoardWrite onAddPost={handleAddPost} />} />
         <Route path="/Board/:id" element={<BoardDetail postsByCategory={postsByCategory} />} />
+        <Route path="/myprojectmain" element={<MyprojectMain />} />
         <Route path="/Mypage" element={<Mypage />} />
 
-        {/* develop 기능 */}
+        {/* develop 기능 */}s
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/oauth/callback/kakao" element={<KakaoCallback />} />

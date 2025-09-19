@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Platform } from '../../components/PlatformEnum';
 import ProjectTable from '../../components/myproject/ProjectTable';
+import Header from '../../layouts/Header';
 import "../../App.css";
 
 interface Project_table {
@@ -105,6 +106,7 @@ export default function MyProjectMain() {
 
   return (
     <div className="myproject-container">
+      <Header />
       <ProjectTable
         title="내가 진행중인 프로젝트"
         headers={['프로젝트 이름', '팀장', '플랫폼', '직군', '프로젝트 시작일', '진행 상태']}
