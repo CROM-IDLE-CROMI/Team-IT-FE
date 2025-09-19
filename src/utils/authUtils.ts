@@ -23,6 +23,7 @@ export const isLoggedIn = (): boolean => {
 /**
  * 현재 로그인된 사용자 ID 반환
  * - JWT 토큰이 있으면 decode해서 userId 반환
+ * - 없으면 localStorage의 currentUserId 반환
  * - 없으면 localStorage에 저장된 userData에서 id 반환
  */
 export const getCurrentUser = (): string | null => {
@@ -38,10 +39,16 @@ export const getCurrentUser = (): string | null => {
     }
   }
 
-  // 2. 프론트 전용 fallback (현재 단계)
+  // 2. currentUserId 우선 확인
+  const currentUserId = localStorage.getItem("currentUserId");
+  if (currentUserId) {
+    return currentUserId;
+  }
+
+  // 3. 프론트 전용 fallback (현재 단계)
   const keys = Object.keys(localStorage);
   for (const key of keys) {
-    if (key !== "isLoggedIn" && key !== "IsLoggedIn") {
+    if (key !== "isLoggedIn" && key !== "IsLoggedIn" && key !== "currentUserId") {
       try {
         const userData = JSON.parse(localStorage.getItem(key) || "");
         if (userData && userData.id) {

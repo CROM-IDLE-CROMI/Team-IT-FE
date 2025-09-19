@@ -42,6 +42,18 @@ function App() {
     }));
   };
 
+  const handleDeletePost = (postId: number) => {
+    setPostsByCategory(prev => {
+      const newPostsByCategory = { ...prev };
+      Object.keys(newPostsByCategory).forEach(category => {
+        newPostsByCategory[category as Category] = newPostsByCategory[category as Category].filter(
+          post => post.id !== postId
+        );
+      });
+      return newPostsByCategory;
+    });
+  };
+
   return (
     <Router>
       <Routes>
@@ -53,7 +65,7 @@ function App() {
         <Route path="/Teams" element={<TeamPage />} />
         <Route path="/Boarder" element={<BoardPage postsByCategory={postsByCategory} />} />
         <Route path="/BoardWrite" element={<BoardWrite onAddPost={handleAddPost} />} />
-        <Route path="/Board/:id" element={<BoardDetail postsByCategory={postsByCategory} />} />
+        <Route path="/Board/:id" element={<BoardDetail postsByCategory={postsByCategory} onDeletePost={handleDeletePost} />} />
         <Route path="/myprojectmain" element={<MyprojectMain />} />
         <Route path="/Mypage" element={<Mypage />} />
 
