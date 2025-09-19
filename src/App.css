@@ -374,6 +374,13 @@ html, body {
   background-color: #4f46e5;
 }
 
+.myproject-card_1{
+  border: 2px solid #000000;
+  background: #ffffff;
+
+}
+
+
 
 /*===================================================================================
 =====================ProjectCard.tsx=================================================
@@ -806,10 +813,18 @@ button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination
   border: 1px dashed #d0d0d0;
   display: flex;
   align-items: center;
+  overflow: hidden;
   justify-content: center;
   color: #a0a0a0;
   font-size: 1rem;
   margin-bottom: 1rem;
+}
+
+.team-logo-placeholder img{
+  background-color: #f9f9f9;
+  max-width: 220px;
+  max-height: 220px;
+  object-fit: contain;
 }
 
 .project-sidebar .sidebar-nav h2 {
@@ -1004,6 +1019,7 @@ button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination
   gap: 2rem;
   max-width: 1200px;
   margin: 2rem auto;
+  min-height: calc(100vh - 88px);
 }
 
 .team-logo {
@@ -1036,36 +1052,48 @@ button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
-.card {
-  padding: 1.5rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+.myproject-card {
+  padding: 2rem;
+  border: 2px solid #e8e8e8;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
 }
 
-.card-header {
+.myproject-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 
-.card-header h3,
-.card-header h4 {
+.myproject-card-header h3,
+.myproject-card-header h4 {
   margin: 0;
-  font-weight: 600;
+  font-weight: 700;
+  color: #2c3e50;
+  font-size: 1.25rem;
 }
 
-.card-header h4 {
-  font-size: 1rem;
+.myproject-card-header h4 {
+  font-size: 1.1rem;
+  color: #34495e;
 }
 
-.card-header span {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #555;
+.myproject-card-header span {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2980b9;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 2px solid rgba(52, 152, 219, 0.3);
 }
 
 .edit-button-wrapper {
@@ -1075,17 +1103,107 @@ button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination
 }
 
 .edit-button {
-  background: none;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
   border: none;
   cursor: pointer;
-  padding: 0.25rem 0.5rem;
+  padding: 0.75rem 1.5rem;
   font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  transition: all 0.3s ease;
+}
+
+.edit-button:hover {
+  background: linear-gradient(135deg, #2980b9 0%, #21618c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+}
+
+/* 프로젝트 소개 카드 특별 스타일 */
+.project-intro-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border: 2px solid #e9ecef;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 200px;
+  border: 2px solid #000000;
+}
+
+.project-intro-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
 }
 
 .content-grid {
   display: grid;
-  grid-template-columns: 250px 1fr;
-  gap: 1.5rem;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: auto auto;
+  gap: 2rem;
+  min-height: 400px;
+}
+
+.content-grid .card:first-child {
+  grid-row: 1 / -1;
+  border: 2px solid #000000;
+  width: 200px;
+  height: 300px;
+}
+
+.content-grid .card:nth-child(2) {
+  grid-column: 2;
+  grid-row: 1;
+  border: 2px solid #000000;
+  width: 550px;
+}
+
+.content-grid .card:nth-child(3) {
+  grid-column: 2;
+  grid-row: 2;
+  border: 2px solid #000000;
+  width: 550px;
+  height: 90px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .project-detail-layout {
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 1rem auto;
+    padding: 0 1rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 1.5rem;
+    min-height: auto;
+  }
+
+  .content-grid .card:first-child,
+  .content-grid .card:nth-child(2),
+  .content-grid .card:nth-child(3) {
+    grid-column: 1;
+    grid-row: auto;
+    background: #ffffff;
+    border: 2px solid #e8e8e8;
+  }
+
+  .edit-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
 }
 
 /* =====================================================
@@ -1259,7 +1377,7 @@ button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination
 .myproject-layout {
   display: flex;
   gap: 2rem;
-  max-width: 1200px;
+  min-width: 1200px;
   margin: 0 auto;
 }
 
@@ -1271,7 +1389,7 @@ button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination
 }
 
 /* 카드 스타일 */
-.card {
+.card_1 {
   background-color: #fff;
   padding: 1rem;
   border-radius: 8px;
@@ -1280,7 +1398,7 @@ button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination
 
 /* 테이블 스타일 */
 .member-table {
-  width: 100%;
+  width: 700px;
   border-collapse: collapse;
   border: 1px solid var(--border-color, #ddd);
   border-radius: 8px;

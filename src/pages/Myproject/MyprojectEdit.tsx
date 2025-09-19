@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../../App.css';
 
 export default function MyprojectEdit() {
@@ -8,6 +8,7 @@ export default function MyprojectEdit() {
   const [teamLogo, setTeamLogo] = useState<File | null>(null);
   const [progress, setProgress] = useState(25); // 기존 데이터로 초기화
   const nav = useNavigate();
+  const { id } = useParams<{ id: string }>();
 
   // 파일 선택 시 호출될 함수
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,8 +42,9 @@ export default function MyprojectEdit() {
     if (window.confirm('프로젝트를 완료 상태로 전환하시겠습니까?')) {
       console.log('프로젝트 완료 처리');
       alert('프로젝트가 완료 처리되었습니다.');
+        nav('/MyprojectDetailfake');
+      }
     }
-  };
 
   return (
     <div className="edit-container">

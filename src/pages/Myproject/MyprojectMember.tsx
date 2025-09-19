@@ -65,7 +65,7 @@ export default function MyprojectMember() {
           <button className="back-button" onClick={handleGoBack}>← 돌아가기</button>
           <button className="edit-button" onClick={handleEdit}>수정하기</button>
         </div>
-        <div className="card">
+        <div className="card_1">
         <table className="member-table">
             <thead>
             <tr>
