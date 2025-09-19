@@ -38,9 +38,11 @@ export interface Member {
 
 // --- 마일스톤 ---
 export interface Milestone {
-  id: string;
+  id: number;
   title: string;
+  nickname: string;
   progress: number;
+  deadline: string;
 }
 
 // --- 프로젝트 데이터 ---

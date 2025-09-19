@@ -27,7 +27,7 @@ export default function MyprojectMember() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  const handleGoBack = () => nav(`/myproject/${id}`);
+  const handleGoBack = () => nav(-1);
   const handleEdit = () => nav(`/myproject/${id}/member/edit`);
 
   if (loading) return <div>Loading...</div>;

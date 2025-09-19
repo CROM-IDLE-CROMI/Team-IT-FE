@@ -160,9 +160,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   color: #a0a0a0;
   font-size: 1rem;
   margin-bottom: 1rem;
+}
+
+.team-logo-placeholder img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* 이미지 비율 유지하면서 축소 */
 }
 
 .project-sidebar .sidebar-nav h2 {
@@ -673,114 +680,162 @@
 /* =====================================================
    마이프로젝트 상세페이지 마일스톤 페이지
 ====================================================== */
+/* 마일스톤 테이블 */
 .milestone-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  border: 1px solid var(--border-color, #ddd);
   border-radius: 8px;
   overflow: hidden;
   background: #fff;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-.milestone-table th {
-  background: #f5f6fa;
-  color: #333;
-  padding: 14px;
+/* 헤더 스타일 */
+.milestone-table thead th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: var(--dark, #333);
+  padding: 16px;
   font-size: 15px;
   text-align: center;
-  border-bottom: 1px solid #ddd;
+  border-right: 1px solid var(--border-color, #ddd);
+  border-bottom: 1px solid var(--border-color, #ddd);
 }
 
+.milestone-table thead th:last-child {
+  border-right: none;
+}
+
+/* 바디 스타일 */
 .milestone-table td {
-  padding: 14px;
+  padding: 16px;
   font-size: 14px;
   text-align: center;
-  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--border-color, #eee);
 }
 
-.milestone-table tr:last-child td {
+.milestone-table tbody tr:last-child td {
   border-bottom: none;
 }
 
+/* hover 효과 */
+.milestone-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* 진행률 칸 */
 .milestone-progress {
   width: 150px;
   margin: 0 auto;
 }
 
-
 /* =====================================================
    마이프로젝트 상세페이지 상세설명 수정 페이지
 ====================================================== */
-.explain-page-container {
+.explain-edit-container {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 24px;
-  max-width: 800px;
-  margin: 0 auto;
+  gap: 1.5rem;
 }
 
-/* 뒤로가기 버튼 */
-.explain-page-back-wrapper {
+.explain-edit-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.explain-edit-textarea {
   width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 16px;
-}
-
-.explain-page-back-btn {
-  padding: 6px 12px;
-  background-color: #ecf0f1;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.explain-page-back-btn:hover {
-  background-color: #d0d7da;
-}
-
-/* 텍스트 입력란 */
-.explain-page-textarea {
-  width: 100%;
-  height: 250px;
+  min-height: 320px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 12px;
-  font-size: 16px;
-  margin-bottom: 20px;
-  resize: none;
+  padding: 14px;
+  font-size: 15px;
+  resize: vertical;
+  margin-bottom: 16px;
+  line-height: 1.5;
+  box-sizing: border-box;
 }
 
-/* 저장 버튼 */
-.explain-page-save-btn {
+.explain-edit-textarea:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* 버튼 영역 */
+.explain-edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.explain-edit-save-btn {
   padding: 10px 20px;
-  background-color: #3498db;
-  color: white;
+  background-color: #27ae60;
+  color: #fff;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 15px;
+  transition: background 0.2s;
 }
 
-.explain-page-save-btn:hover {
-  background-color: #2980b9;
+.explain-edit-save-btn:hover {
+  background-color: #1e8449;
+}
+
+.explain-edit-cancel-btn {
+  padding: 10px 20px;
+  background-color: #bdc3c7;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.explain-edit-cancel-btn:hover {
+  background-color: #95a5a6;
 }
 
 
 /* =====================================================
    마이프로젝트 상세페이지 멤버 수정 페이지
 ====================================================== */
-.member-edit-container {
-  padding: 12px 24px;
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
+.project-main-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-/* 테이블 (멤버 페이지와 동일 스타일 적용) */
+/* 상단 버튼 (팀장 위임하기) */
+.member-edit-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: -16px;
+}
+
+.member-edit-leader-btn {
+  padding: 7px 14px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.member-edit-leader-btn:hover {
+  background-color: #2980b9;
+}
+
+/* 테이블 */
 .member-edit-table {
   width: 100%;
   border-collapse: collapse;
@@ -791,17 +846,18 @@
 
 .member-edit-table th,
 .member-edit-table td {
-  padding: 16px;
+  padding: 14px;
   text-align: center;
   vertical-align: middle;
   border-bottom: 1px solid var(--border-color, #ddd);
+  font-size: 14px;
 }
 
-/* 헤더 스타일 */
+/* 헤더 */
 .member-edit-table thead th {
   background-color: #fafafa;
   font-weight: 600;
-  color: var(--dark, #333);
+  color: #333;
   border-right: 1px solid var(--border-color, #ddd);
 }
 
@@ -809,22 +865,24 @@
   border-right: none;
 }
 
-/* 바디 스타일 */
+/* 마지막 행 */
 .member-edit-table tbody tr:last-child td {
   border-bottom: none;
 }
 
+/* hover 효과 */
 .member-edit-table tbody tr:hover {
-  background-color: #f5f5f5;
+  background-color: #f9f9f9;
 }
 
 /* 삭제 버튼 (X) */
 .member-edit-remove-btn {
-  padding: 4px 8px;
+  padding: 4px 10px;
   background-color: #e74c3c;
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 4px;
+  font-size: 13px;
   cursor: pointer;
 }
 
@@ -832,41 +890,22 @@
   background-color: #c0392b;
 }
 
-/* 팀장 위임하기 버튼 */
-.member-edit-leader-btn-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin: 16px 0;
-}
-
-.member-edit-leader-btn {
-  padding: 8px 16px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.member-edit-leader-btn:hover {
-  background-color: #2980b9;
-}
-
-/* 하단 버튼 영역 */
-.member-edit-bottom-btns {
+/* 하단 수정/취소 버튼 */
+.member-edit-actions {
   display: flex;
   justify-content: center;
   gap: 16px;
-  margin-top: 24px;
+  margin-top: 20px;
 }
 
 .member-edit-save-btn {
   padding: 10px 20px;
   background-color: #27ae60;
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 .member-edit-save-btn:hover {
@@ -876,10 +915,11 @@
 .member-edit-cancel-btn {
   padding: 10px 20px;
   background-color: #bdc3c7;
-  color: black;
+  color: #333;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 .member-edit-cancel-btn:hover {
@@ -973,59 +1013,114 @@
 /* =====================================================
    마이프로젝트 상세페이지 마일스톤 수정 페이지
 ====================================================== */
-.milestone-edit-container {
-  padding: 24px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
 .milestone-edit-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .milestone-edit-table th,
 .milestone-edit-table td {
-  border: 1px solid #ddd;
-  padding: 12px;
+  padding: 16px;
   text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--border-color, #ddd);
+  font-size: 14px;
 }
 
+.milestone-edit-table thead th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: var(--dark, #333);
+  border-right: 1px solid var(--border-color, #ddd);
+}
+
+.milestone-edit-table thead th:last-child {
+  border-right: none;
+}
+
+.milestone-edit-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.milestone-edit-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* 입력 필드 */
 .milestone-edit-table input {
   width: 100%;
-  border: none;
-  outline: none;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 13px;
   text-align: center;
+  box-sizing: border-box;
 }
 
+/* 삭제 버튼 */
 .milestone-delete-btn {
+  padding: 4px 10px;
   background-color: #e74c3c;
-  color: white;
+  color: #fff;
   border: none;
-  padding: 6px 12px;
-  cursor: pointer;
   border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
 }
-
 .milestone-delete-btn:hover {
   background-color: #c0392b;
 }
 
+/* 하단 버튼 영역 */
+.milestone-edit-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
 .milestone-add-btn {
-  display: block;
-  width: 100%;
-  padding: 14px;
-  background-color: #3498db;
-  color: white;
-  font-size: 16px;
+  padding: 8px 16px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+.milestone-add-btn:hover {
+  background: #f5f5f5;
+}
+
+.milestone-edit-bottom-btns {
+  display: flex;
+  gap: 12px;
+}
+
+.milestone-save-btn {
+  padding: 10px 20px;
+  background-color: #27ae60;
+  color: #fff;
   border: none;
   border-radius: 6px;
   cursor: pointer;
 }
+.milestone-save-btn:hover {
+  background-color: #1e8449;
+}
 
-.milestone-add-btn:hover {
-  background-color: #2980b9;
+.milestone-cancel-btn {
+  padding: 10px 20px;
+  background-color: #bdc3c7;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.milestone-cancel-btn:hover {
+  background-color: #95a5a6;
 }
 
 

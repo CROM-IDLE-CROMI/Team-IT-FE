@@ -15,6 +15,8 @@ import MyprojectMemberEdit from './pages/Myproject/MyprojectMemberEdit';
 import MemberChangeLeader from './pages/Myproject/MemberChangeLeader';
 import MyprojectApplication from './pages/Myproject/MyprojectApplication';
 import Notification from './pages/Notification';
+
+import FakeMyprojectDetail from './pages/Myproject/FakeMyprojectDetail';
 import './App.css';
 
 function App() {
@@ -37,6 +39,8 @@ function App() {
         <Route path="/myproject/:id/member/edit/change-leader" element={<MemberChangeLeader />} />
         <Route path="/myproject/:id/applications" element={<MyprojectApplication />} />
         <Route path="/notification" element={<Notification />} />
+
+        <Route path="/myproject/I" element={<FakeMyprojectDetail />} />
       </Routes>
     </Router>
   );

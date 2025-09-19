@@ -34,7 +34,7 @@ export default function MyprojectExplain() {
       });
   }, [id]);
 
-  const handleGoBack = () => navigate(`/myproject/${id}`);
+  const handleGoBack = () => navigate(-1);
   const handleEdit = () => { 
     navigate(`/myproject/${id}/explain/edit`, { 
       state: { project },
