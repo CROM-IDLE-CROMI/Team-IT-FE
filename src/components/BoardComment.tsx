@@ -57,7 +57,7 @@ const BoardComment: React.FC<BoardCommentProps> = ({
   return (
     <div className="board-comment-container">
       <div className="board-comment-box">
-        <h3 className="comment-title">댓글 ({comments.length})</h3>
+        <h3 className="comment-title">댓글</h3>
         
         {/* 댓글 작성 섹션 */}
         <div className="comment-input-section">
