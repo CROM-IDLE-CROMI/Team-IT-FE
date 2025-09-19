@@ -4,6 +4,7 @@ import type { Post, Category } from "./DummyPosts";
 import BoardComment from "../../components/BoardComment";
 import { getCurrentUser } from "../../utils/authUtils";
 import "./BoardDetail.css";
+import Header from "../../layouts/Header";
 
 type BoardDetailProps = {
   postsByCategory: Record<Category, Post[]>;
@@ -100,7 +101,9 @@ const BoardDetail: React.FC<BoardDetailProps> = ({ postsByCategory, onDeletePost
 
   // -------------------- JSX --------------------
   return (
+
     <div className="post-detail-wrapper">
+          <Header />
       {isEditing ? (
         <>
           <input
