@@ -114,6 +114,8 @@
 .comment-actions {
   display: flex;
   gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .reply-btn {
@@ -130,6 +132,41 @@
 .reply-btn:hover {
   background: #4a90e2;
   color: white;
+}
+
+/* 수정/삭제 버튼 그룹 */
+.button-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.button-group button {
+  background: transparent;
+  border: 1px solid #ddd;
+  color: #666;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button-group button:hover {
+  background: #f8f9fa;
+  border-color: #bbb;
+  color: #333;
+}
+
+.button-group button:first-child:hover {
+  background: #e3f2fd;
+  border-color: #2196f3;
+  color: #1976d2;
+}
+
+.button-group button:last-child:hover {
+  background: #ffebee;
+  border-color: #f44336;
+  color: #d32f2f;
 }
 
 /* 답글 작성 폼 */
@@ -235,6 +272,112 @@
   white-space: pre-wrap;
 }
 
+/* 편집 섹션 */
+.edit-section {
+  margin: 0.75rem 0;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.edit-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 60px;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.edit-textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+}
+
+.edit-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+}
+
+.save-btn {
+  background: #4a90e2;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.save-btn:hover {
+  background: #357abd;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.cancel-btn {
+  background: #95a5a6;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background: #7f8c8d;
+  transform: translateY(-1px);
+}
+
+/* 답글 액션 버튼 */
+.reply-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  justify-content: flex-end;
+}
+
+.reply-actions button {
+  background: transparent;
+  border: 1px solid #ddd;
+  color: #666;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reply-actions button:hover {
+  background: #f8f9fa;
+  border-color: #bbb;
+  color: #333;
+}
+
+.reply-actions button:first-child:hover {
+  background: #e3f2fd;
+  border-color: #2196f3;
+  color: #1976d2;
+}
+
+.reply-actions button:last-child:hover {
+  background: #ffebee;
+  border-color: #f44336;
+  color: #d32f2f;
+}
+
 /* 댓글 없음 메시지 */
 .no-comments {
   text-align: center;
@@ -270,5 +413,36 @@
   .reply-submit-btn,
   .reply-cancel-btn {
     width: 100%;
+  }
+  
+  .edit-actions {
+    flex-direction: column;
+  }
+  
+  .save-btn,
+  .cancel-btn {
+    width: 100%;
+  }
+  
+  .button-group {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .button-group button {
+    width: 100%;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .reply-actions {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .reply-actions button {
+    width: 100%;
+    font-size: 0.7rem;
+    padding: 0.3rem 0.5rem;
   }
 }

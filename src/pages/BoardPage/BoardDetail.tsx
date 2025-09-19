@@ -9,9 +9,9 @@ type BoardDetailProps = {
 };
 
 interface Comment {
-  id: number;
+  id: string;
   author: string;
-  content: string;
+  text: string;
   createdAt: string;
   replies?: Comment[];
 }
@@ -38,6 +38,7 @@ const BoardDetail: React.FC<BoardDetailProps> = ({ postsByCategory }) => {
 
   // 댓글 상태
   const [comments, setComments] = useState<Comment[]>([]);
+  const [newComment, setNewComment] = useState('');
 
   // -------------------- 게시글 수정/삭제 --------------------
   const handleEdit = () => setIsEditing(true);
@@ -64,25 +65,25 @@ const BoardDetail: React.FC<BoardDetailProps> = ({ postsByCategory }) => {
 
     // 실제 삭제 로직 (예: 부모 컴포넌트에 함수 전달)
     alert("게시글이 삭제되었습니다.");
-    navigate("/board"); // 목록으로 이동
+    navigate("/Boarder"); // 목록으로 이동
   };
 
   // -------------------- 댓글 기능 --------------------
-  const handleAddComment = (content: string) => {
+  const handleAddComment = async (content: string) => {
     const newComment: Comment = {
-      id: Date.now(),
+      id: Date.now().toString(),
       author: currentUser,
-      content,
+      text: content,
       createdAt: new Date().toISOString(),
     };
     setComments((prev) => [...prev, newComment]);
   };
 
-  const handleAddReply = (commentId: number, content: string) => {
+  const handleAddReply = (commentId: string, content: string) => {
     const newReply: Comment = {
-      id: Date.now(),
+      id: Date.now().toString(),
       author: currentUser,
-      content,
+      text: content,
       createdAt: new Date().toISOString(),
     };
     setComments((prev) =>
