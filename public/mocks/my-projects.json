@@ -7,7 +7,7 @@
     "role": "Frontend",
     "start_date": "2025-06-01",
     "end_date": "",
-    "status": "ongoing",
+    "status": "ONGOING",
     "type": null,
     "stack": null,
     "isComplete": false
@@ -19,10 +19,23 @@
     "platform": "WEB",
     "role": "Backend",
     "start_date": "2025-03-15",
-    "end_date": "2025-06-25",
-    "status": "completed",
+    "end_date": "",
+    "status": "RECRUITING",
     "type": "앱 개발",
     "stack": "Node.js, MongoDB",
+    "isComplete": true
+  },
+  {
+    "id": 3,
+    "project_name": "지난 날의 우리",
+    "owner_id": "최선장",
+    "platform": "WEB",
+    "role": "PM",
+    "start_date": "2024-07-01",
+    "end_date": "2024-12-31",
+    "status": "completed",
+    "type": "커뮤니티 서비스",
+    "stack": "React, Node.js, AWS",
     "isComplete": true
   }
 ]
