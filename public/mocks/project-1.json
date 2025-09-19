@@ -4,9 +4,11 @@
   "status": "ONGOING",
   "description": "JSON 파일에서 불러온 더미 데이터입니다. 실제 API 응답과 거의 동일한 방식으로 작동합니다.",
   "progress": 75,
+  "recruit_positions": [],
+  "required_stacks": [],
   "members": [
-    { "id": "m1", "name": "홍길동", "role": "팀장 / 백엔드" },
-    { "id": "m2", "name": "김철수", "role": "프론트엔드" }
+    { "id": 1, "nickname": "크롱", "email": "crong@example.com", "role": "Backend", "techStack": "Node.js", "rating": 4.56 },
+    { "id": 2, "nickname": "어난가", "email": "eon@example.com", "role": "Frontend", "techStack": "React", "rating": 3.45 }
   ],
   "milestones": [
     { "id": "ms1", "title": "1차 프로토타입 개발", "progress": 70 },

@@ -11,8 +11,29 @@
   ],
   "required_stacks": ["React", "TypeScript", "Node.js", "Express"],
   "members": [
-    { "id": "m1", "name": "박팀장", "role": "기획 / 팀장" }
+    { "id": 3, "nickname": "졈니", "email": "jummy@example.com", "role": "Designer", "techStack": "Figma", "rating": 4.1 },
+    { "id": 4, "nickname": "김1성", "email": "kim@example.com", "role": "Planner", "techStack": "Notion", "rating": 3.7 }
   ],
-  "milestones": null,
-  "logoUrl": "https://via.placeholder.com/150/28A745/FFFFFF?text=Recruiting"
+  "milestones": [],
+  "logoUrl": "https://via.placeholder.com/150/28A745/FFFFFF?text=Recruiting",
+  "applications": [
+    {
+      "id": 1,
+      "nickname": "김정은",
+      "email": "kim@example.com",
+      "role": "백엔드",
+      "motivation": "저는 백엔드 개발 경험이 풍부하며 프로젝트 안정성에 기여하고 싶습니다.",
+      "questions": ["Q: 협업에서 가장 중요한 점은?", "Q: 본인은 바보인가요?"],
+      "answers": ["A: 소통과 신뢰라고 생각합니다.", "A: 네 그렇습니다."]
+    },
+    {
+      "id": 2,
+      "nickname": "이명박",
+      "email": "lee@example.com",
+      "role": "프론트엔드",
+      "motivation": "UI/UX에 강점이 있으며 사용자 친화적인 화면을 만들고 싶습니다.",
+      "questions": ["Q: 본인의 강점은?"],
+      "answers": ["A: React 기반 프론트엔드 경험이 많습니다."]
+    }
+  ]
 }

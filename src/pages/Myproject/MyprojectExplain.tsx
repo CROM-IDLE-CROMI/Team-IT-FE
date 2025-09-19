@@ -58,9 +58,10 @@ export default function MyprojectExplain() {
       <main className="project-main-content">
         <div className="content-header">
           <button className="back-button" onClick={handleGoBack}>← 돌아가기</button>
-          <button className="edit-button" onClick={handleEdit}>수정하기</button>
+          {project.status !== 'COMPLETED' && (
+            <button className="edit-button" onClick={handleEdit}>수정하기</button>
+          )}        
         </div>
-
         <div className="introduction-card">
           <div className="introduction-content">
             <h2>프로젝트 소개</h2>

@@ -1010,6 +1010,130 @@
 
 
 /* =====================================================
+   마이 프로젝트 지원자 보기 페이지
+====================================================== */
+.application-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.application-table th,
+.application-table td {
+  padding: 14px;
+  text-align: center;
+  border-bottom: 1px solid var(--border-color, #ddd);
+  font-size: 14px;
+}
+
+.application-table th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: var(--dark, #333);
+}
+
+.application-table tr:last-child td {
+  border-bottom: none;
+}
+
+.application-read-btn {
+  padding: 6px 10px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.application-read-btn:hover {
+  background-color: #e9ecef;
+}
+
+.application-back-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  margin-bottom: -10px;
+}
+
+/* 모달 */
+.application-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.application-modal-content {
+  background: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 80%;
+  text-align: left;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.application-modal-content pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.application-modal-close {
+  display: block;
+  margin-left: auto;
+  padding: 8px 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.application-modal-close:hover {
+  background-color: #2980b9;
+}
+
+.qa-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.qa-item {
+  padding: 12px;
+  border-radius: 6px;
+  background-color: #fafafa;
+  border: 1px solid #eee;
+}
+
+.qa-question {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.qa-answer {
+  color: #555;
+  line-height: 1.5;
+}
+
+
+
+/* =====================================================
    알림 페이지
 ====================================================== */
 .notification-container {
@@ -1112,3 +1236,5 @@
   font-size: 14px;
   padding: 20px;
 }
+
+
