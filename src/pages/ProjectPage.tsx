@@ -605,7 +605,7 @@ const ProjectPage = () => {
             ) : currentProjects.length > 0 ? (
               currentProjects.map(project => {
                 // 팀원 모집 프로젝트인지 확인 (ID가 큰 경우 팀원 모집으로 간주)
-                const isTeamRecruit = project.id > 10000; // 팀원 모집 프로젝트는 큰 ID 사용
+                // const isTeamRecruit = project.id > 10000; // 팀원 모집 프로젝트는 큰 ID 사용
                 
                 return (
                   <div key={project.id} className="card" onClick={() => handleCardClick(project.id)}>

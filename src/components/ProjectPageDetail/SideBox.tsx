@@ -61,8 +61,8 @@ const SideBox: React.FC<SideBoxProps> = ({
 
   const activityOptions = ["앱", "웹", "게임"];
   const positionOptions = ["프론트", "백", "PM", "디자인", "기획"];
-  const progressOptions = ["아이디어 구상 중", "아이디어 기획 중", "개발 진행 중"];
-  const methodOptions = ["온라인", "오프라인", "온/오프라인"];
+  // const progressOptions = ["아이디어 구상 중", "아이디어 기획 중", "개발 진행 중"];
+  // const methodOptions = ["온라인", "오프라인", "온/오프라인"];
 
   // onFiltersChange 함수는 상위 컴포넌트(ProjectPage)에서 useCallback으로 전달되므로
   // 여기서는 별도의 useCallback으로 감쌀 필요가 없습니다.

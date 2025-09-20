@@ -48,8 +48,8 @@ const ProjectComment = ({
   const currentUser = getCurrentUser();
   const API_BASE = "http://localhost:5173"; // 임시로 API 주소 직접 정의 (환경 변수 사용이 더 좋음)
 
-  // 메시지 박스 상태 관리
-  const [messageBox, setMessageBox] = useState<{message: string, type: 'confirm' | 'alert' | null}>({ message: '', type: null });
+  // 메시지 박스 상태 관리 (사용 안함으로 주석 처리)
+  // const [messageBox, setMessageBox] = useState<{message: string, type: 'confirm' | 'alert' | null}>({ message: '', type: null });
 
   useEffect(() => {
     if ((editingComment || editingReply) && editTextareaRef.current) {

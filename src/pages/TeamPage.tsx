@@ -66,13 +66,13 @@ const TeamPage = () => {
 
 
   // ✅ Hook 최상위에서 ref 배열 선언
-  const sectionRefs: React.RefObject<HTMLDivElement | null>[] = useMemo(() => [
-    useRef<HTMLDivElement>(null),
-    useRef<HTMLDivElement>(null),
-    useRef<HTMLDivElement>(null),
-    useRef<HTMLDivElement>(null),
-    useRef<HTMLDivElement>(null),
-  ], []);
+  const ref1 = useRef<HTMLDivElement>(null);
+  const ref2 = useRef<HTMLDivElement>(null);
+  const ref3 = useRef<HTMLDivElement>(null);
+  const ref4 = useRef<HTMLDivElement>(null);
+  const ref5 = useRef<HTMLDivElement>(null);
+
+  const sectionRefs = useMemo(() => [ref1, ref2, ref3, ref4, ref5], []);
 
   // IntersectionObserver로 현재 스크롤 섹션 감지
   useEffect(() => {
