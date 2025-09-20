@@ -48,7 +48,9 @@ function removeItemSafe(k: string) {
   }
   try {
     window.localStorage.removeItem(k);
-  } catch {}
+  } catch {
+    // localStorage access failed
+  }
   memoryFallback.delete(k);
 }
 
@@ -86,7 +88,7 @@ export function parseDraft(d: Draft): Draft {
     endDate: d.endDate ? new Date(d.endDate) : null,
     projectStartDate: d.projectStartDate ? new Date(d.projectStartDate) : null,
     selectedJobs: Array.isArray(d.selectedJobs)
-      ? d.selectedJobs.map((job: any) =>
+      ? d.selectedJobs.map((job: string | { value: string; label: string }) =>
           typeof job === "string" ? { value: job, label: job } : job
         )
       : [],

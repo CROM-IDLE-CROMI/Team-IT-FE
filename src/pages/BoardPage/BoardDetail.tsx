@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import type { Post, Category } from "./DummyPosts";
 import BoardComment from "../../components/BoardComment";
@@ -24,24 +24,29 @@ const BoardDetail: React.FC<BoardDetailProps> = ({ postsByCategory, onDeletePost
   const navigate = useNavigate();
   const postId = Number(id);
 
+  // React Hooks를 컴포넌트 최상위에서 호출
+  const [isEditing, setIsEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState('');
+  const [editContent, setEditContent] = useState('');
+  const [comments, setComments] = useState<Comment[]>([]);
+
   const post = Object.values(postsByCategory)
     .flat()
     .find((p) => p.id === postId);
+
+  // useEffect로 post 데이터가 있을 때 초기값 설정
+  useEffect(() => {
+    if (post) {
+      setEditTitle(post.title);
+      setEditContent(post.content);
+    }
+  }, [post]);
 
   if (!post) return <div>게시글을 찾을 수 없습니다.</div>;
 
   // 현재 로그인 사용자 확인
   const currentUser = getCurrentUser();
   const isAuthor = currentUser === post.author;
-
-  // 게시글 수정 상태
-  const [isEditing, setIsEditing] = useState(false);
-  const [editTitle, setEditTitle] = useState(post.title);
-  const [editContent, setEditContent] = useState(post.content);
-
-  // 댓글 상태
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [newComment, setNewComment] = useState('');
 
   // -------------------- 게시글 수정/삭제 --------------------
   const handleEdit = () => setIsEditing(true);

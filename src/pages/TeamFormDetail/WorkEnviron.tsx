@@ -1,12 +1,13 @@
 import LocationSelector from "../../components/LocationSelector";
 import React, { useState, useEffect, useCallback } from "react";
+import type { StepData } from "../../types/Draft";
 import "../../App.css";
 import "./WorkEnviron.css";
 import "../../TeamPageDetail.css";
 
 interface WorkEnvironProps {
-  data: any;
-  setData: (data: any) => void;
+  data: StepData;
+  setData: (data: StepData) => void;
   onCompleteChange: (complete: boolean) => void;
 }
 
@@ -26,7 +27,7 @@ const WorkEnviron: React.FC<WorkEnvironProps> = ({ data, setData, onCompleteChan
   }, [data.meetingType, data.locationComplete, data.selectedLocations, data.selectedRegion]);
 
   const memoizedSetData = useCallback(
-    (newData: any) => setData(newData),
+    (newData: StepData) => setData(newData),
     [setData]
   );
 

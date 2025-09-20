@@ -74,7 +74,7 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
     }
 
     // 날짜
-    const parseDate = (val: any): Date | null => {
+    const parseDate = (val: unknown): Date | null => {
       if (!val) return null;
       if (val instanceof Date) return isNaN(val.getTime()) ? null : val;
       if (typeof val === 'string' || typeof val === 'number') {

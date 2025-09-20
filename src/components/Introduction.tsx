@@ -2,11 +2,8 @@ import "../App.css";
 import { useState } from 'react';
 
 const Introduction = () => {
-  const [activeTab, setActiveTab] = useState("배경");
   const [produceTab, setProduceTab] = useState("기본정보");
   const [boardTab, setBoardTab] = useState("시사,정보");
-
-  const tabs = ["배경", "테두리", "이펙트"];
   const produceTabs = ["기본정보", "프로젝트 정보","프로젝트 상황","근무 환경","지원자 정보"];
   const boardTabs = ["시사,정보", "질문", "홍보"];
 

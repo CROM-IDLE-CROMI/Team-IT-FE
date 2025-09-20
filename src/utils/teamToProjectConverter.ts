@@ -39,19 +39,19 @@ export const convertTeamDataToProject = (teamData: TeamFormData): Project => {
     `${basicInfo.platform || '프로젝트'} 팀원 모집`;
 
   // 기술 스택 추출 (객체 배열인 경우 value 속성만 추출)
-  const techStack = (basicInfo.selectedTechStacks || []).map((tech: any) => 
+  const techStack = (basicInfo.selectedTechStacks || []).map((tech: string | { value: string }) =>
     typeof tech === 'object' && tech !== null ? tech.value : tech
   );
 
   // 모집 포지션 추출 (객체 배열인 경우 value 속성만 추출)
-  const positions = (basicInfo.selectedJobs || []).map((job: any) => 
+  const positions = (basicInfo.selectedJobs || []).map((job: string | { value: string }) =>
     typeof job === 'object' && job !== null ? job.value : job
   );
 
   // 지역 정보 추출
   const location = {
     region: workEnviron.selectedRegion || '서울특별시',
-    districts: (workEnviron.selectedLocations || []).map((loc: any) => 
+    districts: (workEnviron.selectedLocations || []).map((loc: string | { value: string }) =>
       typeof loc === 'object' && loc !== null ? loc.value : loc
     )
   };

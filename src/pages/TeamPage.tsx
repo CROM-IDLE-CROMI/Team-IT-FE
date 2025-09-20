@@ -1,7 +1,7 @@
 /*===================================================================================
 =====================TeamPage.tsx====================================================
 ====================================================================================*/
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import Sidebar from '../components/Sidebar';
 import ApplicantInfo from './TeamFormDetail/ApplicantInfo';
 import BasicInfo from './TeamFormDetail/BasicInfo';
@@ -66,13 +66,13 @@ const TeamPage = () => {
 
 
   // ✅ Hook 최상위에서 ref 배열 선언
-  const sectionRefs: React.RefObject<HTMLDivElement | null>[] = [
-  useRef<HTMLDivElement>(null),
-  useRef<HTMLDivElement>(null),
-  useRef<HTMLDivElement>(null),
-  useRef<HTMLDivElement>(null),
-  useRef<HTMLDivElement>(null),
-];
+  const sectionRefs: React.RefObject<HTMLDivElement | null>[] = useMemo(() => [
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+  ], []);
 
   // IntersectionObserver로 현재 스크롤 섹션 감지
   useEffect(() => {

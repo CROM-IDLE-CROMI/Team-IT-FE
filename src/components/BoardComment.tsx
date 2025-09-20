@@ -17,7 +17,6 @@ interface BoardCommentProps {
 }
 
 const BoardComment: React.FC<BoardCommentProps> = ({
-  postId,
   comments,
   onAddComment,
   onAddReply

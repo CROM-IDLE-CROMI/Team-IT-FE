@@ -333,7 +333,7 @@ const ProjectDetail = () => {
         const data: Project = await res.json();
         setProject(data);
         console.info("✅ API에서 프로젝트 상세 데이터 불러오기 성공");
-      } catch (err: any) {
+      } catch (err: unknown) {
         // API 실패 시 팀원 모집 프로젝트에서 먼저 찾기
         const teamRecruitProjects = getAllProjects();
         const teamProject = teamRecruitProjects.find(p => p.id === projectId);

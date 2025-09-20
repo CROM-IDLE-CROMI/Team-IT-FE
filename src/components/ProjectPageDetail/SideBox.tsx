@@ -66,9 +66,9 @@ const SideBox: React.FC<SideBoxProps> = ({
 
   // onFiltersChange 함수는 상위 컴포넌트(ProjectPage)에서 useCallback으로 전달되므로
   // 여기서는 별도의 useCallback으로 감쌀 필요가 없습니다.
-  const updateFilters = (newFilters: Partial<FilterState>) => {
+  const updateFilters = useCallback((newFilters: Partial<FilterState>) => {
     onFiltersChange((prevFilters: FilterState) => ({ ...prevFilters, ...newFilters }));
-  };
+  }, [onFiltersChange]);
 
   const handleOptionToggle = (option: string, current: string[], field: keyof FilterState) => {
     if (current.includes(option)) {

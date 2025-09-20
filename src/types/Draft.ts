@@ -7,7 +7,7 @@ export interface TeamFormData {
 }
 
 export interface StepData {
-    [key: string]: any; // 각 단계의 데이터
+    [key: string]: unknown; // 각 단계의 데이터
 }
 
 export interface Draft {

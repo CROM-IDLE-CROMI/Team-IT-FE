@@ -6,12 +6,12 @@ export interface Draft {
   id: string;
   title: string;
   savedAt: string;
-  data: any;
+  data: Record<string, unknown>;
 }
 
 interface DraftProps {
   onClose: () => void;
-  onLoadDraft: (data: any) => void;
+  onLoadDraft: (data: Record<string, unknown>) => void;
   onDelete?: () => void; // 삭제 후 콜백 추가
 }
 
@@ -31,7 +31,7 @@ const DraftList = ({ onClose, onLoadDraft, onDelete }: DraftProps) => {
     }
   };
 
-  const handleLoad = (data: any) => {
+  const handleLoad = (data: Record<string, unknown>) => {
     onLoadDraft(data);
     onClose();
   };

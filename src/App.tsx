@@ -19,7 +19,6 @@ import ProjectApply from './components/ProjectPageDetail/ProjectApply';
 import Login from './pages/Login/Login';
 import KakaoCallback from "./auth/KakaoCallback";
 import Signup from './pages/Signup';
-import Home from './pages/Home';
 import MyprojectMain from './pages/Myproject/MyprojectMain';
 import MyProjectDetail from './pages/Myproject/MyprojectDetail';
 import MyprojectEdit from './pages/Myproject/MyprojectEdit';

@@ -408,7 +408,7 @@ const ProjectPage = () => {
             total: allProjects.length
           });
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         if (import.meta.env.MODE !== 'production') {
           if (err.name === "AbortError") {
             console.warn("⏱️ API 요청 타임아웃/취소 - 더미 데이터 사용");
@@ -617,7 +617,7 @@ const ProjectPage = () => {
                       {project.date}<br />
                       📍 {project.location.region} {project.location.districts.join(" ")}<br />
                       <span className="tech-icons">
-                        {(project.techStack || []).map((tech: any, index) => {
+                        {(project.techStack || []).map((tech: string | { value: string }, index) => {
                           // tech가 객체인 경우 value 속성 사용, 문자열인 경우 그대로 사용
                           const techValue = typeof tech === 'object' && tech !== null ? tech.value : tech;
                           const stack = techStacksInit.find(item => item.value === techValue);
@@ -628,7 +628,7 @@ const ProjectPage = () => {
                           );
                         })}
                       </span><br />
-                      👥 {(project.positions || []).map((pos: any) => 
+                      👥 {(project.positions || []).map((pos: string | { value: string }) =>
                         typeof pos === 'object' && pos !== null ? pos.value : pos
                       ).join(', ')}
                     </div>

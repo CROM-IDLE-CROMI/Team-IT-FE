@@ -122,7 +122,7 @@ const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
       });
     }, 300);
     return () => clearTimeout(timeoutId);
-  }, [startDate, endDate, peopleCount, platform, customPlatform, selectedJobs, customJob, selectedTechStacks, memoizedSetData]);
+  }, [startDate, endDate, peopleCount, platform, customPlatform, selectedJobs, customJob, selectedTechStacks, memoizedSetData, data]);
 
   // 완료 체크
   useEffect(() => {

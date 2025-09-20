@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../../layouts/Header";
 import { getAllProjects } from "../../utils/teamToProjectConverter";
@@ -304,7 +304,6 @@ const ProjectApply = () => {
             <div className="form-section">
               <label className="form-label">질문에 대한 답변</label>
               
-              {console.log('🔍 렌더링 시 project.questions:', project.questions)}
               {project.questions && project.questions.length > 0 ? (
                 project.questions.map((question, index) => (
                   <div key={index} className="question-group">

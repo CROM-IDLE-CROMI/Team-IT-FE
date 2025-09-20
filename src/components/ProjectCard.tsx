@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { getPopularProjects, type Project } from '../data/popularProjects';
 import { techStacksInit } from '../styles/TechStack';
 import './ProjectCard.css';

@@ -8,9 +8,8 @@ import { saveDraft, hasDrafts } from "../../utils/localStorageUtils";
 import type { Draft } from "../../types/Draft";
 import { convertTeamDataToProject, validateTeamData, saveProjectToStorage } from "../../utils/teamToProjectConverter";
 
-interface StepData {
-  [key: string]: any;
-}
+// Import StepData from types
+import type { StepData } from "../../types/Draft";
 
 type ButtonProps = {
   formData: {
@@ -31,7 +30,7 @@ type ButtonProps = {
   >;
   currentStep: number;
   disabled: boolean;
-  onLoadDraft: (data: any) => void;
+  onLoadDraft: (data: Record<string, StepData>) => void;
 };
 
 const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: ButtonProps) => {

@@ -16,7 +16,7 @@ const MyPageSidebar: React.FC<MyPageSidebarProps> = ({ isOpen, onClose, activeTa
   ];
 
   const handleItemClick = (itemId: string) => {
-    onTabChange(itemId as any);
+    onTabChange(itemId as 'view' | 'public' | 'edit' | 'interest' | 'posts' | 'scrapped' | 'inbox');
     onClose(); // 사이드바 닫기
   };
 
