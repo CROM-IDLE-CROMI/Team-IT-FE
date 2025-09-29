@@ -19,7 +19,6 @@ import ProjectApply from './components/ProjectPageDetail/ProjectApply';
 import Login from './pages/Login/Login';
 import KakaoCallback from "./auth/KakaoCallback";
 import Signup from './pages/Signup';
-import Home from './pages/Home';
 import MyprojectMain from './pages/Myproject/MyprojectMain';
 import MyProjectDetail from './pages/Myproject/MyprojectDetail';
 import MyprojectEdit from './pages/Myproject/MyprojectEdit';
@@ -33,7 +32,6 @@ import MemberChangeLeader from './pages/Myproject/MemberChangeLeader';
 import MyprojectApplication from './pages/Myproject/MyprojectApplication';
 import Notification from './pages/Notification';
 
-import FakeMyprojectDetail from './pages/Myproject/FakeMyprojectDetail';
 import './App.css';
 
 function App() {
@@ -90,7 +88,6 @@ function App() {
         <Route path="/myproject/:id/applications" element={<MyprojectApplication />} />
         <Route path="/notification" element={<Notification />} />
 
-        <Route path="/myproject/I" element={<FakeMyprojectDetail />} />
         <Route path="/oauth/callback/kakao" element={<KakaoCallback />} />
         <Route path="/myprojectmain" element={<MyprojectMain />} />
         <Route path="/myproject/:id" element={<MyProjectDetail />} />
