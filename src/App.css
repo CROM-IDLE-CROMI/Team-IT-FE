@@ -1013,6 +1013,22 @@ button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination
   margin-bottom: 3rem;
 }
 
+.myproject-container td {
+  padding: 16px 10px;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.myproject-container thead th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.myproject-container tbody tr:hover {
+  background-color: #f1f3f5;
+}
 .myproject-container th,
 .myproject-container td {
   padding: 16px 10px;
