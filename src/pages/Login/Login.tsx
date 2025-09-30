@@ -33,8 +33,6 @@ const Login = () => {
     }
 
     alert(`${parsed.name}님 환영합니다!`);
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('currentUserId', id);
     setError('');
     navigate('/');
   };
