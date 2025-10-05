@@ -36,7 +36,7 @@ const BoardWrite: React.FC<BoardWriteProps> = ({ onAddPost }) => {
 
     onAddPost(category, newPost); // App 상태 갱신
     
-    // 내가 쓴 게시글에도 추가
+    // TODO: 백엔드 API 호출로 게시글 추가
     addMyPost({
       ...newPost,
       category: category

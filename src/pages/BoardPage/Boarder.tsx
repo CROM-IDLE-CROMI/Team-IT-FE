@@ -53,24 +53,33 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
     setPageByCategory(prev => ({ ...prev, [category]: 1 }));
   };
 
-  // ✅ 게시물별 스크랩 상태 저장 (실제 데이터와 연동)
+  // ✅ 게시물별 스크랩 상태 저장 (백엔드 연동 준비)
   const [scrappedPosts, setScrappedPosts] = useState<Set<number>>(new Set());
 
   // 컴포넌트 마운트 시 기존 스크랩 데이터 로드
   React.useEffect(() => {
-    const allPosts = Object.values(postsByCategory).flat();
-    const scrapedIds = new Set<number>();
-    
-    allPosts.forEach(post => {
-      if (isScraped(post.id)) {
-        scrapedIds.add(post.id);
+    const loadScrapStatus = async () => {
+      try {
+        // TODO: 백엔드 API 호출로 스크랩 상태 확인
+        const allPosts = Object.values(postsByCategory).flat();
+        const scrapedIds = new Set<number>();
+        
+        allPosts.forEach(post => {
+          if (isScraped(post.id)) { // 현재는 항상 false 반환
+            scrapedIds.add(post.id);
+          }
+        });
+        
+        setScrappedPosts(scrapedIds);
+      } catch (error) {
+        console.error('스크랩 상태 로드 실패:', error);
       }
-    });
+    };
     
-    setScrappedPosts(scrapedIds);
+    loadScrapStatus();
   }, [postsByCategory]);
 
-  const toggleScrap = (e: React.MouseEvent, postId: number) => {
+  const toggleScrap = async (e: React.MouseEvent, postId: number) => {
     e.stopPropagation(); // 게시물 클릭 이벤트 막기
     
     const post = Object.values(postsByCategory).flat().find(p => p.id === postId);
@@ -80,28 +89,33 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
       // 이미 스크랩된 경우 - 스크랩 해제는 ScrapedPosts 컴포넌트에서 처리
       alert('스크랩 해제는 마이페이지 > 스크랩한 게시물에서 가능합니다.');
     } else {
-      // 스크랩 추가
-      addScrap({
-        postId: post.id,
-        title: post.title,
-        author: post.author,
-        content: post.content,
-        category: category,
-        date: post.date,
-        views: post.views || 0,
-        originalPost: {
-          id: post.id,
+      try {
+        // TODO: 백엔드 API 호출로 스크랩 추가
+        await addScrap({
+          postId: post.id,
           title: post.title,
           author: post.author,
           content: post.content,
           category: category,
           date: post.date,
-          views: post.views || 0
-        }
-      });
-      
-      // 로컬 상태 업데이트
-      setScrappedPosts(prev => new Set(prev).add(postId));
+          views: post.views || 0,
+          originalPost: {
+            id: post.id,
+            title: post.title,
+            author: post.author,
+            content: post.content,
+            category: category,
+            date: post.date,
+            views: post.views || 0
+          }
+        });
+        
+        // 로컬 상태 업데이트
+        setScrappedPosts(prev => new Set(prev).add(postId));
+      } catch (error) {
+        console.error('스크랩 추가 실패:', error);
+        alert('스크랩 추가에 실패했습니다.');
+      }
     }
   };
 

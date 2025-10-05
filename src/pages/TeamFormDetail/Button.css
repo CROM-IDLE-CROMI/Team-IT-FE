@@ -1,0 +1,53 @@
+/*===================================================================================
+=====================Button.tsx======================================================
+====================================================================================*/
+.formContainer_B {
+  display: flex;
+  justify-content: flex-end;
+  width: 95%;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
+  padding-bottom: 2rem;
+  border-top : none;
+  left: 0;
+}
+
+.formGroup_B {
+  display: flex;
+  gap: 2rem; 
+}
+
+button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination-page-btn):not(.slide-btn) {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3);
+}
+
+button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination-page-btn):not(.slide-btn):hover {
+  background: linear-gradient(135deg, #2980b9, #1f4e79);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+}
+
+button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination-page-btn):not(.slide-btn):active :not(.project-info-section){
+  transform: scale(0.98);
+}
+
+button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination-page-btn):not(.slide-btn).disabled,:not(.project-info-section)
+button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination-page-btn):not(.slide-btn):disabled :not(.project-info-section){
+  background: linear-gradient(135deg, #bdc3c7, #95a5a6);
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+  box-shadow: none;
+}

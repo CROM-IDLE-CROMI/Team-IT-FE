@@ -13,9 +13,10 @@ const MyPosts: React.FC = () => {
     loadMyPosts();
   }, []);
 
-  const loadMyPosts = () => {
+  const loadMyPosts = async () => {
     try {
-      const posts = getAllMyPosts();
+      // TODO: 백엔드 API 호출로 내가 쓴 게시글 목록 가져오기
+      const posts = getAllMyPosts(); // 현재는 빈 배열 반환
       setMyPosts(posts);
     } catch (error) {
       console.error('내가 쓴 게시글 로드 실패:', error);
