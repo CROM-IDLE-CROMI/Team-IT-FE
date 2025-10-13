@@ -18,7 +18,7 @@ import ProjectApply from './components/ProjectPageDetail/ProjectApply';
 // develop 기능
 import Login from './pages/Login/Login';
 import KakaoCallback from "./auth/KakaoCallback";
-import Signup from './pages/Signup';
+import Signup from './pages/Signup/Signup';
 import MyprojectMain from './pages/Myproject/MyprojectMain';
 import MyProjectDetail from './pages/Myproject/MyprojectDetail';
 import MyprojectEdit from './pages/Myproject/MyprojectEdit';
