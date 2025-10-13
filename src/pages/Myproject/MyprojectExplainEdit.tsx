@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useLocation, useBeforeUnload } from "react-router-dom";
 import ProjectSidebar from "../../components/myproject/ProjectSidebar";
 import { usePrompt } from "../../hooks/usePrompt";
+import Header from "../../layouts/Header";
 
 import type { ProjectData } from "../../types/project";
 
@@ -48,21 +49,25 @@ const MyprojectExplainEdit: React.FC = () => {
   });
 
   // 라우터 전환 경고
-  usePrompt("변경 사항이 저장되지 않았습니다. 페이지를 떠나시겠습니까?", isDirty);
+  usePrompt(
+    "변경 사항이 저장되지 않았습니다. 페이지를 떠나시겠습니까?",
+    isDirty
+  );
 
   return (
-    <div className="myproject-layout">
-      <ProjectSidebar project={project} />
-
-      <main className="explain-edit-container">
-        <div className="content-header">
-          <button onClick={handleBack} className="back-button">
-            ← 돌아가기
-          </button>
-        </div>
-
-        <div className="card-main">
-          <h3 className="explain-edit-title">프로젝트 소개 수정</h3>
+    <div className="explain-container">
+      <div className="content-header">
+        <Header />
+      </div>
+      <div className="myproject-layout">
+        <ProjectSidebar project={project} />
+        <main className="project-main-content">
+          {/* <div className="explain-edit-content-header">
+              <button onClick={handleBack} className="back-button">
+                ← 돌아가기
+              </button>
+            </div> */}
+          <h2 className="explain-edit-title">프로젝트 소개 수정</h2>
           <textarea
             value={description}
             onChange={handleChange}
@@ -78,8 +83,8 @@ const MyprojectExplainEdit: React.FC = () => {
               취소
             </button>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useBeforeUnload } from "react-router-dom";
 import ProjectSidebar from "../../components/myproject/ProjectSidebar";
 import { usePrompt } from "../../hooks/usePrompt";
+import Header from "../../layouts/Header";
 
 import type { Member, ProjectData } from "../../types/project";
 
@@ -61,89 +62,94 @@ const MyprojectMemberEdit: React.FC = () => {
   if (!project) return <div>Project not found.</div>;
 
   return (
-    <div className="myproject-layout">
-      <ProjectSidebar
-        project={{
-          id: project.id,
-          title: project.title,
-          status: project.status,
-          logoUrl: project.logoUrl,
-        }}
-      />
+    <div className="explain-container">
+      <div className="content-header">
+        <Header />
+      </div>
+      <div className="myproject-layout">
+        <ProjectSidebar
+          project={{
+            id: project.id,
+            title: project.title,
+            status: project.status,
+            logoUrl: project.logoUrl,
+          }}
+        />
 
-      <main className="project-main-container">
-        {/* 팀장 위임하기 버튼 */}
-        <div className="member-edit-header">
-          <button
-            onClick={() =>
-              navigate(`/myproject/${id}/member/edit/change-leader`)
-            }
-            className="member-edit-leader-btn"
-          >
-            팀장 위임하기
-          </button>
-        </div>
-        <div className="card-main">
-          {/* 멤버 테이블 */}
-          <table className="member-edit-table">
-            <thead>
-              <tr>
-                <th>닉네임</th>
-                <th>이메일</th>
-                <th>직군</th>
-                <th>기술 스택</th>
-                <th>개발자 평점</th>
-                <th>관리</th>
-              </tr>
-            </thead>
-            <tbody>
-              {members.length > 0 ? (
-                members.map((member) => (
-                  <tr key={member.id}>
-                    <td>{member.nickname}</td>
-                    <td>{member.email}</td>
-                    <td>{member.role}</td>
-                    <td>{member.techStack}</td>
-                    <td>
-                      {member.rating?.toFixed
-                        ? member.rating.toFixed(2)
-                        : member.rating}
-                    </td>
-                    <td>
-                      <button
-                        onClick={() => handleRemove(member.id)}
-                        className="member-edit-remove-btn"
-                      >
-                        X
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={6}>등록된 멤버가 없습니다.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-
-          {/* 하단 수정/취소 버튼 */}
-          <div className="member-edit-actions">
+        <main className="project-main-content">
+          {/* 팀장 위임하기 버튼 */}
+          <div className="member-edit-header">
             <button
-              className="member-edit-save-btn"
-              onClick={() => {
-                setIsDirty(false); // 저장 후 더 이상 dirty 아님
-                alert("저장되었습니다!");
-              }}
+              onClick={() =>
+                navigate(`/myproject/${id}/member/edit/change-leader`)
+              }
+              className="member-edit-leader-btn"
             >
-              수정 완료
-            </button>
-            <button className="member-edit-cancel-btn" onClick={handleGoBack}>
-              취소
+              팀장 위임하기
             </button>
           </div>
-        </div>
-      </main>
+          <div className="card-main">
+            {/* 멤버 테이블 */}
+            <table className="member-edit-table">
+              <thead>
+                <tr>
+                  <th>닉네임</th>
+                  <th>이메일</th>
+                  <th>직군</th>
+                  <th>기술 스택</th>
+                  <th>개발자 평점</th>
+                  <th>관리</th>
+                </tr>
+              </thead>
+              <tbody>
+                {members.length > 0 ? (
+                  members.map((member) => (
+                    <tr key={member.id}>
+                      <td>{member.nickname}</td>
+                      <td>{member.email}</td>
+                      <td>{member.role}</td>
+                      <td>{member.techStack}</td>
+                      <td>
+                        {member.rating?.toFixed
+                          ? member.rating.toFixed(2)
+                          : member.rating}
+                      </td>
+                      <td>
+                        <button
+                          onClick={() => handleRemove(member.id)}
+                          className="member-edit-remove-btn"
+                        >
+                          X
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={6}>등록된 멤버가 없습니다.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+
+            {/* 하단 수정/취소 버튼 */}
+            <div className="member-edit-actions">
+              <button
+                className="member-edit-save-btn"
+                onClick={() => {
+                  setIsDirty(false); // 저장 후 더 이상 dirty 아님
+                  alert("저장되었습니다!");
+                }}
+              >
+                수정 완료
+              </button>
+              <button className="member-edit-cancel-btn" onClick={handleGoBack}>
+                취소
+              </button>
+            </div>
+          </div>
+        </main>
+      </div>
     </div>
   );
 };

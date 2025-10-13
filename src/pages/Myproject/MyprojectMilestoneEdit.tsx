@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ProjectSidebar from "../../components/myproject/ProjectSidebar";
 import "../../App.css";
+import Header from "../../layouts/Header";
 
 import type { ProjectData, Milestone } from "../../types/project";
 
@@ -97,108 +98,121 @@ const MyprojectMilestoneEdit: React.FC = () => {
   if (!project) return <div>Project not found.</div>;
 
   return (
-    <div className="myproject-layout">
-      <ProjectSidebar
-        project={{
-          id: project.id,
-          title: project.title,
-          status: project.status,
-          logoUrl: project.logoUrl,
-        }}
-      />
+    <div className="explain-container">
+      <div className="content-header">
+        <Header />
+      </div>
+      <div className="myproject-layout">
+        <ProjectSidebar
+          project={{
+            id: project.id,
+            title: project.title,
+            status: project.status,
+            logoUrl: project.logoUrl,
+          }}
+        />
 
-      <main className="project-main-container">
-        <div className="card-main">
-          <table className="milestone-edit-table">
-            <thead>
-              <tr>
-                <th>마일스톤 이름</th>
-                <th>담당자 닉네임</th>
-                <th>데드라인</th>
-                <th>진척도</th>
-                <th>관리</th>
-              </tr>
-            </thead>
-            <tbody>
-              {milestones.length > 0 ? (
-                milestones.map((milestone) => (
-                  <tr key={milestone.id}>
-                    <td>
-                      <input
-                        type="text"
-                        value={milestone.title}
-                        onChange={(e) =>
-                          handleChange(milestone.id, "title", e.target.value)
-                        }
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={milestone.nickname}
-                        onChange={(e) =>
-                          handleChange(milestone.id, "nickname", e.target.value)
-                        }
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={milestone.deadline}
-                        onChange={(e) =>
-                          handleChange(milestone.id, "deadline", e.target.value)
-                        }
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={milestone.progress}
-                        onChange={(e) =>
-                          handleChange(
-                            milestone.id,
-                            "progress",
-                            Number(e.target.value)
-                          )
-                        }
-                      />
-                    </td>
-                    <td>
-                      <button
-                        className="milestone-delete-btn"
-                        onClick={() => handleDelete(milestone.id)}
-                      >
-                        X
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
+        <main className="project-main-content">
+          <div className="card-main">
+            <table className="milestone-edit-table">
+              <thead>
                 <tr>
-                  <td colSpan={5}>등록된 마일스톤이 없습니다.</td>
+                  <th>마일스톤 이름</th>
+                  <th>담당자 닉네임</th>
+                  <th>데드라인</th>
+                  <th>진척도</th>
+                  <th>관리</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {milestones.length > 0 ? (
+                  milestones.map((milestone) => (
+                    <tr key={milestone.id}>
+                      <td>
+                        <input
+                          type="text"
+                          value={milestone.title}
+                          onChange={(e) =>
+                            handleChange(milestone.id, "title", e.target.value)
+                          }
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          value={milestone.nickname}
+                          onChange={(e) =>
+                            handleChange(
+                              milestone.id,
+                              "nickname",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          value={milestone.deadline}
+                          onChange={(e) =>
+                            handleChange(
+                              milestone.id,
+                              "deadline",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          min="0"
+                          max="100"
+                          value={milestone.progress}
+                          onChange={(e) =>
+                            handleChange(
+                              milestone.id,
+                              "progress",
+                              Number(e.target.value)
+                            )
+                          }
+                        />
+                      </td>
+                      <td>
+                        <button
+                          className="milestone-delete-btn"
+                          onClick={() => handleDelete(milestone.id)}
+                        >
+                          X
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={5}>등록된 마일스톤이 없습니다.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
 
-          {/* 하단 버튼 */}
-          <div className="milestone-edit-actions">
-            <button className="milestone-add-btn" onClick={handleAddRow}>
-              줄 추가하기
-            </button>
-            <div className="milestone-edit-bottom-btns">
-              <button onClick={handleSave} className="milestone-save-btn">
-                저장
+            {/* 하단 버튼 */}
+            <div className="milestone-edit-actions">
+              <button className="milestone-add-btn" onClick={handleAddRow}>
+                줄 추가하기
               </button>
-              <button onClick={handleCancel} className="milestone-cancel-btn">
-                취소
-              </button>
+              <div className="milestone-edit-bottom-btns">
+                <button onClick={handleSave} className="milestone-save-btn">
+                  저장
+                </button>
+                <button onClick={handleCancel} className="milestone-cancel-btn">
+                  취소
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 };

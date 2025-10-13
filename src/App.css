@@ -24,7 +24,9 @@
    공통 페이지 스타일
 ====================================================== */
 
-
+.content-header{
+  margin-bottom: 3rem;
+}
 
 /* =====================================================
    공통 입력 그룹 스타일
@@ -377,6 +379,7 @@
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto 2rem auto;
+  align-items: stretch;
 }
 
 .team-logo {
@@ -406,36 +409,36 @@
 .status-completed { background-color: var(--grey); }
 
 .project-main-content {
-  flex: 1;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.card-main {
+.myproject-card-main {
   padding: 1.5rem;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
 }
 
-.card-main-header {
+.myproject-card-main-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.75rem;
 }
 
-.card-main-header h3,
-.card-main-header h4 {
+.myproject-card-main-header h3,
+.myproject-card-main-header h4 {
   margin: 0;
   font-weight: 600;
 }
 
-.card-main-header h4 {
+.myproject-card-main-header h4 {
   font-size: 1rem;
 }
 
-.card-main-header span {
+.myproject-card-main-header span {
   font-size: 1rem;
   font-weight: 600;
   color: #555;
@@ -445,6 +448,7 @@
   display: flex;
   justify-content: flex-end;
   margin-bottom: -1rem;
+  margin-top: -1rem;
 }
 
 .edit-button {
@@ -576,14 +580,6 @@
   background-color: #fff;
 }
 
-/* 메인 컨텐츠 */
-.project-main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
 /* 카드 공통 스타일 */
 .introduction-card {
   flex-grow: 1;
@@ -602,12 +598,17 @@
   color: #b0b0b0;
 }
 
+.explain-container{
+  margin-top: 5rem;
+}
+
 /* 상단 헤더 */
-.content-header {
+.explain-content-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: -15px;
+  margin-top: -16px;
+  margin-bottom: -16px;
   width: 100%;
 }
 
@@ -634,13 +635,6 @@
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.project-main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
 }
 
 /* 카드 스타일 */
@@ -687,6 +681,16 @@
 
 .member-table tbody tr:hover {
   background-color: #f5f5f5;
+}
+
+/* 상단 헤더 */
+.member-content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -16px;
+  margin-bottom: -16px;
+  width: 100%;
 }
 
 
@@ -744,6 +748,17 @@
   margin: 0 auto;
 }
 
+/* 상단 헤더 */
+.milestone-content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -16px;
+  margin-bottom: -16px;
+  width: 100%;
+}
+
+
 /* =====================================================
    마이프로젝트 상세페이지 상세설명 수정 페이지
 ====================================================== */
@@ -752,32 +767,43 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  background-color: #fff;
+}
+
+/* 상단 헤더 */
+.explain-edit-content-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .explain-edit-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: #333;
+  margin: 0 0 12px;       /* 상단 여백 줄여 뭉툭함 제거 */
+  font-size: 28px;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 10px;
+  line-height: 0.9;
 }
 
 .explain-edit-textarea {
   width: 100%;
-  min-height: 320px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 14px;
+  min-height: 220px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 12px 14px;
   font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
   resize: vertical;
-  margin-bottom: 16px;
-  line-height: 1.5;
+  line-height: 1.6;
   box-sizing: border-box;
+  transition: box-shadow .15s ease, border-color .15s ease;
 }
 
 .explain-edit-textarea:focus {
   border-color: #3498db;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
 }
 
 /* 버튼 영역 */
@@ -819,13 +845,6 @@
 /* =====================================================
    마이프로젝트 상세페이지 멤버 수정 페이지
 ====================================================== */
-.project-main-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
 /* 상단 버튼 (팀장 위임하기) */
 .member-edit-header {
   display: flex;
@@ -1281,6 +1300,7 @@
 .notification-title {
   font-size: 1.5rem;
   font-weight: bold;
+  margin-top: -15px;
   margin-bottom: 1rem;
   text-align: left;
 }

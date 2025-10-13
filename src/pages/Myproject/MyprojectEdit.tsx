@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useBeforeUnload, useParams } from 'react-router-dom';
-import '../../App.css';
-import { usePrompt } from '../../hooks/usePrompt';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useBeforeUnload, useParams } from "react-router-dom";
+import "../../App.css";
+import { usePrompt } from "../../hooks/usePrompt";
+import Header from "../../layouts/Header";
 
-import type { ProjectData } from '../../types/project';
+import type { ProjectData } from "../../types/project";
 
 export default function MyprojectEdit() {
   const { id } = useParams<{ id: string }>();
   const [project, setProject] = useState<ProjectData | null>(null);
-  const [teamName, setTeamName] = useState('');
+  const [teamName, setTeamName] = useState("");
   const [teamLogo, setTeamLogo] = useState<File | null>(null);
   const [progress, setProgress] = useState(0);
   const [isDirty, setIsDirty] = useState(false);
@@ -23,13 +24,13 @@ export default function MyprojectEdit() {
     fetch(`/mocks/project-${id}.json`)
       .then((res) => {
         if (!res.ok) {
-          throw new Error('프로젝트 데이터를 불러오지 못했습니다.');
+          throw new Error("프로젝트 데이터를 불러오지 못했습니다.");
         }
         return res.json();
       })
       .then((data: ProjectData) => {
         setProject(data);
-        setTeamName(data.title || ''); // 기본값 세팅
+        setTeamName(data.title || ""); // 기본값 세팅
         setProgress(data.progress || 0);
       })
       .catch((err) => {
@@ -57,7 +58,7 @@ export default function MyprojectEdit() {
       teamLogo: teamLogo?.name,
       progress,
     });
-    alert('저장되었습니다.');
+    alert("저장되었습니다.");
     setIsDirty(false);
     nav(-1);
   };
@@ -66,7 +67,7 @@ export default function MyprojectEdit() {
   const handleCancel = () => {
     if (isDirty) {
       const confirmLeave = window.confirm(
-        '변경 사항이 저장되지 않았습니다. 페이지를 떠나시겠습니까?'
+        "변경 사항이 저장되지 않았습니다. 페이지를 떠나시겠습니까?"
       );
       if (!confirmLeave) return;
     }
@@ -75,16 +76,11 @@ export default function MyprojectEdit() {
 
   // 완료 전환
   const handleCompleteProject = () => {
-    if (window.confirm('프로젝트를 완료 상태로 전환하시겠습니까?')) {
+    if (window.confirm("프로젝트를 완료 상태로 전환하시겠습니까?")) {
       if (project) {
-        setProject({ ...project, status: 'COMPLETED' });
+        setProject({ ...project, status: "COMPLETED" });
       }
-      alert('프로젝트가 완료 처리되었습니다.');
-      //삭제하기
-      //
-      //
-      //
-      //
+      alert("프로젝트가 완료 처리되었습니다.");
       nav(`/myproject/I`);
     }
   };
@@ -104,84 +100,96 @@ export default function MyprojectEdit() {
   useBeforeUnload((e: BeforeUnloadEvent) => {
     if (isDirty) {
       e.preventDefault();
-      e.returnValue = '';
+      e.returnValue = "";
     }
   });
 
   // 라우터 이동 경고
-  usePrompt('변경 사항이 저장되지 않았습니다. 페이지를 떠나시겠습니까?', isDirty);
+  usePrompt(
+    "변경 사항이 저장되지 않았습니다. 페이지를 떠나시겠습니까?",
+    isDirty
+  );
 
   if (loading) return <div>Loading...</div>;
   if (!project) return <div>Project not found.</div>;
 
   return (
-    <div className="edit-container">
-      <div className="completion-button-wrapper">
-        <button onClick={handleCompleteProject} className="complete-btn">
-          프로젝트 완료로 전환
-        </button>
+    <>
+      <div className="content-header">
+        <Header />
       </div>
-
-      <form className="edit-form" onSubmit={handleSave}>
-        <div className="form-group">
-          <label htmlFor="teamName">팀 이름</label>
-          <input
-            type="text"
-            id="teamName"
-            value={teamName}
-            onChange={handleChangeTeamName}
-          />
+      <div className="edit-container">
+        <div className="completion-button-wrapper">
+          <button onClick={handleCompleteProject} className="complete-btn">
+            프로젝트 완료로 전환
+          </button>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="teamLogo">팀 로고</label>
-          <div className="file-input-wrapper">
+        <form className="edit-form" onSubmit={handleSave}>
+          <div className="form-group">
+            <label htmlFor="teamName">팀 이름</label>
             <input
               type="text"
-              readOnly
-              value={teamLogo ? teamLogo.name : project.logoUrl || 'TEAMIT_로고.jpg'}
-              placeholder="파일을 선택하세요"
+              id="teamName"
+              value={teamName}
+              onChange={handleChangeTeamName}
             />
-            <input
-              type="file"
-              id="teamLogo"
-              onChange={handleFileChange}
-              style={{ display: 'none' }}
-            />
-            <button
-              type="button"
-              onClick={() => document.getElementById('teamLogo')?.click()}
-              className="find-btn"
-            >
-              찾아보기
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="teamLogo">팀 로고</label>
+            <div className="file-input-wrapper">
+              <input
+                type="text"
+                readOnly
+                value={
+                  teamLogo
+                    ? teamLogo.name
+                    : project.logoUrl || "TEAMIT_로고.jpg"
+                }
+                placeholder="파일을 선택하세요"
+              />
+              <input
+                type="file"
+                id="teamLogo"
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+              />
+              <button
+                type="button"
+                onClick={() => document.getElementById("teamLogo")?.click()}
+                className="find-btn"
+              >
+                찾아보기
+              </button>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="progress">프로젝트 진행률</label>
+            <div className="progress-input-wrapper">
+              <input
+                type="number"
+                id="progress"
+                value={progress}
+                onChange={handleChangeProgress}
+                min="0"
+                max="100"
+              />
+              <span>%</span>
+            </div>
+          </div>
+
+          <div className="form-actions">
+            <button type="submit" className="save-btn">
+              저장
+            </button>
+            <button type="button" onClick={handleCancel} className="cancel-btn">
+              취소
             </button>
           </div>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="progress">프로젝트 진행률</label>
-          <div className="progress-input-wrapper">
-            <input
-              type="number"
-              id="progress"
-              value={progress}
-              onChange={handleChangeProgress}
-              min="0"
-              max="100"
-            />
-            <span>%</span>
-          </div>
-        </div>
-
-        <div className="form-actions">
-          <button type="submit" className="save-btn">
-            저장
-          </button>
-          <button type="button" onClick={handleCancel} className="cancel-btn">
-            취소
-          </button>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </>
   );
 }
