@@ -83,7 +83,7 @@ const MyprojectMemberEdit: React.FC = () => {
             팀장 위임하기
           </button>
         </div>
-        <div className="card">
+        <div className="card-main">
           {/* 멤버 테이블 */}
           <table className="member-edit-table">
             <thead>

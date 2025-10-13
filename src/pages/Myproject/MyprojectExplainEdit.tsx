@@ -61,7 +61,7 @@ const MyprojectExplainEdit: React.FC = () => {
           </button>
         </div>
 
-        <div className="card">
+        <div className="card-main">
           <h3 className="explain-edit-title">프로젝트 소개 수정</h3>
           <textarea
             value={description}

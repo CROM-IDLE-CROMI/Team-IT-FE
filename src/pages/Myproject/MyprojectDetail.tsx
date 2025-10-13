@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import '../../App.css';
 import ProgressBar from '../../components/ProgressBar';
 import ProjectSidebar from '../../components/myproject/ProjectSidebar';
+import Header from "../../layouts/Header";
 
 import type { ProjectData } from '../../types/project';
 
@@ -38,31 +39,34 @@ export default function ProjectDetail() {
       case 'ONGOING':
         return (
           <>
+            <div className="">
+              <Header />
+            </div>
             <div className="edit-button-wrapper">
               <button className="edit-button" onClick={handleEditClick}>
                 수정하기
               </button>
             </div>
-            <div className="card">
-              <div className="card-header">
+            <div className="card-main">
+              <div className="card-card-header">
                 <h3>프로젝트 소개 (진행중)</h3>
               </div>
               <p>{project.description}</p>
             </div>
             <div className="content-grid">
-              <div className="card">
+              <div className="card-main">
                 <h4>멤버</h4>
                 {/* 멤버 목록 */}
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                <div className="card">
-                  <div className="card-header">
+                <div className="card-main">
+                  <div className="card-main-header">
                     <h4>진행률</h4>
                     <span>{project.progress ?? 0}%</span>
                   </div>
                   <ProgressBar progress={project.progress ?? 0} />
                 </div>
-                <div className="card">
+                <div className="card-main">
                   <h4>마일스톤</h4>
                   {/* 마일스톤 목록 */}
                 </div>
@@ -78,8 +82,8 @@ export default function ProjectDetail() {
                 수정하기
               </button>
             </div>
-            <div className="card">
-              <div className="card-header">
+            <div className="card-main">
+              <div className="card-main-header">
                 <h3>프로젝트 소개 (모집중)</h3>
               </div>
               <p>{project.description}</p>
@@ -98,8 +102,8 @@ export default function ProjectDetail() {
         );
       case 'COMPLETED':
         return (
-          <div className="card">
-            <div className="card-header">
+          <div className="card-main">
+            <div className="card-main-header">
               <h3>프로젝트 소개 (완료)</h3>
             </div>
             <p>{project.description}</p>

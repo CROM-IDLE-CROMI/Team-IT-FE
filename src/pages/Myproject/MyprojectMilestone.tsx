@@ -70,7 +70,7 @@ export default function MyprojectMilestone() {
           </button>
         </div>
 
-        <div className="card">
+        <div className="card-main">
           {milestones.length > 0 ? (
             <table className="milestone-table">
               <thead>

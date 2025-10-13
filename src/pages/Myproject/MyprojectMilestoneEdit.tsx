@@ -108,7 +108,7 @@ const MyprojectMilestoneEdit: React.FC = () => {
       />
 
       <main className="project-main-container">
-        <div className="card">
+        <div className="card-main">
           <table className="milestone-edit-table">
             <thead>
               <tr>

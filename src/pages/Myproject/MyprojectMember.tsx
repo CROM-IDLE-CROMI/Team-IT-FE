@@ -50,7 +50,7 @@ export default function MyprojectMember() {
             <button className="edit-button" onClick={handleEdit}>수정하기</button>
           )}
         </div>
-        <div className="card">
+        <div className="card-main">
           <table className="member-table">
             <thead>
               <tr>
