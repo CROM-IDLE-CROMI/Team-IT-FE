@@ -169,32 +169,25 @@ const ProjectApply = () => {
     }
 
     try {
-      // 로컬스토리지에 지원서 저장
+      // TODO: 백엔드 API로 지원서 제출
+      // 예시: POST /api/applications
       const applicationData = {
-        id: Date.now(),
         projectId: project?.id,
         projectTitle: project?.title,
         projectAuthor: project?.author,
         ...formData,
         submittedAt: new Date().toISOString()
       };
-
-      // 기존 지원서 목록 가져오기
-      const existingApplications = JSON.parse(localStorage.getItem('userApplications') || '[]');
       
-      // 새 지원서 추가
-      const updatedApplications = [...existingApplications, applicationData];
+      console.log("지원서 데이터:", applicationData);
       
-      // 로컬스토리지에 저장
-      localStorage.setItem('userApplications', JSON.stringify(updatedApplications));
+      // 임시: 지원 성공으로 처리
+      setStatusMessage("🎉 지원서 제출 기능은 백엔드 연동 후 사용 가능합니다!");
       
-      console.log("✅ 지원서 제출 성공:", applicationData);
-      setStatusMessage("🎉 지원이 완료되었습니다!");
-      
-      // 3초 후 프로젝트 페이지로 이동
-      setTimeout(() => {
-        navigate('/Projects');
-      }, 3000);
+      // 백엔드 연동 후 활성화
+      // setTimeout(() => {
+      //   navigate('/Projects');
+      // }, 3000);
 
     } catch (error) {
       console.error("❌ 지원서 제출 실패:", error);
@@ -304,7 +297,6 @@ const ProjectApply = () => {
             <div className="form-section">
               <label className="form-label">질문에 대한 답변</label>
               
-              {console.log('🔍 렌더링 시 project.questions:', project.questions)}
               {project.questions && project.questions.length > 0 ? (
                 project.questions.map((question, index) => (
                   <div key={index} className="question-group">

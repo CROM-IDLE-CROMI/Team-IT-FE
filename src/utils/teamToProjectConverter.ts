@@ -155,21 +155,24 @@ export const validateTeamData = (teamData: TeamFormData): boolean => {
   return isValid;
 };
 
-// 프로젝트 데이터를 localStorage에 저장
+// TODO: 백엔드 API로 프로젝트 저장
 export const saveProjectToStorage = (project: Project): void => {
   try {
-    const existingProjects = JSON.parse(localStorage.getItem('teamRecruitProjects') || '[]');
-    const updatedProjects = [project, ...existingProjects];
-    localStorage.setItem('teamRecruitProjects', JSON.stringify(updatedProjects));
+    // TODO: 백엔드 API 호출로 대체 필요
+    // 예시: POST /api/team-recruit
+    console.log('프로젝트 저장 데이터:', project);
   } catch (error) {
     console.error('프로젝트 저장 중 오류 발생:', error);
   }
 };
 
-// localStorage에서 팀원 모집 프로젝트 목록 가져오기
+// TODO: 백엔드 API에서 팀원 모집 프로젝트 목록 가져오기
 export const getTeamRecruitProjects = (): Project[] => {
   try {
-    return JSON.parse(localStorage.getItem('teamRecruitProjects') || '[]');
+    // TODO: 백엔드 API 호출로 대체 필요
+    // 예시: GET /api/team-recruit
+    console.log('팀원 모집 프로젝트 목록 조회');
+    return [];
   } catch (error) {
     console.error('프로젝트 불러오기 중 오류 발생:', error);
     return [];

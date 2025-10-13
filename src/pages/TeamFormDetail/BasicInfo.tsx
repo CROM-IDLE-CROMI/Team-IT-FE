@@ -4,7 +4,6 @@ import type { MultiValue } from 'react-select';
 import type { TechStackType } from '../../styles/TechStack';
 import { techStacksInit } from '../../styles/TechStack';
 import './BasicInfo.css';
-import '../../App.css';
 import '../../TeamPageDetail.css';
 import TechStackList from '../../components/TechStackList';
 import type { StepData } from "../../types/Draft";
@@ -237,7 +236,7 @@ const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
       {/* 기술 스택 */}
       <div className="formGroup_3">
         <label>기술 스택</label>
-        <button type="button" className="selectStackBtn" onClick={() => setIsStackOpen(prev => !prev)}>
+        <button className="selectStackBtn" onClick={() => setIsStackOpen(prev => !prev)}>
           {isStackOpen ? "닫기" : "보기"}
         </button>
         {isStackOpen && (

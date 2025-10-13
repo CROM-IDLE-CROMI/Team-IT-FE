@@ -1,8 +1,6 @@
 import LocationSelector from "../../components/LocationSelector";
 import React, { useState, useEffect, useCallback } from "react";
-import "../../App.css";
 import "./WorkEnviron.css";
-import "../../TeamPageDetail.css";
 
 interface WorkEnvironProps {
   data: any;

@@ -1,10 +1,6 @@
-// import Select from 'react-select';
-// import type { MultiValue, ActionMeta } from 'react-select';
 import { useState, useEffect, useCallback } from 'react';
-import '../../App.css';
 import type { StepData } from "../../types/Draft";
 import "./Situation.css";
-import "../../TeamPageDetail.css";
 
 type OptionType = {
   value: string;

@@ -35,13 +35,6 @@
   transform: translateX(4px);
 }
 
-.sidebar-item.active {
-  font-weight: 600;
-  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-  border-left: 4px solid #3498db;
-  color: #1976d2;
-  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
-}
 
 .circle {
   width: 23px;

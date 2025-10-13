@@ -140,15 +140,15 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
 
         {/* 검색 기능 */}
         <div className="board-search">
-          <form onSubmit={handleSearch} className="search-form">
+          <form onSubmit={handleSearch} className="board_search-form">
             <input
               type="text"
               value={searchTerm}
               onChange={handleSearchChange}
               placeholder="제목, 내용, 작성자로 검색..."
-              className="search-input"
+              className="board_search-input"
             />
-            <button type="submit" className="search-btn">
+            <button type="submit" className="board_search-btn">
               🔍
             </button>
           </form>
@@ -174,8 +174,8 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
                 className="board-item"
               >
                 {currentUser !== post.author && (
-                  <button onClick={(e) => toggleScrap(e, post.id)}>
-                    <img
+                  <button className="scrap_btn" onClick={(e) => toggleScrap(e, post.id)}>
+                    <img className="scrap"
                       src={
                         scrappedPosts.has(post.id)
                           ? "/스크랩 이후.png"

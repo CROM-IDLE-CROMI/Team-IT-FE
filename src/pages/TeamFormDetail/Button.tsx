@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../App.css";
 import "./Button.css";
 import SavePopup from "../../components/TemporarySave/SavePopup";
 import DraftList from "../../components/TemporarySave/DraftList";
@@ -48,18 +47,22 @@ const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: B
 
   const handleConfirmSave = (title: string) => {
     try {
+      // TODO: 백엔드 API로 임시저장 요청
+      // 예시: POST /api/drafts
       const draft: Draft = {
         id: uuidv4(),
         title,
         savedAt: new Date().toISOString(),
         data: formData,
       };
-      saveDraft(draft);
-      setHasDraftsState(true); // 임시저장 후 상태 업데이트
-      alert(`"${title}" 임시저장이 완료되었습니다!`);
+      console.log('임시저장 요청:', draft);
+      
+      // saveDraft(draft); // 백엔드 연동 후 활성화
+      // setHasDraftsState(true); // 백엔드 연동 후 활성화
+      
+      alert(`"${title}" 임시저장 기능은 백엔드 연동 후 사용 가능합니다.`);
       setIsListModalOpen(false);
       setIsModalOpen(false);
-      // 페이지 이동 제거 - 현재 페이지에 머물도록 수정
     } catch (error) {
       console.error('임시저장 중 오류 발생:', error);
       alert('임시저장 중 오류가 발생했습니다. 다시 시도해주세요.');
@@ -75,16 +78,17 @@ const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: B
         return;
       }
 
-      // 팀원 모집 데이터를 프로젝트 형식으로 변환
+      // TODO: 백엔드 API로 팀원 모집 등록 요청
+      // 예시: POST /api/team-recruit
       const project = convertTeamDataToProject(formData);
+      console.log('팀원 모집 등록 데이터:', project);
       
-      // 프로젝트를 localStorage에 저장
-      saveProjectToStorage(project);
+      // saveProjectToStorage(project); // 백엔드 연동 후 활성화
       
-      alert('팀원 모집이 성공적으로 등록되었습니다! 프로젝트 찾기에서 확인할 수 있습니다.');
+      alert('팀원 모집 등록 기능은 백엔드 연동 후 사용 가능합니다.');
       
-      // 프로젝트 찾기 페이지로 이동
-      navigate('/Projects');
+      // 백엔드 연동 후 활성화
+      // navigate('/Projects');
     } catch (error) {
       console.error('팀원 모집 등록 중 오류 발생:', error);
       alert('팀원 모집 등록 중 오류가 발생했습니다. 다시 시도해주세요.');

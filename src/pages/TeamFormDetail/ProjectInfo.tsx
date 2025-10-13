@@ -2,9 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Select from 'react-select';
 import type { MultiValue } from 'react-select';
 import type { StepData } from "../../types/Draft";
-// MUI DatePicker 제거 - 기본 HTML input[type="date"] 사용
 import './ProjectInfo.css';
-import '../../App.css';
 import '../../TeamPageDetail.css';
 
 type OptionType = { value: string; label: string };

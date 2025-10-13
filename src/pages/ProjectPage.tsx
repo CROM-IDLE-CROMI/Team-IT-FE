@@ -514,7 +514,7 @@ const ProjectPage = () => {
   const handlePopularSlidePrev = () => setPopularSlideIndex((prev) => (prev - 1 + totalPopularSlides) % Math.max(1, totalPopularSlides));
 
   return (
-    <div style={{ padding: "8rem 0" }}>
+    <div style={{ padding: "4rem 0" }}>
       <Header />
       <div className="ProjectWrapper">
         {/* 상단 인기 섹션들 */}

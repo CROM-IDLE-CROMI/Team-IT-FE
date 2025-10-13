@@ -1,6 +1,3 @@
-/*===================================================================================
-=====================TeamPage.tsx====================================================
-====================================================================================*/
 import { useRef, useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import ApplicantInfo from './TeamFormDetail/ApplicantInfo';
@@ -65,7 +62,7 @@ const TeamPage = () => {
   });
 
 
-  // ✅ Hook 최상위에서 ref 배열 선언
+  //  Hook 최상위에서 ref 배열 선언
   const sectionRefs: React.RefObject<HTMLDivElement | null>[] = [
   useRef<HTMLDivElement>(null),
   useRef<HTMLDivElement>(null),

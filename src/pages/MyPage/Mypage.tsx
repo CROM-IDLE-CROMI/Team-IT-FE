@@ -81,28 +81,20 @@ export default function Mypage() {
     ]
   });
 
-  // 컴포넌트 마운트 시 localStorage에서 프로필 데이터 로드
+  // TODO: 백엔드 API에서 프로필 데이터 로드
   useEffect(() => {
-    const savedProfile = localStorage.getItem('userProfile');
-    if (savedProfile) {
-      try {
-        const parsedProfile = JSON.parse(savedProfile);
-        // techStacks가 없는 경우 빈 배열로 초기화
-        if (!parsedProfile.techStacks) {
-          parsedProfile.techStacks = [];
-        }
-        setProfileData(parsedProfile);
-      } catch (error) {
-        console.error('프로필 데이터 로드 실패:', error);
-      }
-    }
+    // TODO: 백엔드 API 호출로 대체 필요
+    // 예시: GET /api/user/profile
+    console.log('프로필 데이터 로드 요청');
   }, []);
 
-  // 프로필 데이터 변경 시 localStorage에 저장
+  // TODO: 백엔드 API로 프로필 데이터 업데이트
   const updateProfileData = (newData: Partial<ProfileData>) => {
     const updatedData = { ...profileData, ...newData };
     setProfileData(updatedData);
-    localStorage.setItem('userProfile', JSON.stringify(updatedData));
+    // TODO: 백엔드 API 호출로 대체 필요
+    // 예시: PUT /api/user/profile
+    console.log('프로필 데이터 업데이트:', updatedData);
   };
 
   const handleEditComplete = (updatedData: Partial<ProfileData>) => {

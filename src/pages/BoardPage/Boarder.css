@@ -12,11 +12,35 @@
 }
 
 .board-tabs{
-    cursor: pointer;
-    gap: 2rem;
-    display: flex;
-    justify-content: start;
-    flex: 0 0 auto;
+  color: none !important;
+  cursor: pointer;
+  gap: 2rem;
+  display: flex;
+  justify-content: start;
+  flex: 0 0 auto;
+}
+
+.board-tabs button {
+  background: #fff !important;
+  border: 2px solid #000 !important;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #000 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.board-tabs button:hover {
+  background-color: #f0f0f0;
+}
+
+.board-tabs button.active {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #000;
 }
 
 .board-search {
@@ -25,13 +49,13 @@
     justify-content: center;
 }
 
-.search-form {
+.board_search-form {
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
-.search-input {
+.board_search-input {
     padding: 0.75rem 1rem;
     border: 2px solid #e1e8ed;
     border-radius: 8px;
@@ -40,29 +64,30 @@
     transition: border-color 0.3s ease;
 }
 
-.search-input:focus {
+.board_search-input:focus {
     outline: none;
     border-color: #3498db;
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
-.search-btn {
-    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-    color: white;
-    border: none;
+.board_search-btn {
+    background: transparent !important;
+    color: #000 !important;
+    border: 2px solid #000 !important;
     padding: 0.75rem 1rem;
     border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: none !important;
+    outline: none !important;
 }
 
-.search-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+.board_search-btn:hover {
+    background-color: #f0f0f0;
 }
 
-.search-results {
+.board_search-results {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     padding: 1rem;
     margin: 1rem 0;
@@ -70,7 +95,7 @@
     border-left: 4px solid #3498db;
 }
 
-.search-results p {
+.board_search-results p {
     margin: 0;
     color: #2c3e50;
     font-weight: 500;
@@ -80,15 +105,33 @@
     flex: 0 0 auto;
 }
 
+.board-actions button {
+    background: #fff !important;
+    border: 2px solid #000 !important;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #000 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.board-actions button:hover {
+    background-color: #f0f0f0;
+}
+
 .board-section{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 13%;
-    border: 1px solid #000;
-    margin-top: 150px;
-    width:75%;
-    height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 13%;
+  border: 2px solid #000;
+  margin-top: 150px;
+  width:75%;
+  height: 480px;
+  border-radius: 20px;
 }
 
 .board-list ul {
@@ -118,6 +161,27 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
+.board-list li button {
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.board-list li button:hover {
+  opacity: 0.7;
+}
+
+.board-list li button img {
+  border: none !important;
+  outline: none !important;
+}
+
 /* 왼쪽: 제목 */
 .post-title {
   font-weight: 600;
@@ -136,6 +200,47 @@
   font-size: 16px;
   color: #555;
   white-space: nowrap;
+}
+
+/* 페이지네이션 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 2rem 0;
+  padding: 0;
+}
+
+.pagination button {
+  background: #fff !important;
+  border: 2px solid #000 !important;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #000 !important;
+  min-width: 40px;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #f0f0f0;
+}
+
+.pagination button:disabled {
+  background-color: #f5f5f5;
+  color: #ccc;
+  border-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination button.active {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
 }
 
 /* 모바일 대응: 화면이 600px 이하일 때 세로 정렬 */
