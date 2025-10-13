@@ -179,14 +179,9 @@ export default function MyprojectEdit() {
               <span>%</span>
             </div>
           </div>
-
           <div className="form-actions">
-            <button type="submit" className="save-btn">
-              저장
-            </button>
-            <button type="button" onClick={handleCancel} className="cancel-btn">
-              취소
-            </button>
+            <button type="submit" className="save-btn">저장</button>
+            <button type="button" onClick={handleCancel} className="cancel-btn">취소</button>
           </div>
         </form>
       </div>
