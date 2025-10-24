@@ -58,3 +58,27 @@
   color: #2c3e50;
   flex: 1;
 }
+
+.addButton{
+  background: #1E63EC !important;
+  border: 2px solid #1E63EC !important;
+  color: white !important;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.removeButton {
+  background: #1E63EC !important;
+  border: 2px solid #1E63EC !important;
+  color: white !important;
+  padding: 4px 8px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}

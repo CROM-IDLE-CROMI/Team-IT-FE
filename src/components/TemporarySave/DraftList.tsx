@@ -23,19 +23,24 @@ const DraftList = ({ onClose, onLoadDraft, onDelete }: DraftProps) => {
   }, []);
 
   const handleDelete = (id: string) => {
-    // TODO: 백엔드 API로 임시저장 삭제 요청
-    // 예시: DELETE /api/drafts/:id
-    console.log('임시저장 삭제 요청:', id);
-    
-    // const updatedDrafts = deleteDraft(id); // 백엔드 연동 후 활성화
-    // setDrafts(updatedDrafts);
-    
-    // 삭제 후 콜백 호출
-    if (onDelete) {
-      onDelete();
+    if (!confirm('정말 삭제하시겠습니까?')) {
+      return;
     }
     
-    alert('임시저장 삭제 기능은 백엔드 연동 후 사용 가능합니다.');
+    try {
+      const updatedDrafts = deleteDraft(id);
+      setDrafts(updatedDrafts);
+      
+      // 삭제 후 콜백 호출
+      if (onDelete) {
+        onDelete();
+      }
+      
+      console.log('임시저장 삭제 성공:', id);
+    } catch (error) {
+      console.error('임시저장 삭제 실패:', error);
+      alert('삭제에 실패했습니다.');
+    }
   };
 
   const handleLoad = (data: any) => {

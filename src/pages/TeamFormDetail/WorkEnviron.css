@@ -129,21 +129,19 @@
   top: 20%;
   padding: 4px 10px;
   border-radius: 12px;
-  border: 1px solid #9b59b6 !important;
+  border: 1px solid #1E63EC !important;
   cursor: pointer;
   font-size: 15px;
   font-weight: 500;
   width: 100px;
-  background: linear-gradient(135deg, #9b59b6, #8e44ad) !important;
+  background: #1E63EC!important;
   color: white !important;
   transition: all 0.3s ease;
-  box-shadow: 0 1px 4px rgba(155, 89, 182, 0.3);
 }
 
 .button_1:hover {
-  background: linear-gradient(135deg, #8e44ad, #7d3c98) !important;
+  background: #1E63EC !important;
   transform: translateY(-1px);
-  box-shadow: 0 3px 10px rgba(155, 89, 182, 0.4);
 }
 
 /* ===== 애니메이션 ===== */

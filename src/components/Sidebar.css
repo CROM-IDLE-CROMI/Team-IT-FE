@@ -47,7 +47,7 @@
 }
 
 .sidebar-item.active .circle {
-  background: linear-gradient(135deg, #3498db, #2980b9);
+  background: #1E63EC;
   width: 24px;
   height: 24px;
   box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);

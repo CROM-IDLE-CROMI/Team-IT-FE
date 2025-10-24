@@ -166,6 +166,12 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
       <div className="board-section">
         <div className="board-list">
           <ul>
+            <div className="board_header">
+              <div className="title-column">제목</div>
+              <div className="author-column">글쓴이</div>
+              <div className="date-column">작성일</div>
+              <div className="views-column">조회</div>
+            </div>
             {currentPosts.map(post => (
               <li
                 key={post.id}
@@ -173,25 +179,25 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
                 style={{ cursor: "pointer" }}
                 className="board-item"
               >
-                {currentUser !== post.author && (
-                  <button className="scrap_btn" onClick={(e) => toggleScrap(e, post.id)}>
-                    <img className="scrap"
-                      src={
-                        scrappedPosts.has(post.id)
-                          ? "/스크랩 이후.png"
-                          : "/스크랩 이전.png"
-                      }
-                      alt="스크랩"
-                      width="20"
-                    />
-                  </button>
-                )}
-                <span className="post-title">{post.title}</span>
-                <span className="post-meta">
-                  {/* 본인이 작성한 글이 아닐 때만 스크랩 버튼 표시 */}
-                  <span className="post-author">{post.author}</span>
-                  <span className="post-date">{post.date}</span>
-                </span>
+                <div className="title-column">
+                  {currentUser !== post.author && (
+                    <button className="scrap_btn" onClick={(e) => toggleScrap(e, post.id)}>
+                      <img className="scrap"
+                        src={
+                          scrappedPosts.has(post.id)
+                            ? "/스크랩 이후.png"
+                            : "/스크랩 이전.png"
+                        }
+                        alt="스크랩"
+                        width="20"
+                      />
+                    </button>
+                  )}
+                  <span className="post-title">{post.title}</span>
+                </div>
+                <div className="author-column">{post.author}</div>
+                <div className="date-column">{post.date}</div>
+                <div className="views-column">{post.views || 0}</div>
               </li>
             ))}
           </ul>

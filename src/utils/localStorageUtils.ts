@@ -1,5 +1,4 @@
-// TODO: 백엔드 API로 임시저장 기능 구현 필요
-// 모든 함수를 백엔드 API 호출로 대체해야 합니다.
+// 로컬스토리지 기반 임시저장 기능 구현
 
 import type { Draft as DraftType } from "../types/Draft";
 
@@ -9,6 +8,8 @@ export type Draft = DraftType & {
   projectStartDate?: string | Date | null;
   selectedJobs?: { value: string; label: string }[];
 };
+
+const STORAGE_KEY = 'crom_drafts';
 
 // ──────────────────────────────────────────────────────────────
 // Draft 역직렬화: Date/selectedJobs 복원
@@ -28,52 +29,92 @@ export function parseDraft(d: Draft): Draft {
 }
 
 // ──────────────────────────────────────────────────────────────
-// 외부 API - 백엔드 연동 필요
+// 로컬스토리지 헬퍼 함수들
+// ──────────────────────────────────────────────────────────────
+
+/** 로컬스토리지에서 모든 임시저장 가져오기 */
+function getAllDraftsFromStorage(): Draft[] {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (!stored) return [];
+    return JSON.parse(stored);
+  } catch (error) {
+    console.error('임시저장 목록 불러오기 실패:', error);
+    return [];
+  }
+}
+
+/** 로컬스토리지에 임시저장 목록 저장 */
+function saveDraftsToStorage(drafts: Draft[]): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(drafts));
+  } catch (error) {
+    console.error('임시저장 목록 저장 실패:', error);
+  }
+}
+
+// ──────────────────────────────────────────────────────────────
+// 외부 API - 로컬스토리지 기반 구현
 // ──────────────────────────────────────────────────────────────
 
 /** 전체 목록 가져오기(최신순, 복원 포함) */
 export function getDrafts(): Draft[] {
-  // TODO: 백엔드 API 호출로 대체 필요
-  // 예시: GET /api/drafts
-  console.log('임시저장 목록 조회');
-  return [];
+  const drafts = getAllDraftsFromStorage();
+  // 최신순 정렬 (savedAt 기준 내림차순)
+  return drafts.sort((a, b) => 
+    new Date(b.savedAt).getTime() - new Date(a.savedAt).getTime()
+  ).map(parseDraft);
 }
 
 /** id로 단건 조회 */
 export function getDraftById(id: string): Draft | undefined {
-  // TODO: 백엔드 API 호출로 대체 필요
-  // 예시: GET /api/drafts/:id
-  console.log('임시저장 단건 조회:', id);
-  return undefined;
+  const drafts = getAllDraftsFromStorage();
+  const draft = drafts.find(d => d.id === id);
+  return draft ? parseDraft(draft) : undefined;
 }
 
 /** 존재 여부 */
 export function hasDrafts(): boolean {
-  // TODO: 백엔드 API 호출로 대체 필요
-  // 예시: GET /api/drafts/count
-  console.log('임시저장 존재 여부 확인');
-  return false;
+  const drafts = getAllDraftsFromStorage();
+  return drafts.length > 0;
 }
 
 /** 저장/갱신 (id가 같으면 갱신, 없으면 새로 추가) */
 export function saveDraft(next: Draft): Draft[] {
-  // TODO: 백엔드 API 호출로 대체 필요
-  // 예시: POST /api/drafts (신규) 또는 PUT /api/drafts/:id (수정)
-  console.log('임시저장 저장/갱신:', next);
-  return [];
+  const drafts = getAllDraftsFromStorage();
+  const existingIndex = drafts.findIndex(d => d.id === next.id);
+  
+  if (existingIndex !== -1) {
+    // 기존 임시저장 갱신
+    drafts[existingIndex] = {
+      ...next,
+      savedAt: new Date().toISOString(),
+    };
+  } else {
+    // 새로운 임시저장 추가
+    drafts.push({
+      ...next,
+      savedAt: new Date().toISOString(),
+    });
+  }
+  
+  saveDraftsToStorage(drafts);
+  return getDrafts();
 }
 
 /** 삭제 후 목록 반환 */
 export function deleteDraft(id: string): Draft[] {
-  // TODO: 백엔드 API 호출로 대체 필요
-  // 예시: DELETE /api/drafts/:id
-  console.log('임시저장 삭제:', id);
-  return [];
+  const drafts = getAllDraftsFromStorage();
+  const filtered = drafts.filter(d => d.id !== id);
+  saveDraftsToStorage(filtered);
+  return getDrafts();
 }
 
 /** 전체 삭제 */
 export function clearDrafts() {
-  // TODO: 백엔드 API 호출로 대체 필요
-  // 예시: DELETE /api/drafts
-  console.log('임시저장 전체 삭제');
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch (error) {
+    console.error('임시저장 전체 삭제 실패:', error);
+  }
 }

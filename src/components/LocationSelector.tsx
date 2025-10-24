@@ -28,15 +28,36 @@ const regionData: { [key: string]: string[] } = {
   제주특별자치도: ['제주시', '서귀포시'],
 };
 
+// 전달받은 locations에서 구/군만 추출하는 함수 (컴포넌트 외부)
+const extractDistricts = (locations: string[]): string[] => {
+  if (!locations || locations.length === 0) return [];
+  
+  // "서울특별시 전체" 형태인 경우
+  if (locations[0].includes('전체')) {
+    const region = locations[0].replace(' 전체', '').trim();
+    return regionData[region] || [];
+  }
+  
+  // "서울특별시 강남구" 형태에서 구/군만 추출
+  return locations.map(loc => {
+    const parts = loc.split(' ');
+    return parts[parts.length - 1]; // 마지막 부분(구/군)만 반환
+  });
+};
+
 const LocationSelector = ({ onCompleteChange, onLocationSelect, onRegionSelect, selectedRegion: initialRegion, selectedLocations: initialLocations }: LocationSelectorProps) => {
   const [selectedRegion, setSelectedRegion] = useState(initialRegion || '서울특별시');
-  const [selectedDistricts, setSelectedDistricts] = useState<string[]>(initialLocations || []);
+  const [selectedDistricts, setSelectedDistricts] = useState<string[]>(extractDistricts(initialLocations || []));
   const allSelected = selectedDistricts.length === regionData[selectedRegion].length;
 
   // 최신 함수들을 참조하기 위한 ref
   const onCompleteChangeRef = useRef(onCompleteChange);
   const onLocationSelectRef = useRef(onLocationSelect);
   const onRegionSelectRef = useRef(onRegionSelect);
+  
+  // 이전 props 값을 추적
+  const prevRegionRef = useRef(initialRegion);
+  const prevLocationsRef = useRef(initialLocations);
 
   // ref 업데이트
   useEffect(() => {
@@ -44,6 +65,24 @@ const LocationSelector = ({ onCompleteChange, onLocationSelect, onRegionSelect, 
     onLocationSelectRef.current = onLocationSelect;
     onRegionSelectRef.current = onRegionSelect;
   });
+
+  // props 변경 시 state 업데이트 (실제 값이 변경되었을 때만)
+  useEffect(() => {
+    // 지역 변경 확인
+    if (initialRegion && initialRegion !== prevRegionRef.current) {
+      setSelectedRegion(initialRegion);
+      prevRegionRef.current = initialRegion;
+    }
+    
+    // 위치 변경 확인 (배열을 JSON으로 비교)
+    const prevLocationsStr = JSON.stringify(prevLocationsRef.current);
+    const currentLocationsStr = JSON.stringify(initialLocations);
+    
+    if (initialLocations && prevLocationsStr !== currentLocationsStr) {
+      setSelectedDistricts(extractDistricts(initialLocations));
+      prevLocationsRef.current = initialLocations;
+    }
+  }, [initialRegion, initialLocations]);
 
   const handleAllToggle = () => {
     if (allSelected) {

@@ -3,12 +3,11 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem 0;
-    margin: 100px 0 0 0;
+    margin: 100px auto 0 auto;
     width: 100%;
     max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: -100px;
+    position: relative;
+    z-index: 10;
 }
 
 .board-tabs{
@@ -18,6 +17,8 @@
   display: flex;
   justify-content: start;
   flex: 0 0 auto;
+  position: relative;
+  z-index: 15;
 }
 
 .board-tabs button {
@@ -31,6 +32,8 @@
   color: #000 !important;
   box-shadow: none !important;
   outline: none !important;
+  position: relative;
+  z-index: 20;
 }
 
 .board-tabs button:hover {
@@ -122,38 +125,104 @@
     background-color: #f0f0f0;
 }
 
-.board-section{
+.board-list {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.board-section {
+  border-top: 2px solid #000;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.board_header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-left: 13%;
-  border: 2px solid #000;
-  margin-top: 150px;
-  width:75%;
-  height: 480px;
-  border-radius: 20px;
+  padding-top: 8px;
+  padding-bottom:15px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #000;
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+}
+
+.board_header .title-column {
+  flex: 1;
+  text-align: left;
+  margin-left: 300px;
+}
+
+.board_header .author-column {
+  width: 120px;
+  text-align: center;
+  margin-right: 20px;
+}
+
+.board_header .date-column {
+  width: 120px;
+  text-align: center;
+  margin-right: 20px;
+}
+
+.board-header .views-column,
+.board_header .views-column {
+  width: 80px;
+  text-align: center;
 }
 
 .board-list ul {
-  padding: 0;
+  padding-top: 15px;
   margin: 0;
+  width: 100%;
+  max-width: 1200px;
+  margin-right: 60px;
 }
 
 .board-list li {
   display: flex;
-  justify-content: space-between; /* 좌우 배치 */
   align-items: center;
   list-style: none;
-  padding: 16px 20px;
-  margin: 10px 0;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e0e0e0;
   background-color: #fff;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  width: 900px;
+  width: 100%;
+}
+
+.board-list li .title-column {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.board-list li .author-column {
+  width: 120px;
+  text-align: center;
+  margin-right: 20px;
+  color: #555;
+}
+
+.board-list li .date-column {
+  width: 120px;
+  text-align: center;
+  margin-right: 20px;
+  color: #555;
+}
+
+.board-list li .views-column {
+  width: 80px;
+  text-align: center;
+  color: #555;
 }
 
 .board-list li:hover {
@@ -182,24 +251,16 @@
   outline: none !important;
 }
 
-/* 왼쪽: 제목 */
+/* 제목 스타일 */
 .post-title {
   font-weight: 600;
-  font-size: 18px;
+  font-size: 16px;
   color: #222;
-  flex: 1; /* 남는 공간 차지 */
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-/* 오른쪽: 작성자 + 날짜 */
-.post-meta {
-  display: flex;
-  gap: 12px;
-  font-size: 16px;
-  color: #555;
-  white-space: nowrap;
+  margin-left: 10px;
 }
 
 /* 페이지네이션 */
@@ -243,19 +304,72 @@
   border-color: #000;
 }
 
-/* 모바일 대응: 화면이 600px 이하일 때 세로 정렬 */
-@media (max-width: 600px) {
+/* 모바일 대응: 화면이 768px 이하일 때 */
+@media (max-width: 768px) {
+  .board-section {
+    margin: 0 10px;
+  }
+  
+  .board-header,
+  .board_header {
+    display: none; /* 모바일에서는 헤더 숨김 */
+  }
+  
+  .board-list {
+    padding: 0;
+  }
+  
   .board-list li {
     flex-direction: column;
     align-items: flex-start;
     padding: 12px 16px;
+    border-radius: 8px;
+    margin: 8px 0;
+    border: 1px solid #e0e0e0;
   }
+  
+  .board-list li .title-column {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+  
+  .board-list li .author-column,
+  .board-list li .date-column,
+  .board-list li .views-column {
+    width: auto;
+    margin-right: 0;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  
   .post-title {
-    white-space: normal; /* 제목 줄바꿈 허용 */
-    margin-bottom: 6px;
+    white-space: normal;
+    font-size: 16px;
+    margin-left: 10px;
   }
-  .post-meta {
-    margin-top: 4px;
+  
+  .board-button {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .board-tabs {
+    justify-content: center;
+  }
+  
+  .board_search-form {
+    justify-content: center;
+  }
+  
+  .board_search-input {
+    width: 250px;
+  }
+  
+  .board-actions {
+    display: flex;
+    justify-content: center;
   }
 }
 

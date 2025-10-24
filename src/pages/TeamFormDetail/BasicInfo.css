@@ -17,8 +17,8 @@
 }
 
 .formGroup_3 label {
-  width: 120px;        /* ✅ 고정폭 */
-  flex-shrink: 0;      /* ✅ 줄어들지 않음 */
+  width: 120px;
+  flex-shrink: 0;  
   font-weight: 600;
   color: #2c3e50;
   font-size: 0.9rem;
@@ -48,15 +48,14 @@
   left: 80%;
   padding: 8px 14px;
   border-radius: 20px;
-  border: 2px solid black !important;
-  background: black !important;
+  border: 2px solid #1E63EC!important;
+  background: #1E63EC !important;
   cursor: pointer;
   font-size: 13px;
   font-weight: 600;
   width: 80px;
   color: #fff;
   transition: all 0.3s ease;
-  box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3);
 }
 
 .selectStackBtn:hover {

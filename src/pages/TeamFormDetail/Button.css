@@ -21,7 +21,7 @@
 }
 
 button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination-page-btn):not(.slide-btn) {
-  background: linear-gradient(135deg, #3498db, #2980b9);
+  background: #1E63EC;
   color: white;
   padding: 0.6rem 1.2rem;
   border: none;
@@ -34,7 +34,7 @@ button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination
 }
 
 button:not(.profile):not(.notification):not(.pagination-nav-btn):not(.pagination-page-btn):not(.slide-btn):hover {
-  background: linear-gradient(135deg, #2980b9, #1f4e79);
+  background: #1E63EC;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
 }

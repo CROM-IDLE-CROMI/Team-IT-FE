@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import { saveDraft, hasDrafts } from "../../utils/localStorageUtils";
 import type { Draft } from "../../types/Draft";
 import { convertTeamDataToProject, validateTeamData, saveProjectToStorage } from "../../utils/teamToProjectConverter";
+import { teamRecruitService } from "../../services/teamRecruitService";
 
 interface StepData {
   [key: string]: any;
@@ -47,8 +48,6 @@ const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: B
 
   const handleConfirmSave = (title: string) => {
     try {
-      // TODO: 백엔드 API로 임시저장 요청
-      // 예시: POST /api/drafts
       const draft: Draft = {
         id: uuidv4(),
         title,
@@ -57,10 +56,11 @@ const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: B
       };
       console.log('임시저장 요청:', draft);
       
-      // saveDraft(draft); // 백엔드 연동 후 활성화
-      // setHasDraftsState(true); // 백엔드 연동 후 활성화
+      // 로컬스토리지에 저장
+      saveDraft(draft);
+      setHasDraftsState(true);
       
-      alert(`"${title}" 임시저장 기능은 백엔드 연동 후 사용 가능합니다.`);
+      alert(`"${title}" 임시저장이 완료되었습니다! ✅`);
       setIsListModalOpen(false);
       setIsModalOpen(false);
     } catch (error) {
@@ -70,28 +70,30 @@ const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: B
   };
 
   // 팀원 모집 등록 처리
-  const handleTeamRegistration = () => {
+  const handleTeamRegistration = async () => {
     try {
-      // 데이터 유효성 검사
+      // 1️⃣ 데이터 유효성 검사
       if (!validateTeamData(formData)) {
         alert('모든 필수 정보를 입력해주세요.');
         return;
       }
 
-      // TODO: 백엔드 API로 팀원 모집 등록 요청
-      // 예시: POST /api/team-recruit
+      // 2️⃣ 프론트엔드 데이터를 백엔드 형식으로 변환
       const project = convertTeamDataToProject(formData);
-      console.log('팀원 모집 등록 데이터:', project);
       
-      // saveProjectToStorage(project); // 백엔드 연동 후 활성화
+      // 3️⃣ 팀원 모집 서비스를 통해 등록 (서비스가 모든 API 처리)
+      const response = await teamRecruitService.create(project);
       
-      alert('팀원 모집 등록 기능은 백엔드 연동 후 사용 가능합니다.');
+      // 4️⃣ 성공 처리
+      alert('팀원 모집이 성공적으로 등록되었습니다! 🎉');
       
-      // 백엔드 연동 후 활성화
-      // navigate('/Projects');
-    } catch (error) {
-      console.error('팀원 모집 등록 중 오류 발생:', error);
-      alert('팀원 모집 등록 중 오류가 발생했습니다. 다시 시도해주세요.');
+      // 5️⃣ 프로젝트 목록 페이지로 이동
+      navigate('/Projects');
+      
+    } catch (error: any) {
+      // 6️⃣ 에러 처리
+      const errorMessage = error.message || '팀원 모집 등록 중 오류가 발생했습니다.';
+      alert(errorMessage);
     }
   };
 
