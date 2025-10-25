@@ -2,6 +2,7 @@
 
 /* 기본 HTML input[type="date"] 스타일 */
 .date-input {
+  max-width: 415px;
   width: 100%;
   padding: 0.8rem 1rem;
   border: 2px solid #e9ecef;
@@ -47,4 +48,12 @@
   .date-separator {
     display: none;
   }
+}
+
+.teamNameInput{
+  max-width: 390px;
+}
+
+.customPlayTypeInput{
+  max-width: 415px;
 }

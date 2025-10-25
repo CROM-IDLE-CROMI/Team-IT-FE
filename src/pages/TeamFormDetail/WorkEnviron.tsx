@@ -23,11 +23,6 @@ const WorkEnviron: React.FC<WorkEnvironProps> = ({ data, setData, onCompleteChan
     setSelectedRegion(data.selectedRegion || "서울특별시");
   }, [data.meetingType, data.locationComplete, data.selectedLocations, data.selectedRegion]);
 
-  const memoizedSetData = useCallback(
-    (newData: any) => setData(newData),
-    [setData]
-  );
-
   const handleMeetingTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setMeetingType(e.target.value);
   };
@@ -43,7 +38,7 @@ const WorkEnviron: React.FC<WorkEnvironProps> = ({ data, setData, onCompleteChan
   // 상태 변경 시 상위 데이터 업데이트 (디바운싱 적용)
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      memoizedSetData({
+      setData({
         meetingType,
         locationComplete,
         selectedLocations,
@@ -52,7 +47,7 @@ const WorkEnviron: React.FC<WorkEnvironProps> = ({ data, setData, onCompleteChan
     }, 100); // 100ms 디바운싱
 
     return () => clearTimeout(timeoutId);
-  }, [meetingType, locationComplete, selectedLocations, selectedRegion, memoizedSetData]);
+  }, [meetingType, locationComplete, selectedLocations, selectedRegion, setData]);
 
   // 완료 여부 체크
   useEffect(() => {
@@ -65,7 +60,7 @@ const WorkEnviron: React.FC<WorkEnvironProps> = ({ data, setData, onCompleteChan
     <div className="formContainer">
       <div className="formGroup">
         <label>회의 방식</label>
-        <select value={meetingType} onChange={handleMeetingTypeChange}>
+        <select value={meetingType} onChange={handleMeetingTypeChange} className="LocationInput">
           <option value="">선택</option>
           <option value="온라인">온라인</option>
           <option value="오프라인">오프라인</option>

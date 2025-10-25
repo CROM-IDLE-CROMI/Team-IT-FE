@@ -44,12 +44,6 @@ const Situation = ({ data, setData, onCompleteChange }: SituationProps) => {
     }
   }, [data.title, data.progress, data.customProgress, data.content, data.otherText]);
 
-  // const handleOtherTextChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-  //   const value = e.target.value;
-  //   if (value.length <= 500) {
-  //     setOtherText(value);
-  //   }
-  // };
 
   const handleProgressChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -74,15 +68,10 @@ const Situation = ({ data, setData, onCompleteChange }: SituationProps) => {
     }
   };
 
-  // setData 함수를 메모이제이션
-  const memoizedSetData = useCallback((newData: StepData) => {
-    setData(newData);
-  }, [setData]);
-
   // formData 동기화 (디바운싱 적용)
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      memoizedSetData({
+      setData({
         title,
         progress,
         customProgress,
@@ -92,7 +81,7 @@ const Situation = ({ data, setData, onCompleteChange }: SituationProps) => {
     }, 300); // 300ms 디바운싱
 
     return () => clearTimeout(timeoutId);
-  }, [title, progress, customProgress, content, otherText, memoizedSetData]);
+  }, [title, progress, customProgress, content, otherText, setData]);
 
   // 완료 체크
   useEffect(() => {
@@ -108,6 +97,7 @@ const Situation = ({ data, setData, onCompleteChange }: SituationProps) => {
       <div className="formGroup">
         <label>제목</label>
         <input
+          className='titleInput'
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -117,6 +107,7 @@ const Situation = ({ data, setData, onCompleteChange }: SituationProps) => {
       <div className="formGroup">
         <label>프로젝트 진행 상황</label>
         <select
+          className='SituationInput'
           value={
             progressOptions.some((opt) => opt.value === progress)
               ? progress

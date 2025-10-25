@@ -1,5 +1,12 @@
 /* 공통 스타일은 TeamPage.css에서 import */
 
+.LocationInput{
+  max-width: 415px;
+}
+
+
+
+
 /* ===== 위치 선택기 ===== */
 .locationSelector {
   display: flex;
@@ -81,7 +88,7 @@
   backdrop-filter: blur(10px);
   animation: slideInUp 0.3s ease-out;
   margin-left: 18.5rem;
-  width: 320px;
+  width: 283px;
   height: 250px;
 }
 

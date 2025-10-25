@@ -26,6 +26,23 @@
   text-align: left;
 }
 
+.peopleCountInput{ 
+position: relative;
+ display: flex;
+ align-items: right;
+ justify-content: right;
+ max-width: 390px;
+}
+
+.platformSelect {
+ position: relative;
+ display: flex;
+ align-items: right;
+ justify-content: right;
+ max-width: 415px;
+}
+
+
 .select__menu {
   position: absolute;
   width: 300px;

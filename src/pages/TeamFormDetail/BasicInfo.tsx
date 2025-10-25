@@ -104,12 +104,30 @@ const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
   const [selectedTechStacks, setSelectedTechStacks] = useState<TechStackType[]>(data.selectedTechStacks || []);
   const [isStackOpen, setIsStackOpen] = useState(false);
 
+  // data prop이 변경될 때 state 업데이트
+  useEffect(() => {
+    console.log('BasicInfo data prop 변경됨:', data);
+    setPeopleCount(data.peopleCount || '');
+    setStartDate(data.startDate ? new Date(data.startDate) : null);
+    setEndDate(data.endDate ? new Date(data.endDate) : null);
+    setPlatform(data.platform || '');
+    setCustomPlatform(data.customPlatform || '');
+    setSelectedJobs(data.selectedJobs || []);
+    setCustomJob(data.customJob || '');
+    setSelectedTechStacks(data.selectedTechStacks || []);
+    
+    // 커스텀 플랫폼 입력 표시 여부
+    if (data.platform && !platformOptionsInit.some(opt => opt.value === data.platform)) {
+      setShowCustomPlatformInput(true);
+    } else {
+      setShowCustomPlatformInput(false);
+    }
+  }, [data]);
+
   // setData 디바운스
-  const memoizedSetData = useCallback((newData: StepData) => setData(newData), [setData]);
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      memoizedSetData({
-        ...data,
+      setData({
         startDate: startDate?.toISOString() || '',
         endDate: endDate?.toISOString() || '',
         peopleCount,
@@ -121,7 +139,7 @@ const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
       });
     }, 300);
     return () => clearTimeout(timeoutId);
-  }, [startDate, endDate, peopleCount, platform, customPlatform, selectedJobs, customJob, selectedTechStacks, memoizedSetData]);
+  }, [startDate, endDate, peopleCount, platform, customPlatform, selectedJobs, customJob, selectedTechStacks, setData]);
 
   // 완료 체크
   useEffect(() => {
@@ -142,6 +160,7 @@ const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
       <div className="formGroup">
         <label>모집 인원</label>
         <input
+          className="peopleCountInput"
           type="text"
           placeholder="최대 20명"
           value={peopleCount}
@@ -161,6 +180,7 @@ const BasicForm = ({ data, setData, onCompleteChange }: BasicFormProps) => {
       <div className="formGroup">
         <label>플랫폼</label>
         <select
+        className='platformSelect'
           value={platformOptionsInit.some(opt => opt.value === platform) ? platform : platform ? platform : ''}
           onChange={e => {
             const value = e.target.value;

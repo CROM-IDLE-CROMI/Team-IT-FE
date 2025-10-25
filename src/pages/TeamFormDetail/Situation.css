@@ -5,3 +5,11 @@
 /* 공통 스타일은 TeamPage.css에서 import */
 
 /* 공통 스타일은 TeamPage.css에서 import */
+
+.titleInput{
+  max-width: 390px;
+}
+
+.SituationInput{
+  max-width: 415px;
+}
