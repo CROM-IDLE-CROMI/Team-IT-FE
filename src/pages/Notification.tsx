@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
+import Header from "../layouts/Header";
 
 type NotificationType = 'project' | 'board' | 'shop' | 'invite';
 
@@ -62,6 +63,9 @@ const Notification: React.FC = () => {
 
   return (
     <div className="notification-container">
+      <div className="content-header">
+        <Header />
+      </div>
       <h2 className="notification-title">알림</h2>
 
       {/* 탭 */}

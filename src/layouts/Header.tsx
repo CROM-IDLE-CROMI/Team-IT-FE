@@ -62,7 +62,7 @@ const Header = () => {
                 e.currentTarget.style.display = 'none';
               }}
             /></button></Link>
-            <Link to="/Notific"><button className="notification"><img 
+            <Link to="/notification"><button className="notification"><img 
               src="/Notific.png" 
               className='notic'
               alt="알림"

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import ProjectSidebar from "../../components/myproject/ProjectSidebar";
 import ProgressBar from "../../components/ProgressBar";
 import "../../App.css";
+import Header from "../../layouts/Header";
 
 import type { ProjectData, Milestone } from "../../types/project";
 
@@ -50,59 +51,64 @@ export default function MyprojectMilestone() {
   if (!project) return <div>Project not found.</div>;
 
   return (
-    <div className="myproject-layout">
-      <ProjectSidebar
-        project={{
-          id: project.id,
-          title: project.title,
-          status: project.status,
-          logoUrl: project.logoUrl,
-        }}
-      />
+    <div className="explain-container">
+      <div className="content-header">
+        <Header />
+      </div>
+      <div className="myproject-layout">
+        <ProjectSidebar
+          project={{
+            id: project.id,
+            title: project.title,
+            status: project.status,
+            logoUrl: project.logoUrl,
+          }}
+        />
 
-      <main className="project-main-content">
-        <div className="content-header">
-          <button className="back-button" onClick={handleGoBack}>
-            ← 돌아가기
-          </button>
-          <button className="edit-button" onClick={handleEdit}>
-            수정하기
-          </button>
-        </div>
+        <main className="project-main-content">
+          <div className="milestone-content-header">
+            <button className="back-button" onClick={handleGoBack}>
+              ← 돌아가기
+            </button>
+            <button className="edit-button" onClick={handleEdit}>
+              수정하기
+            </button>
+          </div>
 
-        <div className="card">
-          {milestones.length > 0 ? (
-            <table className="milestone-table">
-              <thead>
-                <tr>
-                  <th>마일스톤 이름</th>
-                  <th>닉네임</th>
-                  <th>종료일</th>
-                  <th>진행률</th>
-                </tr>
-              </thead>
-              <tbody>
-                {milestones.map((milestone) => (
-                  <tr key={milestone.id}>
-                    <td>{milestone.title}</td>
-                    <td>{milestone.nickname}</td>
-                    <td>{milestone.deadline}</td>
-                    <td>
-                      <div className="milestone-progress">
-                        <ProgressBar progress={milestone.progress} />
-                      </div>
-                    </td>
+          <div className="card-main">
+            {milestones.length > 0 ? (
+              <table className="milestone-table">
+                <thead>
+                  <tr>
+                    <th>마일스톤 이름</th>
+                    <th>닉네임</th>
+                    <th>종료일</th>
+                    <th>진행률</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p style={{ padding: "1rem", textAlign: "center" }}>
-              등록된 마일스톤이 없습니다.
-            </p>
-          )}
-        </div>
-      </main>
+                </thead>
+                <tbody>
+                  {milestones.map((milestone) => (
+                    <tr key={milestone.id}>
+                      <td>{milestone.title}</td>
+                      <td>{milestone.nickname}</td>
+                      <td>{milestone.deadline}</td>
+                      <td>
+                        <div className="milestone-progress">
+                          <ProgressBar progress={milestone.progress} />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p style={{ padding: "1rem", textAlign: "center" }}>
+                등록된 마일스톤이 없습니다.
+              </p>
+            )}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

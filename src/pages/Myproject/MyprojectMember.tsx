@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ProjectSidebar from "../../components/myproject/ProjectSidebar";
 import "../../App.css";
+import Header from "../../layouts/Header";
 
 import type { ProjectData } from "../../types/project";
 import type { MemberData } from "../../types/member";
@@ -34,53 +35,62 @@ export default function MyprojectMember() {
   if (!project) return <div>Project not found.</div>;
 
   return (
-    <div className="myproject-layout">
-      <ProjectSidebar
-        project={{
-          id: project.id,
-          title: project.title,
-          status: project.status,
-          logoUrl: project.logoUrl,
-        }}
-      />
-      <main className="project-main-content">
-        <div className="content-header">
-          <button className="back-button" onClick={handleGoBack}>← 돌아가기</button>
-          { project.status !== 'COMPLETED' && (
-            <button className="edit-button" onClick={handleEdit}>수정하기</button>
-          )}
-        </div>
-        <div className="card">
-          <table className="member-table">
-            <thead>
-              <tr>
-                <th>닉네임</th>
-                <th>이메일</th>
-                <th>직군</th>
-                <th>기술 스택</th>
-                <th>개발자 평점</th>
-              </tr>
-            </thead>
-            <tbody>
-              {members && members.length > 0 ? (
-                members.map((member) => (
-                  <tr key={member.id}>
-                    <td>{member.nickname}</td>
-                    <td>{member.email}</td>
-                    <td>{member.role}</td>
-                    <td>{member.techStack}</td>
-                    <td>{member.rating.toFixed(2)}</td>
-                  </tr>
-                ))
-              ) : (
+    <div className="explain-container">
+      <div className="content-header">
+        <Header />
+      </div>
+      <div className="myproject-layout">
+        <ProjectSidebar
+          project={{
+            id: project.id,
+            title: project.title,
+            status: project.status,
+            logoUrl: project.logoUrl,
+          }}
+        />
+        <main className="project-main-content">
+          <div className="member-content-header">
+            <button className="back-button" onClick={handleGoBack}>
+              ← 돌아가기
+            </button>
+            {project.status !== "COMPLETED" && (
+              <button className="edit-button" onClick={handleEdit}>
+                수정하기
+              </button>
+            )}
+          </div>
+          <div className="card-main">
+            <table className="member-table">
+              <thead>
                 <tr>
-                  <td colSpan={5}>등록된 멤버가 없습니다.</td>
+                  <th>닉네임</th>
+                  <th>이메일</th>
+                  <th>직군</th>
+                  <th>기술 스택</th>
+                  <th>개발자 평점</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </main>
+              </thead>
+              <tbody>
+                {members && members.length > 0 ? (
+                  members.map((member) => (
+                    <tr key={member.id}>
+                      <td>{member.nickname}</td>
+                      <td>{member.email}</td>
+                      <td>{member.role}</td>
+                      <td>{member.techStack}</td>
+                      <td>{member.rating.toFixed(2)}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={5}>등록된 멤버가 없습니다.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

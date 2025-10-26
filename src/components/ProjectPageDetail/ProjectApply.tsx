@@ -92,6 +92,9 @@ const ProjectApply = () => {
             ]
           };
           
+          console.log('🔍 변환된 프로젝트 데이터:', convertedProject);
+          console.log('🔍 질문 데이터:', convertedProject.questions);
+          
           setProject(convertedProject);
           setFormData(prev => ({ 
             ...prev, 
@@ -301,18 +304,25 @@ const ProjectApply = () => {
             <div className="form-section">
               <label className="form-label">질문에 대한 답변</label>
               
-              {project.questions?.map((question, index) => (
-                <div key={index} className="question-group">
-                  <label className="question-label">{index + 1}. {question}</label>
-                  <textarea
-                    className="form-textarea"
-                    placeholder="답변을 입력해주세요"
-                    value={formData.answers[index] || ""}
-                    onChange={(e) => handleAnswerChange(index, e.target.value)}
-                    rows={3}
-                  />
+              {console.log('🔍 렌더링 시 project.questions:', project.questions)}
+              {project.questions && project.questions.length > 0 ? (
+                project.questions.map((question, index) => (
+                  <div key={index} className="question-group">
+                    <label className="question-label">{index + 1}. {question}</label>
+                    <textarea
+                      className="form-textarea"
+                      placeholder="답변을 입력해주세요"
+                      value={formData.answers[index] || ""}
+                      onChange={(e) => handleAnswerChange(index, e.target.value)}
+                      rows={3}
+                    />
+                  </div>
+                ))
+              ) : (
+                <div className="no-questions-message">
+                  <p>이 프로젝트에는 추가 질문이 없습니다.</p>
                 </div>
-              ))}
+              )}
             </div>
 
             {/* 개인정보 동의 체크박스 */}

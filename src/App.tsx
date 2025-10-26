@@ -18,7 +18,7 @@ import ProjectApply from './components/ProjectPageDetail/ProjectApply';
 // develop 기능
 import Login from './pages/Login/Login';
 import KakaoCallback from "./auth/KakaoCallback";
-import Signup from './pages/Signup';
+import Signup from './pages/Signup/Signup';
 import MyprojectMain from './pages/Myproject/MyprojectMain';
 import MyProjectDetail from './pages/Myproject/MyprojectDetail';
 import MyprojectEdit from './pages/Myproject/MyprojectEdit';
@@ -86,19 +86,6 @@ function App() {
         <Route path="/myproject/:id/member/edit" element={<MyprojectMemberEdit />} />
         <Route path="/myproject/:id/member/edit/change-leader" element={<MemberChangeLeader />} />
         <Route path="/myproject/:id/applications" element={<MyprojectApplication />} />
-        <Route path="/notification" element={<Notification />} />
-
-        <Route path="/oauth/callback/kakao" element={<KakaoCallback />} />
-        <Route path="/myprojectmain" element={<MyprojectMain />} />
-        <Route path="/myproject/:id" element={<MyProjectDetail />} />
-        <Route path="/myproject/:id/edit" element={<MyprojectEdit />} />
-        <Route path="/myproject/:id/explain" element={<MyprojectExplain />} />
-        <Route path="/myproject/:id/milestone" element={<MyprojectMilestone />} />
-        <Route path="/myproject/:id/member" element={<MyprojectMember />} />
-        <Route path="/myproject/:id/explain/edit" element={<MyprojectExplainEdit />} />
-        <Route path="/myproject/:id/milestone/edit" element={<MyprojectMilestoneEdit />} />
-        <Route path="/myproject/:id/member/edit" element={<MyprojectMemberEdit />} />
-        <Route path="/myproject/:id/member/edit/change-leader" element={<MemberChangeLeader />} />
         <Route path="/notification" element={<Notification />} />
       </Routes>
     </Router>
