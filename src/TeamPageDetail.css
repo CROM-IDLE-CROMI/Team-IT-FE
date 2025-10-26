@@ -35,12 +35,12 @@
 
 /* ===== 라벨 ===== */
 .formGroup label {
-  width: 120px;
+  width: 150px;
   font-weight: 600;
   color: #2c3e50;
   font-size: 0.9rem;
   margin-right: 1rem;
-  text-align: left;  
+  text-align: left;
 }
 
 /* ===== 입력 필드 ===== */
@@ -91,6 +91,9 @@
   margin-top: 0.3rem;
   text-align: left;
   flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
