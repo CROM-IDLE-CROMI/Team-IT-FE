@@ -1,10 +1,4 @@
 // ProjectDetail.tsx
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import '../../App.css';
-import ProgressBar from '../../components/ProgressBar';
-import ProjectSidebar from '../../components/myproject/ProjectSidebar';
-import Header from '../../layouts/Header';
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../../App.css";
@@ -48,7 +42,6 @@ export default function ProjectDetail() {
         return (
           <>
             <div className="edit-button-wrapper">
-              <Header />
               <button className="edit-button" onClick={handleEditClick}>
                 수정하기
               </button>
@@ -64,16 +57,6 @@ export default function ProjectDetail() {
                 <h4>멤버</h4>
                 {/* 멤버 목록 */}
               </div>
-              <div className="card">
-                <div className="card-header">
-                  <h4>진행률</h4>
-                  <span>{project.progress ?? 0}%</span>
-                </div>
-                <ProgressBar progress={project.progress ?? 0} />
-              </div>
-              <div className="card">
-                <h4>마일스톤</h4>
-                {/* 마일스톤 목록 */}
               <div
                 style={{
                   display: "flex",

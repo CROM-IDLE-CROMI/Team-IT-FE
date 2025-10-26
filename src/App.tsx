@@ -20,7 +20,6 @@ import KakaoCallback from "./auth/KakaoCallback";
 import Signup from './pages/Signup/Signup';
 import MyprojectMain from './pages/Myproject/MyprojectMain';
 import MyProjectDetail from './pages/Myproject/MyprojectDetail';
-import MyprojectEdit from './pages/Myproject/MyprojectEdit';
 import MyprojectExplain from './pages/Myproject/MyprojectExplain';
 import MyprojectMilestone from './pages/Myproject/MyprojectMilestone';
 import MyprojectMember from './pages/Myproject/MyprojectMember';
@@ -30,7 +29,7 @@ import MyprojectMemberEdit from './pages/Myproject/MyprojectMemberEdit';
 import MemberChangeLeader from './pages/Myproject/MemberChangeLeader';
 import MyprojectApplication from './pages/Myproject/MyprojectApplication';
 import Notification from './pages/Notification';
-import MyProjectDetailfake from './pages/Myproject/MyprojectDetailfake';
+
 
 import './App.css';
 
@@ -81,7 +80,6 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/myprojectmain" element={<MyprojectMain />} />
         <Route path="/myproject/:id" element={<MyProjectDetail />} />
-        <Route path="/myproject/:id/edit" element={<MyprojectEdit />} />
         <Route path="/myproject/:id/explain" element={<MyprojectExplain />} />
         <Route path="/myproject/:id/milestone" element={<MyprojectMilestone />} />
         <Route path="/myproject/:id/member" element={<MyprojectMember />} />
@@ -90,20 +88,6 @@ function App() {
         <Route path="/myproject/:id/member/edit" element={<MyprojectMemberEdit />} />
         <Route path="/myproject/:id/member/edit/change-leader" element={<MemberChangeLeader />} />
         <Route path="/myproject/:id/applications" element={<MyprojectApplication />} />
-        <Route path="/notification" element={<Notification />} />
-
-        <Route path="/oauth/callback/kakao" element={<KakaoCallback />} />
-        <Route path="/myprojectmain" element={<MyprojectMain />} />
-        <Route path="/myproject/:id" element={<MyProjectDetail />} />
-        <Route path="/myproject/:id/edit" element={<MyprojectEdit />} />
-        <Route path="/myproject/:id/explain" element={<MyprojectExplain />} />
-        <Route path="/myproject/:id/milestone" element={<MyprojectMilestone />} />
-        <Route path="/myproject/:id/member" element={<MyprojectMember />} />
-        <Route path="/myproject/:id/explain/edit" element={<MyprojectExplainEdit />} />
-        <Route path="/myproject/:id/milestone/edit" element={<MyprojectMilestoneEdit />} />
-        <Route path="/myproject/:id/member/edit" element={<MyprojectMemberEdit />} />
-        <Route path="/myproject/:id/member/edit/change-leader" element={<MemberChangeLeader />} />
-        <Route path="/MyprojectDetailfake" element={<MyProjectDetailfake />} />
         <Route path="/notification" element={<Notification />} />
       </Routes>
     </Router>
