@@ -1,5 +1,5 @@
 // 내가 쓴 게시글 관리 유틸리티 (백엔드 연동 준비)
-import type { Post } from '../pages/BoardPage/DummyPosts';
+import type { Post } from '../types/post';
 
 export interface MyPost extends Post {
   category: string; // 게시글 카테고리

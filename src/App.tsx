@@ -10,8 +10,7 @@ import TeamPage from './pages/TeamPage';
 import BoardPage from './pages/BoardPage/Boarder';
 import BoardWrite from './pages/BoardPage/BoardWrite';
 import BoardDetail from './pages/BoardPage/BoardDetail';
-import type { Post, Category } from './pages/BoardPage/DummyPosts';
-import { dummyPosts } from './pages/BoardPage/DummyPosts';
+import type { Post, Category } from './types/post';
 import Mypage from './pages/MyPage/Mypage';
 import ProjectApply from './components/ProjectPageDetail/ProjectApply';
 
@@ -36,7 +35,11 @@ import MyProjectDetailfake from './pages/Myproject/MyprojectDetailfake';
 import './App.css';
 
 function App() {
-  const [postsByCategory, setPostsByCategory] = useState<Record<Category, Post[]>>(dummyPosts);
+  const [postsByCategory, setPostsByCategory] = useState<Record<Category, Post[]>>({
+    "시사&정보": [],
+    "질문": [],
+    "홍보": []
+  });
 
   const handleAddPost = (category: Category, newPost: Post) => {
     setPostsByCategory(prev => ({

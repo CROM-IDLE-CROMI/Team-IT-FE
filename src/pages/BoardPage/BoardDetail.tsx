@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import type { Post, Category } from "./DummyPosts";
+import type { Post, Category } from "../../types/post";
 import BoardComment from "../../components/BoardComment";
 import { getCurrentUser } from "../../utils/authUtils";
 import "./BoardDetail.css";

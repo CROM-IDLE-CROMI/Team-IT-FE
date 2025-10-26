@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { Post, Category } from "./DummyPosts";
+import type { Post, Category } from "../../types/post";
 import { requireAuth, getCurrentUser } from "../../utils/authUtils";
 import { addScrap, isScraped } from "../../utils/scrapUtils";
 import "./Boarder.css";
@@ -172,34 +172,43 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
               <div className="date-column">작성일</div>
               <div className="views-column">조회</div>
             </div>
-            {currentPosts.map(post => (
-              <li
-                key={post.id}
-                onClick={() => navigate(`/Board/${post.id}`)}
-                style={{ cursor: "pointer" }}
-                className="board-item"
-              >
-                <div className="title-column">
-                  {currentUser !== post.author && (
-                    <button className="scrap_btn" onClick={(e) => toggleScrap(e, post.id)}>
-                      <img className="scrap"
-                        src={
-                          scrappedPosts.has(post.id)
-                            ? "/스크랩 이후.png"
-                            : "/스크랩 이전.png"
-                        }
-                        alt="스크랩"
-                        width="20"
-                      />
-                    </button>
-                  )}
-                  <span className="post-title">{post.title}</span>
+            {currentPosts.length > 0 ? (
+              currentPosts.map(post => (
+                <li
+                  key={post.id}
+                  onClick={() => navigate(`/Board/${post.id}`)}
+                  style={{ cursor: "pointer" }}
+                  className="board-item"
+                >
+                  <div className="title-column">
+                    {currentUser !== post.author && (
+                      <button className="scrap_btn" onClick={(e) => toggleScrap(e, post.id)}>
+                        <img className="scrap"
+                          src={
+                            scrappedPosts.has(post.id)
+                              ? "/스크랩 이후.png"
+                              : "/스크랩 이전.png"
+                          }
+                          alt="스크랩"
+                          width="20"
+                        />
+                      </button>
+                    )}
+                    <span className="post-title">{post.title}</span>
+                  </div>
+                  <div className="author-column">{post.author}</div>
+                  <div className="date-column">{post.date}</div>
+                  <div className="views-column">{post.views || 0}</div>
+                </li>
+              ))
+            ) : (
+              <li className="empty-state">
+                <div className="empty-message">
+                  <p>게시물이 없습니다.</p>
+                  <p>첫 번째 게시물을 작성해보세요!</p>
                 </div>
-                <div className="author-column">{post.author}</div>
-                <div className="date-column">{post.date}</div>
-                <div className="views-column">{post.views || 0}</div>
               </li>
-            ))}
+            )}
           </ul>
         </div>
       </div>

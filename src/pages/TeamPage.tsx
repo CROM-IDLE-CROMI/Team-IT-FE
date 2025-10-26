@@ -66,10 +66,6 @@ const TeamPage = () => {
     },
   });
 
-  // formData 변경 감지 (무한 루프 방지를 위해 제거)
-  // useEffect(() => {
-  //   console.log('formData 변경됨:', formData);
-  // }, [formData]);
 
 
   //  Hook 최상위에서 ref 배열 선언
@@ -155,12 +151,6 @@ const TeamPage = () => {
 
   // 임시저장 관련 함수들
   const handleSaveDraft = () => {
-    console.log('현재 formData:', formData); // 디버깅용
-    console.log('basicInfo:', formData.basicInfo);
-    console.log('projectInfo:', formData.projectInfo);
-    console.log('situation:', formData.situation);
-    console.log('workEnviron:', formData.workEnviron);
-    console.log('applicantInfo:', formData.applicantInfo);
     saveTeamDraft(formData);
     setHasDraft(true);
     alert('임시저장이 완료되었습니다.');
@@ -171,14 +161,10 @@ const TeamPage = () => {
   };
 
   const handleConfirmLoadDraft = () => {
-    console.log('불러오기 시작...');
     const draftData = loadTeamDraft();
-    console.log('불러온 draftData:', draftData);
     
     if (draftData) {
-      console.log('handleLoadDraft 호출 전 formData:', formData);
       handleLoadDraft(draftData);
-      console.log('handleLoadDraft 호출 후 formData:', formData);
       setShowLoadDraftModal(false);
       alert('임시저장된 데이터를 불러왔습니다.');
     } else {
@@ -350,35 +336,6 @@ const TeamPage = () => {
               onCompleteChange={setApplicantInfoComplete}
             />
           </section>
-
-          {/* 임시저장 버튼들 */}
-          <div className="draftButtons">
-            <button 
-              className="draftBtn saveBtn" 
-              onClick={handleSaveDraft}
-              title="현재 작성 중인 내용을 임시저장합니다"
-            >
-              💾 임시저장
-            </button>
-            {hasDraft && (
-              <>
-                <button 
-                  className="draftBtn loadBtn" 
-                  onClick={handleLoadDraftClick}
-                  title="임시저장된 내용을 불러옵니다"
-                >
-                  📂 불러오기
-                </button>
-                <button 
-                  className="draftBtn clearBtn" 
-                  onClick={handleClearDraft}
-                  title="임시저장된 내용을 삭제합니다"
-                >
-                  🗑️ 삭제
-                </button>
-              </>
-            )}
-          </div>
 
           <Button
             formData={formData}

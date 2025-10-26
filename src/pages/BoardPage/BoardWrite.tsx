@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { Post, Category } from "./DummyPosts";
+import type { Post, Category } from "../../types/post";
 import AuthGuard from "../../components/AuthGuard";
 import { getCurrentUser } from "../../utils/authUtils";
 import { addMyPost } from "../../utils/myPostsUtils";
