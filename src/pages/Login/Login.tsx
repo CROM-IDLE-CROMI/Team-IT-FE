@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../App.css";
 import Header from "../../layouts/Header";
@@ -12,7 +12,6 @@ const Login = () => {
   /** 일반 로그인 */
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    const userData = localStorage.getItem(id);
 
     if (id === "") {
       setError("아이디를 입력해주세요.");
@@ -22,29 +21,23 @@ const Login = () => {
       setError("비밀번호를 입력해주세요.");
       return;
     }
-    if (!userData) {
-      setError("존재하지 않는 아이디입니다.");
-      return;
-    }
 
-    const parsed = JSON.parse(userData);
-    if (parsed.password !== password) {
-      setError("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-
-    alert(`${parsed.name}님 환영합니다!`);
-    localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("currentUserId", id);
-    setError("");
-    navigate("/");
+    // TODO: 백엔드 API로 로그인 요청
+    console.log('로그인 요청:', { id, password });
+    
+    // 임시: 로그인 성공으로 처리
+    alert('로그인이 완료되었습니다!');
+    setError('');
+    navigate('/');
   };
 
   const handleKakaoLogin = () => {
     const REST_API_KEY = "ca45ca0c35448e18526a3b03836d8a85";
     const REDIRECT_URI = "http://localhost:5173/oauth/callback/kakao";
 
-    window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
+    window.location.href =
+      window.location.href =
+        `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
   };
 
   return (

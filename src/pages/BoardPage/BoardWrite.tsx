@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { Post, Category } from "./DummyPosts";
+import type { Post, Category } from "../../types/post";
 import AuthGuard from "../../components/AuthGuard";
 import { getCurrentUser } from "../../utils/authUtils";
 import { addMyPost } from "../../utils/myPostsUtils";
@@ -36,7 +36,7 @@ const BoardWrite: React.FC<BoardWriteProps> = ({ onAddPost }) => {
 
     onAddPost(category, newPost); // App 상태 갱신
     
-    // 내가 쓴 게시글에도 추가
+    // TODO: 백엔드 API 호출로 게시글 추가
     addMyPost({
       ...newPost,
       category: category

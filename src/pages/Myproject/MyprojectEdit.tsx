@@ -80,19 +80,21 @@ export default function MyprojectEdit() {
       if (project) {
         setProject({ ...project, status: "COMPLETED" });
       }
-      alert("프로젝트가 완료 처리되었습니다.");
-      nav(`/myproject/I`);
+      alert('프로젝트가 완료 처리되었습니다.');
+
     }
   };
 
-  // 입력 핸들러
+  // 팀 이름 변경 핸들러
   const handleChangeTeamName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTeamName(e.target.value);
     setIsDirty(true);
   };
 
+  // 진행률 변경 핸들러
   const handleChangeProgress = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProgress(Number(e.target.value));
+    const value = Math.max(0, Math.min(100, Number(e.target.value)));
+    setProgress(value);
     setIsDirty(true);
   };
 

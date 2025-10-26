@@ -39,43 +39,43 @@ export const useSignup = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!name || !id || !password || !confirmPassword || !email || !birth.year || !birth.month || !birth.day) {
-      setError('모든 칸을 채워주세요!');
+      setError('모든 칸을 채워주세??');
       return;
     }
 
     if (!idRegex.test(id)) {
-      setError('아이디는 5~15자의 영문 또는 숫자여야 합니다.');
+      setError('?�이?�는 5~15?�의 ?�문 ?�는 ?�자?�야 ?�니??');
       return;
     }
 
     if (!passwordRegex.test(password)) {
-      setError('비밀번호는 8~20자이며, 영문과 숫자, 특수문자(!@#$%^&*)를 포함해야 합니다.');
+      setError('비�?번호??8~20?�이�? ?�문�??�자, ?�수문자(!@#$%^&*)�??�함?�야 ?�니??');
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('비밀번호가 일치하지 않습니다.');
+      setError('비�?번호가 ?�치?��? ?�습?�다.');
       return;
     }
 
     if (!emailRegex.test(email)) {
-      setError('이메일 형식이 올바르지 않습니다.');
+      setError('?�메???�식???�바르�? ?�습?�다.');
       return;
     }
 
     if (!isValidBirthdate(birth.year, birth.month, birth.day)) {
-      setError('올바른 생년월일을 입력해주세요.');
+      setError('?�바�??�년?�일???�력?�주?�요.');
       return;
     }
 
     if (localStorage.getItem(id)) {
-      setError('이미 존재하는 아이디입니다.');
+      setError('?��? 존재?�는 ?�이?�입?�다.');
       return;
     }
 
     const newUser = { id, password, name, email, birth: fullBirth };
-    localStorage.setItem(id, JSON.stringify(newUser));
-    alert('회원가입이 완료되었습니다!');
+    // TODO: �鿣�� API�� ȸ������ ��û
+    alert('?�원가?�이 ?�료?�었?�니??');
     navigate('/login');
   };
 

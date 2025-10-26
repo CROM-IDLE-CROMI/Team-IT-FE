@@ -10,8 +10,7 @@ import TeamPage from './pages/TeamPage';
 import BoardPage from './pages/BoardPage/Boarder';
 import BoardWrite from './pages/BoardPage/BoardWrite';
 import BoardDetail from './pages/BoardPage/BoardDetail';
-import type { Post, Category } from './pages/BoardPage/DummyPosts';
-import { dummyPosts } from './pages/BoardPage/DummyPosts';
+import type { Post, Category } from './types/post';
 import Mypage from './pages/MyPage/Mypage';
 import ProjectApply from './components/ProjectPageDetail/ProjectApply';
 
@@ -31,11 +30,16 @@ import MyprojectMemberEdit from './pages/Myproject/MyprojectMemberEdit';
 import MemberChangeLeader from './pages/Myproject/MemberChangeLeader';
 import MyprojectApplication from './pages/Myproject/MyprojectApplication';
 import Notification from './pages/Notification';
+import MyProjectDetailfake from './pages/Myproject/MyprojectDetailfake';
 
 import './App.css';
 
 function App() {
-  const [postsByCategory, setPostsByCategory] = useState<Record<Category, Post[]>>(dummyPosts);
+  const [postsByCategory, setPostsByCategory] = useState<Record<Category, Post[]>>({
+    "시사&정보": [],
+    "질문": [],
+    "홍보": []
+  });
 
   const handleAddPost = (category: Category, newPost: Post) => {
     setPostsByCategory(prev => ({
@@ -86,6 +90,20 @@ function App() {
         <Route path="/myproject/:id/member/edit" element={<MyprojectMemberEdit />} />
         <Route path="/myproject/:id/member/edit/change-leader" element={<MemberChangeLeader />} />
         <Route path="/myproject/:id/applications" element={<MyprojectApplication />} />
+        <Route path="/notification" element={<Notification />} />
+
+        <Route path="/oauth/callback/kakao" element={<KakaoCallback />} />
+        <Route path="/myprojectmain" element={<MyprojectMain />} />
+        <Route path="/myproject/:id" element={<MyProjectDetail />} />
+        <Route path="/myproject/:id/edit" element={<MyprojectEdit />} />
+        <Route path="/myproject/:id/explain" element={<MyprojectExplain />} />
+        <Route path="/myproject/:id/milestone" element={<MyprojectMilestone />} />
+        <Route path="/myproject/:id/member" element={<MyprojectMember />} />
+        <Route path="/myproject/:id/explain/edit" element={<MyprojectExplainEdit />} />
+        <Route path="/myproject/:id/milestone/edit" element={<MyprojectMilestoneEdit />} />
+        <Route path="/myproject/:id/member/edit" element={<MyprojectMemberEdit />} />
+        <Route path="/myproject/:id/member/edit/change-leader" element={<MemberChangeLeader />} />
+        <Route path="/MyprojectDetailfake" element={<MyProjectDetailfake />} />
         <Route path="/notification" element={<Notification />} />
       </Routes>
     </Router>

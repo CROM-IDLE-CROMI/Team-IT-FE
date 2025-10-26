@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { Post, Category } from "./DummyPosts";
+import type { Post, Category } from "../../types/post";
 import { requireAuth, getCurrentUser } from "../../utils/authUtils";
 import { addScrap, isScraped } from "../../utils/scrapUtils";
 import "./Boarder.css";
@@ -53,24 +53,33 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
     setPageByCategory(prev => ({ ...prev, [category]: 1 }));
   };
 
-  // ✅ 게시물별 스크랩 상태 저장 (실제 데이터와 연동)
+  // ✅ 게시물별 스크랩 상태 저장 (백엔드 연동 준비)
   const [scrappedPosts, setScrappedPosts] = useState<Set<number>>(new Set());
 
   // 컴포넌트 마운트 시 기존 스크랩 데이터 로드
   React.useEffect(() => {
-    const allPosts = Object.values(postsByCategory).flat();
-    const scrapedIds = new Set<number>();
-    
-    allPosts.forEach(post => {
-      if (isScraped(post.id)) {
-        scrapedIds.add(post.id);
+    const loadScrapStatus = async () => {
+      try {
+        // TODO: 백엔드 API 호출로 스크랩 상태 확인
+        const allPosts = Object.values(postsByCategory).flat();
+        const scrapedIds = new Set<number>();
+        
+        allPosts.forEach(post => {
+          if (isScraped(post.id)) { // 현재는 항상 false 반환
+            scrapedIds.add(post.id);
+          }
+        });
+        
+        setScrappedPosts(scrapedIds);
+      } catch (error) {
+        console.error('스크랩 상태 로드 실패:', error);
       }
-    });
+    };
     
-    setScrappedPosts(scrapedIds);
+    loadScrapStatus();
   }, [postsByCategory]);
 
-  const toggleScrap = (e: React.MouseEvent, postId: number) => {
+  const toggleScrap = async (e: React.MouseEvent, postId: number) => {
     e.stopPropagation(); // 게시물 클릭 이벤트 막기
     
     const post = Object.values(postsByCategory).flat().find(p => p.id === postId);
@@ -80,28 +89,33 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
       // 이미 스크랩된 경우 - 스크랩 해제는 ScrapedPosts 컴포넌트에서 처리
       alert('스크랩 해제는 마이페이지 > 스크랩한 게시물에서 가능합니다.');
     } else {
-      // 스크랩 추가
-      addScrap({
-        postId: post.id,
-        title: post.title,
-        author: post.author,
-        content: post.content,
-        category: category,
-        date: post.date,
-        views: post.views || 0,
-        originalPost: {
-          id: post.id,
+      try {
+        // TODO: 백엔드 API 호출로 스크랩 추가
+        await addScrap({
+          postId: post.id,
           title: post.title,
           author: post.author,
           content: post.content,
           category: category,
           date: post.date,
-          views: post.views || 0
-        }
-      });
-      
-      // 로컬 상태 업데이트
-      setScrappedPosts(prev => new Set(prev).add(postId));
+          views: post.views || 0,
+          originalPost: {
+            id: post.id,
+            title: post.title,
+            author: post.author,
+            content: post.content,
+            category: category,
+            date: post.date,
+            views: post.views || 0
+          }
+        });
+        
+        // 로컬 상태 업데이트
+        setScrappedPosts(prev => new Set(prev).add(postId));
+      } catch (error) {
+        console.error('스크랩 추가 실패:', error);
+        alert('스크랩 추가에 실패했습니다.');
+      }
     }
   };
 
@@ -126,15 +140,15 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
 
         {/* 검색 기능 */}
         <div className="board-search">
-          <form onSubmit={handleSearch} className="search-form">
+          <form onSubmit={handleSearch} className="board_search-form">
             <input
               type="text"
               value={searchTerm}
               onChange={handleSearchChange}
               placeholder="제목, 내용, 작성자로 검색..."
-              className="search-input"
+              className="board_search-input"
             />
-            <button type="submit" className="search-btn">
+            <button type="submit" className="board_search-btn">
               🔍
             </button>
           </form>
@@ -152,34 +166,49 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
       <div className="board-section">
         <div className="board-list">
           <ul>
-            {currentPosts.map(post => (
-              <li
-                key={post.id}
-                onClick={() => navigate(`/Board/${post.id}`)}
-                style={{ cursor: "pointer" }}
-                className="board-item"
-              >
-                {currentUser !== post.author && (
-                  <button onClick={(e) => toggleScrap(e, post.id)}>
-                    <img
-                      src={
-                        scrappedPosts.has(post.id)
-                          ? "/스크랩 이후.png"
-                          : "/스크랩 이전.png"
-                      }
-                      alt="스크랩"
-                      width="20"
-                    />
-                  </button>
-                )}
-                <span className="post-title">{post.title}</span>
-                <span className="post-meta">
-                  {/* 본인이 작성한 글이 아닐 때만 스크랩 버튼 표시 */}
-                  <span className="post-author">{post.author}</span>
-                  <span className="post-date">{post.date}</span>
-                </span>
+            <div className="board_header">
+              <div className="title-column">제목</div>
+              <div className="author-column">글쓴이</div>
+              <div className="date-column">작성일</div>
+              <div className="views-column">조회</div>
+            </div>
+            {currentPosts.length > 0 ? (
+              currentPosts.map(post => (
+                <li
+                  key={post.id}
+                  onClick={() => navigate(`/Board/${post.id}`)}
+                  style={{ cursor: "pointer" }}
+                  className="board-item"
+                >
+                  <div className="title-column">
+                    {currentUser !== post.author && (
+                      <button className="scrap_btn" onClick={(e) => toggleScrap(e, post.id)}>
+                        <img className="scrap"
+                          src={
+                            scrappedPosts.has(post.id)
+                              ? "/스크랩 이후.png"
+                              : "/스크랩 이전.png"
+                          }
+                          alt="스크랩"
+                          width="20"
+                        />
+                      </button>
+                    )}
+                    <span className="post-title">{post.title}</span>
+                  </div>
+                  <div className="author-column">{post.author}</div>
+                  <div className="date-column">{post.date}</div>
+                  <div className="views-column">{post.views || 0}</div>
+                </li>
+              ))
+            ) : (
+              <li className="empty-state">
+                <div className="empty-message">
+                  <p>게시물이 없습니다.</p>
+                  <p>첫 번째 게시물을 작성해보세요!</p>
+                </div>
               </li>
-            ))}
+            )}
           </ul>
         </div>
       </div>

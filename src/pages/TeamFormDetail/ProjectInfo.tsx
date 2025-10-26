@@ -2,9 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Select from 'react-select';
 import type { MultiValue } from 'react-select';
 import type { StepData } from "../../types/Draft";
-// MUI DatePicker 제거 - 기본 HTML input[type="date"] 사용
 import './ProjectInfo.css';
-import '../../App.css';
 import '../../TeamPageDetail.css';
 
 type OptionType = { value: string; label: string };
@@ -97,10 +95,9 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
   ]);
 
   // ---------- setData 디바운싱 ----------
-  const memoizedSetData = useCallback((newData: StepData) => setData(newData), [setData]);
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      memoizedSetData({
+      setData({
         teamName,
         selectedJobs,
         customJob,
@@ -112,7 +109,7 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
       });
     }, 300);
     return () => clearTimeout(timeoutId);
-  }, [teamName, selectedJobs, customJob, playType, customPlayType, startDate, endDate, projectStartDate, memoizedSetData]);
+  }, [teamName, selectedJobs, customJob, playType, customPlayType, startDate, endDate, projectStartDate, setData]);
 
   // ---------- 완료 체크 ----------
   useEffect(() => {
@@ -159,12 +156,12 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
     }
   };
 
-  // ---------- 렌더 ----------
   return (
     <div className="formContainer">
       <div className="formGroup">
         <label>팀 이름</label>
         <input
+          className='teamNameInput'
           type="text"
           value={teamName}
           onChange={e => setTeamName(e.target.value)}
@@ -173,7 +170,9 @@ const ProjectInfo = ({ data, setData, onCompleteChange }: ProjectInfoProps) => {
 
       <div className="formGroup">
         <label>활동 종류</label>
-        <select value={playType || (customPlayType ? '기타' : '')} onChange={handlePlayTypeChange}>
+        <select
+          className='customPlayTypeInput'
+           value={playType || (customPlayType ? '기타' : '')} onChange={handlePlayTypeChange}>
           <option value="">선택</option>
           {playTypeOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
           {customPlayType && <option value="기타">{customPlayType}</option>}

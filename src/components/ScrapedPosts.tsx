@@ -13,9 +13,10 @@ const ScrapedPosts: React.FC = () => {
     loadScrapedPosts();
   }, []);
 
-  const loadScrapedPosts = () => {
+  const loadScrapedPosts = async () => {
     try {
-      const scraps = getAllScraps();
+      // TODO: 백엔드 API 호출로 스크랩 목록 가져오기
+      const scraps = getAllScraps(); // 현재는 빈 배열 반환
       setScrapedPosts(scraps);
     } catch (error) {
       console.error('스크랩 데이터 로드 실패:', error);

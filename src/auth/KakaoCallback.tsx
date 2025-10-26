@@ -8,23 +8,23 @@ const KakaoCallback = () => {
     const code = new URL(window.location.href).searchParams.get("code");
     if (!code) return;
 
-    // codeë¥¼ ìŠ¤í”„ë§ ì„œë²„ë¡œ ì „ë‹¬
+    // codeë¥??¤í”„ë§??œë²„ë¡??„ë‹¬
     fetch("http://localhost:8080/auth/kakao/callback?code=" + code, {
       method: "GET",
       credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("ë°±ì—”ë“œ ì‘ë‹µ:", data);
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('currentUserId', data.userId || 'kakao_user');
-        alert(`${data.nickname}ë‹˜ í™˜ì˜í•©ë‹ˆë‹¤!`);
+        console.log("ë°±ì—”???‘ë‹µ:", data);
+        // TODO: ¹é¿£µå¿¡¼­ ¹ŞÀº ÅäÅ«À» ÀúÀåÇÏ°Å³ª ¼¼¼Ç °ü¸®
+
+        alert(`${data.nickname}???˜ì˜?©ë‹ˆ??`);
         navigate("/");
       })
-      .catch((err) => console.error("ì¹´ì¹´ì˜¤ ë¡œê·¸ì¸ ì‹¤íŒ¨:", err));
+      .catch((err) => console.error("ì¹´ì¹´??ë¡œê·¸???¤íŒ¨:", err));
   }, [navigate]);
 
-  return <p>ì¹´ì¹´ì˜¤ ë¡œê·¸ì¸ ì²˜ë¦¬ì¤‘...</p>;
+  return <p>ì¹´ì¹´??ë¡œê·¸??ì²˜ë¦¬ì¤?..</p>;
 };
 
 export default KakaoCallback;

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../../layouts/Header";
 import { getAllProjects } from "../../utils/teamToProjectConverter";
+import { applicationService } from "../../services/applicationService";
 import "./ProjectApply.css";
 
 // API 응답에 맞춰 프로젝트 데이터 타입을 정의합니다.
@@ -153,11 +154,11 @@ const ProjectApply = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatusMessage("");
 
-    // 유효성 검사
+    // 1️⃣ 유효성 검사
     if (!formData.title.trim() || !formData.motivation.trim()) {
       setStatusMessage("🚨 모든 필수 항목을 입력해주세요!");
       return;
@@ -168,37 +169,40 @@ const ProjectApply = () => {
       return;
     }
 
-    try {
-      // 로컬스토리지에 지원서 저장
-      const applicationData = {
-        id: Date.now(),
-        projectId: project?.id,
-        projectTitle: project?.title,
-        projectAuthor: project?.author,
-        ...formData,
-        submittedAt: new Date().toISOString()
-      };
+    if (!project?.id) {
+      setStatusMessage("🚨 프로젝트 정보를 찾을 수 없습니다!");
+      return;
+    }
 
-      // 기존 지원서 목록 가져오기
-      const existingApplications = JSON.parse(localStorage.getItem('userApplications') || '[]');
+    try {
+      // 2️⃣ 지원 데이터 준비
+      const applicationData = {
+        teamRecruitId: project.id,
+        position: formData.position,
+        message: formData.motivation,
+        portfolio: formData.title, // 제목을 포트폴리오 URL로 사용 (실제로는 별도 필드 필요)
+        answers: project.questions?.map((question, index) => ({
+          questionId: index + 1,
+          answer: formData.answers[index] || ""
+        })) || []
+      };
       
-      // 새 지원서 추가
-      const updatedApplications = [...existingApplications, applicationData];
+      // 3️⃣ 지원 서비스를 통해 제출
+      const response = await applicationService.submit(applicationData);
       
-      // 로컬스토리지에 저장
-      localStorage.setItem('userApplications', JSON.stringify(updatedApplications));
+      // 4️⃣ 성공 처리
+      setStatusMessage("🎉 지원서가 성공적으로 제출되었습니다!");
       
-      console.log("✅ 지원서 제출 성공:", applicationData);
-      setStatusMessage("🎉 지원이 완료되었습니다!");
-      
-      // 3초 후 프로젝트 페이지로 이동
+      // 5️⃣ 3초 후 프로젝트 목록 페이지로 이동
       setTimeout(() => {
         navigate('/Projects');
-      }, 3000);
+      }, 2000);
 
-    } catch (error) {
+    } catch (error: any) {
+      // 6️⃣ 에러 처리
       console.error("❌ 지원서 제출 실패:", error);
-      setStatusMessage("⚠️ 지원서 제출에 실패했습니다. 다시 시도해주세요.");
+      const errorMessage = error.message || "지원서 제출에 실패했습니다. 다시 시도해주세요.";
+      setStatusMessage(`⚠️ ${errorMessage}`);
     }
   };
 
@@ -304,7 +308,6 @@ const ProjectApply = () => {
             <div className="form-section">
               <label className="form-label">질문에 대한 답변</label>
               
-              {console.log('🔍 렌더링 시 project.questions:', project.questions)}
               {project.questions && project.questions.length > 0 ? (
                 project.questions.map((question, index) => (
                   <div key={index} className="question-group">

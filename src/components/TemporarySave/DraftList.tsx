@@ -23,11 +23,23 @@ const DraftList = ({ onClose, onLoadDraft, onDelete }: DraftProps) => {
   }, []);
 
   const handleDelete = (id: string) => {
-    const updatedDrafts = deleteDraft(id);
-    setDrafts(updatedDrafts);
-    // 삭제 후 콜백 호출
-    if (onDelete) {
-      onDelete();
+    if (!confirm('정말 삭제하시겠습니까?')) {
+      return;
+    }
+    
+    try {
+      const updatedDrafts = deleteDraft(id);
+      setDrafts(updatedDrafts);
+      
+      // 삭제 후 콜백 호출
+      if (onDelete) {
+        onDelete();
+      }
+      
+      console.log('임시저장 삭제 성공:', id);
+    } catch (error) {
+      console.error('임시저장 삭제 실패:', error);
+      alert('삭제에 실패했습니다.');
     }
   };
 

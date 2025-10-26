@@ -20,22 +20,17 @@ const ApplicantInfo: React.FC<ApplicantInfoProps> = ({ data, setData, onComplete
     setMinRequirement(data.minRequirement || "");
   }, [data.questions, data.minRequirement]);
 
-  // setData 함수를 메모이제이션
-  const memoizedSetData = useCallback((newData: StepData) => {
-    setData(newData);
-  }, [setData]);
-
   // 상태가 바뀔 때 formData 동기화 (디바운싱 적용)
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      memoizedSetData({
+      setData({
         questions,
         minRequirement,
       });
     }, 300); // 300ms 디바운싱
 
     return () => clearTimeout(timeoutId);
-  }, [questions, minRequirement, memoizedSetData]);
+  }, [questions, minRequirement, setData]);
 
   // 완료 체크
   useEffect(() => {
