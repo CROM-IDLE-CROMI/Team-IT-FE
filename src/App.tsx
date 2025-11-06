@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 
 // HEAD 기능
@@ -60,7 +60,6 @@ function App() {
   };
 
   return (
-    <Router>
       <Routes>
         {/* HEAD 기능 */}
         <Route path="/" element={<Main />} />
@@ -90,7 +89,6 @@ function App() {
         <Route path="/myproject/:id/applications" element={<MyprojectApplication />} />
         <Route path="/notification" element={<Notification />} />
       </Routes>
-    </Router>
   );
 }
 

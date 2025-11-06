@@ -5,7 +5,7 @@
  * API 기본 URL
  * .env 파일의 VITE_API_URL 값을 사용하거나, 없으면 기본값 사용
  */
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const API_BASE_URL = '';
 
 /**
  * 저장된 토큰 가져오기 (로그인 시 저장된 토큰)
@@ -31,10 +31,10 @@ interface ApiRequestOptions {
  * @param options - 요청 옵션
  * @returns API 응답 데이터
  */
-export const apiRequest = async <T = any>(
+export async function apiRequest<T = any>(
   endpoint: string,
   options: ApiRequestOptions = {}
-): Promise<T> => {
+): Promise<T> {
   const {
     method = 'GET',
     body,
@@ -48,7 +48,7 @@ export const apiRequest = async <T = any>(
   // 기본 헤더 설정
   const requestHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...headers
+    ...headers,
   };
 
   // 인증이 필요한 경우 토큰 추가
@@ -65,9 +65,11 @@ export const apiRequest = async <T = any>(
     headers: requestHeaders,
   };
 
-  // body가 있으면 JSON으로 변환하여 추가
-  if (body) {
-    fetchOptions.body = JSON.stringify(body);
+  if (body !== undefined) {
+    fetchOptions.body =
+      typeof body === 'string' || body instanceof FormData
+        ? body
+        : JSON.stringify(body);
   }
 
   try {
@@ -131,6 +133,13 @@ export const apiDelete = <T = any>(endpoint: string, requireAuth = true): Promis
   return apiRequest<T>(endpoint, { method: 'DELETE', requireAuth });
 };
 
+/**
+ * PATCH 요청 헬퍼 함수
+ */
+export const apiPatch = <T = any>(endpoint: string, body: any, requireAuth = true): Promise<T> => {
+  return apiRequest<T>(endpoint, { method: 'PATCH', body, requireAuth });
+};
+
 // API 엔드포인트 상수 (URL을 한 곳에서 관리)
 export const API_ENDPOINTS = {
   // 팀원 모집 관련
@@ -141,8 +150,14 @@ export const API_ENDPOINTS = {
   
   // 프로젝트 관련
   PROJECTS: {
-    LIST: '/api/projects',
-    DETAIL: (id: number) => `/api/projects/${id}`,
+    LIST: '/v1/projects',
+    SEARCH: '/v1/projects/search', // POST 방식 검색
+    DETAIL: (id: number) => `/v1/projects/${id}`,
+    APPLY: (id: number) => `/v1/projects/${id}/apply`, // 프로젝트 지원
+    POPULAR: '/v1/projects/popular-projects',
+    HOT_BOARDS: '/v1/projects/hot-boards',
+    COMMENTS: (id: number) => `/v1/projects/${id}/comments`, // GET: 댓글 목록, POST: 댓글 작성
+    COMMENT: (projectId: number, commentId: number) => `/v1/projects/${projectId}/comments/${commentId}`, // PATCH: 댓글 수정, DELETE: 댓글 삭제
   },
   
   // 지원 관련
@@ -152,5 +167,30 @@ export const API_ENDPOINTS = {
     DETAIL: (id: number) => `/api/applications/${id}`,
     MY_APPLICATIONS: '/api/applications/my',  // GET: 내 지원 목록
   },
-};
+  
+  // 마이페이지 관련
+  MYPAGE: {
+    PROFILE: (uid: string) => `/v1/mypage/${uid}`, // GET: 프로필 정보 조회
+    AWARDS: (uid: string) => `/v1/mypage/${uid}/awards`, // GET: 수상 내역 조회, POST: 수상 내역 생성, PATCH: 수상 내역 수정
+    STACKS: '/v1/mypage/stacks', // GET: 스택 목록 조회, PATCH: 스택 수정
+    RATING: (uid: string) => `/v1/mypage/${uid}/rating`, // GET: 평가 조회
+  },
 
+  // 인증 관련
+  AUTH: {
+    // 회원가입
+    SIGNUP: '/v1/auth/users',                      // POST
+
+    // 중복 확인
+    EMAIL_CHECK: '/v1/auth/users-email-check',     // GET ?email=...
+    UID_CHECK: '/v1/auth/users-uid-check',         // GET ?uid=...
+
+    // 로그인
+    LOGIN: '/v1/auth/login',                       // POST
+    LOGIN_ID_FIND: '/v1/auth/login-id-find',       // GET ?email=...
+    PW_RESET: '/v1/auth/login-pw-reset',           // PUT
+
+    // 소셜
+    KAKAO_LOGIN: '/v1/auth/login/kakao',           // GET (리다이렉트/코드 교환)
+  },
+};

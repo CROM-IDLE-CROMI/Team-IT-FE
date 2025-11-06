@@ -1,34 +1,40 @@
 ﻿import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../../App.css";
 import Header from "../../layouts/Header";
+import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [id, setId] = useState("");
+  const { login } = useAuth();
+  const [uid, setUid] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   /** 일반 로그인 */
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (id === "") {
+    if (!uid.trim()) {
       setError("아이디를 입력해주세요.");
       return;
     }
-    if (password === "") {
+    if (!password) {
       setError("비밀번호를 입력해주세요.");
       return;
     }
 
-    // TODO: 백엔드 API로 로그인 요청
-    console.log('로그인 요청:', { id, password });
-    
-    // 임시: 로그인 성공으로 처리
-    alert('로그인이 완료되었습니다!');
-    setError('');
-    navigate('/');
+    try {
+      setSubmitting(true);
+      setError("");
+      await login({ uid, password });     // ✅ 실제 로그인 호출 (토큰 저장/유저 세팅)
+      navigate("/myproject", { replace: true }); // 원하는 경로로 이동
+    } catch (err: any) {
+      setError(err?.message || "로그인에 실패했습니다.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleKakaoLogin = () => {
@@ -36,8 +42,7 @@ const Login = () => {
     const REDIRECT_URI = "http://localhost:5173/oauth/callback/kakao";
 
     window.location.href =
-      window.location.href =
-        `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+      `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
   };
 
   return (
@@ -51,24 +56,30 @@ const Login = () => {
         {/* 일반 로그인 폼 */}
         <form onSubmit={handleLogin}>
           <div className="input-group">
-            <label>ID</label>
+            <label htmlFor="login-id">ID</label>
             <input
               type="text"
-              value={id}
-              onChange={(e) => setId(e.target.value)}
+              id="login-id"
+              value={uid}
+              onChange={(e) => setUid(e.target.value)}
+              autoComplete="username"
             />
           </div>
           <div className="input-group">
-            <label>Password</label>
+            <label htmlFor="login-password">Password</label>
             <input
               type="password"
+              id="login-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
             />
           </div>
+
           {error && <p className="error-message">{error}</p>}
-          <button type="submit" className="btn btn-login">
-            Sign In
+
+          <button type="submit" className="btn btn-login" disabled={submitting}>
+            {submitting ? "로그인 중..." : "Sign In"}
           </button>
         </form>
 
@@ -80,7 +91,7 @@ const Login = () => {
         </button>
 
         <p className="link-text">
-          회원가입은 <a href="/signup">여기에서</a> 할 수 있습니다.
+          회원가입은 <Link to="/signup">여기에서</Link> 할 수 있습니다.
         </p>
       </div>
     </>

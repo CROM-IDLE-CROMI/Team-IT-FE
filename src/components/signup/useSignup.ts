@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-type Birth = { year: string; month: string; day: string };
+import { useAuth } from '../../context/AuthContext';
+import { AuthService } from '../../services/auth';
 
 export const useSignup = () => {
   const navigate = useNavigate();
+  const { signup } = useAuth();
+
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -12,8 +14,9 @@ export const useSignup = () => {
   const [email, setEmail] = useState('');
   const [birth, setBirth] = useState<Birth>({ year: '', month: '', day: '' });
   const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const isValidBirthdate = (year: string, month: string, day: string): boolean => {
+  const isValidBirthdate = (year: number, month: number, day: number): boolean => {
     const y = Number(year);
     const m = Number(month);
     const d = Number(day);
@@ -30,7 +33,7 @@ export const useSignup = () => {
     );
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
 
@@ -78,22 +81,35 @@ export const useSignup = () => {
       return;
     }
 
-    if (localStorage.getItem(id)) {
-      setError('이미 존재하는 아이디입니다.');
-      return;
+    try {
+      setSubmitting(true);
+
+      const [emailDup, uidDup] = await Promise.all([
+        AuthService.emailExists(email), // { exists: boolean } 형태로 가정
+        AuthService.uidExists(id),
+      ]);
+
+      if (emailDup.exists) {
+        setError('이미 사용 중인 이메일입니다.');
+        return;
+      }
+      if (uidDup.exists) {
+        setError('이미 사용 중인 아이디입니다.');
+        return;
+      }
+
+      await signup({ uid: id, password, nickName: name, email, birth });
+
+      navigate('/myproject', { replace: true });
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error ? err.message :
+        typeof err === 'string' ? err :
+        '회원가입에 실패했습니다.';
+      setError(msg);
+    } finally {
+      setSubmitting(false);
     }
-
-    // 제출 시점에만 생년월일을 숫자로 조합
-    // const fullBirth = Number(
-    //   `${birth.year}${birth.month.padStart(2, '0')}${birth.day.padStart(2, '0')}`
-    // );
-
-    // const newUser = { id, password, name, email, birth: fullBirth };
-    // TODO: 실제 API로 회원가입 요청 전송
-    // 예: await api.signup(newUser)
-
-    alert('회원가입이 완료되었습니다.');
-    navigate('/login');
   };
 
   return {

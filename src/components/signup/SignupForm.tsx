@@ -77,21 +77,21 @@ const SignupForm = () => {
             <label>생년월일</label>
             <div className="date-group">
               <input
-                type="text"
+                type="number"
                 placeholder="YYYY"
                 maxLength={4}
                 value={birth.year}
                 onChange={(e) => setBirth({ ...birth, year: e.target.value })}
               />
               <input
-                type="text"
+                type="number"
                 placeholder="MM"
                 maxLength={2}
                 value={birth.month}
                 onChange={(e) => setBirth({ ...birth, month: e.target.value })}
               />
               <input
-                type="text"
+                type="number"
                 placeholder="DD"
                 maxLength={2}
                 value={birth.day}
