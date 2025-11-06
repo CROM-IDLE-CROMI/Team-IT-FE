@@ -28,8 +28,9 @@ const Login = () => {
     try {
       setSubmitting(true);
       setError("");
-      await login({ uid, password });     // ✅ 실제 로그인 호출 (토큰 저장/유저 세팅)
-      navigate("/myproject", { replace: true }); // 원하는 경로로 이동
+      await login({ uid, password });
+      alert("로그인에 성공했습니다.");
+      navigate("/", { replace: true });
     } catch (err: any) {
       setError(err?.message || "로그인에 실패했습니다.");
     } finally {

@@ -4,7 +4,7 @@ export interface SignupPayload {
   password: string;
   email: string;
   emailVerified: boolean;
-  birth: number;
+  birthDay: number;
 }
 
 export interface LoginPayload {
@@ -15,3 +15,6 @@ export interface LoginPayload {
 export interface refreshTokenPayload {
     refreshToken: string;
 }
+
+export interface AuthUser { uid: string; nickName: string; email: string };
+export interface AuthResponse { user: AuthUser; accessToken: string; refreshToken?: string };

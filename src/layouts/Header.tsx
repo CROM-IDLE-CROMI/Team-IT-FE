@@ -7,19 +7,30 @@ const Header = () => {
 
   useEffect(() => {
     const checkLoginStatus = () => {
-      const stored = localStorage.getItem('isLoggedIn');
-      setIsLoggedIn(stored === 'true');
+      const flag = localStorage.getItem('isLoggedIn') === 'true';
+      const hasToken = !!localStorage.getItem('accessToken');
+      setIsLoggedIn(flag || hasToken);
     };
 
     checkLoginStatus();
 
-    // 로그인 상태 변경 감지
+    // 다른 탭/윈도우에서의 변경 감지
     const handleStorageChange = () => {
       checkLoginStatus();
     };
 
+    // 현재 탭에서 토큰이 바뀐 뒤 화면 전환 없이도 갱신되도록
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') checkLoginStatus();
+    };
+
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
   }, []);
 
   const handleLogout = () => {
