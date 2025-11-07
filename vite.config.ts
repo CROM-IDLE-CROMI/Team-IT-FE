@@ -18,11 +18,10 @@ export default defineConfig({
     },
   },
   server: {
-    host: '0.0.0.0',
-    port: 3000,
-    hmr: {
-      port: 3001,
+    host: true,
+    port: 5173,
+    proxy: {
+      '/v1': { target: 'http://3.37.26.26:8080/', changeOrigin: true },
     },
-    allowedHosts: ['TeamIT.com', 'localhost', '127.0.0.1'],
   },
 })

@@ -1,33 +1,41 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../../App.css';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import "../../App.css";
+import Header from "../../layouts/Header";
+import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [id, setId] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const { login } = useAuth();
+  const [uid, setUid] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   /** 일반 로그인 */
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (id === '') {
-      setError('아이디를 입력해주세요.');
+    if (!uid.trim()) {
+      setError("아이디를 입력해주세요.");
       return;
     }
-    if (password === '') {
-      setError('비밀번호를 입력해주세요.');
+    if (!password) {
+      setError("비밀번호를 입력해주세요.");
       return;
     }
 
-    // TODO: 백엔드 API로 로그인 요청
-    console.log('로그인 요청:', { id, password });
-    
-    // 임시: 로그인 성공으로 처리
-    alert('로그인이 완료되었습니다!');
-    setError('');
-    navigate('/');
+    try {
+      setSubmitting(true);
+      setError("");
+      await login({ uid, password });
+      alert("로그인에 성공했습니다.");
+      navigate("/", { replace: true });
+    } catch (err: any) {
+      setError(err?.message || "로그인에 실패했습니다.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleKakaoLogin = () => {
@@ -44,29 +52,35 @@ const Login = () => {
     <div className="login-container">
       <h2 className="login-title">로그인</h2>
 
-      {/* 일반 로그인 폼 */}
-      <form onSubmit={handleLogin}>
-        <div className="input-group">
-          <label>ID</label>
-          <input
-            type="text"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-          />
-        </div>
-        <div className="input-group">
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        {error && <p className="error-message">{error}</p>}
-        <button type="submit" className="btn btn-login">
-          Sign In
-        </button>
-      </form>
+        {/* 일반 로그인 폼 */}
+        <form onSubmit={handleLogin}>
+          <div className="input-group">
+            <label htmlFor="login-id">ID</label>
+            <input
+              type="text"
+              id="login-id"
+              value={uid}
+              onChange={(e) => setUid(e.target.value)}
+              autoComplete="username"
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="login-password">Password</label>
+            <input
+              type="password"
+              id="login-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+            />
+          </div>
+
+          {error && <p className="error-message">{error}</p>}
+
+          <button type="submit" className="btn btn-login" disabled={submitting}>
+            {submitting ? "로그인 중..." : "Sign In"}
+          </button>
+        </form>
 
       <hr className="divider" />
 

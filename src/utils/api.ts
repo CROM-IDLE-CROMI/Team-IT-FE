@@ -1,9 +1,6 @@
-// src/utils/api.ts
-// 백엔드 API 요청을 위한 유틸리티 함수
-
 /**
  * API 기본 URL
- * .env 파일의 VITE_API_URL 값을 사용하거나, 없으면 기본값 사용
+ * .env의 VITE_API_URL 사용 (없으면 빈 문자열)
  */
 export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://3.37.26.26:8080';
 
@@ -12,6 +9,25 @@ export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://3.37.26.26:8
  */
 const getAuthToken = (): string | null => {
   return localStorage.getItem('accessToken');
+};
+
+/**
+ * AuthContext에서 주입받을 헬퍼들
+ * - 순환참조 방지: 여기선 타입만 알고, 실제 구현은 AuthContext에서 주입
+ */
+let injectedGetAccessToken: () => string | null = getAuthToken;
+let injectedRefresh: (() => Promise<void>) | null = null;
+let injectedLogout: (() => Promise<void>) | null = null;
+
+/** AuthContext가 호출해 주입 */
+export const injectAuthHelpers = (helpers: {
+  getAccessToken?: () => string | null;
+  refresh?: () => Promise<void>;
+  logout?: () => Promise<void>;
+}) => {
+  if (helpers.getAccessToken) injectedGetAccessToken = helpers.getAccessToken;
+  if (helpers.refresh) injectedRefresh = helpers.refresh;
+  if (helpers.logout) injectedLogout = helpers.logout;
 };
 
 /**
@@ -26,85 +42,109 @@ interface ApiRequestOptions {
 
 /**
  * 공통 API 요청 함수
- * 
- * @param endpoint - API 엔드포인트 (예: '/api/team-recruit')
+ *
+ * @param endpoint - API 엔드포인트 (예: '/v1/projects')
  * @param options - 요청 옵션
- * @returns API 응답 데이터
  */
-export const apiRequest = async <T = any>(
+export async function apiRequest<T = any>(
   endpoint: string,
   options: ApiRequestOptions = {}
-): Promise<T> => {
+): Promise<T> {
   const {
     method = 'GET',
     body,
     headers = {},
-    requireAuth = true
+    requireAuth = true,
   } = options;
 
-  // 요청 URL 생성
+  // 요청 URL
   const url = `${API_BASE_URL}${endpoint}`;
 
-  // 기본 헤더 설정
-  const requestHeaders: Record<string, string> = {
-    'Content-Type': 'application/json',
-    ...headers
-  };
+  // 실제 요청 보내는 내부 함수 (401 재시도 전에 1회 호출용)
+  const send = async (): Promise<T> => {
+    // 기본 헤더
+    const requestHeaders: Record<string, string> = {
+      'Content-Type': 'application/json',
+      ...headers,
+    };
 
-  // 인증이 필요한 경우 토큰 추가
-  if (requireAuth) {
-    const token = getAuthToken();
-    if (token) {
-      requestHeaders['Authorization'] = `Bearer ${token}`;
+    // 인증이 필요한 경우 Authorization 추가
+    if (requireAuth) {
+      const token = injectedGetAccessToken?.();
+      if (token) {
+        requestHeaders['Authorization'] = `Bearer ${token}`;
+      }
     }
-  }
 
-  // fetch 옵션 설정
-  const fetchOptions: RequestInit = {
-    method,
-    headers: requestHeaders,
-  };
+    // fetch 옵션
+    const fetchOptions: RequestInit = {
+      method,
+      headers: requestHeaders,
+    };
 
-  // body가 있으면 JSON으로 변환하여 추가
-  if (body) {
-    fetchOptions.body = JSON.stringify(body);
-  }
+    if (body !== undefined) {
+      fetchOptions.body =
+        typeof body === 'string' || body instanceof FormData
+          ? body
+          : JSON.stringify(body);
+    }
 
-  try {
-    // API 요청
     console.log(`🚀 API 요청: ${method} ${url}`, body ? { body } : '');
-    
+
     const response = await fetch(url, fetchOptions);
 
-    // 응답 상태 확인
-    if (!response.ok) {
-      // 에러 응답 처리
-      let errorMessage = `API 오류: ${response.status}`;
-      
-      try {
-        const errorData = await response.json();
-        errorMessage = errorData.message || errorMessage;
-      } catch {
-        errorMessage = await response.text() || errorMessage;
-      }
-
-      throw new Error(errorMessage);
+    // 204 No Content 처리
+    if (response.status === 204) {
+      console.log('✅ API 응답: 204 No Content');
+      return undefined as unknown as T;
     }
 
-    // 성공 응답 데이터 파싱
-    const data = await response.json();
+    if (!response.ok) {
+      // 에러 메시지 파싱
+      let errText = `API 오류: ${response.status}`;
+      try {
+        const asJson = await response.json();
+        errText = asJson?.message || errText;
+      } catch {
+        try {
+          errText = (await response.text()) || errText;
+        } catch {
+          /* noop */
+        }
+      }
+      throw new Error(`${response.status} ${errText}`);
+    }
+
+    const data = (await response.json()) as T;
     console.log('✅ API 응답:', data);
-    
-    return data as T;
-    
-  } catch (error) {
-    console.error('❌ API 요청 실패:', error);
-    throw error;
+    return data;
+  };
+
+  try {
+    // 1차 시도
+    return await send();
+  } catch (err: any) {
+    const msg = String(err?.message ?? '');
+    const is401 = msg.startsWith('401') || msg.includes(' 401');
+    // 401이면 refresh 후 1회 재시도
+    if (is401 && injectedRefresh) {
+      try {
+        await injectedRefresh();
+        return await send();
+      } catch (e) {
+        // refresh 실패 → 세션 종료
+        if (injectedLogout) await injectedLogout();
+        console.error('❌ API 재시도 실패:', e);
+        throw e;
+      }
+    }
+    console.error('❌ API 요청 실패:', err);
+    throw err;
   }
-};
+}
 
 /**
- * GET 요청 헬퍼 함수
+ * GET/POST/PUT/DELETE/PATCH 헬퍼
  */
 export const apiGet = <T = any>(endpoint: string, requireAuth = true): Promise<T> => {
   return apiRequest<T>(endpoint, { method: 'GET', requireAuth });
