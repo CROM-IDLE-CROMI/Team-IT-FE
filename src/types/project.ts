@@ -80,3 +80,72 @@ export type RawProject = Omit<ProjectData, 'id' | 'platform'> & {
   id: string | number;
   platform: string;
 };
+
+// --- 백엔드 API 응답 타입 (최신 API 스펙) ---
+export interface ProjectApiResponse {
+  projectId: number;
+  title: string;
+  projectName: string;
+  createdAt: string;
+  viewCount: number;
+  memberNum: number;
+  validFrom: string;
+  validTo: string;
+  platform: string;
+  platformDetail: string;
+  recruitPositions: string[];
+  recruitDetail: string[];
+  requireStack: string[];
+  category: string;
+  categoryDetail: string;
+  startDate: string;
+  endDate: string;
+  expectedStartDate: string;
+  projectStatus: string;
+  statusDetail: string;
+  ideaExplain: string;
+  meetingApproach: string;
+  locations: string[];
+  minRequest: string;
+  applicantQuestions: string[];
+  creatorId: string;
+  creatorNickname: string;
+  creatorProfileImageUrl: string;
+}
+
+// --- 프로젝트 댓글 타입 ---
+export interface ProjectCommentApiResponse {
+  id: number;
+  projectId: number;
+  writerId: string;
+  writerNickname: string;
+  writerProfileImageUrl: string;
+  content: string;
+  parentCommentId: number | null;
+  createdAt: string;
+  updatedAt: string;
+  replies: ProjectCommentApiResponse[]; // API 스펙에서는 string[]로 표시되지만 실제로는 객체 배열
+}
+
+export interface ProjectCommentListResponse extends Array<ProjectCommentApiResponse> {}
+
+export interface ProjectCommentCreateRequest {
+  content: string;
+  parentCommentId?: number | null; // 대댓글인 경우 부모 댓글 ID
+}
+
+export interface ProjectCommentUpdateRequest {
+  content: string;
+}
+
+export interface ProjectCommentCreateResponse {
+  code: number;
+  message: string;
+  data: ProjectCommentApiResponse;
+}
+
+export interface ProjectCommentUpdateResponse {
+  code: number;
+  message: string;
+  data: ProjectCommentApiResponse;
+}

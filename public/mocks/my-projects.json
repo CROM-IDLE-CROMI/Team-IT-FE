@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "title": "MyProject Core Service 고도화",
+    "project_name": "MyProject Core",
+    "owner_id": "hsung",
+    "platform": "WEB",
+    "role": "프론트엔드",
+    "status": "RECRUITING",
+    "start_date": "2025-10-20",
+    "description": "핵심 대시보드와 알림 시스템을 리팩터링하여 안정성을 높이는 프로젝트입니다.",
+    "required_stacks": ["TypeScript", "React", "TanStack Query"],
+    "recruit_positions": [
+      { "position": "Frontend", "count": 2 },
+      { "position": "QA", "count": 1 }
+    ],
+    "members": [
+      { "id": 1, "nickname": "hsung", "role": "팀장" },
+      { "id": 2, "nickname": "doyoon", "role": "백엔드" }
+    ],
+    "milestones": [
+      {
+        "id": 1,
+        "title": "핵심 API 성능 개선",
+        "nickname": "hsung",
+        "progress": 45,
+        "deadline": "2025-11-10"
+      }
+    ],
+    "type": "사이드 프로젝트",
+    "stack": "React, Express",
+    "isComplete": false,
+    "logoUrl": "/icons/React.svg"
+  },
+  {
+    "id": 2,
+    "title": "MyProject 모바일 온보딩",
+    "project_name": "MyProject Onboarding",
+    "owner_id": "crom",
+    "platform": "APP",
+    "role": "UX 디자이너",
+    "status": "ONGOING",
+    "start_date": "2025-09-02",
+    "description": "모바일 앱 신규 사용자 온보딩 플로우를 개선하여 이탈률을 낮추는 작업입니다.",
+    "required_stacks": ["Figma", "Motion"],
+    "recruit_positions": [
+      { "position": "Designer", "count": 1 },
+      { "position": "Frontend", "count": 1 }
+    ],
+    "members": [
+      { "id": 10, "nickname": "eunji", "role": "UX" },
+      { "id": 11, "nickname": "minsu", "role": "Frontend" },
+      { "id": 12, "nickname": "hannah", "role": "PM" }
+    ],
+    "milestones": [
+      {
+        "id": 4,
+        "title": "프로토타입 사용자 테스트",
+        "nickname": "hannah",
+        "progress": 80,
+        "deadline": "2025-10-05"
+      }
+    ],
+    "type": "사내 프로젝트",
+    "stack": "React Native",
+    "isComplete": false,
+    "logoUrl": "/icons/Figma.svg"
+  },
+  {
+    "id": 3,
+    "title": "MyProject 데이터 파이프라인",
+    "project_name": "MyProject Data",
+    "owner_id": "Dea cho bin",
+    "platform": "WEB",
+    "role": "데이터 엔지니어",
+    "status": "COMPLETED",
+    "start_date": "2025-06-15",
+    "end_date": "2025-08-30",
+    "description": "MyProject 서비스 운영에 필요한 KPI 대시보드를 자동화하는 데이터 파이프라인 구축.",
+    "required_stacks": ["Python", "Airflow", "BigQuery"],
+    "recruit_positions": [
+      { "position": "Data Engineer", "count": 2 }
+    ],
+    "members": [
+      { "id": 21, "nickname": "jiyoon", "role": "데이터" },
+      { "id": 22, "nickname": "taehyun", "role": "백엔드" }
+    ],
+    "milestones": [
+      {
+        "id": 7,
+        "title": "ETL 파이프라인 배포",
+        "nickname": "taehyun",
+        "progress": 100,
+        "deadline": "2025-08-20"
+      }
+    ],
+    "type": "사이드 프로젝트",
+    "stack": "Next.js, Airflow",
+    "isComplete": true,
+    "logoUrl": "/icons/Python.svg"
+  }
+]

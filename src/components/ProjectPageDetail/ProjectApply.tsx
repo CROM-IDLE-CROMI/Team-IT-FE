@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../../layouts/Header";
 import { getAllProjects } from "../../utils/teamToProjectConverter";
-import { applicationService } from "../../services/applicationService";
+import { projectService } from "../../services/projectService";
 import "./ProjectApply.css";
 
 // API 응답에 맞춰 프로젝트 데이터 타입을 정의합니다.
@@ -175,25 +175,27 @@ const ProjectApply = () => {
     }
 
     try {
-      // 2️⃣ 지원 데이터 준비
-      const applicationData = {
-        teamRecruitId: project.id,
-        position: formData.position,
-        message: formData.motivation,
-        portfolio: formData.title, // 제목을 포트폴리오 URL로 사용 (실제로는 별도 필드 필요)
-        answers: project.questions?.map((question, index) => ({
-          questionId: index + 1,
-          answer: formData.answers[index] || ""
-        })) || []
+      // 2️⃣ 지원 데이터 준비 (POST /v1/projects/{projectId}/apply)
+      // 프론트 → 백엔드로 전송할 요청 본문 구조
+      const applyData = {
+        title: formData.title.trim(), // 제목 (문자열)
+        position: formData.position.trim(), // 지원 직군 (문자열)
+        motivation: formData.motivation.trim(), // 참여 동기 (문자열)
+        answers: formData.answers
+          .map(answer => answer.trim())
+          .filter(answer => answer.length > 0), // 답변 배열 (빈 문자열 제거 후 전송)
+        requirements: formData.minRequirement === '예' // 최소 요건 충족 여부 (boolean)
       };
       
-      // 3️⃣ 지원 서비스를 통해 제출
-      const response = await applicationService.submit(applicationData);
+      // 3️⃣ 프로젝트 지원 API 호출
+      const response = await projectService.applyProject(project.id, applyData);
       
       // 4️⃣ 성공 처리
       setStatusMessage("🎉 지원서가 성공적으로 제출되었습니다!");
       
-      // 5️⃣ 3초 후 프로젝트 목록 페이지로 이동
+      console.log('✅ 지원서 제출 성공:', response);
+      
+      // 5️⃣ 2초 후 프로젝트 목록 페이지로 이동
       setTimeout(() => {
         navigate('/Projects');
       }, 2000);

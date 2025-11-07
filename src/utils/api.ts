@@ -5,7 +5,7 @@
  * API 기본 URL
  * .env 파일의 VITE_API_URL 값을 사용하거나, 없으면 기본값 사용
  */
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://3.37.26.26:8080';
 
 /**
  * 저장된 토큰 가져오기 (로그인 시 저장된 토큰)
@@ -131,6 +131,13 @@ export const apiDelete = <T = any>(endpoint: string, requireAuth = true): Promis
   return apiRequest<T>(endpoint, { method: 'DELETE', requireAuth });
 };
 
+/**
+ * PATCH 요청 헬퍼 함수
+ */
+export const apiPatch = <T = any>(endpoint: string, body: any, requireAuth = true): Promise<T> => {
+  return apiRequest<T>(endpoint, { method: 'PATCH', body, requireAuth });
+};
+
 // API 엔드포인트 상수 (URL을 한 곳에서 관리)
 export const API_ENDPOINTS = {
   // 팀원 모집 관련
@@ -141,8 +148,14 @@ export const API_ENDPOINTS = {
   
   // 프로젝트 관련
   PROJECTS: {
-    LIST: '/api/projects',
-    DETAIL: (id: number) => `/api/projects/${id}`,
+    LIST: '/v1/projects',
+    SEARCH: '/v1/projects/search', // POST 방식 검색
+    DETAIL: (id: number) => `/v1/projects/${id}`,
+    APPLY: (id: number) => `/v1/projects/${id}/apply`, // 프로젝트 지원
+    POPULAR: '/v1/projects/popular-projects',
+    HOT_BOARDS: '/v1/projects/hot-boards',
+    COMMENTS: (id: number) => `/v1/projects/${id}/comments`, // GET: 댓글 목록, POST: 댓글 작성
+    COMMENT: (projectId: number, commentId: number) => `/v1/projects/${projectId}/comments/${commentId}`, // PATCH: 댓글 수정, DELETE: 댓글 삭제
   },
   
   // 지원 관련
@@ -151,6 +164,25 @@ export const API_ENDPOINTS = {
     LIST: '/api/applications',           // GET: 지원 목록
     DETAIL: (id: number) => `/api/applications/${id}`,
     MY_APPLICATIONS: '/api/applications/my',  // GET: 내 지원 목록
+  },
+  
+  // 마이페이지 관련
+  MYPAGE: {
+    PROFILE: (uid: string) => `/v1/mypage/${uid}`, // GET: 프로필 정보 조회
+    AWARDS: (uid: string) => `/v1/mypage/${uid}/awards`, // GET: 수상 내역 조회, POST: 수상 내역 생성, PATCH: 수상 내역 수정
+    STACKS: '/v1/mypage/stacks', // GET: 스택 목록 조회, PATCH: 스택 수정
+    RATING: (uid: string) => `/v1/mypage/${uid}/rating`, // GET: 평가 조회
+  },
+  
+  // 게시판 관련
+  BOARD: {
+    LIST: '/v1/board', // GET: 게시글 목록 조회
+    DETAIL: (id: number) => `/v1/board/${id}`, // GET: 게시글 상세 조회, PUT: 게시글 수정, DELETE: 게시글 삭제
+    CREATE: '/v1/board', // POST: 게시글 작성
+    COMMENTS: (postId: number) => `/v1/board/${postId}/comments`, // GET: 댓글 목록, POST: 댓글 작성
+    COMMENT: (postId: number, commentId: number) => `/v1/board/${postId}/comments/${commentId}`, // PATCH: 댓글 수정, DELETE: 댓글 삭제
+    SCRAP: (postId: number) => `/v1/board/${postId}/scrap`, // POST: 스크랩 추가, DELETE: 스크랩 제거
+    SCRAP_LIST: '/v1/board/scrap', // GET: 스크랩 목록 조회
   },
 };
 

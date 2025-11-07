@@ -16,7 +16,7 @@ export default function MyprojectExplain() {
     if (!id) return;
 
     setLoading(true);
-    fetch(`/mocks/project-${id}.json`)
+    fetch(`/mocks/my-projects.json`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");

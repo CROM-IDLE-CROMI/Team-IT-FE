@@ -1,71 +1,178 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Post, Category } from "../../types/post";
 import { requireAuth, getCurrentUser } from "../../utils/authUtils";
-import { addScrap, isScraped } from "../../utils/scrapUtils";
+import { addScrap, updateScrapedCache, isScraped } from "../../utils/scrapUtils";
+import { apiGet } from "../../utils/api";
 import "./Boarder.css";
 import Header from "../../layouts/Header";
 
-type BoardPageProps = {
-  postsByCategory: Record<Category, Post[]>;
+// API 응답 타입 정의
+interface BoardApiResponse {
+  code: number;
+  message: string;
+  data: {
+    page: number;
+    size: number;
+    content: BoardPostItem[];
+    totalElements: number;
+    totalPages: number;
+  };
+}
+
+interface BoardPostItem {
+  postId: number;
+  title: string;
+  category: string;
+  viewCount: number;
+  likeCount: number;
+  createdAt: string;
+  authorNickname: string;
+  authorProfileImageUrl: string;
+}
+
+// 카테고리 매핑 함수
+const categoryToApi = (category: Category): string => {
+  const map: Record<Category, string> = {
+    "시사&정보": "INFO",
+    "질문": "QUESTION",
+    "홍보": "PROMOTION",
+  };
+  return map[category];
 };
 
-const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
+// API 응답을 Post 타입으로 변환
+const convertApiPostToPost = (apiPost: BoardPostItem): Post => {
+  const date = new Date(apiPost.createdAt);
+  const formattedDate = date.toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+
+  return {
+    id: apiPost.postId,
+    title: apiPost.title,
+    author: apiPost.authorNickname,
+    content: '', // 목록에는 내용이 없음
+    date: formattedDate,
+    views: apiPost.viewCount,
+  };
+};
+
+const BoardPage: React.FC = () => {
   const navigate = useNavigate();
   const [category, setCategory] = useState<Category>("시사&정보");
   const [searchTerm, setSearchTerm] = useState("");
-  const [pageByCategory, setPageByCategory] = useState<Record<Category, number>>({
-    "시사&정보": 1,
-    "질문": 1,
-    "홍보": 1,
-  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalElements, setTotalElements] = useState(0);
 
   // 현재 로그인한 사용자 확인
   const currentUser = getCurrentUser();
 
   const postsPerPage = 5;
-  const currentPage = pageByCategory[category];
 
-  // 검색 기능을 포함한 게시글 필터링
-  const allPosts = postsByCategory[category];
-  const filteredPosts = allPosts.filter(post =>
-    post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.author.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // API 호출 함수
+  const fetchBoardPosts = useCallback(async (page: number, cat: Category, keyword: string = '') => {
+    setLoading(true);
+    try {
+      const apiCategory = categoryToApi(cat);
+      
+      // pageable 객체 생성
+      const pageable = {
+        page: page - 1, // API는 0부터 시작
+        size: postsPerPage,
+        sort: ["createdAt,desc"]
+      };
 
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
-  const startIndex = (currentPage - 1) * postsPerPage;
-  const currentPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
+      // Query string 생성
+      const params = new URLSearchParams({
+        category: apiCategory,
+        pageable: JSON.stringify(pageable)
+      });
+
+      if (keyword) {
+        params.append('keyword', keyword);
+      }
+
+      const endpoint = `/v1/board?${params.toString()}`;
+      const response = await apiGet<BoardApiResponse>(endpoint, false);
+
+      if (response.code === 0 && response.data) {
+        const convertedPosts = response.data.content.map(convertApiPostToPost);
+        setPosts(convertedPosts);
+        setTotalPages(response.data.totalPages);
+        setTotalElements(response.data.totalElements);
+      } else {
+        console.error('API 응답 오류:', response.message);
+        setPosts([]);
+      }
+    } catch (error) {
+      console.error('게시글 목록 조회 실패:', error);
+      setPosts([]);
+      // 에러 발생 시 빈 배열로 설정
+    } finally {
+      setLoading(false);
+    }
+  }, [postsPerPage]);
+
+  // 데이터 로드 (카테고리, 페이지 변경 시 즉시 실행)
+  useEffect(() => {
+    fetchBoardPosts(currentPage, category, searchTerm);
+  }, [category, currentPage, fetchBoardPosts]);
+
+  // 검색어 변경 시 debounce 처리 (500ms 지연)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (currentPage !== 1) {
+        setCurrentPage(1); // 검색 시 첫 페이지로
+      } else {
+        fetchBoardPosts(1, category, searchTerm);
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm, category, fetchBoardPosts]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
-    setPageByCategory(prev => ({ ...prev, [category]: newPage }));
+    setCurrentPage(newPage);
   };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    setPageByCategory(prev => ({ ...prev, [category]: 1 }));
+    setCurrentPage(1);
+    fetchBoardPosts(1, category, searchTerm);
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    setPageByCategory(prev => ({ ...prev, [category]: 1 }));
+    // 검색어 변경은 useEffect의 debounce로 처리
   };
 
-  // ✅ 게시물별 스크랩 상태 저장 (백엔드 연동 준비)
+  const handleCategoryChange = (newCategory: Category) => {
+    setCategory(newCategory);
+    setCurrentPage(1); // 카테고리 변경 시 첫 페이지로
+    setSearchTerm(""); // 검색어 초기화
+  };
+
+  // 게시물별 스크랩 상태 저장
   const [scrappedPosts, setScrappedPosts] = useState<Set<number>>(new Set());
 
-  // 컴포넌트 마운트 시 기존 스크랩 데이터 로드
-  React.useEffect(() => {
+  // 스크랩 상태 로드
+  useEffect(() => {
     const loadScrapStatus = async () => {
       try {
-        // TODO: 백엔드 API 호출로 스크랩 상태 확인
-        const allPosts = Object.values(postsByCategory).flat();
-        const scrapedIds = new Set<number>();
+        // 백엔드 API 호출로 스크랩 상태 확인
+        await updateScrapedCache();
         
-        allPosts.forEach(post => {
-          if (isScraped(post.id)) { // 현재는 항상 false 반환
+        // 현재 페이지의 게시글들 중 스크랩된 것들을 Set에 추가
+        const scrapedIds = new Set<number>();
+        posts.forEach(post => {
+          if (isScraped(post.id)) {
             scrapedIds.add(post.id);
           }
         });
@@ -76,13 +183,15 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
       }
     };
     
-    loadScrapStatus();
-  }, [postsByCategory]);
+    if (posts.length > 0) {
+      loadScrapStatus();
+    }
+  }, [posts]);
 
   const toggleScrap = async (e: React.MouseEvent, postId: number) => {
     e.stopPropagation(); // 게시물 클릭 이벤트 막기
     
-    const post = Object.values(postsByCategory).flat().find(p => p.id === postId);
+    const post = posts.find(p => p.id === postId);
     if (!post) return;
 
     if (scrappedPosts.has(postId)) {
@@ -90,7 +199,7 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
       alert('스크랩 해제는 마이페이지 > 스크랩한 게시물에서 가능합니다.');
     } else {
       try {
-        // TODO: 백엔드 API 호출로 스크랩 추가
+        // 백엔드 API 호출로 스크랩 추가
         await addScrap({
           postId: post.id,
           title: post.title,
@@ -110,8 +219,13 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
           }
         });
         
+        // 캐시 업데이트
+        await updateScrapedCache();
+        
         // 로컬 상태 업데이트
         setScrappedPosts(prev => new Set(prev).add(postId));
+        
+        alert('스크랩이 추가되었습니다.');
       } catch (error) {
         console.error('스크랩 추가 실패:', error);
         alert('스크랩 추가에 실패했습니다.');
@@ -131,7 +245,7 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
             <button
               key={cat}
               className={category === cat ? "active" : ""}
-              onClick={() => setCategory(cat)}
+              onClick={() => handleCategoryChange(cat)}
             >
               {cat} 게시판
             </button>
@@ -165,15 +279,18 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
       {/* 게시글 리스트 */}
       <div className="board-section">
         <div className="board-list">
-          <ul>
-            <div className="board_header">
-              <div className="title-column">제목</div>
-              <div className="author-column">글쓴이</div>
-              <div className="date-column">작성일</div>
-              <div className="views-column">조회</div>
-            </div>
-            {currentPosts.length > 0 ? (
-              currentPosts.map(post => (
+          {loading ? (
+            <div className="loading">로딩 중...</div>
+          ) : (
+            <ul>
+              <div className="board_header">
+                <div className="title-column">제목</div>
+                <div className="author-column">글쓴이</div>
+                <div className="date-column">작성일</div>
+                <div className="views-column">조회</div>
+              </div>
+              {posts.length > 0 ? (
+                posts.map(post => (
                 <li
                   key={post.id}
                   onClick={() => navigate(`/Board/${post.id}`)}
@@ -210,6 +327,7 @@ const BoardPage: React.FC<BoardPageProps> = ({ postsByCategory }) => {
               </li>
             )}
           </ul>
+        )}
         </div>
       </div>
 

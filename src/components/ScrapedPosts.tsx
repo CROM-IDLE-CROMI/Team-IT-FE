@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { ScrapedPost } from '../types/scrap';
-import { getAllScraps, removeScrap, clearAllScraps } from '../utils/scrapUtils';
+import { getAllScraps, removeScrap, clearAllScraps, updateScrapedCache } from '../utils/scrapUtils';
 import { useNavigate } from 'react-router-dom';
 import './ScrapedPosts.css';
 
@@ -15,8 +15,8 @@ const ScrapedPosts: React.FC = () => {
 
   const loadScrapedPosts = async () => {
     try {
-      // TODO: 백엔드 API 호출로 스크랩 목록 가져오기
-      const scraps = getAllScraps(); // 현재는 빈 배열 반환
+      // 백엔드 API 호출로 스크랩 목록 가져오기
+      const scraps = await getAllScraps();
       setScrapedPosts(scraps);
     } catch (error) {
       console.error('스크랩 데이터 로드 실패:', error);
@@ -25,17 +25,32 @@ const ScrapedPosts: React.FC = () => {
     }
   };
 
-  const handleRemoveScrap = (postId: number) => {
+  const handleRemoveScrap = async (postId: number) => {
     const confirmRemove = window.confirm('이 게시글의 스크랩을 해제하시겠습니까?');
     if (confirmRemove) {
-      removeScrap(postId);
-      loadScrapedPosts(); // 목록 새로고침
+      try {
+        await removeScrap(postId);
+        await updateScrapedCache();
+        loadScrapedPosts(); // 목록 새로고침
+      } catch (error) {
+        console.error('스크랩 제거 실패:', error);
+        alert('스크랩 해제에 실패했습니다.');
+      }
     }
   };
 
-  const handleClearAll = () => {
-    clearAllScraps();
-    loadScrapedPosts(); // 목록 새로고침
+  const handleClearAll = async () => {
+    const confirmClear = window.confirm('모든 스크랩을 삭제하시겠습니까?');
+    if (confirmClear) {
+      try {
+        await clearAllScraps();
+        await updateScrapedCache();
+        loadScrapedPosts(); // 목록 새로고침
+      } catch (error) {
+        console.error('전체 스크랩 삭제 실패:', error);
+        alert('전체 스크랩 삭제에 실패했습니다.');
+      }
+    }
   };
 
   const handlePostClick = (postId: number) => {
@@ -83,7 +98,7 @@ const ScrapedPosts: React.FC = () => {
                   <span className="post-date">{formatDate(scrap.date)}</span>
                 </div>
                 <h3 className="post-title">{scrap.title}</h3>
-                <p className="post-preview">{scrap.content.substring(0, 100)}...</p>
+                <p className="post-preview">{scrap.content ? scrap.content.substring(0, 100) + '...' : ''}</p>
                 <div className="post-footer">
                   <span className="post-author">👤 {scrap.author}</span>
                   <span className="post-views">👁 {scrap.views}</span>
