@@ -17,4 +17,10 @@ export interface refreshTokenPayload {
 }
 
 export interface AuthUser { uid: string; nickName: string; email: string };
-export interface AuthResponse { user: AuthUser; accessToken: string; refreshToken?: string };
+export interface AuthResponse { user: AuthUser; accessToken?: string; refreshToken?: string };
+
+export interface ApiErrorResponse {
+  message?: string;
+  code?: string;
+  [k: string]: unknown;
+}

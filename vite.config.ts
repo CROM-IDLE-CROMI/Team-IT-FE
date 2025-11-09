@@ -21,7 +21,7 @@ export default defineConfig({
     host: true,
     port: 5173,
     proxy: {
-      '/v1': { target: 'http://3.37.26.26:8080/', changeOrigin: true },
+      '/v1': { target: 'http://3.37.26.26:8080/', changeOrigin: true, secure: false },
     },
   },
 })

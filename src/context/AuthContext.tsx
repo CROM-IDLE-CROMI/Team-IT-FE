@@ -37,7 +37,7 @@ type AuthContextValue = {
   signup: (body: SignupPayload) => Promise<void>;
   login: (body: LoginPayload) => Promise<void>;
   logout: () => Promise<void>;
-  refresh: () => Promise<void>;
+  refreshOnce: () => Promise<boolean>; // ← 변경
 
   setUser: React.Dispatch<React.SetStateAction<AuthUser | null>>;
 };
@@ -53,21 +53,24 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // refresh 동시 호출 방지
-  const refreshingRef = useRef<Promise<void> | null>(null);
+  // refresh 동시 호출 방지 (진행 중인 Promise 재사용)
+  const refreshingRef = useRef<Promise<boolean> | null>(null);
 
   // 세션 저장/삭제
   const saveSession = useCallback((res: AuthResponse) => {
-    setUser(res.user);
-    setAccessToken(res.accessToken ?? null);
-    setRefreshToken(res.refreshToken ?? null);
-
-    localStorage.setItem(USER_KEY, JSON.stringify(res.user));
-    if (res.accessToken) localStorage.setItem(ACCESS_KEY, res.accessToken);
-    if (res.refreshToken) localStorage.setItem(REFRESH_KEY, res.refreshToken);
-
-    // 호환용: 예전 컴포넌트가 참조할 수 있도록
-    localStorage.setItem(LEGACY_LOGIN_FLAG, 'true');
+    if (res.user) {
+      setUser(res.user);
+      localStorage.setItem(USER_KEY, JSON.stringify(res.user));
+    }
+    if (res.accessToken) {
+      setAccessToken(res.accessToken);
+      localStorage.setItem(ACCESS_KEY, res.accessToken);
+    }
+    if (res.refreshToken) {
+      setRefreshToken(res.refreshToken);
+      localStorage.setItem(REFRESH_KEY, res.refreshToken);
+    }
+    localStorage.setItem(LEGACY_LOGIN_FLAG, 'true'); // 호환 플래그
   }, []);
 
   const clearSession = useCallback(() => {
@@ -78,8 +81,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     localStorage.removeItem(USER_KEY);
     localStorage.removeItem(ACCESS_KEY);
     localStorage.removeItem(REFRESH_KEY);
-
-    // 호환용
     localStorage.removeItem(LEGACY_LOGIN_FLAG);
   }, []);
 
@@ -93,22 +94,14 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 
         if (u) setUser(JSON.parse(u));
         if (at) setAccessToken(at);
+        if (rt) setRefreshToken(rt);
 
         // accessToken은 없고 refreshToken만 있으면 즉시 재발급 시도
         if (!at && rt) {
           try {
             const r = await apiAuth.refresh({ refreshToken: rt });
-            if (r?.accessToken) {
-              setAccessToken(r.accessToken);
-              localStorage.setItem(ACCESS_KEY, r.accessToken);
-            }
-            if (r?.refreshToken) {
-              setRefreshToken(r.refreshToken);
-              localStorage.setItem(REFRESH_KEY, r.refreshToken);
-            }
-            localStorage.setItem(LEGACY_LOGIN_FLAG, 'true'); // 호환 플래그
+            if (r) saveSession(r);
           } catch {
-            // refresh 실패 시 세션 클리어
             clearSession();
           }
         }
@@ -116,7 +109,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
         setLoading(false);
       }
     })();
-  }, [clearSession]);
+  }, [saveSession, clearSession]);
 
   // ─────────────────────────────────────────
   // Actions
@@ -124,8 +117,8 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   const signup = useCallback(
     async (body: SignupPayload) => {
       const res = await apiAuth.signup(body);
-      // 서버가 회원가입 즉시 세션을 줄 수도/안 줄 수도 있으니, accessToken 있는 경우만 저장
-      if (res?.accessToken) saveSession(res);
+      // 서버가 회원가입 즉시 세션을 안줄 수도 있으므로, 토큰이 있을 때만 저장
+      if (res?.accessToken || res?.refreshToken || res?.user) saveSession(res);
     },
     [saveSession]
   );
@@ -140,67 +133,62 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 
   const logout = useCallback(async () => {
     try {
-      await apiAuth.logout(); // POST /v1/auth/logout (Authorization 필요)
+      // 서버 스펙에 맞춰 refreshToken 전달(Optional)
+      await apiAuth.logout(refreshToken ? { refreshToken } : undefined);
     } catch {
       // 서버 실패해도 클라 세션은 정리
     } finally {
       clearSession();
     }
-  }, [clearSession]);
+  }, [refreshToken, clearSession]);
 
-  const refresh = useCallback(async () => {
-    // 이미 진행 중이면 해당 Promise 재사용
+  /** 401 대응: 1회 리프레시 (true=성공, false=실패) */
+  const refreshOnce = useCallback(async (): Promise<boolean> => {
+    // 이미 진행 중이면 그 Promise 반환
     if (refreshingRef.current) return refreshingRef.current;
     if (!refreshToken) {
       clearSession();
-      return;
+      return false;
     }
 
-    refreshingRef.current = (async () => {
+    const p = (async () => {
       try {
-        // POST /v1/auth/refresh { refreshToken }
         const r = await apiAuth.refresh({ refreshToken });
-        if (r?.accessToken) {
-          setAccessToken(r.accessToken);
-          localStorage.setItem(ACCESS_KEY, r.accessToken);
-        }
-        if (r?.refreshToken) {
-          setRefreshToken(r.refreshToken);
-          localStorage.setItem(REFRESH_KEY, r.refreshToken);
-        }
-      } catch (e) {
-        // 재발급 실패 → 세션 종료
+        if (r) saveSession(r);
+        return true;
+      } catch {
         clearSession();
-        throw e;
+        return false;
       } finally {
         refreshingRef.current = null;
       }
     })();
 
-    return refreshingRef.current;
-  }, [refreshToken, clearSession]);
+    refreshingRef.current = p;
+    return p;
+  }, [refreshToken, saveSession, clearSession]);
 
-  // ── api 래퍼에 헬퍼 주입 (경고 해결: deps 포함)
+  // utils/api.ts에 Bearer용 헬퍼 주입
   useEffect(() => {
     injectAuthHelpers({
       getAccessToken: () => localStorage.getItem(ACCESS_KEY),
-      refresh: async () => { await refresh(); },
-      logout:  async () => { await logout();  },
+      refreshOnce, // ← 변경
+      logout,
     });
-  }, [refresh, logout]);
+  }, [refreshOnce, logout]);
 
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
-      isAuthenticated: !!user && !!accessToken,
+      isAuthenticated: !!accessToken, // user 로딩 전이라도 토큰 있으면 인증 상태로 간주
       loading,
       signup,
       login,
       logout,
-      refresh,
+      refreshOnce,
       setUser,
     }),
-    [user, accessToken, loading, signup, login, logout, refresh]
+    [user, accessToken, loading, signup, login, logout, refreshOnce]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
