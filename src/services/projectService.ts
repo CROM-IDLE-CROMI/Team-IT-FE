@@ -106,21 +106,6 @@ export interface ProjectSearchResponse {
 }
 
 /**
- * 프로젝트 지원 응답 타입
- */
-export interface ProjectApplyResponse {
-  applicationId: number;
-  projectId: number;
-  applicantId: string;
-  title: string;
-  position: string;
-  motivation: string;
-  answers: string[];
-  requirements: boolean;
-  createdAt: string;
-}
-
-/**
  * 인기 게시물 항목 타입
  */
 export interface HotBoardItem {
@@ -138,8 +123,24 @@ export interface HotBoardItem {
  * 프로젝트 서비스 클래스
  */
 class ProjectService {
+  getProjectComments(projectId: number) {
+    throw new Error("Method not implemented.");
+  }
   /**
-   * 1️⃣ 프로젝트 목록 조회 (페이지네이션)
+   * 2️⃣ 인기 프로젝트 조회
+   * @returns 인기 프로젝트 목록
+   */
+  updateProjectComment(projectId: number, replyId: number, arg2: { content: string; }) {
+    throw new Error("Method not implemented.");
+  }
+  deleteProjectComment(projectId: number, replyId: number) {
+    throw new Error("Method not implemented.");
+  }
+  applyProject(id: number, applyData: { title: string; position: string; motivation: string; answers: string[]; requirements: boolean; }) {
+    throw new Error("Method not implemented.");
+  }
+  /**
+   * 프로젝트 목록 조회 (페이지네이션)
    * @param params 쿼리 파라미터
    * @returns 프로젝트 목록
    */
@@ -311,168 +312,8 @@ class ProjectService {
       throw error;
     }
   }
-
-  /**
-   * 5️⃣ 프로젝트 지원하기
-   * @param projectId 프로젝트 ID
-   * @param applyData 지원 데이터
-   * @returns 지원 결과
-   */
-  async applyProject(
-    projectId: number,
-    applyData: {
-      title: string;
-      position: string;
-      motivation: string;
-      answers: string[]; // 답변 배열
-      requirements: boolean; // 최소 요건 충족 여부
-    }
-  ): Promise<ProjectApplyResponse> {
-    try {
-      console.log('📤 프로젝트 지원 요청:', { projectId, applyData });
-      
-      const response = await apiPost<ApiResponse<ProjectApplyResponse>>(
-        API_ENDPOINTS.PROJECTS.APPLY(projectId),
-        applyData,
-        true // 인증 필요
-      );
-      
-      console.log('✅ 프로젝트 지원 성공:', response);
-      
-      // API 응답 구조에서 data 추출
-      if (response.code === 0) {
-        return response.data;
-      } else {
-        throw new Error(response.message || '프로젝트 지원 실패');
-      }
-      
-    } catch (error) {
-      console.error('❌ 프로젝트 지원 실패:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * 6️⃣ 프로젝트 댓글 목록 조회
-   * @param projectId 프로젝트 ID
-   * @returns 댓글 목록
-   */
-  async getProjectComments(projectId: number): Promise<ProjectCommentApiResponse[]> {
-    try {
-      console.log('📥 프로젝트 댓글 목록 조회:', projectId);
-      
-      const response = await apiGet<ProjectCommentListResponse>(
-        API_ENDPOINTS.PROJECTS.COMMENTS(projectId),
-        false // 댓글 목록은 인증 불필요 (공개)
-      );
-      
-      console.log('✅ 프로젝트 댓글 목록 조회 성공:', response);
-      
-      // 응답이 배열인 경우 그대로 반환
-      return Array.isArray(response) ? response : [];
-      
-    } catch (error) {
-      console.error('❌ 프로젝트 댓글 목록 조회 실패:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * 7️⃣ 프로젝트 댓글 작성
-   * @param projectId 프로젝트 ID
-   * @param commentData 댓글 데이터
-   * @returns 작성된 댓글
-   */
-  async createProjectComment(
-    projectId: number,
-    commentData: ProjectCommentCreateRequest
-  ): Promise<ProjectCommentApiResponse> {
-    try {
-      console.log('📤 프로젝트 댓글 작성 요청:', { projectId, commentData });
-      
-      const response = await apiPost<ProjectCommentCreateResponse>(
-        API_ENDPOINTS.PROJECTS.COMMENTS(projectId),
-        commentData,
-        true // 인증 필요
-      );
-      
-      console.log('✅ 프로젝트 댓글 작성 성공:', response);
-      
-      // API 응답 구조에서 data 추출
-      if (response.code === 0) {
-        return response.data;
-      } else {
-        throw new Error(response.message || '프로젝트 댓글 작성 실패');
-      }
-      
-    } catch (error) {
-      console.error('❌ 프로젝트 댓글 작성 실패:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * 8️⃣ 프로젝트 댓글 수정
-   * @param projectId 프로젝트 ID
-   * @param commentId 댓글 ID
-   * @param commentData 수정할 댓글 데이터
-   * @returns 수정된 댓글
-   */
-  async updateProjectComment(
-    projectId: number,
-    commentId: number,
-    commentData: ProjectCommentUpdateRequest
-  ): Promise<ProjectCommentApiResponse> {
-    try {
-      console.log('📝 프로젝트 댓글 수정 요청:', { projectId, commentId, commentData });
-      
-      const response = await apiPatch<ProjectCommentUpdateResponse>(
-        API_ENDPOINTS.PROJECTS.COMMENT(projectId, commentId),
-        commentData,
-        true // 인증 필요
-      );
-      
-      console.log('✅ 프로젝트 댓글 수정 성공:', response);
-      
-      // API 응답 구조에서 data 추출
-      if (response.code === 0) {
-        return response.data;
-      } else {
-        throw new Error(response.message || '프로젝트 댓글 수정 실패');
-      }
-      
-    } catch (error) {
-      console.error('❌ 프로젝트 댓글 수정 실패:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * 9️⃣ 프로젝트 댓글 삭제
-   * @param projectId 프로젝트 ID
-   * @param commentId 댓글 ID
-   */
-  async deleteProjectComment(projectId: number, commentId: number): Promise<void> {
-    try {
-      console.log('🗑️ 프로젝트 댓글 삭제 요청:', { projectId, commentId });
-      
-      await apiDelete(
-        API_ENDPOINTS.PROJECTS.COMMENT(projectId, commentId),
-        true // 인증 필요
-      );
-      
-      console.log('✅ 프로젝트 댓글 삭제 성공');
-      
-    } catch (error) {
-      console.error('❌ 프로젝트 댓글 삭제 실패:', error);
-      throw error;
-    }
-  }
 }
 
 // 싱글톤 인스턴스 생성 및 export
 export const projectService = new ProjectService();
-
-// 타입 정의를 명시적으로 export (TypeScript 인식 문제 해결)
-export type { ProjectApplyResponse };
 

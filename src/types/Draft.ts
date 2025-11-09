@@ -11,8 +11,8 @@ export interface StepData {
 }
 
 export interface Draft {
-  id: string;
-  title: string;
-  data: { [step: string]: StepData }; // 각 단계의 데이터    
-  savedAt: string;
+  id: string;
+  title: string;
+  data: TeamFormData;
+  savedAt: string;
 }
