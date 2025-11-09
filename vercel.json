@@ -16,7 +16,7 @@
   "rewrites": [
     {
       "source": "/v1/:path*",    
-      "destination": "https://<백엔드-도메인>/v1/:path*"
+       "destination": "https://team-it-fe.vercel.app/v1/:path*"
     },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
