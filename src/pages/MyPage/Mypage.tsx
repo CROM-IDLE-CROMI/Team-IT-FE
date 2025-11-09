@@ -49,37 +49,19 @@ export default function Mypage() {
   const [profileData, setProfileData] = useState<ProfileData>({
     profileImage: null,
     backgroundImage: null,
-    nickname: "홍길동",
-    birthDate: "1995-03-15",
-    organization: "서울대학교",
-    email: "hong@example.com",
+    nickname: "유즈",
+    birthDate: "2005-12-24",
+    organization: "숭실대학교",
+    email: "yoo@gmail.com",
     position: "프론트엔드 개발자",
     introduction: "열정적인 개발자입니다",
     projects: [
-      "TEAM-IT 내에서 이루어진 대표 프로젝트 (최신순)",
-      "웹 개발 프로젝트 - React 기반 쇼핑몰",
-      "모바일 앱 개발 - Flutter 기반 일정 관리 앱"
     ],
-    rating: 4.5,
-    reviewCount: 12,
+    rating: 0,
+    reviewCount: 0,
     awards: [
-      {
-        id: "1",
-        competitionName: "2023 해커톤 대회",
-        details: "우수상 - 웹 개발 부문",
-        awardDate: "2023. 12. 15"
-      },
-      {
-        id: "2", 
-        competitionName: "2022 코딩 테스트",
-        details: "1등 - 알고리즘 문제 해결",
-        awardDate: "2022. 08. 20"
-      }
     ],
     techStacks: [
-      { id: "React", name: "React", level: "상" },
-      { id: "Nodejs", name: "Node.js", level: "중" },
-      { id: "TypeScript", name: "TypeScript", level: "하" }
     ]
   });
 

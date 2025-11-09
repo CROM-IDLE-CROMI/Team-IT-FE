@@ -224,7 +224,7 @@ export const API_ENDPOINTS = {
     LOGIN_ID_FIND: '/v1/auth/login-id-find',     // GET ?email=...
     PW_RESET: '/v1/auth/login-pw-reset',         // PUT
     KAKAO_LOGIN: '/v1/auth/login/kakao',         // GET (필요 시)
-    REFRESH: '/v1/auth/refresh-token',           // POST { refreshToken }
+    REFRESH: '/v1/auth/refresh',           // POST { refreshToken }
   },
 };
 
