@@ -76,7 +76,7 @@ export default function ViewProfile({ onEdit, profileData, onUpdateAwards, onEdi
 
           {/* 사용자 ID와 뱃지 */}
           <div className="user-info">
-            <span className="user-id">{getCurrentUser() || "사용자 ID"}</span>
+            <span className="user-id">{getCurrentUser() || "yooze_0x4c888"}</span>
           </div>
 
           {/* 프로필 편집 버튼 */}

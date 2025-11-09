@@ -320,6 +320,3 @@ class MyPageService {
 
 // 싱글톤 인스턴스 생성 및 export
 export const mypageService = new MyPageService();
-
-
-

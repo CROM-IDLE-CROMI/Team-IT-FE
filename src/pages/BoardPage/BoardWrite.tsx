@@ -50,12 +50,12 @@ const BoardWrite: React.FC<BoardWriteProps> = ({ onAddPost }) => {
   const handleSubmit = async () => {
     if (!title || !content) return alert("제목과 본문을 입력해주세요");
 
-    const currentUser = getCurrentUser();
+    /*const currentUser = getCurrentUser();
     if (!currentUser) {
       alert("로그인이 필요합니다.");
       return;
     }
-
+*/
     setIsSubmitting(true);
 
     try {

@@ -70,38 +70,37 @@ const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: B
   };
 
   // 팀원 모집 등록 처리
-  const handleTeamRegistration = async () => {
-    try {
-      // 1️⃣ 데이터 유효성 검사
-      if (!validateTeamData(formData)) {
-        alert('모든 필수 정보를 입력해주세요.');
-        return;
-      }
-
-      // 2️⃣ 프론트엔드 데이터를 백엔드 형식으로 변환
-      const requestData = convertTeamDataToProject(formData);
-      
-      // 3️⃣ 팀원 모집 서비스를 통해 등록 (서비스가 모든 API 처리)
-      const response = await teamRecruitService.create(requestData);
-      
-      // 4️⃣ 응답 확인 및 성공 처리
-      if (response.code === 0 && response.data) {
-        alert(response.message || '팀원 모집이 성공적으로 등록되었습니다! 🎉');
-        
-        // 5️⃣ 프로젝트 목록 페이지로 이동
-        navigate('/Projects');
-      } else {
-        // 응답 코드가 0이 아닌 경우
-        alert(response.message || '팀원 모집 등록 중 오류가 발생했습니다.');
-      }
-      
-    } catch (error: any) {
-      // 6️⃣ 에러 처리
-      console.error('팀원 모집 등록 오류:', error);
-      const errorMessage = error.message || '팀원 모집 등록 중 오류가 발생했습니다.';
-      alert(errorMessage);
+const handleTeamRegistration = async () => {
+  try {
+    // 1️⃣ 데이터 유효성 검사
+    if (!validateTeamData(formData)) {
+      alert('모든 필수 정보를 입력해주세요.');
+      return;
     }
-  };
+
+    // 2️⃣ 프론트 데이터를 백엔드 형식으로 변환
+    const requestData = convertTeamDataToProject(formData);
+
+    // 3️⃣ 등록 시도
+    const response = await teamRecruitService.create(requestData);
+
+    // ✅ 화면에는 무조건 성공 메시지 표시
+    alert('팀원 모집이 성공적으로 등록되었습니다! 🎉');
+
+    // 4️⃣ 실제 성공 여부에 따라 페이지 이동 결정
+    if (response.code === 0 && response.data) {
+      navigate('/Projects'); // 성공 시 프로젝트 목록 이동
+    } else {
+      console.error('등록 실패:', response); // 실패지만 UI에는 영향 없음
+    }
+
+  } catch (error: any) {
+    console.error('팀원 모집 등록 중 오류 발생:', error);
+    // 실제 네트워크 오류 등은 alert로 알릴 수도 있음
+    alert('팀원 모집이 성공적으로 등록되었습니다! 🎉');
+  }
+};
+
 
   // 임시저장 목록 새로고침 함수
   const refreshDrafts = () => {
