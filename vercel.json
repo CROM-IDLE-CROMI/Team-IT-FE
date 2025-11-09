@@ -16,7 +16,7 @@
   "rewrites": [
     {
       "source": "/v1/:path*",    
-       "destination": "https://team-it-fe.vercel.app/v1/:path*"
+       "destination": "http://3.37.26.26:8080/v1/:path*"
     },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
