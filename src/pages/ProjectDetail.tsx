@@ -44,7 +44,7 @@ const dummyProjects: Project[] = [
     author: "양도영",
     date: new Date().toLocaleDateString('ko-KR'),
     location: { region: "서울", districts: ["강남구"] },
-    techStack: ["React", "TypeScript"],
+    techStack: ["TypeScript", "React"],
     positions: ["프론트엔드", "백엔드"],
     likes: 10,
     views: 123,

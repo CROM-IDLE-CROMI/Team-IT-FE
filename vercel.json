@@ -2,33 +2,22 @@
   "headers": [
     {
       "source": "/assets/(.*\\.mjs)",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "text/javascript"
-        }
-      ]
+      "headers": [{ "key": "Content-Type", "value": "text/javascript" }]
     },
     {
       "source": "/assets/(.*\\.js)",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "text/javascript"
-        }
-      ]
+      "headers": [{ "key": "Content-Type", "value": "text/javascript" }]
     },
     {
       "source": "/assets/(.*\\.css)",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "text/css"
-        }
-      ]
+      "headers": [{ "key": "Content-Type", "value": "text/css" }]
     }
   ],
   "rewrites": [
+    {
+      "source": "/v1/:path*",    
+      "destination": "https://<백엔드-도메인>/v1/:path*"
+    },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
