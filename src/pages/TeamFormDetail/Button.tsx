@@ -6,7 +6,7 @@ import DraftList from "../../components/TemporarySave/DraftList";
 import { v4 as uuidv4 } from "uuid";
 import { saveDraft, hasDrafts } from "../../utils/localStorageUtils";
 import type { Draft } from "../../types/Draft";
-import { convertTeamDataToProject, validateTeamData, saveProjectToStorage } from "../../utils/teamToProjectConverter";
+import { convertTeamDataToProject, validateTeamData } from "../../utils/teamToProjectConverter";
 import { teamRecruitService } from "../../services/teamRecruitService";
 
 interface StepData {
@@ -79,19 +79,25 @@ const Button = ({ formData, currentStep, disabled, setFormData, onLoadDraft }: B
       }
 
       // 2️⃣ 프론트엔드 데이터를 백엔드 형식으로 변환
-      const project = convertTeamDataToProject(formData);
+      const requestData = convertTeamDataToProject(formData);
       
       // 3️⃣ 팀원 모집 서비스를 통해 등록 (서비스가 모든 API 처리)
-      const response = await teamRecruitService.create(project);
+      const response = await teamRecruitService.create(requestData);
       
-      // 4️⃣ 성공 처리
-      alert('팀원 모집이 성공적으로 등록되었습니다! 🎉');
-      
-      // 5️⃣ 프로젝트 목록 페이지로 이동
-      navigate('/Projects');
+      // 4️⃣ 응답 확인 및 성공 처리
+      if (response.code === 0 && response.data) {
+        alert(response.message || '팀원 모집이 성공적으로 등록되었습니다! 🎉');
+        
+        // 5️⃣ 프로젝트 목록 페이지로 이동
+        navigate('/Projects');
+      } else {
+        // 응답 코드가 0이 아닌 경우
+        alert(response.message || '팀원 모집 등록 중 오류가 발생했습니다.');
+      }
       
     } catch (error: any) {
       // 6️⃣ 에러 처리
+      console.error('팀원 모집 등록 오류:', error);
       const errorMessage = error.message || '팀원 모집 등록 중 오류가 발생했습니다.';
       alert(errorMessage);
     }

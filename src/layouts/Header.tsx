@@ -58,30 +58,38 @@ const Header = () => {
         <Link to="/Teams">팀원 모집</Link>
         <Link to="/Projects">프로젝트 찾기</Link>
         <a href="/Boarder">게시판</a>
-        {isLoggedIn && <Link to="/myprojectmain">마이 프로젝트</Link>}
+        {<Link to="/myprojectmain">마이 프로젝트</Link>}
       </nav>
 
       <div className="auth-buttons">
         {isLoggedIn ? (
           <>
-            <Link to="/Mypage"><button className="profile"><img 
-              src="/Profile.png" 
-              className='Profile'
-              alt="프로필"
-              onError={(e) => {
-                console.error('Failed to load profile icon:', e.currentTarget.src);
-                e.currentTarget.style.display = 'none';
-              }}
-            /></button></Link>
-            <Link to="/notification"><button className="notification"><img 
-              src="/Notific.png" 
-              className='notic'
-              alt="알림"
-              onError={(e) => {
-                console.error('Failed to load notification icon:', e.currentTarget.src);
-                e.currentTarget.style.display = 'none';
-              }}
-            /> </button></Link>
+            <Link to="/Mypage">
+              <button className="profile">
+                <img 
+                  src="/Profile.png" 
+                  className='Profile'
+                  alt="프로필"
+                  onError={(e) => {
+                    console.error('Failed to load profile icon:', e.currentTarget.src);
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </button>
+            </Link>
+            <Link to="/notification">
+              <button className="notification">
+                <img 
+                  src="/Notific.png" 
+                  className='notic'
+                  alt="알림"
+                  onError={(e) => {
+                    console.error('Failed to load notification icon:', e.currentTarget.src);
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </button>
+            </Link>
             <button onClick={handleLogout}>로그아웃</button>
           </>
         ) : (

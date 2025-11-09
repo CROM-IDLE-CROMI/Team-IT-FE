@@ -182,6 +182,38 @@ const SideBox: React.FC<SideBoxProps> = ({
             </div>
           </div>
 
+          {/* 진행 상황 필터 */}
+          <div className="filter-section">
+            <div className="filter-header"><h3>진행 상황</h3></div>
+            <div className="option-buttons">
+              {progressOptions.map(option => (
+                <button
+                  key={option}
+                  className={`option-btn ${filters.selectedProgress.includes(option) ? 'selected' : ''}`}
+                  onClick={() => handleOptionToggle(option, filters.selectedProgress, 'selectedProgress')}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 진행 방식 필터 */}
+          <div className="filter-section">
+            <div className="filter-header"><h3>진행 방식</h3></div>
+            <div className="option-buttons">
+              {methodOptions.map(option => (
+                <button
+                  key={option}
+                  className={`option-btn ${filters.selectedMethod.includes(option) ? 'selected' : ''}`}
+                  onClick={() => handleOptionToggle(option, filters.selectedMethod, 'selectedMethod')}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* 프로젝트 모집 종료 기한 필터 */}
           <div className="filter-section">
             <div className="filter-header"><h3>프로젝트 모집 종료 기한</h3></div>

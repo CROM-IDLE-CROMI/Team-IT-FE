@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../../App.css";
 import Header from "../../layouts/Header";
@@ -40,19 +40,17 @@ const Login = () => {
 
   const handleKakaoLogin = () => {
     const REST_API_KEY = "ca45ca0c35448e18526a3b03836d8a85";
-    const REDIRECT_URI = "http://localhost:5173/oauth/callback/kakao";
+    // 현재 도메인을 동적으로 사용 (localhost 또는 배포 도메인)
+    const currentOrigin = window.location.origin;
+    const REDIRECT_URI = `${currentOrigin}/oauth/callback/kakao`;
 
     window.location.href =
       `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
   };
 
   return (
-    <>
-      <div className="content-header">
-        <Header />
-      </div>
-      <div className="login-container">
-        <h2 className="login-title">로그인</h2>
+    <div className="login-container">
+      <h2 className="login-title">로그인</h2>
 
         {/* 일반 로그인 폼 */}
         <form onSubmit={handleLogin}>
@@ -84,18 +82,17 @@ const Login = () => {
           </button>
         </form>
 
-        <hr className="divider" />
+      <hr className="divider" />
 
-        {/* 카카오 로그인 버튼 */}
-        <button onClick={handleKakaoLogin} className="btn btn-kakao">
-          카카오로 로그인
-        </button>
+      {/* 카카오 로그인 버튼 */}
+      <button onClick={handleKakaoLogin} className="btn btn-kakao">
+        카카오로 로그인
+      </button>
 
-        <p className="link-text">
-          회원가입은 <Link to="/signup">여기에서</Link> 할 수 있습니다.
-        </p>
-      </div>
-    </>
+      <p className="link-text">
+        회원가입은 <a href="/signup">여기에서</a> 할 수 있습니다.
+      </p>
+    </div>
   );
 };
 

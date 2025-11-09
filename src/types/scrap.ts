@@ -32,9 +32,9 @@ export type ScrapAction = 'add' | 'remove' | 'getAll' | 'clear';
 
 // 스크랩 관리 함수 타입
 export interface ScrapManager {
-  addScrap: (post: Omit<ScrapedPost, 'id' | 'scrapedAt'>) => void;
-  removeScrap: (postId: number) => void;
-  getAllScraps: () => ScrapedPost[];
+  addScrap: (post: Omit<ScrapedPost, 'id' | 'scrapedAt'>) => Promise<void>;
+  removeScrap: (postId: number) => Promise<void>;
+  getAllScraps: () => Promise<ScrapedPost[]>;
   isScraped: (postId: number) => boolean;
-  clearAllScraps: () => void;
+  clearAllScraps: () => Promise<void>;
 }

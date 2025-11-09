@@ -2,53 +2,63 @@
 // 팀원 모집 관련 모든 API 호출을 관리하는 서비스
 
 import { apiGet, apiPost, apiPut, apiDelete, API_ENDPOINTS } from '../utils/api';
+import type { ProjectApiResponse } from '../types/project';
 
 /**
- * 팀원 모집 데이터 타입 정의
+ * 팀원 모집 등록 요청 본문 타입
  */
-export interface TeamRecruitData {
-  id?: number;
+export interface TeamRecruitCreateRequest {
   title: string;
-  description: string;
-  author?: string;
-  date?: string;
-  location: {
-    region: string;
-    districts: string[];
-  };
-  techStack: string[];
-  positions: string[];
-  teamSize?: string;
-  recruitPeriod?: string;
+  projectName: string;
+  platform: string;
+  platformDetail?: string;
+  recruitPositions: string[];
+  recruitDetail?: string[];
+  requireStack: string[];
+  category?: string;
+  categoryDetail?: string;
   startDate?: string;
   endDate?: string;
-  activityType?: string;
-  progress?: string;
-  method?: string;
-  recruitEndDate?: string;
-  contact?: string;
-  status?: string;
-  views?: number;
+  expectedStartDate?: string;
+  projectStatus?: string;
+  statusDetail?: string;
+  ideaExplain: string;
+  meetingApproach?: string;
+  locations: string[];
+  minRequest?: string;
+  applicantQuestions?: string[];
 }
 
 /**
- * 팀원 모집 목록 조회 응답 타입
- */
-export interface TeamRecruitListResponse {
-  data: TeamRecruitData[];
-  total: number;
-  page?: number;
-  pageSize?: number;
-}
-
-/**
- * 팀원 모집 등록 응답 타입
+ * 팀원 모집 등록 응답 타입 (API 응답 구조)
  */
 export interface TeamRecruitCreateResponse {
-  success: boolean;
-  id: number;
+  code: number;
   message: string;
-  data?: TeamRecruitData;
+  data: ProjectApiResponse;
+}
+
+/**
+ * 팀원 모집 상세 조회 응답 타입 (API 응답 구조)
+ */
+export interface TeamRecruitDetailResponse {
+  code: number;
+  message: string;
+  data: ProjectApiResponse;
+}
+
+/**
+ * 팀원 모집 목록 조회 응답 타입 (API 응답 구조)
+ */
+export interface TeamRecruitListResponse {
+  code: number;
+  message: string;
+  data: {
+    projects: ProjectApiResponse[];
+    total: number;
+    page?: number;
+    pageSize?: number;
+  };
 }
 
 /**
@@ -57,10 +67,10 @@ export interface TeamRecruitCreateResponse {
 class TeamRecruitService {
   /**
    * 1️⃣ 팀원 모집 등록
-   * @param data 팀원 모집 데이터
+   * @param data 팀원 모집 등록 요청 데이터
    * @returns 생성된 팀원 모집 정보
    */
-  async create(data: TeamRecruitData): Promise<TeamRecruitCreateResponse> {
+  async create(data: TeamRecruitCreateRequest): Promise<TeamRecruitCreateResponse> {
     try {
       console.log('📤 팀원 모집 등록 요청:', data);
       
@@ -146,11 +156,11 @@ class TeamRecruitService {
    * @param id 팀원 모집 ID
    * @returns 팀원 모집 상세 정보
    */
-  async getDetail(id: number): Promise<TeamRecruitData> {
+  async getDetail(id: number): Promise<TeamRecruitDetailResponse> {
     try {
       console.log('📥 팀원 모집 상세 조회:', id);
       
-      const response = await apiGet<TeamRecruitData>(
+      const response = await apiGet<TeamRecruitDetailResponse>(
         API_ENDPOINTS.TEAM_RECRUIT.DETAIL(id),
         false // 상세 조회는 인증 불필요 (공개)
       );
@@ -170,11 +180,11 @@ class TeamRecruitService {
    * @param data 수정할 데이터
    * @returns 수정된 팀원 모집 정보
    */
-  async update(id: number, data: Partial<TeamRecruitData>): Promise<TeamRecruitData> {
+  async update(id: number, data: Partial<TeamRecruitCreateRequest>): Promise<TeamRecruitDetailResponse> {
     try {
       console.log('📝 팀원 모집 수정 요청:', { id, data });
       
-      const response = await apiPut<TeamRecruitData>(
+      const response = await apiPut<TeamRecruitDetailResponse>(
         API_ENDPOINTS.TEAM_RECRUIT.DETAIL(id),
         data,
         true // 인증 필요
@@ -215,6 +225,7 @@ class TeamRecruitService {
 
 // 싱글톤 인스턴스 생성 및 export
 export const teamRecruitService = new TeamRecruitService();
+
 
 
 

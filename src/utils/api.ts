@@ -203,6 +203,16 @@ export const API_ENDPOINTS = {
     STACKS: '/v1/mypage/stacks',                       // GET/PATCH
     RATING: (uid: string) => `/v1/mypage/${uid}/rating`, // GET
   },
+  
+  // 게시판 관련
+  BOARD: {
+    LIST: '/v1/board', // GET: 게시글 목록 조회
+    DETAIL: (id: number) => `/v1/board/${id}`, // GET: 게시글 상세 조회, PUT: 게시글 수정, DELETE: 게시글 삭제
+    CREATE: '/v1/board', // POST: 게시글 작성
+    COMMENTS: (postId: number) => `/v1/board/${postId}/comments`, // GET: 댓글 목록, POST: 댓글 작성
+    COMMENT: (postId: number, commentId: number) => `/v1/board/${postId}/comments/${commentId}`, // PATCH: 댓글 수정, DELETE: 댓글 삭제
+    SCRAP: (postId: number) => `/v1/board/${postId}/scrap`, // POST: 스크랩 추가, DELETE: 스크랩 제거
+    SCRAP_LIST: '/v1/board/scrap', // GET: 스크랩 목록 조회
 
   // 인증
   AUTH: {
@@ -216,3 +226,4 @@ export const API_ENDPOINTS = {
     REFRESH: '/v1/auth/refresh-token',           // POST { refreshToken }
   },
 };
+

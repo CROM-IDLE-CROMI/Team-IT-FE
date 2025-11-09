@@ -8,6 +8,8 @@ import MyPageSidebar from "../../components/MyPageSidebar";
 import ScrapedPosts from "../../components/ScrapedPosts";
 import MyPosts from "../../components/MyPosts";
 import Header from "../../layouts/Header";
+import { mypageService, type Award as ApiAward, type Stack, type StackDetail } from "../../services/mypageService";
+import { getCurrentUser } from "../../utils/authUtils";
 import "./Mypage.css";
 
 interface Award {
@@ -81,29 +83,167 @@ export default function Mypage() {
     ]
   });
 
-  // TODO: 백엔드 API에서 프로필 데이터 로드
-  useEffect(() => {
-    // TODO: 백엔드 API 호출로 대체 필요
-    // 예시: GET /api/user/profile
-    console.log('프로필 데이터 로드 요청');
-  }, []);
-
-  // TODO: 백엔드 API로 프로필 데이터 업데이트
-  const updateProfileData = (newData: Partial<ProfileData>) => {
-    const updatedData = { ...profileData, ...newData };
-    setProfileData(updatedData);
-    // TODO: 백엔드 API 호출로 대체 필요
-    // 예시: PUT /api/user/profile
-    console.log('프로필 데이터 업데이트:', updatedData);
+  // API 응답을 컴포넌트 데이터 구조로 변환
+  const convertApiAwardToAward = (apiAward: ApiAward, index: number): Award => {
+    // 날짜 형식 변환: YYYY-MM-DD -> YYYY. MM. DD
+    let formattedDate = apiAward.awardDate || '';
+    if (formattedDate && formattedDate.includes('-')) {
+      formattedDate = formattedDate.replace(/-/g, '. ');
+    }
+    
+    return {
+      id: `award-${index}`,
+      competitionName: apiAward.awardName || '',
+      details: apiAward.description || '',
+      awardDate: formattedDate,
+    };
   };
 
-  const handleEditComplete = (updatedData: Partial<ProfileData>) => {
-    updateProfileData(updatedData);
+  const convertStackToTechStack = (stack: StackDetail): TechStack => {
+    const levelMap: Record<string, '상' | '중' | '하'> = {
+      'high': '상',
+      'medium': '중',
+      'low': '하',
+    };
+    
+    return {
+      id: stack.stackName,
+      name: stack.stackName,
+      level: levelMap[stack.level] || '중',
+    };
+  };
+
+  // 백엔드 API에서 프로필 데이터 로드
+  useEffect(() => {
+    const loadProfileData = async () => {
+      try {
+        const uid = getCurrentUser();
+        if (!uid) {
+          console.warn('사용자 ID가 없습니다.');
+          return;
+        }
+
+        // 프로필 정보 조회
+        const profile = await mypageService.getProfile(uid);
+        
+        // 수상 내역 조회
+        const awards = await mypageService.getAwards(uid);
+        
+        // 평가 조회 (후기 개수 계산용)
+        const ratings = await mypageService.getRatings(uid);
+
+        // API 응답을 컴포넌트 데이터 구조로 변환
+        const convertedProfileData: ProfileData = {
+          profileImage: profile.profileImg || null,
+          backgroundImage: profile.backgroundImg || null,
+          nickname: profile.nickName || '',
+          birthDate: profile.birthDay ? profile.birthDay.split('T')[0] : '',
+          organization: profile.organization || '',
+          email: profile.email || '',
+          position: profile.position || '',
+          introduction: profile.description || '',
+          projects: profile.projects || [],
+          rating: profile.stars || 0,
+          reviewCount: ratings.length || 0,
+          awards: awards.map((award, index) => convertApiAwardToAward(award, index)),
+          techStacks: (profile.stacks || []).map(convertStackToTechStack),
+        };
+
+        setProfileData(convertedProfileData);
+      } catch (error) {
+        console.error('프로필 데이터 로드 실패:', error);
+        // 에러 발생 시 기본값 유지 또는 에러 처리
+      }
+    };
+
+    loadProfileData();
+  }, []);
+
+  // 백엔드 API로 프로필 데이터 업데이트
+  const updateProfileData = async (newData: Partial<ProfileData>) => {
+    try {
+      const uid = getCurrentUser();
+      if (!uid) {
+        console.warn('사용자 ID가 없습니다.');
+        return;
+      }
+
+      // 로컬 상태 업데이트 (즉시 UI 반영)
+      const updatedData = { ...profileData, ...newData };
+      setProfileData(updatedData);
+
+      // 수상 내역이 변경된 경우 API 호출
+      if (newData.awards) {
+        const apiAwards: ApiAward[] = newData.awards.map((award) => {
+          // 날짜 형식 변환: YYYY. MM. DD -> YYYY-MM-DD
+          let formattedDate = award.awardDate;
+          if (formattedDate && formattedDate.includes('.')) {
+            formattedDate = formattedDate.replace(/\.\s*/g, '-').replace(/\s/g, '');
+          }
+          
+          return {
+            awardName: award.competitionName,
+            organization: '', // 컴포넌트 구조에 없으므로 빈 문자열
+            awardDate: formattedDate,
+            description: award.details,
+          };
+        });
+        await mypageService.updateAwards(uid, apiAwards);
+      }
+
+      // TODO: 프로필 정보 수정 API가 있으면 여기에 추가
+      // await mypageService.updateProfile(uid, { ... });
+
+      console.log('프로필 데이터 업데이트 완료');
+    } catch (error) {
+      console.error('프로필 데이터 업데이트 실패:', error);
+      // 에러 발생 시 이전 상태로 복원하거나 에러 메시지 표시
+    }
+  };
+
+  const handleEditComplete = async (updatedData: Partial<ProfileData>) => {
+    await updateProfileData(updatedData);
     setActiveTab('view');
   };
 
-  const handleTechStackUpdate = (techStacks: TechStack[]) => {
-    updateProfileData({ techStacks });
+  const handleTechStackUpdate = async (techStacks: TechStack[]) => {
+    try {
+      const uid = getCurrentUser();
+      if (!uid) {
+        console.warn('사용자 ID가 없습니다.');
+        return;
+      }
+
+      // 컴포넌트의 TechStack을 API의 Stack 형식으로 변환
+      const stacks = await mypageService.getStacks();
+      
+      // 기존 스택 정보와 새로 선택된 스택을 매핑
+      const updatedStacks: Stack[] = techStacks.map((techStack) => {
+        // 기존 스택 정보에서 찾거나 새로 생성
+        const existingStack = stacks.find(s => s.iconUrl?.includes(techStack.name.toLowerCase()));
+        
+        const levelMap: Record<'상' | '중' | '하', 'high' | 'medium' | 'low'> = {
+          '상': 'high',
+          '중': 'medium',
+          '하': 'low',
+        };
+
+        return {
+          stackId: existingStack?.stackId || 0, // 실제로는 스택 ID를 매핑해야 함
+          level: levelMap[techStack.level] || 'medium',
+          isRepresentative: false, // 대표 스택 설정 로직 필요
+          iconUrl: existingStack?.iconUrl || '',
+        };
+      });
+
+      // API 호출
+      await mypageService.updateStacks(updatedStacks);
+      
+      // 로컬 상태 업데이트
+      updateProfileData({ techStacks });
+    } catch (error) {
+      console.error('스택 업데이트 실패:', error);
+    }
   };
 
   const handleTabChange = (tab: 'view' | 'public' | 'edit' | 'interest' | 'posts' | 'scrapped' | 'inbox') => {

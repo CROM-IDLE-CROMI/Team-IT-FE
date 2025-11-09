@@ -6,6 +6,10 @@ import ProjectComment from "../components/ProjectPageDetail/ProjectComment";
 import { requireAuth, getCurrentUser } from "../utils/authUtils";
 import { getAllProjects } from "../utils/teamToProjectConverter";
 import "../styles/TechStack";
+import { apiGet, apiPost, API_ENDPOINTS } from "../utils/api";
+import type { ProjectApiResponse } from "../types/project";
+import { projectService } from "../services/projectService";
+import type { ProjectCommentApiResponse } from "../types/project";
 
 /**
  * 프로젝트 데이터 타입 (백엔드 응답 또는 더미 데이터에 맞춰 유연하게 설정)
@@ -39,22 +43,75 @@ interface Project {
   contact?: string;
 }
 
+// 더미 프로젝트 데이터 (API 실패 시 폴백용)
+const dummyProjectDetail: Project = {
+  id: 1,
+  title: "🚀 [더미] AI 기반 사이드 프로젝트",
+  author: "김한성",
+  date: new Date().toLocaleDateString('ko-KR'),
+  location: {
+    region: "서울",
+    districts: ["강남구"]
+  },
+  techStack: ["React", "TypeScript"],
+  positions: ["프론트엔드", "백엔드"],
+  likes: 10,
+  views: 123,
+  description: "이것은 API 연결 전 테스트용 더미 프로젝트 상세 설명입니다. \n\n 줄바꿈도 잘 표시됩니다.",
+  status: "RECRUITING",
+  teamSize: "3명",
+  duration: "3개월",
+  recruitCount: "3",
+  recruitPositions: ["프론트엔드", "백엔드"],
+  startDate: new Date("2025-01-01").toLocaleDateString('ko-KR'),
+  endDate: new Date("2025-03-31").toLocaleDateString('ko-KR'),
+  activityType: "온라인",
+  progress: "아이디어 구상",
+  method: "웹사이트",
+  recruitEndDate: new Date("2024-12-31").toLocaleDateString('ko-KR'),
+  contact: "test@example.com",
+};
 
 
-interface Reply {
-  id: string;
-  text: string;
-  author: string;
-  date: string;
-}
+// 댓글 타입은 ProjectCommentApiResponse를 사용
 
-interface Comment {
-  id: string;
-  text: string;
-  author: string;
-  date: string;
-  replies: Reply[];
-}
+// API 응답을 Project 인터페이스로 변환하는 함수
+const convertApiResponseToProject = (apiData: ProjectApiResponse): Project => {
+  // 날짜를 YYYY-MM-DD 형식으로 변환
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("ko-KR");
+  };
+
+  // locations 배열에서 지역 정보 추출 (첫 번째 요소를 region으로, 나머지는 districts로)
+  const region = apiData.locations && apiData.locations.length > 0 ? apiData.locations[0] : "미정";
+  const districts = apiData.locations && apiData.locations.length > 1 ? apiData.locations.slice(1) : [];
+
+  return {
+    id: apiData.projectId,
+    title: apiData.title,
+    author: apiData.creatorNickname || apiData.creatorId,
+    date: formatDate(apiData.createdAt),
+    location: {
+      region,
+      districts
+    },
+    techStack: apiData.requireStack || [],
+    positions: apiData.recruitPositions || [],
+    likes: 0, // API 응답에 없으므로 기본값
+    views: apiData.viewCount,
+    description: apiData.ideaExplain || apiData.minRequest || "",
+    status: apiData.projectStatus || "모집중",
+    recruitCount: apiData.memberNum.toString(),
+    recruitPositions: apiData.recruitPositions,
+    startDate: formatDate(apiData.startDate),
+    endDate: formatDate(apiData.endDate),
+    activityType: apiData.meetingApproach || apiData.categoryDetail,
+    progress: apiData.statusDetail,
+    method: apiData.platformDetail || apiData.platform,
+    recruitEndDate: formatDate(apiData.validTo),
+  };
+};
 
 const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -62,97 +119,122 @@ const ProjectDetail = () => {
 
   // 상태 관리: API 데이터와 로딩 상태
   const [project, setProject] = useState<Project | null>(null);
-  const [comments, setComments] = useState<Comment[]>([]); // 댓글 상태 (타입 수정)
+  const [comments, setComments] = useState<ProjectCommentApiResponse[]>([]); // 댓글 상태
   const [newComment, setNewComment] = useState(""); // 새로운 댓글 입력 상태
   const [isLoading, setIsLoading] = useState(true);
+  const [commentsLoading, setCommentsLoading] = useState(false);
+
+  // 댓글 조회 로직
+  const fetchComments = async (projectId: number) => {
+    setCommentsLoading(true);
+    try {
+      const commentsDataRaw: unknown = await projectService.getProjectComments(projectId);
+      const commentsData: ProjectCommentApiResponse[] = Array.isArray(commentsDataRaw)
+        ? (commentsDataRaw as ProjectCommentApiResponse[])
+        : [];
+      
+      // replies가 올바르게 구조화되도록 처리 (API에서 부모-자식 관계를 올바르게 매핑)
+      // parentCommentId가 null인 것만 최상위 댓글로 처리
+      const rootComments = commentsData.filter((c: ProjectCommentApiResponse) => c.parentCommentId === null);
+      const repliesMap = new Map<number, ProjectCommentApiResponse[]>();
+      
+      commentsData.forEach((comment: ProjectCommentApiResponse) => {
+        if (comment.parentCommentId !== null) {
+          if (!repliesMap.has(comment.parentCommentId)) {
+            repliesMap.set(comment.parentCommentId, []);
+          }
+          repliesMap.get(comment.parentCommentId)!.push(comment);
+        }
+      });
+      
+      // 루트 댓글에 replies 매핑
+      const commentsWithReplies = rootComments.map((comment: ProjectCommentApiResponse) => ({
+        ...comment,
+        replies: repliesMap.get(comment.id) || []
+      }));
+      
+      setComments(commentsWithReplies);
+      console.log("✅ 댓글 목록 조회 성공");
+    } catch (err) {
+      console.error("⚠️ 댓글 목록 조회 실패:", err);
+      setComments([]); // 실패 시 빈 배열
+    } finally {
+      setCommentsLoading(false);
+    }
+  };
 
   // 댓글 전송 로직
-  const handleCommentSubmit = async (commentText: string) => {
+  const handleCommentSubmit = async (commentText: string, parentCommentId?: number | null) => {
     // 폼이 비어있으면 전송하지 않음
-    if (commentText.trim() === "") {
+    if (commentText.trim() === "" || !project) {
       return;
     }
 
-    // 백엔드 서버 URL로 수정
-    const API_BASE = "http://localhost:4000";
-    const API_ENDPOINT = `${API_BASE}/api/projects/${project?.id}/comments`;
-
     try {
-      const currentUser = getCurrentUser();
-      const newCommentData = {
-        projectId: project?.id,
-        author: currentUser || "익명", // 실제 로그인한 사용자 ID 사용
-        text: commentText,
-        date: new Date().toISOString().split('T')[0],
+      const commentData = {
+        content: commentText.trim(),
+        parentCommentId: parentCommentId || null,
       };
 
-      console.log("📤 댓글 전송 시도:", newCommentData);
-      console.log("🔗 API 엔드포인트:", API_ENDPOINT);
+      console.log("📤 댓글 전송 시도:", commentData);
 
-      const res = await fetch(API_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newCommentData),
-      });
-
-      if (!res.ok) {
-        throw new Error(`API error: ${res.status} - ${res.statusText}`);
-      }
-      
-      const savedComment = await res.json();
+      const savedComment = await apiPost(
+        API_ENDPOINTS.PROJECTS.COMMENTS(project.id),
+        commentData,
+        true
+      );
       console.log("✅ 댓글 전송 성공:", savedComment);
       
-      // 로컬 상태를 업데이트하여 화면에 즉시 반영
-      setComments(prev => [...prev, savedComment]);
+      // 댓글 목록을 다시 조회하여 최신 상태로 업데이트
+      await fetchComments(project.id);
+      
       // 입력창 비우기
       setNewComment('');
 
-    } catch (err) {
+    } catch (err: any) {
       console.error("⚠️ 댓글 전송 실패:", err);
-      console.log("💡 백엔드 서버가 실행 중인지 확인해주세요. (http://localhost:4000)");
-      
-      // 백엔드가 없을 때 임시로 로컬에 추가하여 테스트 가능하게 함
-      const currentUser = getCurrentUser();
-      const tempComment: Comment = { 
-        id: Date.now().toString(),
-        author: currentUser || "익명",
-        text: commentText,
-        date: new Date().toLocaleDateString("ko-KR"),
-        replies: []
-      };
-      setComments(prev => [...prev, tempComment]);
-      setNewComment('');
-      console.log("🔄 임시 댓글 추가됨 (백엔드 없이 테스트용)");
+      alert(err.message || "댓글 작성에 실패했습니다.");
     }
   };
 
 
   useEffect(() => {
     const projectId = parseInt(id || "1", 10);
-    
-    // 백엔드 서버 URL로 통일
-    const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:5173";
-    const API_ENDPOINT = `${API_BASE}/api/projects/${projectId}`;
-
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5초 타임아웃
 
     const fetchProject = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch(API_ENDPOINT, { signal: controller.signal });
-
-        if (!res.ok) {
-          throw new Error(`API error: ${res.status}`);
+        // 새로운 API 엔드포인트 사용
+        const response = await apiGet<any>(
+          API_ENDPOINTS.PROJECTS.DETAIL(projectId),
+          false // 프로젝트 상세는 인증 없이도 볼 수 있다고 가정
+        );
+        
+        // 응답이 {code, message, data} 래퍼 구조인지 확인
+        let apiData: ProjectApiResponse;
+        if (response && typeof response === 'object' && 'code' in response) {
+          // 래퍼 구조인 경우
+          if (response.code === 0 && response.data) {
+            apiData = response.data as ProjectApiResponse;
+          } else {
+            throw new Error(response.message || '프로젝트 조회 실패');
+          }
+        } else {
+          // 직접 ProjectApiResponse가 반환된 경우
+          apiData = response as ProjectApiResponse;
         }
-
-        const data: Project = await res.json();
-        setProject(data);
+        
+        // API 응답을 Project 인터페이스로 변환
+        const convertedProject = convertApiResponseToProject(apiData);
+        setProject(convertedProject);
         console.info("✅ API에서 프로젝트 상세 데이터 불러오기 성공");
+        
+        // 프로젝트 로드 후 댓글 목록 조회
+        await fetchComments(projectId);
       } catch (err: any) {
-        // API 실패 시 팀원 모집 프로젝트에서 먼저 찾기
+        console.warn("⚠️ API 불러오기 실패:", err);
+        
+        // API 실패 시 팀원 모집 프로젝트에서 먼저 찾기 (폴백)
         const teamRecruitProjects = getAllProjects();
         const teamProject = teamRecruitProjects.find(p => p.id === projectId);
         if (teamProject) {
@@ -166,26 +248,26 @@ const ProjectDetail = () => {
           console.info("✅ 팀원 모집 프로젝트에서 데이터 불러오기 성공");
           return; // 성공적으로 찾았으므로 더미 데이터 검색 생략
         }
-        if (err.name === "AbortError") {
-          console.warn("⏱️ API 요청 타임아웃/취소 - 더미 데이터 사용");
-        } else {
-          console.warn("⚠️ API 불러오기 실패 - 더미 데이터 사용", err);
+
+        // 팀원 모집에도 없으면 더미 데이터 확인 (ID 9999)
+        if (projectId === dummyProjectDetail.id) {
+          setProject(dummyProjectDetail);
+          console.info("✅ 더미 프로젝트 데이터 불러오기 성공 (ID: 9999)");
+          // 더미 데이터의 댓글은 불러오지 않음 (또는 더미 댓글 설정)
+          setComments([]); 
+          setIsLoading(false); // 로딩 완료 처리
+          return;
         }
 
         // 모든 데이터에서 찾지 못하면 이전 페이지로 리디렉션
+        console.error("프로젝트를 찾을 수 없습니다.");
         navigate("/project");
       } finally {
-        clearTimeout(timeoutId);
         setIsLoading(false);
       }
     };
 
     fetchProject();
-
-    return () => {
-      controller.abort();
-      clearTimeout(timeoutId);
-    };
   }, [id, navigate]); // id와 navigate가 변경될 때마다 재실행
 
   const handleApply = () => {
@@ -288,6 +370,7 @@ const ProjectDetail = () => {
         onApply={handleApply}
         newComment={newComment}
         setNewComment={setNewComment}
+        commentsLoading={commentsLoading}
       />
     </div>
   );

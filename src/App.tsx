@@ -30,9 +30,6 @@ import MemberChangeLeader from './pages/Myproject/MemberChangeLeader';
 import MyprojectApplication from './pages/Myproject/MyprojectApplication';
 import Notification from './pages/Notification';
 
-
-import './App.css';
-
 function App() {
   const [postsByCategory, setPostsByCategory] = useState<Record<Category, Post[]>>({
     "시사&정보": [],
@@ -67,7 +64,7 @@ function App() {
         <Route path="/project/:id" element={<ProjectDetail />} />
         <Route path="/project/:id/apply" element={<ProjectApply />} />
         <Route path="/Teams" element={<TeamPage />} />
-        <Route path="/Boarder" element={<BoardPage postsByCategory={postsByCategory} />} />
+        <Route path="/Boarder" element={<BoardPage />} />
         <Route path="/BoardWrite" element={<BoardWrite onAddPost={handleAddPost} />} />
         <Route path="/Board/:id" element={<BoardDetail postsByCategory={postsByCategory} onDeletePost={handleDeletePost} />} />
         <Route path="/myprojectmain" element={<MyprojectMain />} />

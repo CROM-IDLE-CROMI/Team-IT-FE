@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 import SideBox from "../components/ProjectPageDetail/SideBox";
 import { techStacksInit } from "../styles/TechStack";
 import { getPopularProjects } from "../data/popularProjects";
-import { getPopularPosts } from "../data/popularPosts";
 import { getAllProjects } from "../utils/teamToProjectConverter";
+import { projectService, type ProjectListItem, type HotBoardItem, type ProjectSearchRequest } from "../services/projectService";
 import "../pages/ProjectPage.css";
 
 // ... (Interface Project, FilterState, dummyProjects는 이전과 동일하게 유지) ...
@@ -54,85 +54,47 @@ interface Project {
 }
 
 
-// 클라이언트-측에서 프로젝트를 필터링하는 함수
-const filterProjects = (
-  projects: Project[],
-  filters: FilterState,
-  searchTerm: string
-) => {
-  if (import.meta.env.MODE !== 'production') {
-    console.log('🔍 클라이언트 필터링 시작:', {
-      projectsCount: projects.length,
-      selectedActivity: filters.selectedActivity,
-      searchTerm: searchTerm
-    });
-  }
-
-  return projects.filter(project => {
-    // 검색어 필터링
-    const matchesSearch = !searchTerm || 
-      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (project.description && project.description.toLowerCase().includes(searchTerm.toLowerCase()));
-    if (!matchesSearch) return false;
-
-    // 활동 유형 필터링
-    const matchesActivity = filters.selectedActivity.length === 0 || 
-      (project.activityType && filters.selectedActivity.includes(project.activityType));
-    if (!matchesActivity) return false;
-
-    // 포지션 필터링
-    const matchesPosition = filters.selectedPositions.length === 0 || 
-      filters.selectedPositions.some(pos => project.positions.includes(pos));
-    if (!matchesPosition) return false;
-
-    // 기술스택 필터링
-    const matchesTechStack = filters.selectedTechStacks.length === 0 ||
-      filters.selectedTechStacks.some(tech => project.techStack.includes(tech));
-    if (!matchesTechStack) return false;
-
-    // 지역 필터링
-    const matchesLocation = (!filters.selectedLocations.region && !filters.selectedLocations.districts.length) ||
-      (project.location.region === filters.selectedLocations.region &&
-        (filters.selectedLocations.districts.length === 0 ||
-          filters.selectedLocations.districts.some(district => project.location.districts.includes(district))));
-    if (!matchesLocation) return false;
-
-    // 진행상황 필터링
-    const matchesProgress = filters.selectedProgress.length === 0 || 
-      (project.progress && filters.selectedProgress.includes(project.progress));
-    if (!matchesProgress) return false;
-    
-    // 진행방식 필터링
-    const matchesMethod = filters.selectedMethod.length === 0 || 
-      (project.method && filters.selectedMethod.includes(project.method));
-    if (!matchesMethod) return false;
-
-    // 모집 마감일 필터링
-    if (filters.recruitEndDate && project.recruitEndDate) {
-      const projectEndDate = new Date(project.recruitEndDate);
-      const filterEndDate = new Date(filters.recruitEndDate);
-      if (projectEndDate < filterEndDate) return false;
-    }
-
-    // 프로젝트 기간 필터링
-    if (filters.projectStartDate || filters.projectEndDate) {
-      const projectStartDate = new Date(project.startDate || '');
-      const projectEndDate = new Date(project.endDate || '');
-
-      if (filters.projectStartDate) {
-        const filterStartDate = new Date(filters.projectStartDate);
-        if (projectStartDate < filterStartDate) return false;
-      }
-      if (filters.projectEndDate) {
-        const filterEndDate = new Date(filters.projectEndDate);
-        if (projectEndDate > filterEndDate) return false;
-      }
-    }
-    
-    return true;
-  });
+// API 응답을 Project 인터페이스로 변환하는 함수
+const convertApiProjectToProject = (apiProject: ProjectListItem): Project => {
+  return {
+    id: apiProject.projectId,
+    title: apiProject.title || apiProject.projectName,
+    author: apiProject.creatorNickname || '',
+    date: new Date(apiProject.createdAt).toLocaleDateString('ko-KR'),
+    location: {
+      region: '', // API 응답에 지역 정보가 없을 수 있음
+      districts: []
+    },
+    techStack: apiProject.requireStack || [],
+    positions: apiProject.recruitPositions || [],
+    views: apiProject.viewCount || 0,
+    description: '',
+    status: apiProject.projectStatus || 'RECRUITING',
+  };
 };
 
+const dummyProjectForTesting: Project = {
+  id: 1,
+  title: "🚀 [더미] AI 기반 사이드 프로젝트",
+  author: "김한성",
+  date: new Date().toLocaleDateString('ko-KR'),
+  location: {
+    region: "서울",
+    districts: ["강남구"],
+  },
+  techStack: ["React", "TypeScript"],
+  positions: ["프론트엔드", "백엔드"],
+  views: 123,
+  description: "이것은 API 연결 전 테스트용 더미 프로젝트 상세 설명입니다.",
+  status: "RECRUITING",
+  teamSize: "3명",
+  recruitEndDate: "2025-12-31",
+  startDate: "2025-11-10",
+  endDate: "2026-03-01",
+  activityType: "사이드 프로젝트",
+  progress: "기획",
+  method: "온라인",
+};
 
 const ProjectPage = () => {
   const [isOptionOpen, setIsOptionOpen] = useState(false);
@@ -143,22 +105,53 @@ const ProjectPage = () => {
   const [popularSlideIndex, setPopularSlideIndex] = useState(0);
   const popularProjectsPerSlide = 2;
   
-  // 인기 게시물 데이터 가져오기
-  const popularPosts = getPopularPosts(4);
+  // 인기 프로젝트 및 인기 게시물 상태
+  const [popularProjects, setPopularProjects] = useState<Project[]>([]);
+  const [hotBoards, setHotBoards] = useState<HotBoardItem[]>([]);
+  const [isLoadingPopular, setIsLoadingPopular] = useState(true);
+  
+  // 인기 프로젝트 및 인기 게시물 로드
+  useEffect(() => {
+    const fetchPopularData = async () => {
+      setIsLoadingPopular(true);
+      try {
+        // 인기 프로젝트 조회
+        const popularProjectsData = await projectService.getPopularProjects();
+        const convertedPopularProjects = popularProjectsData
+          .slice(0, 4)
+          .map(convertApiProjectToProject);
+        setPopularProjects(convertedPopularProjects);
+        
+        // 인기 게시물 조회
+        const hotBoardsData = await projectService.getHotBoards();
+        setHotBoards(hotBoardsData.slice(0, 4));
+        
+      } catch (error) {
+        console.error('인기 프로젝트/게시물 로드 실패:', error);
+        // 실패 시 더미 데이터 사용
+        setPopularProjects(getPopularProjects(4));
+        setHotBoards([]);
+      } finally {
+        setIsLoadingPopular(false);
+      }
+    };
+    
+    fetchPopularData();
+  }, []);
   
   // 슬라이드 함수들
   const nextSlide = () => {
-    const maxSlides = Math.ceil(popularPosts.length / popularProjectsPerSlide);
+    const maxSlides = Math.ceil(hotBoards.length / popularProjectsPerSlide);
     setPopularSlideIndex((prev) => (prev + 1) % maxSlides);
   };
   
   const prevSlide = () => {
-    const maxSlides = Math.ceil(popularPosts.length / popularProjectsPerSlide);
+    const maxSlides = Math.ceil(hotBoards.length / popularProjectsPerSlide);
     setPopularSlideIndex((prev) => (prev - 1 + maxSlides) % maxSlides);
   };
   
   // 현재 슬라이드에 표시할 게시물들
-  const currentPosts = popularPosts.slice(
+  const currentPosts = hotBoards.slice(
     popularSlideIndex * popularProjectsPerSlide,
     (popularSlideIndex + 1) * popularProjectsPerSlide
   );
@@ -182,107 +175,120 @@ const ProjectPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isApiSuccess, setIsApiSuccess] = useState(false); // API 호출 성공 여부 상태
 
+  // 프로젝트 목록 페이지네이션 상태
+  const [totalPagesFromApi, setTotalPagesFromApi] = useState(1);
+  const [totalElements, setTotalElements] = useState(0);
+
   // 프로젝트 데이터 로드 (API + 팀원 모집 프로젝트 통합)
+  // POST /v1/projects/search 사용 (사이드바 필터 옵션)
   useEffect(() => {
-    const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:4000";
-    
-    const buildQueryString = () => {
-      const params = new URLSearchParams();
-      if (appliedSearchTerm) params.append('q', appliedSearchTerm);
-      appliedFilters.selectedActivity.forEach(v => params.append('activity', v));
-      appliedFilters.selectedPositions.forEach(v => params.append('position', v));
-      appliedFilters.selectedTechStacks.forEach(v => params.append('techStack', v));
-      if (appliedFilters.selectedLocations.region) params.append('region', appliedFilters.selectedLocations.region);
-      appliedFilters.selectedLocations.districts.forEach(d => params.append('district', d));
-      appliedFilters.selectedProgress.forEach(v => params.append('progress', v));
-      appliedFilters.selectedMethod.forEach(v => params.append('method', v));
-      if (appliedFilters.recruitEndDate) params.append('recruitEndDate_gte', appliedFilters.recruitEndDate);
-      if (appliedFilters.projectStartDate) params.append('startDate_gte', appliedFilters.projectStartDate);
-      if (appliedFilters.projectEndDate) params.append('endDate_lte', appliedFilters.projectEndDate);
-      return params.toString();
-    };
-
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000);
-
     const fetchProjects = async () => {
       setIsLoading(true);
       setIsApiSuccess(false);
-      const queryString = buildQueryString();
-      const API_ENDPOINT = `${API_BASE}/api/projects?${queryString}`;
       
-      if (import.meta.env.MODE !== 'production') {
-        console.log(`🚀 API 요청: ${API_ENDPOINT}`);
-      }
-
       try {
-        const res = await fetch(API_ENDPOINT, { signal: controller.signal });
-        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        // POST 검색 요청 본문 구성
+        const searchRequest: ProjectSearchRequest = {
+          page: currentPage - 1, // API는 0부터 시작
+          size: itemsPerPage,
+        };
         
-        const apiData: Project[] = await res.json();
-        if (!Array.isArray(apiData)) throw new Error("API 응답이 배열이 아님");
+        // 검색어 추가
+        if (appliedSearchTerm) {
+          searchRequest.q = appliedSearchTerm;
+        }
+        
+        // 필터 옵션 추가 (사이드바에서 설정한 필터)
+        if (appliedFilters.selectedActivity.length > 0) {
+          searchRequest.activity = appliedFilters.selectedActivity;
+        }
+        if (appliedFilters.selectedPositions.length > 0) {
+          searchRequest.position = appliedFilters.selectedPositions;
+        }
+        if (appliedFilters.selectedTechStacks.length > 0) {
+          searchRequest.techStack = appliedFilters.selectedTechStacks;
+        }
+        if (appliedFilters.selectedLocations.region) {
+          searchRequest.region = appliedFilters.selectedLocations.region;
+        }
+        if (appliedFilters.selectedLocations.districts.length > 0) {
+          searchRequest.district = appliedFilters.selectedLocations.districts;
+        }
+        if (appliedFilters.selectedProgress.length > 0) {
+          searchRequest.progress = appliedFilters.selectedProgress;
+        }
+        if (appliedFilters.selectedMethod.length > 0) {
+          searchRequest.method = appliedFilters.selectedMethod;
+        }
+        if (appliedFilters.recruitEndDate) {
+          searchRequest.recruitEndDate_gte = appliedFilters.recruitEndDate;
+        }
+        if (appliedFilters.projectStartDate) {
+          searchRequest.startDate_gte = appliedFilters.projectStartDate;
+        }
+        if (appliedFilters.projectEndDate) {
+          searchRequest.endDate_lte = appliedFilters.projectEndDate;
+        }
+
+        // POST 검색 API 호출
+        const apiResponse = await projectService.searchProjects(searchRequest);
+        
+        // API 응답을 Project 인터페이스로 변환
+        const apiProjects = apiResponse.content.map(convertApiProjectToProject);
         
         // 팀원 모집 프로젝트 가져오기
         const teamRecruitProjects = getAllProjects();
         
         // API 데이터와 팀원 모집 프로젝트 통합
-        const allProjects = [...apiData, ...teamRecruitProjects];
+        const allProjects = [...apiProjects, ...teamRecruitProjects, dummyProjectForTesting];
         
         setProjects(allProjects);
+        setTotalPagesFromApi(apiResponse.totalPages);
+        setTotalElements(apiResponse.totalElements);
         setIsApiSuccess(true);
         
         if (import.meta.env.MODE !== 'production') {
-          console.info("✅ 프로젝트 불러오기 성공", {
-            apiProjects: apiData.length,
+          console.info("✅ 프로젝트 검색 성공 (POST)", {
+            apiProjects: apiProjects.length,
             teamRecruitProjects: teamRecruitProjects.length,
-            total: allProjects.length
+            dummyProjects: 1,
+            total: allProjects.length,
+            totalPages: apiResponse.totalPages,
+            currentPage: currentPage,
+            pageable: apiResponse.pageable
           });
         }
       } catch (err: any) {
         if (import.meta.env.MODE !== 'production') {
-          if (err.name === "AbortError") {
-            console.warn("⏱️ API 요청 타임아웃/취소 - 더미 데이터 사용");
-          } else {
-            console.warn("⚠️ API 불러오기 실패 - 더미 데이터 사용", err);
-          }
+          console.warn("⚠️ API 불러오기 실패 - 더미 데이터 사용", err);
         }
         // API 실패 시 팀원 모집 프로젝트만 사용
         const teamRecruitProjects = getAllProjects();
-        setProjects(teamRecruitProjects);
+        setProjects([...teamRecruitProjects, dummyProjectForTesting]);
         setIsApiSuccess(false); // API 실패 상태로 설정
+        setTotalPagesFromApi(1);
       } finally {
         setIsLoading(false);
-        clearTimeout(timeoutId);
       }
     };
 
     fetchProjects();
+  }, [appliedFilters, appliedSearchTerm, currentPage]);
 
-    return () => {
-      controller.abort();
-      clearTimeout(timeoutId);
-    };
-  }, [appliedFilters, appliedSearchTerm]);
-
-  // filteredProjects는 API 성공 여부에 따라 다른 로직을 적용
-  const filteredProjects = useMemo(() => {
-    if (isApiSuccess) {
-      // API가 성공했을 경우, 서버에서 이미 필터링된 데이터이므로 그대로 사용
-      return projects;
-    } else {
-      // API가 실패했을 경우, 프로젝트를 클라이언트-측에서 필터링
-      return filterProjects(projects, appliedFilters, appliedSearchTerm);
-    }
-  }, [projects, appliedFilters, appliedSearchTerm, isApiSuccess]);
+  // 서버에서 이미 필터링된 데이터이므로 그대로 사용
+  // (POST /v1/projects/search API에서 필터링 처리)
 
 
   // 등록순으로 정렬 (ID 기준 오름차순)
-  const sortedProjects = [...filteredProjects].sort((a, b) => a.id - b.id);
+  const sortedProjects = [...projects].sort((a, b) => a.id - b.id);
   
-  // 페이지네이션 계산
-  const totalPages = Math.max(1, Math.ceil(sortedProjects.length / itemsPerPage));
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
+  // 페이지네이션 계산 (서버에서 페이지네이션 처리, API 실패 시 클라이언트 페이지네이션)
+  const totalPages = isApiSuccess 
+    ? Math.max(1, totalPagesFromApi)
+    : Math.max(1, Math.ceil(sortedProjects.length / itemsPerPage));
+  
+  const startIndex = isApiSuccess ? 0 : (currentPage - 1) * itemsPerPage;
+  const endIndex = isApiSuccess ? sortedProjects.length : startIndex + itemsPerPage;
   const currentProjects = sortedProjects.slice(startIndex, endIndex);
   
   // 디버깅용 로그
@@ -332,8 +338,7 @@ const ProjectPage = () => {
     setTempFilters(filters);
   };
 
-  // 인기 프로젝트 (공통 데이터 소스에서 가져오기)
-  const popularProjects = useMemo(() => getPopularProjects(4), []);
+  // 인기 프로젝트 슬라이드 계산
   const totalPopularSlides = Math.ceil(popularProjects.length / popularProjectsPerSlide);
   const currentPopularProjects = popularProjects.slice(
     popularSlideIndex * popularProjectsPerSlide,
@@ -370,7 +375,11 @@ const ProjectPage = () => {
               </div>
             </div>
             <div className="cards-row">
-              {currentPopularProjects.length > 0 ? (
+              {isLoadingPopular ? (
+                <div className="empty-state">
+                  <p>로딩 중...</p>
+                </div>
+              ) : currentPopularProjects.length > 0 ? (
                 currentPopularProjects.map(project => (
                   <div key={project.id} className="simple-card" onClick={() => handleCardClick(project.id)}>
                     <div className="card-title">{project.title}</div>
@@ -398,15 +407,20 @@ const ProjectPage = () => {
               </div>
             </div>
             <div className="cards-row">
-              {currentPosts.length > 0 ? (
+              {isLoadingPopular ? (
+                <div className="empty-state">
+                  <p>로딩 중...</p>
+                </div>
+              ) : currentPosts.length > 0 ? (
                 currentPosts.map((post) => (
-                  <div key={post.id} className="simple-card" onClick={() => navigate(`/board/${post.id}`)}>
+                  <div key={post.postId} className="simple-card" onClick={() => navigate(`/board/${post.postId}`)}>
                     <div className="card-title">{post.title}</div>
                     <div className="card-info">
-                      <span className="author">{post.author}</span>
+                      <span className="author">{post.authorNickname}</span>
                       <div className="stats-row">
                         <span className="category">{post.category}</span>
-                        <span className="views">👁 {post.views}</span>
+                        <span className="views">👁 {post.viewCount}</span>
+                        <span className="likes">❤️ {post.likeCount}</span>
                       </div>
                     </div>
                   </div>
@@ -444,7 +458,7 @@ const ProjectPage = () => {
           <div className="card-container">
             {isLoading ? (
               <div>로딩 중...</div>
-            ) : filteredProjects.length === 0 ? (
+            ) : projects.length === 0 ? (
                 <div>표시할 프로젝트가 없습니다.</div>
             ) : currentProjects.length > 0 ? (
               currentProjects.map(project => {

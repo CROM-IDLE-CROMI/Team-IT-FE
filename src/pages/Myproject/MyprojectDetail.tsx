@@ -5,8 +5,8 @@ import "../../App.css";
 import ProgressBar from "../../components/ProgressBar";
 import ProjectSidebar from "../../components/myproject/ProjectSidebar";
 import Header from "../../layouts/Header";
-
 import type { ProjectData } from "../../types/project";
+
 
 // --- 메인 컴포넌트 ---
 export default function ProjectDetail() {
@@ -15,18 +15,24 @@ export default function ProjectDetail() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!id) return;
-    setLoading(true);
+useEffect(() => {
+  fetch("/mocks/my-projects.json")
+    .then((res) => {
+      if (!res.ok) throw new Error("프로젝트 데이터를 불러오지 못했습니다.");
+      return res.json();
+    })
+    .then((data) => {
+      // my-projects.json 은 배열이므로 id로 필터링
+      const projectData = data.find((item: any) => item.id === Number(id));
+      if (!projectData) throw new Error("해당 ID의 프로젝트를 찾을 수 없습니다.");
+      setProject(projectData);
+    })
+    .catch((error) => {
+      console.error("데이터를 불러오는 데 실패했습니다:", error);
+    })
+    .finally(() => setLoading(false));
+}, [id]);
 
-    fetch(`/mocks/project-${id}.json`)
-      .then((response) => response.json())
-      .then((data) => setProject(data))
-      .catch((error) =>
-        console.error("데이터를 불러오는 데 실패했습니다:", error)
-      )
-      .finally(() => setLoading(false));
-  }, [id]);
 
   // 수정 버튼 클릭 시 경로를 올바르게 수정
   const handleEditClick = () => {

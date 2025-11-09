@@ -16,15 +16,29 @@ export default function MyprojectMember() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/mocks/project-${id}.json`)
-      .then((response) => response.json())
-      .then((data) => {
-        setProject(data);
-        setMembers(data.members || []);
+
+    fetch(`/mocks/my-projects.json`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
       })
-      .catch((error) =>
-        console.error("데이터를 불러오는 데 실패했습니다:", error)
-      )
+      .then((data) => {
+        // my-projects.json은 배열 형태 → id로 특정 프로젝트 찾기
+        const foundProject = data.find(
+          (item: ProjectData) => item.id === Number(id)
+        );
+
+        if (!foundProject) {
+          throw new Error("해당 ID의 프로젝트를 찾을 수 없습니다.");
+        }
+
+        setProject(foundProject);
+        setMembers(foundProject.members || []);
+      })
+      .catch((error) => {
+        console.error("데이터를 불러오는 데 실패했습니다:", error);
+        setProject(null);
+      })
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -75,10 +89,18 @@ export default function MyprojectMember() {
                   members.map((member) => (
                     <tr key={member.id}>
                       <td>{member.nickname}</td>
-                      <td>{member.email}</td>
+                      <td>{member.email || "-"}</td>
                       <td>{member.role}</td>
-                      <td>{member.techStack}</td>
-                      <td>{member.rating.toFixed(2)}</td>
+                      <td>
+                        {Array.isArray(member.techStack)
+                          ? member.techStack.join(", ")
+                          : member.techStack || "-"}
+                      </td>
+                      <td>
+                        {member.rating
+                          ? member.rating.toFixed(2)
+                          : "평가 없음"}
+                      </td>
                     </tr>
                   ))
                 ) : (
