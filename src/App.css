@@ -480,6 +480,7 @@ html, body {
 }
 
 .btn-agree {
+ 
   background-color: #2ee59d;
   color: #fff;
   font-size: 13px;
@@ -981,6 +982,7 @@ html, body {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 20px;
+  margin-top: 60px;
 }
 
 .complete-btn {
@@ -1181,11 +1183,13 @@ html, body {
 
 /* 테이블 스타일 */
 .member-table {
-  width: 700px;
+  width: 100%;
   border-collapse: collapse;
   border: 1px solid var(--border-color, #ddd);
   border-radius: 8px;
   overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
 .member-table th,
@@ -1439,6 +1443,16 @@ html, body {
 /* hover 효과 */
 .member-edit-table tbody tr:hover {
   background-color: #f9f9f9;
+}
+
+.member-edit-table input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 13px;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 /* 삭제 버튼 (X) */

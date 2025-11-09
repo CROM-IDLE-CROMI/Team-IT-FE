@@ -5,34 +5,47 @@ import "../../App.css";
 import Header from "../../layouts/Header";
 
 import type { ProjectData, Milestone } from "../../types/project";
+import { getOverride, setOverride } from "../../utils/projectOverrides";
 
 const MyprojectMilestoneEdit: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [project, setProject] = useState<ProjectData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isDirty, setIsDirty] = useState(false); // 변경 여부 추적
+  const [isDirty, setIsDirty] = useState(false);
   const navigate = useNavigate();
 
-  // JSON 파일에서 데이터 불러오기
   useEffect(() => {
     if (!id) return;
 
     setLoading(true);
-    fetch(`/mocks/project-${id}.json`)
+    fetch(`/mocks/my-projects.json`)
       .then((res) => {
-        if (!res.ok) {
-          throw new Error("프로젝트 데이터를 불러오지 못했습니다.");
-        }
+        if (!res.ok) throw new Error("프로젝트 데이터를 불러오지 못했습니다.");
         return res.json();
       })
-      .then((data: ProjectData) => {
-        setProject(data);
-        if (Array.isArray(data.milestones)) {
-          setMilestones(data.milestones);
-        } else {
-          setMilestones([]);
+      .then((data) => {
+        // ✅ data가 배열/객체 모두 대비
+        let base: ProjectData | null = null;
+
+        if (Array.isArray(data)) {
+          base = data.find((p: ProjectData) => Number(p.id) === Number(id)) ?? null;
+        } else if (data && typeof data === "object") {
+          base = data as ProjectData;
+          // (만약 단일 json이지만 id가 다르면 무시)
+          if (Number((base as any).id) !== Number(id)) base = null;
         }
+
+        if (!base) {
+          throw new Error(`해당 ID(${id})의 프로젝트를 찾지 못했습니다.`);
+        }
+
+        // ✅ override 얕은 병합
+        const ov = getOverride(id!);
+        const merged: ProjectData = ov ? { ...base, ...ov } : base;
+
+        setProject(merged);
+        setMilestones(Array.isArray(merged.milestones) ? merged.milestones : []);
       })
       .catch((err) => {
         console.error(err);
@@ -42,15 +55,13 @@ const MyprojectMilestoneEdit: React.FC = () => {
       .finally(() => setLoading(false));
   }, [id]);
 
-  // 행 삭제
-  const handleDelete = (id: number) => {
+  const handleDelete = (rowId: number) => {
     if (window.confirm("정말로 이 마일스톤을 삭제하시겠습니까?")) {
-      setMilestones(milestones.filter((m) => m.id !== id));
+      setMilestones((prev) => prev.filter((m) => m.id !== rowId));
       setIsDirty(true);
     }
   };
 
-  // 행 추가
   const handleAddRow = () => {
     const newMilestone: Milestone = {
       id: Date.now(),
@@ -59,31 +70,34 @@ const MyprojectMilestoneEdit: React.FC = () => {
       deadline: "",
       progress: 0,
     };
-    setMilestones([...milestones, newMilestone]);
+    setMilestones((prev) => [...prev, newMilestone]);
     setIsDirty(true);
   };
 
-  // 입력 변경
   const handleChange = (
-    id: number,
+    rowId: number,
     field: keyof Milestone,
     value: string | number
   ) => {
-    setMilestones(
-      milestones.map((m) => (m.id === id ? { ...m, [field]: value } : m))
+    setMilestones((prev) =>
+      prev.map((m) => (m.id === rowId ? { ...m, [field]: value } : m))
     );
     setIsDirty(true);
   };
 
-  // 저장 버튼
   const handleSave = () => {
-    console.log("저장된 마일스톤:", milestones);
+    if (!id) return;
+    const normalized = milestones.map((m) => ({
+      ...m,
+      progress: Math.max(0, Math.min(100, Number(m.progress) || 0)),
+    }));
+    setOverride(id, { milestones: normalized }); // ✅ 로컬 오버라이드 저장
+    console.log("저장된 마일스톤(override):", normalized);
     alert("저장되었습니다.");
     setIsDirty(false);
-    // 실제로는 fetch/axios로 서버에 PATCH/PUT 요청을 보내야 함
+    // navigate(`/myproject/${id}/milestone`);
   };
 
-  // 취소 버튼
   const handleCancel = () => {
     if (isDirty) {
       const confirmLeave = window.confirm(
@@ -105,7 +119,7 @@ const MyprojectMilestoneEdit: React.FC = () => {
       <div className="myproject-layout">
         <ProjectSidebar
           project={{
-            id: project.id,
+            id: Number(project.id),
             title: project.title,
             status: project.status,
             logoUrl: project.logoUrl,
@@ -196,7 +210,6 @@ const MyprojectMilestoneEdit: React.FC = () => {
               </tbody>
             </table>
 
-            {/* 하단 버튼 */}
             <div className="milestone-edit-actions">
               <button className="milestone-add-btn" onClick={handleAddRow}>
                 줄 추가하기

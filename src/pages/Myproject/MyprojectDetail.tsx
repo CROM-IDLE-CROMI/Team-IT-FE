@@ -6,40 +6,40 @@ import ProgressBar from "../../components/ProgressBar";
 import ProjectSidebar from "../../components/myproject/ProjectSidebar";
 import Header from "../../layouts/Header";
 import type { ProjectData } from "../../types/project";
+import { getOverride } from "../../utils/projectOverrides"; // ✅ 추가
 
-
-// --- 메인 컴포넌트 ---
 export default function ProjectDetail() {
   const { id } = useParams<{ id: string }>();
   const [project, setProject] = useState<ProjectData | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-useEffect(() => {
-  fetch("/mocks/my-projects.json")
-    .then((res) => {
-      if (!res.ok) throw new Error("프로젝트 데이터를 불러오지 못했습니다.");
-      return res.json();
-    })
-    .then((data) => {
-      // my-projects.json 은 배열이므로 id로 필터링
-      const projectData = data.find((item: any) => item.id === Number(id));
-      if (!projectData) throw new Error("해당 ID의 프로젝트를 찾을 수 없습니다.");
-      setProject(projectData);
-    })
-    .catch((error) => {
-      console.error("데이터를 불러오는 데 실패했습니다:", error);
-    })
-    .finally(() => setLoading(false));
-}, [id]);
+  useEffect(() => {
+    if (!id) return;
+    setLoading(true);
 
+    fetch("/mocks/my-projects.json")
+      .then((res) => {
+        if (!res.ok) throw new Error("프로젝트 데이터를 불러오지 못했습니다.");
+        return res.json();
+      })
+      .then((data: ProjectData[]) => {
+        const base = data.find((item) => item.id === Number(id)) || null;
+        if (!base) throw new Error("해당 ID의 프로젝트를 찾을 수 없습니다.");
 
-  // 수정 버튼 클릭 시 경로를 올바르게 수정
-  const handleEditClick = () => {
-    navigate(`/myproject/${id}/edit`);
-  };
+        // ✅ 로컬 오버라이드 적용
+        const ov = getOverride(id);
+        setProject(ov ? { ...base, ...ov } : base);
+      })
+      .catch((error) => {
+        console.error("데이터를 불러오는 데 실패했습니다:", error);
+        setProject(null);
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
 
-  // 메인 컨텐츠를 상태에 따라 다르게 렌더링
+  const handleEditClick = () => navigate(`/myproject/${id}/edit`);
+
   const renderMainContent = () => {
     if (!project) return null;
 
@@ -48,9 +48,7 @@ useEffect(() => {
         return (
           <>
             <div className="edit-button-wrapper">
-              <button className="edit-button" onClick={handleEditClick}>
-                수정하기
-              </button>
+              <button className="edit-button" onClick={handleEditClick}>수정하기</button>
             </div>
             <div className="myproject-card-main">
               <div className="myproject-card-header">
@@ -63,13 +61,7 @@ useEffect(() => {
                 <h4>멤버</h4>
                 {/* 멤버 목록 */}
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1.5rem",
-                }}
-              >
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                 <div className="myproject-card-main">
                   <div className="myproject-card-main-header">
                     <h4>진행률</h4>
@@ -89,9 +81,7 @@ useEffect(() => {
         return (
           <>
             <div className="edit-button-wrapper">
-              <button className="edit-button" onClick={handleEditClick}>
-                수정하기
-              </button>
+              <button className="edit-button" onClick={handleEditClick}>수정하기</button>
             </div>
             <div className="myproject-card-main">
               <div className="myproject-card-main-header">
@@ -134,7 +124,6 @@ useEffect(() => {
         <Header />
       </div>
       <div className="project-detail-layout">
-        {/* 사이드바 컴포넌트 활용 */}
         <ProjectSidebar
           project={{
             id: Number(project.id),
@@ -143,7 +132,6 @@ useEffect(() => {
             logoUrl: project.logoUrl,
           }}
         />
-
         <main className="project-main-content">{renderMainContent()}</main>
       </div>
     </>

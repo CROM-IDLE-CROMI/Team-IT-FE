@@ -5,6 +5,7 @@ import { usePrompt } from "../../hooks/usePrompt";
 import Header from "../../layouts/Header";
 
 import type { Member, ProjectData } from "../../types/project";
+import { getOverride, setOverride } from "../../utils/projectOverrides"; // ✅ 추가
 
 const MyprojectMemberEdit: React.FC = () => {
   const navigate = useNavigate();
@@ -19,33 +20,58 @@ const MyprojectMemberEdit: React.FC = () => {
     if (!id) return;
     setLoading(true);
 
+    // 1) project-<id>.json 시도 → 2) my-projects.json에서 해당 id 찾기
     fetch(`/mocks/project-${id}.json`)
-      .then((res) => res.json())
+      .then((res) => (res.ok ? res.json() : Promise.reject(new Error("no per-id json"))))
       .then((data: ProjectData) => {
-        setProject(data);
-        setMembers(data.members || []);
+        const ov = getOverride(id);
+        const merged: ProjectData = ov ? { ...data, ...ov } : data; // ✅ 얕은 병합
+        setProject(merged);
+        setMembers(Array.isArray(merged.members) ? merged.members : []);
       })
+      .catch(() =>
+        fetch(`/mocks/my-projects.json`)
+          .then((res) => {
+            if (!res.ok) throw new Error("my-projects.json load fail");
+            return res.json();
+          })
+          .then((arr: ProjectData[]) => {
+            const found =
+              Array.isArray(arr) ? arr.find((p) => Number(p.id) === Number(id)) : null;
+            if (!found) throw new Error("project not found in array");
+            const ov = getOverride(id);
+            const merged: ProjectData = ov ? { ...found, ...ov } : found; // ✅
+            setProject(merged);
+            setMembers(Array.isArray(merged.members) ? merged.members : []);
+          })
+      )
       .catch((err) =>
         console.error("멤버 데이터를 불러오는 데 실패했습니다:", err)
       )
       .finally(() => setLoading(false));
   }, [id]);
 
-  const handleRemove = (id: number) => {
+  const handleRemove = (mid: number) => {
     if (window.confirm("정말로 이 멤버를 삭제하시겠습니까?")) {
-      setMembers((prev) => prev.filter((m) => m.id !== id));
+      setMembers((prev) => prev.filter((m) => m.id !== mid));
       setIsDirty(true);
     }
+  };
+
+  // (선택) 멤버 필드 인라인 수정이 필요하면 이 핸들러로 업데이트
+  const handleChange = <K extends keyof Member>(mid: number, field: K, value: Member[K]) => {
+    setMembers((prev) => prev.map((m) => (m.id === mid ? { ...m, [field]: value } : m)));
+    setIsDirty(true);
   };
 
   // 새로고침/창 닫기 경고
   useBeforeUnload(
     (e: BeforeUnloadEvent) => {
-      if (!isDirty) return; // ← 여기서 조건 체크
+      if (!isDirty) return;
       e.preventDefault();
-      e.returnValue = ""; // 크롬/사파리에서 경고창 표시
+      e.returnValue = "";
     },
-    { capture: true } // 선택: 캡처 단계에서 먼저 잡도록
+    { capture: true }
   );
 
   // 라우터 전환 경고
@@ -54,7 +80,19 @@ const MyprojectMemberEdit: React.FC = () => {
     isDirty
   );
 
+  const handleSave = () => {
+    if (!id) return;
+    setOverride(id, { members }); // ✅ 오버라이드 저장
+    setIsDirty(false);
+    alert("저장되었습니다!");
+    // 필요하면 상세로 이동: navigate(`/myproject/${id}/member`);
+  };
+
   const handleGoBack = () => {
+    if (isDirty) {
+      const ok = window.confirm("변경 사항이 저장되지 않았습니다. 페이지를 떠나시겠습니까?");
+      if (!ok) return;
+    }
     navigate(`/myproject/${id}`);
   };
 
@@ -69,7 +107,7 @@ const MyprojectMemberEdit: React.FC = () => {
       <div className="myproject-layout">
         <ProjectSidebar
           project={{
-            id: project.id,
+            id: Number(project.id),
             title: project.title,
             status: project.status,
             logoUrl: project.logoUrl,
@@ -88,6 +126,7 @@ const MyprojectMemberEdit: React.FC = () => {
               팀장 위임하기
             </button>
           </div>
+
           <div className="card-main">
             {/* 멤버 테이블 */}
             <table className="member-edit-table">
@@ -105,14 +144,41 @@ const MyprojectMemberEdit: React.FC = () => {
                 {members.length > 0 ? (
                   members.map((member) => (
                     <tr key={member.id}>
-                      <td>{member.nickname}</td>
-                      <td>{member.email}</td>
-                      <td>{member.role}</td>
-                      <td>{member.techStack}</td>
                       <td>
-                        {member.rating?.toFixed
-                          ? member.rating.toFixed(2)
-                          : member.rating}
+                        <input
+                          type="text"
+                          value={member.nickname}
+                          onChange={(e) => handleChange(member.id, "nickname", e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="email"
+                          value={member.email}
+                          onChange={(e) => handleChange(member.id, "email", e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          value={member.role}
+                          onChange={(e) => handleChange(member.id, "role", e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          value={member.techStack}
+                          onChange={(e) => handleChange(member.id, "techStack", e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          step="0.01"
+                          value={typeof member.rating === "number" ? member.rating : Number(member.rating || 0)}
+                          onChange={(e) => handleChange(member.id, "rating", Number(e.target.value))}
+                        />
                       </td>
                       <td>
                         <button
@@ -134,13 +200,7 @@ const MyprojectMemberEdit: React.FC = () => {
 
             {/* 하단 수정/취소 버튼 */}
             <div className="member-edit-actions">
-              <button
-                className="member-edit-save-btn"
-                onClick={() => {
-                  setIsDirty(false); // 저장 후 더 이상 dirty 아님
-                  alert("저장되었습니다!");
-                }}
-              >
+              <button className="member-edit-save-btn" onClick={handleSave}>
                 수정 완료
               </button>
               <button className="member-edit-cancel-btn" onClick={handleGoBack}>

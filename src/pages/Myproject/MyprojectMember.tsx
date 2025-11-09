@@ -6,6 +6,7 @@ import Header from "../../layouts/Header";
 
 import type { ProjectData } from "../../types/project";
 import type { MemberData } from "../../types/member";
+import { getOverride } from "../../utils/projectOverrides"; // ✅ 추가
 
 export default function MyprojectMember() {
   const { id } = useParams<{ id: string }>();
@@ -15,29 +16,40 @@ export default function MyprojectMember() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!id) return;
     setLoading(true);
 
-    fetch(`/mocks/my-projects.json`)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
+    // 1) /mocks/project-<id>.json 시도
+    fetch(`/mocks/project-${id}.json`)
+      .then((res) => (res.ok ? res.json() : Promise.reject(new Error("no per-id json"))))
+      .then((data: ProjectData) => {
+        const ov = getOverride(id);
+        const merged: ProjectData = ov ? { ...data, ...ov } : data; // ✅ 오버라이드 병합
+        setProject(merged);
+        setMembers(Array.isArray(merged.members) ? merged.members : []);
       })
-      .then((data) => {
-        // my-projects.json은 배열 형태 → id로 특정 프로젝트 찾기
-        const foundProject = data.find(
-          (item: ProjectData) => item.id === Number(id)
-        );
-
-        if (!foundProject) {
-          throw new Error("해당 ID의 프로젝트를 찾을 수 없습니다.");
-        }
-
-        setProject(foundProject);
-        setMembers(foundProject.members || []);
-      })
+      // 2) 실패 시 /mocks/my-projects.json에서 해당 id 찾기
+      .catch(() =>
+        fetch(`/mocks/my-projects.json`)
+          .then((res) => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.json();
+          })
+          .then((arr: ProjectData[]) => {
+            const found = Array.isArray(arr)
+              ? arr.find((p) => Number(p.id) === Number(id))
+              : null;
+            if (!found) throw new Error("해당 ID의 프로젝트를 찾을 수 없습니다.");
+            const ov = getOverride(id);
+            const merged: ProjectData = ov ? { ...found, ...ov } : found; // ✅ 오버라이드 병합
+            setProject(merged);
+            setMembers(Array.isArray(merged.members) ? merged.members : []);
+          })
+      )
       .catch((error) => {
         console.error("데이터를 불러오는 데 실패했습니다:", error);
         setProject(null);
+        setMembers([]);
       })
       .finally(() => setLoading(false));
   }, [id]);
@@ -56,7 +68,7 @@ export default function MyprojectMember() {
       <div className="myproject-layout">
         <ProjectSidebar
           project={{
-            id: project.id,
+            id: Number(project.id),
             title: project.title,
             status: project.status,
             logoUrl: project.logoUrl,
@@ -73,6 +85,7 @@ export default function MyprojectMember() {
               </button>
             )}
           </div>
+
           <div className="card-main">
             <table className="member-table">
               <thead>
@@ -85,7 +98,7 @@ export default function MyprojectMember() {
                 </tr>
               </thead>
               <tbody>
-                {members && members.length > 0 ? (
+                {members.length > 0 ? (
                   members.map((member) => (
                     <tr key={member.id}>
                       <td>{member.nickname}</td>
@@ -97,9 +110,9 @@ export default function MyprojectMember() {
                           : member.techStack || "-"}
                       </td>
                       <td>
-                        {member.rating
+                        {typeof member.rating === "number"
                           ? member.rating.toFixed(2)
-                          : "평가 없음"}
+                          : member.rating ?? "평가 없음"}
                       </td>
                     </tr>
                   ))

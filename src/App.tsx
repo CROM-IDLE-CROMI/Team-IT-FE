@@ -19,6 +19,7 @@ import Login from './pages/Login/Login';
 import KakaoCallback from "./auth/KakaoCallback";
 import Signup from './pages/Signup/Signup';
 import MyprojectMain from './pages/Myproject/MyprojectMain';
+import MyprojectEdit from './pages/Myproject/MyprojectEdit';
 import MyProjectDetail from './pages/Myproject/MyprojectDetail';
 import MyprojectExplain from './pages/Myproject/MyprojectExplain';
 import MyprojectMilestone from './pages/Myproject/MyprojectMilestone';
@@ -76,6 +77,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/myprojectmain" element={<MyprojectMain />} />
         <Route path="/myproject/:id" element={<MyProjectDetail />} />
+        <Route path="/myproject/:id/edit" element={<MyprojectEdit />} />
         <Route path="/myproject/:id/explain" element={<MyprojectExplain />} />
         <Route path="/myproject/:id/milestone" element={<MyprojectMilestone />} />
         <Route path="/myproject/:id/member" element={<MyprojectMember />} />

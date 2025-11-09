@@ -5,6 +5,7 @@ import ProjectSidebar from "../../components/myproject/ProjectSidebar";
 import Header from "../../layouts/Header";
 
 import type { ProjectData } from "../../types/project";
+import { getOverride } from "../../utils/projectOverrides"; // ✅ 추가
 
 export default function MyprojectExplain() {
   const { id } = useParams<{ id: string }>();
@@ -16,30 +17,53 @@ export default function MyprojectExplain() {
     if (!id) return;
 
     setLoading(true);
-    fetch(`/mocks/my-projects.json`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
+
+    // 1) /mocks/project-<id>.json 시도
+    fetch(`/mocks/project-${id}.json`)
+      .then((res) => (res.ok ? res.json() : Promise.reject(new Error("no per-id json"))))
+      .then((data: ProjectData) => {
+        // ✅ 로컬 오버라이드 병합
+        const ov = getOverride(id);
+        const merged: ProjectData = ov ? { ...data, ...ov } : data;
+        setProject(merged);
       })
-      .then((data) => {
-        setProject(data);
-      })
+      // 2) 실패 시 /mocks/my-projects.json에서 해당 id 찾기
+      .catch(() =>
+        fetch(`/mocks/my-projects.json`)
+          .then((response) => {
+            if (!response.ok) throw new Error("Network response was not ok");
+            return response.json();
+          })
+          .then((data) => {
+            let found: ProjectData | null = null;
+            if (Array.isArray(data)) {
+              found =
+                data.find(
+                  (item: ProjectData) => Number(item.id) === Number(id)
+                ) ?? null;
+            } else if (data && typeof data === "object") {
+              const maybe = data as ProjectData;
+              if (Number(maybe.id) === Number(id)) found = maybe;
+            }
+            if (!found) throw new Error(`Project with id=${id} not found in mocks`);
+
+            // ✅ 로컬 오버라이드 병합
+            const ov = getOverride(id);
+            const merged: ProjectData = ov ? { ...found, ...ov } : found;
+            setProject(merged);
+          })
+      )
       .catch((error) => {
         console.error("Failed to fetch project data:", error);
         setProject(null);
       })
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => setLoading(false));
   }, [id]);
 
   const handleGoBack = () => navigate(-1);
   const handleEdit = () => {
-    navigate(`/myproject/${id}/explain/edit`, {
-      state: { project },
-    });
+    if (!id || !project) return;
+    navigate(`/myproject/${id}/explain/edit`, { state: { project } });
   };
 
   if (loading) return <div>Loading...</div>;
@@ -50,10 +74,11 @@ export default function MyprojectExplain() {
       <div className="content-header">
         <Header />
       </div>
+
       <div className="myproject-layout">
         <ProjectSidebar
           project={{
-            id: project.id,
+            id: Number(project.id),
             title: project.title,
             status: project.status,
             logoUrl: project.logoUrl,
@@ -71,6 +96,7 @@ export default function MyprojectExplain() {
               </button>
             )}
           </div>
+
           <div className="introduction-card">
             <div className="introduction-content">
               <h2>프로젝트 소개</h2>
