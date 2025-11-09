@@ -1,9 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import "./Header.css";
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -14,19 +15,13 @@ const Header = () => {
 
     checkLoginStatus();
 
-    // 다른 탭/윈도우에서의 변경 감지
-    const handleStorageChange = () => {
-      checkLoginStatus();
-    };
-
-    // 현재 탭에서 토큰이 바뀐 뒤 화면 전환 없이도 갱신되도록
+    const handleStorageChange = () => checkLoginStatus();
     const handleVisibility = () => {
       if (document.visibilityState === 'visible') checkLoginStatus();
     };
 
     window.addEventListener('storage', handleStorageChange);
     document.addEventListener('visibilitychange', handleVisibility);
-
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       document.removeEventListener('visibilitychange', handleVisibility);
@@ -34,31 +29,34 @@ const Header = () => {
   }, []);
 
   const handleLogout = () => {
+    // (AuthContext 쓰는 구조면 useAuth().logout() 호출하는 게 더 깔끔)
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('currentUserId');
     setIsLoggedIn(false);
+    navigate('/'); // ← 풀 리로드 대신 라우터 이동
   };
 
   return (
     <header className="header">
-      <div className="logo" onClick={() => window.location.href = '/'}>
-        <img 
-          src="/Team-IT-2.png" 
-          alt="Team-IT로고" 
-          className='logo'
+      <Link to="/" className="logo">
+        <img
+          src="/Team-IT-2.png"
+          alt="Team-IT로고"
+          className="logo"
           onError={(e) => {
             console.error('Failed to load logo:', e.currentTarget.src);
             e.currentTarget.style.display = 'none';
           }}
         />
-      </div>
+      </Link>
 
       <nav className="nav-links">
         <Link to="/Teams">팀원 모집</Link>
         <Link to="/Projects">프로젝트 찾기</Link>
-        <a href="/Boarder">게시판</a>
-        {<Link to="/myprojectmain">마이 프로젝트</Link>}
+        {/* ❌ <a href="/Boarder"> → ✅ Link 사용 */}
+        <Link to="/Boarder">게시판</Link>
+        <Link to="/myprojectmain">마이 프로젝트</Link>
       </nav>
 
       <div className="auth-buttons">
@@ -66,9 +64,9 @@ const Header = () => {
           <>
             <Link to="/Mypage">
               <button className="profile">
-                <img 
-                  src="/Profile.png" 
-                  className='Profile'
+                <img
+                  src="/Profile.png"
+                  className="Profile"
                   alt="프로필"
                   onError={(e) => {
                     console.error('Failed to load profile icon:', e.currentTarget.src);
@@ -79,9 +77,9 @@ const Header = () => {
             </Link>
             <Link to="/notification">
               <button className="notification">
-                <img 
-                  src="/Notific.png" 
-                  className='notic'
+                <img
+                  src="/Notific.png"
+                  className="notic"
                   alt="알림"
                   onError={(e) => {
                     console.error('Failed to load notification icon:', e.currentTarget.src);
@@ -94,10 +92,8 @@ const Header = () => {
           </>
         ) : (
           <>
-            <button onClick={() => {
-              window.location.href = '/Login';
-            }}>로그인</button>
-            <button onClick={() => window.location.href = '/Signup'}>회원가입</button>
+            <button onClick={() => navigate('/Login')}>로그인</button>
+            <button onClick={() => navigate('/Signup')}>회원가입</button>
           </>
         )}
       </div>
