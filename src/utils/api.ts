@@ -213,6 +213,7 @@ export const API_ENDPOINTS = {
     COMMENT: (postId: number, commentId: number) => `/v1/board/${postId}/comments/${commentId}`, // PATCH: 댓글 수정, DELETE: 댓글 삭제
     SCRAP: (postId: number) => `/v1/board/${postId}/scrap`, // POST: 스크랩 추가, DELETE: 스크랩 제거
     SCRAP_LIST: '/v1/board/scrap', // GET: 스크랩 목록 조회
+  },
 
   // 인증
   AUTH: {
