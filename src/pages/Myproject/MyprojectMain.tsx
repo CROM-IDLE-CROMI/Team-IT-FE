@@ -6,10 +6,8 @@ import Header from "../../layouts/Header";
 
 import type { ProjectData, ProjectStatus, Platform } from "../../types/project";
 import { Platform as PlatformConst } from "../../types/project";
+import { API_BASE_URL } from "../../utils/api";
 
-// ---- 환경/토큰 ----
-const API_BASE_URL =
-  (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, "") ?? "";
 
 const getAuthToken = () => {
   const raw = localStorage.getItem("accessToken");

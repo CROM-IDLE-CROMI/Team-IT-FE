@@ -2,33 +2,22 @@
   "headers": [
     {
       "source": "/assets/(.*\\.mjs)",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "text/javascript"
-        }
-      ]
+      "headers": [{ "key": "Content-Type", "value": "text/javascript" }]
     },
     {
       "source": "/assets/(.*\\.js)",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "text/javascript"
-        }
-      ]
+      "headers": [{ "key": "Content-Type", "value": "text/javascript" }]
     },
     {
       "source": "/assets/(.*\\.css)",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "text/css"
-        }
-      ]
+      "headers": [{ "key": "Content-Type", "value": "text/css" }]
     }
   ],
   "rewrites": [
+    {
+      "source": "/v1/:path*",    
+      "destination": "http://3.37.26.26:8080/v1/:path*"
+    },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
