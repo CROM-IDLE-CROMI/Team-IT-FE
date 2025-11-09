@@ -4,7 +4,7 @@
  * API 기본 URL
  * .env의 VITE_API_URL 사용 (없으면 빈 문자열)
  */
-const API_BASE_URL =
+export const API_BASE_URL =
   (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, '') ?? '';
 
 /** ─────────────────────────────────────────
